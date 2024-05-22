@@ -1,0 +1,51 @@
+{
+  "originHash" : "e79eedf9be1879e77aa87663d37993c964800f6c2c51385dada2ecd69248fc62",
+  "pins" : [
+    {
+      "identity" : "hqx",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jarrodnorwell/HQx",
+      "state" : {
+        "branch" : "main",
+        "revision" : "8ebedfb78c8dcb3f7abd103afa807a964aa22c11"
+      }
+    },
+    {
+      "identity" : "openssl",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krzyzanowskim/OpenSSL",
+      "state" : {
+        "revision" : "84a8ae774291a4ab1971e42908d5114d98d4b623",
+        "version" : "3.1.5004"
+      }
+    },
+    {
+      "identity" : "swiftsdl2",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ctreffs/SwiftSDL2",
+      "state" : {
+        "revision" : "30a2886bd68e43fc19ba29b63ffe230ac0e4db7a",
+        "version" : "1.4.1"
+      }
+    },
+    {
+      "identity" : "xbrz",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jarrodnorwell/XBRZ",
+      "state" : {
+        "branch" : "main",
+        "revision" : "0e96bf3fc42d83db42b4f5d4b3a21e97a7586979"
+      }
+    },
+    {
+      "identity" : "zstd",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/facebook/zstd",
+      "state" : {
+        "branch" : "dev",
+        "revision" : "78955f5f9ddb3601566884ce217d91c132f5edc1"
+      }
+    }
+  ],
+  "version" : 3
+}

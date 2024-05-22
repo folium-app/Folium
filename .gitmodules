@@ -1,0 +1,9 @@
+[submodule "Cytrus"]
+	path = Cytrus
+	url = https://github.com/folium-app/Cytrus
+[submodule "Grape"]
+	path = Grape
+	url = https://github.com/folium-app/Grape
+[submodule "Kiwi"]
+	path = Kiwi
+	url = https://github.com/folium-app/Kiwi
