@@ -62,7 +62,7 @@ class KiwiManager {
         }
         
         return .init(children: [
-            UIMenu(title: "Upscaling Filter", image: .init(systemName: "square.resize.up"), children: [
+            UIMenu(title: "Upscaling Filter", image: .init(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"), children: [
                 UIMenu(title: "HQx", children: [
                     UIAction(title: "2x", state: isCurrentUpscalingOption(0, 2) ? .on : .off, handler: { _ in
                         Kiwi.shared.setUpscalingFilter(0)

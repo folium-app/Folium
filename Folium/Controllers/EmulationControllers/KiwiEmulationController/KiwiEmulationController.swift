@@ -139,12 +139,50 @@ class KiwiEmulationController : EmulationScreensController {
     // MARK: Virtual Controller Delegates
     override func touchDown(_ buttonType: VirtualControllerButton.ButtonType) {
         super.touchDown(buttonType)
-        
+        switch buttonType {
+        case .dpadUp:
+            kiwi.virtualControllerButtonDown(0b00010000)
+        case .dpadDown:
+            kiwi.virtualControllerButtonDown(0b00100000)
+        case .dpadLeft:
+            kiwi.virtualControllerButtonDown(0b01000000)
+        case .dpadRight:
+            kiwi.virtualControllerButtonDown(0b10000000)
+        case .minus:
+            kiwi.virtualControllerButtonDown(0b00000100)
+        case .plus:
+            kiwi.virtualControllerButtonDown(0b00001000)
+        case .a:
+            kiwi.virtualControllerButtonDown(0b00000001)
+        case .b:
+            kiwi.virtualControllerButtonDown(0b00000010)
+        default:
+            break
+        }
     }
     
     override func touchUpInside(_ buttonType: VirtualControllerButton.ButtonType) {
         super.touchUpInside(buttonType)
-        
+        switch buttonType {
+        case .dpadUp:
+            kiwi.virtualControllerButtonUp(0b00010000)
+        case .dpadDown:
+            kiwi.virtualControllerButtonUp(0b00100000)
+        case .dpadLeft:
+            kiwi.virtualControllerButtonUp(0b01000000)
+        case .dpadRight:
+            kiwi.virtualControllerButtonUp(0b10000000)
+        case .minus:
+            kiwi.virtualControllerButtonUp(0b00000100)
+        case .plus:
+            kiwi.virtualControllerButtonUp(0b00001000)
+        case .a:
+            kiwi.virtualControllerButtonUp(0b00000001)
+        case .b:
+            kiwi.virtualControllerButtonUp(0b00000010)
+        default:
+            break
+        }
     }
 }
 

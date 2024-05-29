@@ -7,18 +7,30 @@
 
 import Foundation
 import Grape
+import UniformTypeIdentifiers
 import UIKit
 
 class LibraryController : UICollectionViewController {
     var dataSource: UICollectionViewDiffableDataSource<Core, AnyHashable>! = nil
     var snapshot: NSDiffableDataSourceSnapshot<Core, AnyHashable>! = nil
     
+    var importURLCore: Core? = nil
+    var importURL: URL? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.setRightBarButton(.init(systemItem: .add), animated: true)
+        navigationItem.setRightBarButton(.init(systemItem: .add, primaryAction: .init(handler: { _ in
+            let documentController = UIDocumentPickerViewController(forOpeningContentTypes: [
+                .init("com.antique.Folium-iOS.gba")!,
+                .init("com.antique.Folium-iOS.nds")!,
+                .init("com.antique.Folium-iOS.nes")!
+            ], asCopy: true)
+            documentController.delegate = self
+            self.present(documentController, animated: true)
+        })), animated: true)
         title = "Library"
-        view.backgroundColor = .systemBackground
+        collectionView.backgroundColor = .secondarySystemBackground
         
         let refreshControl = UIRefreshControl()
         refreshControl.addAction(.init(handler: { _ in
@@ -96,12 +108,26 @@ class LibraryController : UICollectionViewController {
             cell.set(itemIdentifier, self)
         }
         
+        let missingFilesCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, MissingFile> { cell, indexPath, itemIdentifier in
+            var backgroundConfiguration = UIBackgroundConfiguration.listPlainCell()
+            backgroundConfiguration.backgroundColor = .tertiarySystemBackground
+            cell.backgroundConfiguration = backgroundConfiguration
+            
+            var configuration = UIListContentConfiguration.valueCell()
+            configuration.text = itemIdentifier.fileDetails.nameWithoutExtension
+            configuration.secondaryText = itemIdentifier.fileDetails.extension
+            configuration.secondaryTextProperties.color = itemIdentifier.fileDetails.importance.color
+            cell.contentConfiguration = configuration
+        }
+        
         dataSource = .init(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             switch itemIdentifier {
+            case let missingFile as MissingFile:
+                collectionView.dequeueConfiguredReusableCell(using: missingFilesCellRegistration, for: indexPath, item: missingFile)
             case let cytrusGame as CytrusManager.Library.Game:
                 collectionView.dequeueConfiguredReusableCell(using: n3dsCellRegistration, for: indexPath, item: cytrusGame)
             case let grapeGame as GrapeManager.Library.Game:
-                if grapeGame.fileDetails.extension == "nds" {
+                if grapeGame.gameType == .nds {
                     collectionView.dequeueConfiguredReusableCell(using: ndsCellRegistration, for: indexPath, item: grapeGame)
                 } else {
                     collectionView.dequeueConfiguredReusableCell(using: ndsGbaCellRegistration, for: indexPath, item: grapeGame)
@@ -128,13 +154,32 @@ class LibraryController : UICollectionViewController {
         snapshot = .init()
         snapshot.appendSections(Core.cores)
         Core.cores.forEach { core in
-            let items: [AnyHashable] = switch core {
+            var items: [AnyHashable] = []
+            switch core {
             case .cytrus:
-                LibraryManager.shared.cytrusManager.library.games
+                LibraryManager.shared.cytrusManager.library.missingFiles.removeAll()
+                DirectoryManager.shared.scanDirectoriesForRequiredFiles(core)
+                items = if LibraryManager.shared.cytrusManager.library.missingFiles.contains(where: { $0.fileDetails.importance == .required }) {
+                    LibraryManager.shared.cytrusManager.library.missingFiles
+                } else {
+                    LibraryManager.shared.cytrusManager.library.games
+                }
             case .grape:
-                LibraryManager.shared.grapeManager.library.games
+                LibraryManager.shared.grapeManager.library.missingFiles.removeAll()
+                DirectoryManager.shared.scanDirectoriesForRequiredFiles(core)
+                items = if LibraryManager.shared.grapeManager.library.missingFiles.contains(where: { $0.fileDetails.importance == .required }) {
+                    LibraryManager.shared.grapeManager.library.missingFiles
+                } else {
+                    LibraryManager.shared.grapeManager.library.games
+                }
             case .kiwi:
-                LibraryManager.shared.kiwiManager.library.games
+                LibraryManager.shared.kiwiManager.library.missingFiles.removeAll()
+                DirectoryManager.shared.scanDirectoriesForRequiredFiles(core)
+                items = if LibraryManager.shared.kiwiManager.library.missingFiles.contains(where: { $0.fileDetails.importance == .required }) {
+                    LibraryManager.shared.kiwiManager.library.missingFiles
+                } else {
+                    LibraryManager.shared.kiwiManager.library.games
+                }
             }
             
             snapshot.appendItems(items, toSection: core)
@@ -150,6 +195,24 @@ class LibraryController : UICollectionViewController {
         }
         
         switch game {
+        case let missingFile as MissingFile:
+            self.importURL = missingFile.fileDetails.path
+            
+            let alertController = UIAlertController(title: "Import System File", message: "Import \(missingFile.fileDetails.name) from the Files app?",
+                                                    preferredStyle: .alert)
+            alertController.addAction(.init(title: "Cancel", style: .cancel))
+            alertController.addAction(.init(title: "Import", style: .default, handler: { _ in
+                let documentController = UIDocumentPickerViewController(forOpeningContentTypes: [.archive, .plainText], asCopy: true)
+                documentController.shouldShowFileExtensions = true
+                documentController.delegate = self
+                self.present(documentController, animated: true)
+            }))
+            present(alertController, animated: true)
+            break
+        case let cytrusGame as CytrusManager.Library.Game:
+            let cytrusController = CytrusEmulationController(cytrusGame.core, cytrusGame)
+            cytrusController.modalPresentationStyle = .fullScreen
+            present(cytrusController, animated: true)
         case let grapeGame as GrapeManager.Library.Game:
             let grapeController = GrapeEmulationController(grapeGame.core, grapeGame)
             grapeController.modalPresentationStyle = .fullScreen
@@ -160,6 +223,52 @@ class LibraryController : UICollectionViewController {
             present(kiwiController, animated: true)
         default:
             break
+        }
+    }
+}
+
+extension LibraryController : UIDocumentPickerDelegate {
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        controller.dismiss(animated: true)
+    }
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let documentsDirectory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else {
+            return
+        }
+        
+        urls.forEach { url in
+            switch url.pathExtension.lowercased() {
+            case "gba", "nds":
+                Task {
+                    try FileManager.default.copyItem(at: url, to: documentsDirectory
+                        .appendingPathComponent("Grape", conformingTo: .folder)
+                        .appendingPathComponent("roms", conformingTo: .folder)
+                        .appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL))
+                    
+                    try await populateGames()
+                }
+            case "nes":
+                Task {
+                    try FileManager.default.copyItem(at: url, to: documentsDirectory
+                        .appendingPathComponent("Kiwi", conformingTo: .folder)
+                        .appendingPathComponent("roms", conformingTo: .folder)
+                        .appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL))
+                    
+                    try await populateGames()
+                }
+            default:
+                guard let importURL else {
+                    return
+                }
+                
+                Task {
+                    try FileManager.default.copyItem(at: url, to: importURL)
+                    self.importURL = nil
+                    
+                    try await populateGames()
+                }
+            }
         }
     }
 }

@@ -49,14 +49,16 @@ class VirtualControllerButton : UIView {
         self.buttonColor = buttonColor
         self.buttonType = buttonType
         self.virtualButtonDelegate = virtualButtonDelegate
-        self.colors = if buttonType.systemName == "circle"/* || [ButtonType.l, ButtonType.zl, ButtonType.r, ButtonType.zr].contains(buttonType)*/ {
-            .init(paletteColors: [buttonColor])
-        } else {
-            .init(paletteColors: [.white, buttonColor])
-        }
+        self.colors = .init(paletteColors: [])
         self.pointSize = if buttonType == .minus || buttonType == .plus { 32 } else { 40 }
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+        
+        colors = if buttonType.systemName == "circle"/* || [ButtonType.l, ButtonType.zl, ButtonType.r, ButtonType.zr].contains(buttonType)*/ {
+            .init(paletteColors: [buttonColor])
+        } else {
+            .init(paletteColors: [.systemBackground, buttonColor])
+        }
         
         imageView = .init(image: .init(systemName: buttonType.systemName)?
             .applyingSymbolConfiguration(.init(pointSize: pointSize, weight: .regular, scale: .large))?
@@ -83,7 +85,7 @@ class VirtualControllerButton : UIView {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
         virtualButtonDelegate.touchDown(buttonType)
-        if buttonType.systemName == "circle" || [ButtonType.l, ButtonType.zl, ButtonType.r, ButtonType.zr].contains(buttonType) {
+        if buttonType.systemName == "circle"/* || [ButtonType.l, ButtonType.zl, ButtonType.r, ButtonType.zr].contains(buttonType)*/ {
             guard let image = UIImage(systemName: buttonType.systemName.appending(".fill"))?
                 .applyingSymbolConfiguration(.init(pointSize: pointSize, weight: .regular, scale: .large))?
                 .applyingSymbolConfiguration(colors) else {
@@ -99,7 +101,7 @@ class VirtualControllerButton : UIView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         virtualButtonDelegate.touchUpInside(buttonType)
-        if buttonType.systemName == "circle" || [ButtonType.l, ButtonType.zl, ButtonType.r, ButtonType.zr].contains(buttonType) {
+        if buttonType.systemName == "circle"/* || [ButtonType.l, ButtonType.zl, ButtonType.r, ButtonType.zr].contains(buttonType)*/ {
             guard let image = UIImage(systemName: buttonType.systemName)?
                 .applyingSymbolConfiguration(.init(pointSize: pointSize, weight: .regular, scale: .large))?
                 .applyingSymbolConfiguration(colors) else {

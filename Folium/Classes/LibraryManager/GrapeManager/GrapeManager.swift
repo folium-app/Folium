@@ -27,9 +27,17 @@ class GrapeManager {
                 lhs.title == rhs.title
             }
             
+            enum GameType : Int, Codable, Hashable {
+                case gba, nds
+            }
+            
             let core: Core
             let fileDetails: FileDetails
             let title: String
+            
+            var gameType: GameType {
+                fileDetails.extension == "gba" ? .gba : .nds
+            }
         }
         
         var games: [Game]
@@ -68,7 +76,7 @@ class GrapeManager {
                          
                          button.menu = self.menu(button)
                      }),
-            UIMenu(title: "Upscaling Filter", image: .init(systemName: "square.resize.up"), children: [
+            UIMenu(title: "Upscaling Filter", image: .init(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left"), children: [
                 UIMenu(title: "HQx", children: [
                     UIAction(title: "2x", state: isCurrentUpscalingOption(0, 2) ? .on : .off, handler: { _ in
                         Grape.shared.setUpscalingFilter(0)

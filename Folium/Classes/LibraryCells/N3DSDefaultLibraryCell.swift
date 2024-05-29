@@ -110,14 +110,14 @@ class N3DSDefaultLibraryCell : UICollectionViewCell {
     
     fileprivate func menu() -> UIMenu {
         .init(children: [
-            UIMenu(title: "Boot Options", image: .init(systemName: "power"), children: [
+            /*UIMenu(title: "Boot Options", image: .init(systemName: "power"), children: [
                 UIAction(title: "Fast Boot", subtitle: "Skip the Home Menu", handler: { _ in
                     // TODO:
                 }),
                 UIAction(title: "Slow Boot", subtitle: "Boot the Home Menu", attributes: [.disabled], handler: { _ in
                     // TODO:
                 }),
-            ]),
+            ]),*/
             UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: [.destructive], handler: { _ in
                 guard let viewController = self.viewController as? LibraryController else {
                     return

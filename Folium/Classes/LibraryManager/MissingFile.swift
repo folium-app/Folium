@@ -6,11 +6,21 @@
 //
 
 import Foundation
+import UIKit
 
-struct MissingFile : Codable, Comparable {
-    struct FileDetails : Codable {
-        enum Importance : Int, Codable {
+struct MissingFile : Codable, Comparable, Hashable {
+    struct FileDetails : Codable, Hashable {
+        enum Importance : Int, Codable, Hashable {
             case optional, required
+            
+            var color: UIColor {
+                switch self {
+                case .optional:
+                        .systemOrange
+                case .required:
+                        .systemRed
+                }
+            }
         }
         
         let core: Core
@@ -19,6 +29,7 @@ struct MissingFile : Codable, Comparable {
         let isSystem: Bool
         let name: String
         let nameWithoutExtension: String
+        var path: URL? = nil
     }
     
     static func < (lhs: MissingFile, rhs: MissingFile) -> Bool {

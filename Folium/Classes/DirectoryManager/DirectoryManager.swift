@@ -43,7 +43,7 @@ class DirectoryManager {
                         nameWithoutExtension: "firmware"),
                     "gba_bios.bin" : .init(core: .grape, extension: "bin", importance: .optional, isSystem: true, name: "gba_bios.bin",
                         nameWithoutExtension: "gba_bios"),
-                    "sdcard.img" : .init(core: .grape, extension: "img", importance: .optional, isSystem: true, name: "sdcard.img",
+                    "sdcard.img" : .init(core: .grape, extension: "img", importance: .optional, isSystem: false, name: "sdcard.img",
                         nameWithoutExtension: "sdcard")
                 ]
             ],
@@ -99,6 +99,8 @@ class DirectoryManager {
                 .appendingPathComponent(subdirectory, conformingTo: .folder)
             fileNames.forEach { fileName, fileDetails in
                 if !FileManager.default.fileExists(atPath: coreSubdirectory.appendingPathComponent(fileName, conformingTo: .fileURL).path) {
+                    var fileDetails = fileDetails
+                    fileDetails.path = coreSubdirectory.appendingPathComponent(fileName, conformingTo: .fileURL)
                     switch core {
                     case .cytrus:
                         LibraryManager.shared.cytrusManager.library.add(.init(fileDetails: fileDetails))

@@ -9,6 +9,11 @@ import Foundation
 
 protocol VirtualControllerButtonDelegate {
     func touchDown(_ buttonType: VirtualControllerButton.ButtonType)
-    func touchDragInside(_ buttonType: VirtualControllerButton)
     func touchUpInside(_ buttonType: VirtualControllerButton.ButtonType)
+}
+
+protocol VirtualControllerThumbstickDelegate {
+    func touchDown(_ thumbstickType: VirtualControllerThumbstick.ThumbstickType, _ location: (x: Float, y: Float))
+    func touchDragInside(_ thumbstickType: VirtualControllerThumbstick.ThumbstickType, _ location: (x: Float, y: Float))
+    func touchUpInside(_ thumbstickType: VirtualControllerThumbstick.ThumbstickType, _ location: (x: Float, y: Float))
 }

@@ -101,7 +101,7 @@ class GrapeEmulationController : EmulationScreensController {
         if !isRunning {
             isRunning = true
             
-            if game.fileDetails.extension == "nds" {
+            if game.gameType == .nds {
                 grape.updateScreenLayout(with: secondaryScreen.frame.size)
             }
             
@@ -116,7 +116,7 @@ class GrapeEmulationController : EmulationScreensController {
         }
         
         coordinator.animate { _ in
-            if game.fileDetails.extension == "nds" {
+            if game.gameType == .nds {
                 self.grape.updateScreenLayout(with: self.secondaryScreen.frame.size)
             }
         }
@@ -131,7 +131,7 @@ class GrapeEmulationController : EmulationScreensController {
     // MARK: Touch Delegates
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        guard let game = game as? GrapeManager.Library.Game, let touch = touches.first, touch.view == secondaryScreen, game.fileDetails.extension == "nds" else {
+        guard let game = game as? GrapeManager.Library.Game, let touch = touches.first, touch.view == secondaryScreen, game.gameType == .nds else {
             return
         }
         
@@ -140,7 +140,7 @@ class GrapeEmulationController : EmulationScreensController {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        guard let game = game as? GrapeManager.Library.Game, game.fileDetails.extension == "nds" else {
+        guard let game = game as? GrapeManager.Library.Game, game.gameType == .nds else {
             return
         }
         
@@ -149,7 +149,7 @@ class GrapeEmulationController : EmulationScreensController {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
-        guard let game = game as? GrapeManager.Library.Game, let touch = touches.first, touch.view == secondaryScreen, game.fileDetails.extension == "nds" else {
+        guard let game = game as? GrapeManager.Library.Game, let touch = touches.first, touch.view == secondaryScreen, game.gameType == .nds else {
             return
         }
         
@@ -284,7 +284,7 @@ extension GrapeEmulationController {
             return
         }
         
-        let isGBA = game.fileDetails.extension == "gba"
+        let isGBA = game.gameType == .gba
         let upscalingFilter = grape.useUpscalingFilter()
         let upscalingFactor = Int(grape.useUpscalingFactor())
         
@@ -385,7 +385,7 @@ extension GrapeEmulationController {
             commandBuffer.commit()
         }
         
-        let isGBA = game.fileDetails.extension == "gba"
+        let isGBA = game.gameType == .gba
         let upscalingFilter = grape.useUpscalingFilter()
         let upscalingFactor = Int(grape.useUpscalingFactor())
         

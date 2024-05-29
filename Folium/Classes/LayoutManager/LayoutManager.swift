@@ -16,9 +16,18 @@ class LayoutManager {
         configuration.interSectionSpacing = 10
         
         return .init(sectionProvider: { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) in
-            // let core = Core.cores[sectionIndex]
+            let core = Core.cores[sectionIndex]
+            var missingFiles: Bool = false
+            switch core {
+            case .cytrus:
+                missingFiles = LibraryManager.shared.cytrusManager.library.missingFiles.contains(where: { $0.fileDetails.importance == .required })
+            case .grape:
+                missingFiles = LibraryManager.shared.grapeManager.library.missingFiles.contains(where: { $0.fileDetails.importance == .required })
+            default:
+                break
+            }
             
-            let columns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? 2 : 4
+            let columns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? missingFiles ? 1 : 2 : missingFiles ? 2 : 4
             
             let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1 / columns),
                                                                 heightDimension: .estimated(300)))
@@ -27,15 +36,28 @@ class LayoutManager {
                                                            subitems: [item])
             group.interItemSpacing = .fixed(10)
             
-            let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
-            section.interGroupSpacing = 10
-            section.boundarySupplementaryItems = [
-                .init(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(44)),
-                      elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-            ]
-            
-            return section
+            if missingFiles {
+                var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+                configuration.backgroundColor = .secondarySystemBackground
+                
+                let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
+                section.boundarySupplementaryItems = [
+                    .init(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(44)),
+                          elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                ]
+                
+                return section
+            } else {
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
+                section.interGroupSpacing = 10
+                section.boundarySupplementaryItems = [
+                    .init(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(44)),
+                          elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                ]
+                
+                return section
+            }
         }, configuration: configuration)
     }
 }

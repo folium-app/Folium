@@ -9,7 +9,7 @@ import Foundation
 import GameController
 import UIKit
 
-class EmulationVirtualControllerController : UIViewController, VirtualControllerButtonDelegate {
+class EmulationVirtualControllerController : UIViewController, VirtualControllerButtonDelegate, VirtualControllerThumbstickDelegate {
     var virtualControllerView: VirtualControllerView!
     
     var core: Core
@@ -28,7 +28,7 @@ class EmulationVirtualControllerController : UIViewController, VirtualController
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        virtualControllerView = .init(core: core, virtualButtonDelegate: self)
+        virtualControllerView = .init(core, self, self)
         view.addSubview(virtualControllerView)
         view.addConstraints([
             virtualControllerView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -68,6 +68,9 @@ class EmulationVirtualControllerController : UIViewController, VirtualController
     }
     
     func touchDown(_ buttonType: VirtualControllerButton.ButtonType) {}
-    
     func touchUpInside(_ buttonType: VirtualControllerButton.ButtonType) {}
+    
+    func touchDown(_ thumbstickType: VirtualControllerThumbstick.ThumbstickType, _ location: (x: Float, y: Float)) {}
+    func touchDragInside(_ thumbstickType: VirtualControllerThumbstick.ThumbstickType, _ location: (x: Float, y: Float)) {}
+    func touchUpInside(_ thumbstickType: VirtualControllerThumbstick.ThumbstickType, _ location: (x: Float, y: Float)) {}
 }

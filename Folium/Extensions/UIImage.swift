@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 16/5/2024.
 //
 
+import CoreImage
 import Foundation
 import UIKit
 

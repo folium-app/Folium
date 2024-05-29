@@ -40,8 +40,10 @@ class EmulationScreensController : EmulationVirtualControllerController {
         ])
         
         switch game {
+        case _ as CytrusManager.Library.Game:
+            setupCytrusScreen()
         case let grapeGame as GrapeManager.Library.Game:
-            grapeGame.fileDetails.extension == "nds" ? setupGrapeScreens() : setupGrapeScreen()
+            grapeGame.gameType == .nds ? setupGrapeScreens() : setupGrapeScreen()
         case _ as KiwiManager.Library.Game:
             setupKiwiScreen()
         default:
@@ -67,6 +69,38 @@ class EmulationScreensController : EmulationVirtualControllerController {
             self.virtualControllerView.layout()
             self.view.layoutIfNeeded()
         }
+    }
+    
+    func setupCytrusScreen() {
+        primaryScreen = MTKView(frame: .zero, device: MTLCreateSystemDefaultDevice())
+        primaryScreen.translatesAutoresizingMaskIntoConstraints = false
+        primaryScreen.clipsToBounds = true
+        primaryScreen.layer.borderColor = ScreenConfiguration.borderColor
+        primaryScreen.layer.borderWidth = ScreenConfiguration.borderWidth
+        primaryScreen.layer.cornerCurve = .continuous
+        primaryScreen.layer.cornerRadius = ScreenConfiguration.cornerRadius
+        view.addSubview(primaryScreen)
+        
+        view.insertSubview(primaryScreen, belowSubview: virtualControllerView)
+        view.insertSubview(visualEffectView, belowSubview: primaryScreen)
+        
+        portraitConstraints = [
+            primaryScreen.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            primaryScreen.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            // primaryScreen.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+            primaryScreen.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            primaryScreen.heightAnchor.constraint(equalTo: primaryScreen.widthAnchor, multiplier: (3 / 5) + (3 / 4)),
+        ]
+        
+        landscapeConstraints = [
+            primaryScreen.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            primaryScreen.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+            primaryScreen.widthAnchor.constraint(equalTo: primaryScreen.heightAnchor, multiplier: 4 / 3),
+            primaryScreen.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
+        ]
+        
+        view.addConstraints(UIApplication.shared.statusBarOrientation == .portrait ||
+                            UIApplication.shared.statusBarOrientation == .portraitUpsideDown ? portraitConstraints : landscapeConstraints)
     }
     
     func setupGrapeScreen() {
@@ -157,8 +191,8 @@ class EmulationScreensController : EmulationVirtualControllerController {
         
         portraitConstraints = [
             primaryScreen.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            primaryScreen.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            primaryScreen.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            primaryScreen.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            primaryScreen.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             primaryScreen.heightAnchor.constraint(equalTo: primaryScreen.widthAnchor, multiplier: 3 / 4),
             
             primaryBlurredScreen.topAnchor.constraint(equalTo: view.topAnchor),
@@ -167,8 +201,8 @@ class EmulationScreensController : EmulationVirtualControllerController {
             primaryBlurredScreen.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             secondaryScreen.topAnchor.constraint(equalTo: primaryScreen.safeAreaLayoutGuide.bottomAnchor, constant: 10),
-            secondaryScreen.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            secondaryScreen.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            secondaryScreen.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            secondaryScreen.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             secondaryScreen.heightAnchor.constraint(equalTo: secondaryScreen.widthAnchor, multiplier: 3 / 4),
             
             secondaryBlurredScreen.topAnchor.constraint(equalTo: secondaryScreen.topAnchor, constant: -5),
@@ -254,7 +288,7 @@ class EmulationScreensController : EmulationVirtualControllerController {
         primaryScreen.layer.borderColor = UIColor.secondarySystemBackground.cgColor
         switch game {
         case let grapeGame as GrapeManager.Library.Game:
-            if grapeGame.fileDetails.extension == "nds" {
+            if grapeGame.gameType == .nds {
                 secondaryScreen.layer.borderColor = UIColor.secondarySystemBackground.cgColor
             }
         default:

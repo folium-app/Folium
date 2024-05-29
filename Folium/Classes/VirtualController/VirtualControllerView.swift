@@ -10,11 +10,12 @@ import UIKit
 
 class VirtualControllerView : UIView {
     var virtualButtonDelegate: VirtualControllerButtonDelegate
+    var virtualThumbstickDelegate: VirtualControllerThumbstickDelegate
     
     var dpadView, xybaView: UIView!
     fileprivate var dpadUpButton, dpadLeftButton, dpadDownButton, dpadRightButton: VirtualControllerButton!
     
-    fileprivate var leftThumbstickView, rightThumbstickView: UIView!
+    var leftThumbstickView, rightThumbstickView: VirtualControllerThumbstick!
     
     fileprivate var aButton, bButton, xButton, yButton: VirtualControllerButton!
     
@@ -24,46 +25,79 @@ class VirtualControllerView : UIView {
     
     fileprivate var portraitConstraints, landscapeConstraints: [[NSLayoutConstraint]]!
     
-    init(core: Core, virtualButtonDelegate: VirtualControllerButtonDelegate) {
+    init(_ core: Core, _ virtualButtonDelegate: VirtualControllerButtonDelegate, _ virtualThumbstickDelegate: VirtualControllerThumbstickDelegate) {
         self.virtualButtonDelegate = virtualButtonDelegate
+        self.virtualThumbstickDelegate = virtualThumbstickDelegate
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         
         portraitConstraints = []
         landscapeConstraints = []
+        
         addDpadView()
         addXYBAView()
         
+        addLThumbstickView()
+        addRThumbstickView()
+        
+        if UIApplication.shared.statusBarOrientation == .portrait {
+            addConstraints(portraitConstraints[0])
+            addConstraints(portraitConstraints[1])
+            addConstraints(portraitConstraints[2])
+            addConstraints(portraitConstraints[3])
+        } else {
+            addConstraints(landscapeConstraints[0])
+            addConstraints(landscapeConstraints[1])
+            addConstraints(landscapeConstraints[2])
+            addConstraints(landscapeConstraints[3])
+        }
+        
         switch core {
+        case .cytrus:
+            addDpadUp(false, buttonColor: .label)
+            addDpadLeft(false, buttonColor: .label)
+            addDpadDown(false, buttonColor: .label)
+            addDpadRight(false, buttonColor: .label)
+            
+            addA(false, buttonColor: .label)
+            addB(false, buttonColor: .label)
+            addX(false, buttonColor: .label)
+            addY(false, buttonColor: .label)
+            
+            addMinus(false, buttonColor: .label)
+            addPlus(false, buttonColor: .label)
+            
+            addL(false, buttonColor: .label)
+            addR(false, buttonColor: .label)
+            addZL(false, buttonColor: .label)
+            addZR(false, buttonColor: .label)
         case .grape:
-            addDpadUp(false, buttonColor: .systemGray)
-            addDpadLeft(false, buttonColor: .systemGray)
-            addDpadDown(false, buttonColor: .systemGray)
-            addDpadRight(false, buttonColor: .systemGray)
+            addDpadUp(false, buttonColor: .label)
+            addDpadLeft(false, buttonColor: .label)
+            addDpadDown(false, buttonColor: .label)
+            addDpadRight(false, buttonColor: .label)
             
-            addA(false, buttonColor: .systemGray)
-            addB(false, buttonColor: .systemGray)
-            addX(false, buttonColor: .systemGray)
-            addY(false, buttonColor: .systemGray)
+            addA(false, buttonColor: .label)
+            addB(false, buttonColor: .label)
+            addX(false, buttonColor: .label)
+            addY(false, buttonColor: .label)
             
-            addMinus(false, buttonColor: .systemGray)
-            addPlus(false, buttonColor: .systemGray)
+            addMinus(false, buttonColor: .label)
+            addPlus(false, buttonColor: .label)
             
-            addL(false, buttonColor: .systemGray)
-            addR(false, buttonColor: .systemGray)
+            addL(false, buttonColor: .label)
+            addR(false, buttonColor: .label)
         case .kiwi:
-            addDpadUp(false, buttonColor: .systemGray)
-            addDpadLeft(false, buttonColor: .systemGray)
-            addDpadDown(false, buttonColor: .systemGray)
-            addDpadRight(false, buttonColor: .systemGray)
+            addDpadUp(false, buttonColor: .label)
+            addDpadLeft(false, buttonColor: .label)
+            addDpadDown(false, buttonColor: .label)
+            addDpadRight(false, buttonColor: .label)
             
-            addA(false, buttonColor: .systemGray)
-            addB(false, buttonColor: .systemGray)
+            addA(false, buttonColor: .systemRed)
+            addB(false, buttonColor: .systemRed)
             
-            addMinus(false, buttonColor: .systemGray)
-            addPlus(false, buttonColor: .systemGray)
-        default:
-            break
+            addMinus(false, buttonColor: .label)
+            addPlus(false, buttonColor: .label)
         }
     }
     
@@ -79,15 +113,23 @@ class VirtualControllerView : UIView {
         if UIApplication.shared.statusBarOrientation == .portrait {
             addConstraints(portraitConstraints[0])
             addConstraints(portraitConstraints[1])
+            addConstraints(portraitConstraints[2])
+            addConstraints(portraitConstraints[3])
             
             removeConstraints(landscapeConstraints[0])
             removeConstraints(landscapeConstraints[1])
+            removeConstraints(landscapeConstraints[2])
+            removeConstraints(landscapeConstraints[3])
         } else {
             removeConstraints(portraitConstraints[0])
             removeConstraints(portraitConstraints[1])
+            removeConstraints(portraitConstraints[2])
+            removeConstraints(portraitConstraints[3])
             
             addConstraints(landscapeConstraints[0])
             addConstraints(landscapeConstraints[1])
+            addConstraints(landscapeConstraints[2])
+            addConstraints(landscapeConstraints[3])
         }
         
         UIView.animate(withDuration: 0.2) {
@@ -98,13 +140,12 @@ class VirtualControllerView : UIView {
     fileprivate func addDpadView() {
         dpadView = .init()
         dpadView.translatesAutoresizingMaskIntoConstraints = false
-        dpadView.isUserInteractionEnabled = true
         addSubview(dpadView)
         
         let portraitWidthConstraint = if UIDevice.current.userInterfaceIdiom == .phone {
-            dpadView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -40)
+            dpadView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -60)
         } else {
-            dpadView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1 / 5, constant: -40)
+            dpadView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1 / 5, constant: -60)
         }
         
         portraitConstraints.append([
@@ -115,9 +156,9 @@ class VirtualControllerView : UIView {
         ])
         
         let landscapeHeightConstraint = if UIDevice.current.userInterfaceIdiom == .phone {
-            dpadView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 30)
+            dpadView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 60)
         } else {
-            dpadView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 5, constant: -40)
+            dpadView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 5, constant: -60)
         }
         
         landscapeConstraints.append([
@@ -126,25 +167,17 @@ class VirtualControllerView : UIView {
             dpadView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20),
             dpadView.widthAnchor.constraint(equalTo: dpadView.heightAnchor)
         ])
-        
-        
-        if UIApplication.shared.statusBarOrientation == .portrait {
-            addConstraints(portraitConstraints[0])
-        } else {
-            addConstraints(landscapeConstraints[0])
-        }
     }
     
     fileprivate func addXYBAView() {
         xybaView = .init()
         xybaView.translatesAutoresizingMaskIntoConstraints = false
-        xybaView.isUserInteractionEnabled = true
         addSubview(xybaView)
         
         let portraitWidthConstraint = if UIDevice.current.userInterfaceIdiom == .phone {
-            xybaView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 40)
+            xybaView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 60)
         } else {
-            xybaView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1 / 5, constant: -40)
+            xybaView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1 / 5, constant: -60)
         }
         
         portraitConstraints.append([
@@ -155,9 +188,9 @@ class VirtualControllerView : UIView {
         ])
         
         let landscapeHeightConstraint = if UIDevice.current.userInterfaceIdiom == .phone {
-            xybaView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 30)
+            xybaView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 60)
         } else {
-            xybaView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 5, constant: -40)
+            xybaView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 5, constant: -60)
         }
         
         landscapeConstraints.append([
@@ -166,12 +199,48 @@ class VirtualControllerView : UIView {
             xybaView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
             xybaView.widthAnchor.constraint(equalTo: xybaView.heightAnchor)
         ])
+    }
+    
+    fileprivate func addLThumbstickView() {
+        leftThumbstickView = .init(.thumbstickLeft, virtualThumbstickDelegate)
+        leftThumbstickView.translatesAutoresizingMaskIntoConstraints = false
+        leftThumbstickView.isUserInteractionEnabled = true
+        dpadView.addSubview(leftThumbstickView)
         
-        if UIApplication.shared.statusBarOrientation == .portrait {
-            addConstraints(portraitConstraints[1])
-        } else {
-            addConstraints(landscapeConstraints[1])
-        }
+        portraitConstraints.append([
+            leftThumbstickView.topAnchor.constraint(equalTo: dpadView.topAnchor),
+            leftThumbstickView.leadingAnchor.constraint(equalTo: dpadView.leadingAnchor),
+            leftThumbstickView.bottomAnchor.constraint(equalTo: dpadView.bottomAnchor),
+            leftThumbstickView.trailingAnchor.constraint(equalTo: dpadView.trailingAnchor)
+        ])
+        
+        landscapeConstraints.append([
+            leftThumbstickView.topAnchor.constraint(equalTo: dpadView.topAnchor),
+            leftThumbstickView.leadingAnchor.constraint(equalTo: dpadView.leadingAnchor),
+            leftThumbstickView.bottomAnchor.constraint(equalTo: dpadView.bottomAnchor),
+            leftThumbstickView.trailingAnchor.constraint(equalTo: dpadView.trailingAnchor)
+        ])
+    }
+    
+    fileprivate func addRThumbstickView() {
+        rightThumbstickView = .init(.thumbstickRight, virtualThumbstickDelegate)
+        rightThumbstickView.translatesAutoresizingMaskIntoConstraints = false
+        rightThumbstickView.isUserInteractionEnabled = true
+        xybaView.addSubview(rightThumbstickView)
+        
+        portraitConstraints.append([
+            rightThumbstickView.topAnchor.constraint(equalTo: xybaView.topAnchor),
+            rightThumbstickView.leadingAnchor.constraint(equalTo: xybaView.leadingAnchor),
+            rightThumbstickView.bottomAnchor.constraint(equalTo: xybaView.bottomAnchor),
+            rightThumbstickView.trailingAnchor.constraint(equalTo: xybaView.trailingAnchor)
+        ])
+        
+        landscapeConstraints.append([
+            rightThumbstickView.topAnchor.constraint(equalTo: xybaView.topAnchor),
+            rightThumbstickView.leadingAnchor.constraint(equalTo: xybaView.leadingAnchor),
+            rightThumbstickView.bottomAnchor.constraint(equalTo: xybaView.bottomAnchor),
+            rightThumbstickView.trailingAnchor.constraint(equalTo: xybaView.trailingAnchor)
+        ])
     }
     
     fileprivate func addDpadUp(_ shouldHide: Bool, buttonColor: UIColor) {
@@ -277,8 +346,8 @@ class VirtualControllerView : UIView {
         addConstraints([
             minusButton.bottomAnchor.constraint(equalTo: dpadView.bottomAnchor),
             minusButton.trailingAnchor.constraint(equalTo: dpadView.trailingAnchor),
-            minusButton.widthAnchor.constraint(equalTo: dpadView.widthAnchor, multiplier: 1 / 5),
-            minusButton.heightAnchor.constraint(equalTo: dpadView.heightAnchor, multiplier: 1 / 5)
+            minusButton.widthAnchor.constraint(equalTo: dpadView.widthAnchor, multiplier: 1 / 4),
+            minusButton.heightAnchor.constraint(equalTo: dpadView.heightAnchor, multiplier: 1 / 4)
         ])
     }
     
@@ -289,8 +358,8 @@ class VirtualControllerView : UIView {
         addConstraints([
             plusButton.leadingAnchor.constraint(equalTo: xybaView.leadingAnchor),
             plusButton.bottomAnchor.constraint(equalTo: xybaView.bottomAnchor),
-            plusButton.widthAnchor.constraint(equalTo: xybaView.widthAnchor, multiplier: 1 / 5),
-            plusButton.heightAnchor.constraint(equalTo: xybaView.heightAnchor, multiplier: 1 / 5)
+            plusButton.widthAnchor.constraint(equalTo: xybaView.widthAnchor, multiplier: 1 / 4),
+            plusButton.heightAnchor.constraint(equalTo: xybaView.heightAnchor, multiplier: 1 / 4)
         ])
     }
     
@@ -302,7 +371,7 @@ class VirtualControllerView : UIView {
             lButton.leadingAnchor.constraint(equalTo: dpadView.leadingAnchor),
             lButton.bottomAnchor.constraint(equalTo: dpadView.topAnchor, constant: -20),
             lButton.trailingAnchor.constraint(equalTo: dpadView.centerXAnchor, constant: -10),
-            lButton.heightAnchor.constraint(equalTo: lButton.widthAnchor, multiplier: 1 / 2)
+            lButton.heightAnchor.constraint(equalTo: dpadView.heightAnchor, multiplier: 1 / 3)
         ])
     }
     
@@ -314,7 +383,7 @@ class VirtualControllerView : UIView {
             zlButton.leadingAnchor.constraint(equalTo: dpadView.centerXAnchor, constant: 10),
             zlButton.bottomAnchor.constraint(equalTo: dpadView.topAnchor, constant: -20),
             zlButton.trailingAnchor.constraint(equalTo: dpadView.trailingAnchor),
-            zlButton.heightAnchor.constraint(equalTo: zlButton.widthAnchor, multiplier: 1 / 2)
+            zlButton.heightAnchor.constraint(equalTo: dpadView.heightAnchor, multiplier: 1 / 3)
         ])
     }
     
@@ -326,7 +395,7 @@ class VirtualControllerView : UIView {
             rButton.leadingAnchor.constraint(equalTo: xybaView.centerXAnchor, constant: 10),
             rButton.bottomAnchor.constraint(equalTo: xybaView.topAnchor, constant: -20),
             rButton.trailingAnchor.constraint(equalTo: xybaView.trailingAnchor),
-            rButton.heightAnchor.constraint(equalTo: rButton.widthAnchor, multiplier: 1 / 2)
+            rButton.heightAnchor.constraint(equalTo: xybaView.heightAnchor, multiplier: 1 / 3)
         ])
     }
     
@@ -338,7 +407,7 @@ class VirtualControllerView : UIView {
             zrButton.leadingAnchor.constraint(equalTo: xybaView.leadingAnchor),
             zrButton.bottomAnchor.constraint(equalTo: xybaView.topAnchor, constant: -20),
             zrButton.trailingAnchor.constraint(equalTo: xybaView.centerXAnchor, constant: -10),
-            zrButton.heightAnchor.constraint(equalTo: zrButton.widthAnchor, multiplier: 1 / 2)
+            zrButton.heightAnchor.constraint(equalTo: xybaView.heightAnchor, multiplier: 1 / 3)
         ])
     }
 }
