@@ -9,5 +9,6 @@ import Foundation
 
 protocol VirtualControllerButtonDelegate {
     func touchDown(_ buttonType: VirtualControllerButton.ButtonType)
+    func touchDragInside(_ buttonType: VirtualControllerButton)
     func touchUpInside(_ buttonType: VirtualControllerButton.ButtonType)
 }
