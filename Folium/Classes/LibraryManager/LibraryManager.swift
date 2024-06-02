@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 15/5/2024.
 //
 
+import Cytrus
 import Foundation
 import Grape
 
@@ -79,7 +80,9 @@ class LibraryManager {
         }
         
         cytrusManager.library.games.removeAll()
-        let cytrusCrawler = try crawler(.cytrus)
+        var cytrusCrawler = try crawler(.cytrus)
+        cytrusCrawler.urls.append(contentsOf: Cytrus.shared.installed())
+        cytrusCrawler.urls.append(contentsOf: Cytrus.shared.system())
         games(cytrusCrawler.core, cytrusCrawler.urls)
         
         grapeManager.library.games.removeAll()

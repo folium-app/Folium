@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 16/5/2024.
 //
 
+import Cytrus
 import Foundation
 import Grape
 import UniformTypeIdentifiers
@@ -24,10 +25,30 @@ class LibraryController : UICollectionViewController {
             let documentController = UIDocumentPickerViewController(forOpeningContentTypes: [
                 .init("com.antique.Folium-iOS.gba")!,
                 .init("com.antique.Folium-iOS.nds")!,
-                .init("com.antique.Folium-iOS.nes")!
+                .init("com.antique.Folium-iOS.nes")!,
+                .init("com.antique.Folium-iOS.3ds")!,
+                .init("com.antique.Folium-iOS.app")!,
+                .init("com.antique.Folium-iOS.cia")!,
+                .init("com.antique.Folium-iOS.cci")!,
+                .init("com.antique.Folium-iOS.cxi")!,
+                .init("com.rileytestut.delta.game.gba")!,
+                .init("com.rileytestut.delta.game.ds")!
             ], asCopy: true)
+            documentController.allowsMultipleSelection = true
             documentController.delegate = self
-            self.present(documentController, animated: true)
+            
+            if UserDefaults.standard.bool(forKey: "hasAcknowledgedImportGames") {
+                self.present(documentController, animated: true)
+            } else {
+                let alertController = UIAlertController(title: "Import Games", message: "Select .gba, .nds and .nes games to be imported into your library",
+                                                        preferredStyle: .alert)
+                alertController.addAction(.init(title: "Cancel", style: .cancel))
+                alertController.addAction(.init(title: "Import", style: .default, handler: { _ in
+                    UserDefaults.standard.setValue(true, forKey: "hasAcknowledgedImportGames")
+                    self.present(documentController, animated: true)
+                }))
+                self.present(alertController, animated: true)
+            }
         })), animated: true)
         title = "Library"
         collectionView.backgroundColor = .secondarySystemBackground
@@ -257,6 +278,21 @@ extension LibraryController : UIDocumentPickerDelegate {
                     
                     try await populateGames()
                 }
+            case "3ds", "app", "cci", "cxi":
+                Task {
+                    try FileManager.default.copyItem(at: url, to: documentsDirectory
+                        .appendingPathComponent("Cytrus", conformingTo: .folder)
+                        .appendingPathComponent("roms", conformingTo: .folder)
+                        .appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL))
+                    
+                    try await populateGames()
+                }
+            case "cia":
+                Task {
+                    _ = Cytrus.shared.import(game: url)
+                    try await populateGames()
+                }
+                break
             default:
                 guard let importURL else {
                     return

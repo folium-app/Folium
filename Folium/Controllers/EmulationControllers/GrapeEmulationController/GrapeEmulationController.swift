@@ -74,14 +74,7 @@ class GrapeEmulationController : EmulationScreensController {
                 return
             }
             
-            switch state {
-            case 0:
-                self.isRunning = false
-            case 1:
-                self.isRunning = true
-            default:
-                break
-            }
+            self.isRunning = state == 1
         }
         
         configureMetal()

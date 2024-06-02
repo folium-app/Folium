@@ -43,5 +43,5 @@ enum Core : String, Codable, Hashable {
         }
     }
     
-    static let cores: [Core] = [.cytrus, .grape, .kiwi]
+    static let cores: [Core] = [.cytrus, .grape]
 }

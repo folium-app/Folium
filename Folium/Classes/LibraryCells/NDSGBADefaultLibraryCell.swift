@@ -18,7 +18,7 @@ class NDSGBADefaultLibraryCell : UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .secondarySystemBackground
+        backgroundColor = .tertiarySystemBackground
         clipsToBounds = true
         layer.cornerCurve = .continuous
         layer.cornerRadius = 15

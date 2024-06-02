@@ -20,7 +20,7 @@ class N3DSDefaultLibraryCell : UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .secondarySystemBackground
+        backgroundColor = .tertiarySystemBackground
         clipsToBounds = true
         layer.cornerCurve = .continuous
         layer.cornerRadius = 15
@@ -96,7 +96,8 @@ class N3DSDefaultLibraryCell : UICollectionViewCell {
         self.game = game
         self.viewController = viewController
         
-        optionsButton.menu = menu()
+        print(game)
+        optionsButton.menu = menu(game.fileDetails.extension == "app" || game.fileDetails.extension == "cia")
         
         let information = Cytrus.shared.information(game.fileDetails.url)
         if let image = information.iconData.decodeRGB565(width: 48, height: 48) {
@@ -104,11 +105,11 @@ class N3DSDefaultLibraryCell : UICollectionViewCell {
             gradientView.set((.clear, image.averageColor ?? .tintColor))
         }
         
-        headlineLabel.text = game.core.console.shortened
+        headlineLabel.text = game.fileDetails.extension.uppercased()
         titleLabel.text = information.title
     }
     
-    fileprivate func menu() -> UIMenu {
+    fileprivate func menu(_ isCIA: Bool = false) -> UIMenu {
         .init(children: [
             /*UIMenu(title: "Boot Options", image: .init(systemName: "power"), children: [
                 UIAction(title: "Fast Boot", subtitle: "Skip the Home Menu", handler: { _ in
@@ -118,7 +119,7 @@ class N3DSDefaultLibraryCell : UICollectionViewCell {
                     // TODO:
                 }),
             ]),*/
-            UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: [.destructive], handler: { _ in
+            UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: isCIA ? [.destructive, .disabled] : [.destructive], handler: { _ in
                 guard let viewController = self.viewController as? LibraryController else {
                     return
                 }

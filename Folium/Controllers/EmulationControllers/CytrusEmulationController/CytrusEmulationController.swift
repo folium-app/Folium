@@ -53,6 +53,7 @@ class KeyboardController : UIViewController, UITextFieldDelegate {
                     "buttonPressed" : 0,
                     "keyboardText" : textField.text ?? ""
                 ])
+                textField.text = nil
                 self.dismiss(animated: true)
             })))
         case .dual:
@@ -75,6 +76,7 @@ class KeyboardController : UIViewController, UITextFieldDelegate {
                     "buttonPressed" : 0,
                     "keyboardText" : textField.text ?? ""
                 ])
+                textField.text = nil
                 self.dismiss(animated: true)
             }))
             cancelButton.tintColor = .systemRed
@@ -85,6 +87,7 @@ class KeyboardController : UIViewController, UITextFieldDelegate {
                     "buttonPressed" : 0,
                     "keyboardText" : textField.text ?? ""
                 ])
+                textField.text = nil
                 self.dismiss(animated: true)
             })))
         case .triple:
