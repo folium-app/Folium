@@ -114,17 +114,11 @@ class KeyboardController : UIViewController, UITextFieldDelegate {
 class CytrusEmulationController : EmulationScreensController {
     fileprivate let cytrus = Cytrus.shared
     
-    fileprivate var thread: Thread!
     fileprivate var isRunning: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        
-        thread = .init(block: step)
-        thread.name = "Cytrus"
-        thread.qualityOfService = .userInteractive
-        thread.threadPriority = 1.0
         
         NotificationCenter.default.addObserver(forName: .init("sceneDidChange"), object: nil, queue: .main) { notification in
             guard let userInfo = notification.userInfo, let state = userInfo["state"] as? Int else {
@@ -157,22 +151,24 @@ class CytrusEmulationController : EmulationScreensController {
         super.viewDidLayoutSubviews()
         if !isRunning {
             isRunning = true
-            guard let game = game as? CytrusManager.Library.Game, let primaryScreen = primaryScreen as? MTKView/*, let secondaryScreen = secondaryScreen as? MTKView*/ else {
+            guard let game = game as? CytrusManager.Library.Game, let primaryScreen = primaryScreen as? MetalView/*, let secondaryScreen = secondaryScreen as? MTKView*/ else {
                 return
             }
             
-            cytrus.configure(primaryScreen.layer as! CAMetalLayer, primaryScreen.frame.size/*,
+            print(primaryScreen.bounds, primaryScreen.frame)
+            cytrus.configure(primaryScreen.metalLayer.layer as! CAMetalLayer, primaryScreen.metalLayer.frame.size/*,
                              secondaryLayer: secondaryScreen.layer as! CAMetalLayer, secondarySize: secondaryScreen.frame.size*/)
             cytrus.insert(game: game.fileDetails.url)
             
-            thread.start()
+            Thread.setThreadPriority(1.0)
+            Thread.detachNewThread(step)
         }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate { _ in
-            self.cytrus.orientationChanged(UIApplication.shared.statusBarOrientation, self.primaryScreen.frame.size)
+            self.cytrus.orientationChanged(UIApplication.shared.statusBarOrientation, (self.view as! MetalView).metalLayer.frame.size)
             // self.cytrus.orientationChanged(orientation: UIApplication.shared.statusBarOrientation, with: self.secondaryScreen.frame.size)
         }
     }
@@ -191,18 +187,11 @@ class CytrusEmulationController : EmulationScreensController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        guard let touch = touches.first else {
+        guard let touch = touches.first, let metalView = touch.view as? MetalLayer else {
             return
         }
         
-        switch touch.view {
-        case primaryScreen:
-        // case secondaryScreen:
-            cytrus.touchBegan(touch.location(in: primaryScreen))
-            // cytrus.touchBegan(at: touch.location(in: secondaryScreen))
-        default:
-            break
-        }
+        cytrus.touchBegan(touch.location(in: metalView))
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -211,29 +200,16 @@ class CytrusEmulationController : EmulationScreensController {
             return
         }
         
-        switch touch.view {
-        case primaryScreen:
-        // case secondaryScreen:
-            cytrus.touchEnded()
-        default:
-            break
-        }
+        cytrus.touchEnded()
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
-        guard let touch = touches.first else {
+        guard let touch = touches.first, let metalView = touch.view as? MetalLayer else {
             return
         }
         
-        switch touch.view {
-        case primaryScreen:
-        // case secondaryScreen:
-            cytrus.touchMoved(touch.location(in: primaryScreen))
-            // cytrus.touchMoved(at: touch.location(in: secondaryScreen))
-        default:
-            break
-        }
+        cytrus.touchMoved(touch.location(in: metalView))
     }
     
     // MARK: Physical Controller Delegates

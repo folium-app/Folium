@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 11/5/2024.
 //
 
+import Cytrus
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -15,6 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         // print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path)
+        CytrusSettings.Settings.shared.setDefaultSettingsIfNeeded()
+        
         guard let windowScene = (scene as? UIWindowScene) else {
             return
         }

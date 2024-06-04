@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class VirtualControllerButton : UIView {
-    enum ButtonType : String {
+    enum ButtonType : String, Codable {
         case a = "a", b = "b", x = "x", y = "y"
         case minus = "minus", plus = "plus"
         case dpadUp = "arrowtriangle.up", dpadLeft = "arrowtriangle.left", dpadDown = "arrowtriangle.down",
@@ -100,6 +100,7 @@ class VirtualControllerButton : UIView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
+        
         virtualButtonDelegate.touchUpInside(buttonType)
         if buttonType.systemName == "circle"/* || [ButtonType.l, ButtonType.zl, ButtonType.r, ButtonType.zr].contains(buttonType)*/ {
             guard let image = UIImage(systemName: buttonType.systemName)?

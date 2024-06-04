@@ -100,7 +100,7 @@ class NDSDefaultLibraryCell : UICollectionViewCell {
         
         let cgImage = CGImage.cgImage(Grape.shared.icon(game.fileDetails.url), 32 * 2, 32 * 2)
         if let cgImage {
-            imageView.image = .init(cgImage: cgImage).blurred(radius: 3)
+            imageView.image = .init(cgImage: cgImage).blurred(radius: 2)
             if let uiImage = imageView.image {
                 gradientView.set((.clear, uiImage.averageColor ?? .tintColor))
             }

@@ -48,7 +48,7 @@ class EmulationVirtualControllerController : UIViewController, VirtualController
     }
     
     func controllerDidConnect(_ notification: Notification) {
-        guard let controller = notification.object as? GCController, controller.vendorName == "Gamepad" else {
+        guard let controller = notification.object as? GCController else {
             return
         }
         
@@ -58,7 +58,7 @@ class EmulationVirtualControllerController : UIViewController, VirtualController
     }
     
     func controllerDidDisconnect(_ notification: Notification) {
-        guard let controller = notification.object as? GCController, controller.vendorName == "Gamepad" else {
+        guard let controller = notification.object as? GCController else {
             return
         }
         

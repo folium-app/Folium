@@ -296,8 +296,7 @@ extension GrapeEmulationController {
     }
     
     override func draw(in view: MTKView) {
-        guard let game = game as? GrapeManager.Library.Game, let device, let primaryScreen = primaryScreen as? MTKView,
-        let primaryBlurredScreen = primaryBlurredScreen as? MTKView else {
+        guard let game = game as? GrapeManager.Library.Game, let device, let primaryScreen = primaryScreen as? MTKView else {
             return
         }
         
@@ -393,17 +392,15 @@ extension GrapeEmulationController {
         let videoBuffer = grape.videoBuffer(isGBA: isGBA)
         
         draw(primaryTexture, primaryScreen, videoBuffer, width, height)
-        draw(primaryTexture, primaryBlurredScreen, videoBuffer, width, height)
         
         if !isGBA {
-            guard let secondaryScreen = secondaryScreen as? MTKView, let secondaryBlurredScreen = secondaryBlurredScreen as? MTKView else {
+            guard let secondaryScreen = secondaryScreen as? MTKView else {
                 return
             }
             
             let videoBuffer = videoBuffer.advanced(by: width * height)
             
             draw(secondaryTexture, secondaryScreen, videoBuffer, width, height)
-            draw(secondaryTexture, secondaryBlurredScreen, videoBuffer, width, height)
         }
     }
 }

@@ -188,8 +188,7 @@ class KiwiEmulationController : EmulationScreensController {
 
 extension KiwiEmulationController {
     override func draw(in view: MTKView) {
-        guard let device, let primaryScreen = primaryScreen as? MTKView,
-        let primaryBlurredScreen = primaryBlurredScreen as? MTKView else {
+        guard let device, let primaryScreen = primaryScreen as? MTKView else {
             return
         }
         
@@ -288,6 +287,5 @@ extension KiwiEmulationController {
         let buffer = kiwi.videoBuffer()
         
         draw(primaryScreen, buffer, width, height)
-        draw(primaryBlurredScreen, buffer, width, height)
     }
 }

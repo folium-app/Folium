@@ -40,7 +40,7 @@ class LibraryController : UICollectionViewController {
             if UserDefaults.standard.bool(forKey: "hasAcknowledgedImportGames") {
                 self.present(documentController, animated: true)
             } else {
-                let alertController = UIAlertController(title: "Import Games", message: "Select .gba, .nds and .nes games to be imported into your library",
+                let alertController = UIAlertController(title: "Import Games", message: "Select .3ds, .app, .cia, .cci, .cxi, .gba and .nds games to be imported into your library",
                                                         preferredStyle: .alert)
                 alertController.addAction(.init(title: "Cancel", style: .cancel))
                 alertController.addAction(.init(title: "Import", style: .default, handler: { _ in
@@ -74,22 +74,28 @@ class LibraryController : UICollectionViewController {
                 return
             }
             
-            var configuration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
-            configuration.text = sectionIdentifier.rawValue
-            configuration.secondaryText = sectionIdentifier.console.rawValue
-            supplementaryView.contentConfiguration = configuration
+            var contentConfiguration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
+            contentConfiguration.text = sectionIdentifier.rawValue
+            contentConfiguration.secondaryText = sectionIdentifier.console.rawValue
+            supplementaryView.contentConfiguration = contentConfiguration
+            
+            var buttonConfiguration = UIButton.Configuration.filled()
+            buttonConfiguration.buttonSize = .mini
+            buttonConfiguration.cornerStyle = .capsule
+            buttonConfiguration.image = .init(systemName: "ellipsis")?
+                .applyingSymbolConfiguration(.init(weight: .bold))
             
             switch sectionIdentifier {
             case .cytrus:
-                supplementaryView.accessories = []
-            case .grape:
-                var configuration = UIButton.Configuration.filled()
-                configuration.buttonSize = .mini
-                configuration.cornerStyle = .capsule
-                configuration.image = .init(systemName: "ellipsis")?
-                    .applyingSymbolConfiguration(.init(weight: .bold))
+                let button = UIButton(configuration: buttonConfiguration)
+                button.menu = CytrusManager.shared.menu(button, self)
+                button.showsMenuAsPrimaryAction = true
                 
-                let button = UIButton(configuration: configuration)
+                supplementaryView.accessories = [
+                    .customView(configuration: .init(customView: button, placement: .trailing(), reservedLayoutWidth: .actual))
+                ]
+            case .grape:
+                let button = UIButton(configuration: buttonConfiguration)
                 button.menu = GrapeManager.shared.menu(button)
                 button.showsMenuAsPrimaryAction = true
                 
@@ -97,13 +103,7 @@ class LibraryController : UICollectionViewController {
                     .customView(configuration: .init(customView: button, placement: .trailing(), reservedLayoutWidth: .actual))
                 ]
             case .kiwi:
-                var configuration = UIButton.Configuration.filled()
-                configuration.buttonSize = .mini
-                configuration.cornerStyle = .capsule
-                configuration.image = .init(systemName: "ellipsis")?
-                    .applyingSymbolConfiguration(.init(weight: .bold))
-                
-                let button = UIButton(configuration: configuration)
+                let button = UIButton(configuration: buttonConfiguration)
                 button.menu = KiwiManager.shared.menu(button)
                 button.showsMenuAsPrimaryAction = true
                 
@@ -136,7 +136,7 @@ class LibraryController : UICollectionViewController {
             
             var configuration = UIListContentConfiguration.valueCell()
             configuration.text = itemIdentifier.fileDetails.nameWithoutExtension
-            configuration.secondaryText = itemIdentifier.fileDetails.extension
+            configuration.secondaryText = itemIdentifier.fileDetails.`extension`
             configuration.secondaryTextProperties.color = itemIdentifier.fileDetails.importance.color
             cell.contentConfiguration = configuration
         }
@@ -267,7 +267,8 @@ extension LibraryController : UIDocumentPickerDelegate {
                         .appendingPathComponent("roms", conformingTo: .folder)
                         .appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL))
                     
-                    try await populateGames()
+                    LibraryManager.shared.games(.grape, urls)
+                    // try await populateGames()
                 }
             case "nes":
                 Task {

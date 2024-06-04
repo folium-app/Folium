@@ -109,7 +109,7 @@ class VirtualControllerView : UIView {
         super.hitTest(point, with: event) == self ? nil : super.hitTest(point, with: event)
     }
     
-    func layout() {
+    func toggleConstraints() {
         if UIApplication.shared.statusBarOrientation == .portrait {
             addConstraints(portraitConstraints[0])
             addConstraints(portraitConstraints[1])
