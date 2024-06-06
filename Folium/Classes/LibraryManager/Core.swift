@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum Core : String, Codable, Hashable {
     enum Console : String, Codable, Hashable {
@@ -40,6 +41,36 @@ enum Core : String, Codable, Hashable {
             .nds
         case .kiwi:
             .nes
+        }
+    }
+    
+    var buttonColors: [VirtualControllerButton.ButtonType : (UIColor, UIColor)] {
+        switch self {
+        case .cytrus:
+            [
+                .dpadUp : (.black, .white),
+                .dpadDown : (.black, .white),
+                .dpadLeft : (.black, .white),
+                .dpadRight : (.black, .white),
+                .minus : (.black, .white),
+                .plus : (.black, .white),
+                .a : (.systemRed, .white),
+                .b : (.systemYellow, .white),
+                .x : (.systemBlue, .white),
+                .y : (.systemGreen, .white),
+                .l : (.black, .white),
+                .r : (.black, .white),
+                .zl : (.black, .white),
+                .zr : (.black, .white),
+            ]
+        case .grape:
+            [
+                :
+            ]
+        case .kiwi:
+            [
+                :
+            ]
         }
     }
     

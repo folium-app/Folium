@@ -42,11 +42,11 @@ class VirtualControllerButton : UIView {
     fileprivate var colors: UIImage.SymbolConfiguration
     fileprivate var pointSize: CGFloat
     
-    let buttonColor: UIColor
+    let buttonColors: (UIColor, UIColor)
     let buttonType: ButtonType
     var virtualButtonDelegate: VirtualControllerButtonDelegate
-    init(buttonColor: UIColor, buttonType: ButtonType, virtualButtonDelegate: VirtualControllerButtonDelegate, shouldHide: Bool) {
-        self.buttonColor = buttonColor
+    init(buttonColors: (UIColor, UIColor), buttonType: ButtonType, virtualButtonDelegate: VirtualControllerButtonDelegate, shouldHide: Bool) {
+        self.buttonColors = buttonColors
         self.buttonType = buttonType
         self.virtualButtonDelegate = virtualButtonDelegate
         self.colors = .init(paletteColors: [])
@@ -55,9 +55,9 @@ class VirtualControllerButton : UIView {
         translatesAutoresizingMaskIntoConstraints = false
         
         colors = if buttonType.systemName == "circle"/* || [ButtonType.l, ButtonType.zl, ButtonType.r, ButtonType.zr].contains(buttonType)*/ {
-            .init(paletteColors: [buttonColor])
+            .init(paletteColors: [buttonColors.0, buttonColors.1])
         } else {
-            .init(paletteColors: [.systemBackground, buttonColor])
+            .init(paletteColors: [buttonColors.0, buttonColors.1])
         }
         
         imageView = .init(image: .init(systemName: buttonType.systemName)?

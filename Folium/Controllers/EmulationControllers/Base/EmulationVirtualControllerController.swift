@@ -12,6 +12,9 @@ import UIKit
 class EmulationVirtualControllerController : UIViewController, VirtualControllerButtonDelegate, VirtualControllerThumbstickDelegate {
     var virtualControllerView: VirtualControllerView!
     
+    fileprivate var lastTappedDate: Date = .now
+    fileprivate var isDraggingThumbstick: Bool = false
+    
     var core: Core
     var game: AnyHashable? = nil
     init(_ core: Core, _ game: AnyHashable? = nil) {
@@ -36,6 +39,13 @@ class EmulationVirtualControllerController : UIViewController, VirtualController
             virtualControllerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             virtualControllerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+        
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            let seconds = Date.now.timeIntervalSince(self.lastTappedDate)
+            if !self.isDraggingThumbstick {
+                seconds > 5 ? self.virtualControllerView.fade() : self.virtualControllerView.unfade()
+            }
+        }
         
         NotificationCenter.default.addObserver(forName: .init(NSNotification.Name.GCControllerDidConnect), object: nil, queue: .main, using: controllerDidConnect)
         NotificationCenter.default.addObserver(forName: .init(NSNotification.Name.GCControllerDidDisconnect), object: nil, queue: .main, using: controllerDidDisconnect)
@@ -67,10 +77,25 @@ class EmulationVirtualControllerController : UIViewController, VirtualController
         }
     }
     
-    func touchDown(_ buttonType: VirtualControllerButton.ButtonType) {}
-    func touchUpInside(_ buttonType: VirtualControllerButton.ButtonType) {}
+    func touchDown(_ buttonType: VirtualControllerButton.ButtonType) {
+        lastTappedDate = .now
+        virtualControllerView.unfade()
+    }
     
-    func touchDown(_ thumbstickType: VirtualControllerThumbstick.ThumbstickType, _ location: (x: Float, y: Float)) {}
+    func touchUpInside(_ buttonType: VirtualControllerButton.ButtonType) {
+        lastTappedDate = .now
+    }
+    
+    func touchDown(_ thumbstickType: VirtualControllerThumbstick.ThumbstickType, _ location: (x: Float, y: Float)) {
+        isDraggingThumbstick = true
+        virtualControllerView.fade()
+    }
+    
     func touchDragInside(_ thumbstickType: VirtualControllerThumbstick.ThumbstickType, _ location: (x: Float, y: Float)) {}
-    func touchUpInside(_ thumbstickType: VirtualControllerThumbstick.ThumbstickType, _ location: (x: Float, y: Float)) {}
+    
+    func touchUpInside(_ thumbstickType: VirtualControllerThumbstick.ThumbstickType, _ location: (x: Float, y: Float)) {
+        isDraggingThumbstick = false
+        lastTappedDate = .now
+        virtualControllerView.unfade()
+    }
 }

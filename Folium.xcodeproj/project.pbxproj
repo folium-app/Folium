@@ -471,6 +471,7 @@
 		E6DBF7F12C0CF0C400CD0E90 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6DBF7F02C0CF0C400CD0E90 /* MoltenVK.xcframework */; };
 		E6DBF7F22C0CF0CD00CD0E90 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6DBF7F02C0CF0C400CD0E90 /* MoltenVK.xcframework */; };
 		E6DBF7F32C0CF0CD00CD0E90 /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6DBF7F02C0CF0C400CD0E90 /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E6E0F7FE2C10693000A8C308 /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E0F7FD2C10693000A8C308 /* Comparable.swift */; };
 		E6E24AE02C007ADC00DE5095 /* VirtualControllerThumbstick.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E24ADF2C007ADC00DE5095 /* VirtualControllerThumbstick.swift */; };
 /* End PBXBuildFile section */
 
@@ -1055,6 +1056,7 @@
 		E6CB595B2BFB4B1300C3A95E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		E6CB595F2BFB800200C3A95E /* KiwiEmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiwiEmulationController.swift; sourceTree = "<group>"; };
 		E6DBF7F02C0CF0C400CD0E90 /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
+		E6E0F7FD2C10693000A8C308 /* Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comparable.swift; sourceTree = "<group>"; };
 		E6E24ADF2C007ADC00DE5095 /* VirtualControllerThumbstick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualControllerThumbstick.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2359,6 +2361,7 @@
 				E6A94D492BF60FDA001CC55F /* CGImage.swift */,
 				E6A94D3E2BF6093E001CC55F /* UIColor.swift */,
 				E6A94D402BF60A15001CC55F /* UIImage.swift */,
+				E6E0F7FD2C10693000A8C308 /* Comparable.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2876,6 +2879,7 @@
 				E6477F092BEF48C30062975D /* SceneDelegate.swift in Sources */,
 				E6A94D3F2BF6093E001CC55F /* UIColor.swift in Sources */,
 				E6C2C0E42BFDABE600547022 /* CytrusEmulationController.swift in Sources */,
+				E6E0F7FE2C10693000A8C308 /* Comparable.swift in Sources */,
 				E608F1682BF74D330078402D /* VirtualControllerDelegates.swift in Sources */,
 				E6631A422BF4AF52007AE66E /* LibraryManager.swift in Sources */,
 				E608F1692BF74D330078402D /* VirtualControllerView.swift in Sources */,
@@ -3436,7 +3440,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Folium/Folium.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folium/Info.plist;
@@ -3461,7 +3465,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -3472,7 +3476,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Folium/Folium.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folium/Info.plist;
@@ -3497,7 +3501,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -70,6 +70,12 @@ class GrapeManager {
         }
         
         return .init(children: [
+            UIAction(title: "Direct Boot", image: .init(systemName: "scale.3d"),
+                     state: Grape.shared.useDirectBoot() == 1 ? .on : .off, handler: { _ in
+                         Grape.shared.setDirectBoot(Grape.shared.useDirectBoot() == 1 ? 0 : 1)
+                         
+                         button.menu = self.menu(button)
+                     }),
             UIAction(title: "High Resolution 3D", image: .init(systemName: "scale.3d"), attributes: [.disabled],
                      state: Grape.shared.useHighRes3D() == 1 ? .on : .off, handler: { _ in
                          Grape.shared.setHighRes3D(Grape.shared.useHighRes3D() == 1 ? 0 : 1)
@@ -98,36 +104,70 @@ class GrapeManager {
                     })
                 ]),
                 UIMenu(title: "xBRZ", children: [
-                    UIAction(title: "2x", state: isCurrentUpscalingOption(1, 2) ? .on : .off, handler: { _ in
-                        Grape.shared.setUpscalingFilter(1)
-                        Grape.shared.setUpscalingFactor(2)
-                        
-                        button.menu = self.menu(button)
-                    }),
-                    UIAction(title: "3x", state: isCurrentUpscalingOption(1, 3) ? .on : .off, handler: { _ in
-                        Grape.shared.setUpscalingFilter(1)
-                        Grape.shared.setUpscalingFactor(3)
-                        
-                        button.menu = self.menu(button)
-                    }),
-                    UIAction(title: "4x", state: isCurrentUpscalingOption(1, 4) ? .on : .off, handler: { _ in
-                        Grape.shared.setUpscalingFilter(1)
-                        Grape.shared.setUpscalingFactor(4)
-                        
-                        button.menu = self.menu(button)
-                    }),
-                    UIAction(title: "5x", state: isCurrentUpscalingOption(1, 5) ? .on : .off, handler: { _ in
-                        Grape.shared.setUpscalingFilter(1)
-                        Grape.shared.setUpscalingFactor(5)
-                        
-                        button.menu = self.menu(button)
-                    }),
-                    UIAction(title: "6x", state: isCurrentUpscalingOption(1, 6) ? .on : .off, handler: { _ in
-                        Grape.shared.setUpscalingFilter(1)
-                        Grape.shared.setUpscalingFactor(6)
-                        
-                        button.menu = self.menu(button)
-                    })
+                    UIMenu(title: "Nearest Neighbor", children: [
+                        UIAction(title: "2x", state: isCurrentUpscalingOption(2, 2) ? .on : .off, handler: { _ in
+                            Grape.shared.setUpscalingFilter(2)
+                            Grape.shared.setUpscalingFactor(2)
+                            
+                            button.menu = self.menu(button)
+                        }),
+                        UIAction(title: "3x", state: isCurrentUpscalingOption(2, 3) ? .on : .off, handler: { _ in
+                            Grape.shared.setUpscalingFilter(2)
+                            Grape.shared.setUpscalingFactor(3)
+                            
+                            button.menu = self.menu(button)
+                        }),
+                        UIAction(title: "4x", state: isCurrentUpscalingOption(2, 4) ? .on : .off, handler: { _ in
+                            Grape.shared.setUpscalingFilter(2)
+                            Grape.shared.setUpscalingFactor(4)
+                            
+                            button.menu = self.menu(button)
+                        }),
+                        UIAction(title: "5x", state: isCurrentUpscalingOption(2, 5) ? .on : .off, handler: { _ in
+                            Grape.shared.setUpscalingFilter(2)
+                            Grape.shared.setUpscalingFactor(5)
+                            
+                            button.menu = self.menu(button)
+                        }),
+                        UIAction(title: "6x", state: isCurrentUpscalingOption(2, 6) ? .on : .off, handler: { _ in
+                            Grape.shared.setUpscalingFilter(2)
+                            Grape.shared.setUpscalingFactor(6)
+                            
+                            button.menu = self.menu(button)
+                        })
+                    ]),
+                    UIMenu(title: "Scale", children: [
+                        UIAction(title: "2x", state: isCurrentUpscalingOption(1, 2) ? .on : .off, handler: { _ in
+                            Grape.shared.setUpscalingFilter(1)
+                            Grape.shared.setUpscalingFactor(2)
+                            
+                            button.menu = self.menu(button)
+                        }),
+                        UIAction(title: "3x", state: isCurrentUpscalingOption(1, 3) ? .on : .off, handler: { _ in
+                            Grape.shared.setUpscalingFilter(1)
+                            Grape.shared.setUpscalingFactor(3)
+                            
+                            button.menu = self.menu(button)
+                        }),
+                        UIAction(title: "4x", state: isCurrentUpscalingOption(1, 4) ? .on : .off, handler: { _ in
+                            Grape.shared.setUpscalingFilter(1)
+                            Grape.shared.setUpscalingFactor(4)
+                            
+                            button.menu = self.menu(button)
+                        }),
+                        UIAction(title: "5x", state: isCurrentUpscalingOption(1, 5) ? .on : .off, handler: { _ in
+                            Grape.shared.setUpscalingFilter(1)
+                            Grape.shared.setUpscalingFactor(5)
+                            
+                            button.menu = self.menu(button)
+                        }),
+                        UIAction(title: "6x", state: isCurrentUpscalingOption(1, 6) ? .on : .off, handler: { _ in
+                            Grape.shared.setUpscalingFilter(1)
+                            Grape.shared.setUpscalingFactor(6)
+                            
+                            button.menu = self.menu(button)
+                        })
+                    ])
                 ]),
                 UIAction(title: "Off", state: isCurrentUpscalingOption(-1, 2) ? .on : .off, handler: { _ in
                     Grape.shared.setUpscalingFilter(-1)

@@ -13,7 +13,7 @@ import UIKit
 struct ScreenConfiguration {
     static var borderColor: CGColor = UIColor.secondarySystemBackground.cgColor
     static var borderWidth: CGFloat = 3
-    static var cornerRadius: CGFloat = 15
+    static var cornerRadius: CGFloat = 13
     
     static func controllerConnected() {
         borderWidth = 0
@@ -22,7 +22,7 @@ struct ScreenConfiguration {
     
     static func controllerDisconnected() {
         borderWidth = 3
-        cornerRadius = 15
+        cornerRadius = 13
     }
 }
 
@@ -81,7 +81,12 @@ class EmulationScreensController : EmulationVirtualControllerController {
     fileprivate var primaryLandscapeTopConstraint, primaryLandscapeBottomConstraint, primaryLandscapeCenterXConstraint,
                     primaryLandscapeAspectRatioConstraint: NSLayoutConstraint!
     
-    var controllerConnected: Bool = false
+    fileprivate var secondaryPortraitTopConstraint, secondaryPortraitLeadingConstraint,
+                    secondaryPortraitTrailingConstraint, secondaryPortraitAspectRatioConstraint: NSLayoutConstraint!
+    fileprivate var secondaryLandscapeTopConstraint, secondaryLandscapeBottomConstraint, secondaryLandscapeCenterXConstraint,
+                    secondaryLandscapeAspectRatioConstraint: NSLayoutConstraint!
+    
+    fileprivate var controllerConnected: Bool = false
     
     let device = MTLCreateSystemDefaultDevice()
     
@@ -205,7 +210,7 @@ class EmulationScreensController : EmulationVirtualControllerController {
         secondaryScreen = MTKView(frame: .zero, device: device)
         secondaryScreen.translatesAutoresizingMaskIntoConstraints = false
         secondaryScreen.clipsToBounds = true
-        //(secondaryScreen as! MTKView).delegate = self
+        // (secondaryScreen as! MTKView).delegate = self
         secondaryScreen.layer.borderColor = ScreenConfiguration.borderColor
         secondaryScreen.layer.borderWidth = ScreenConfiguration.borderWidth
         secondaryScreen.layer.cornerCurve = .continuous
@@ -225,8 +230,20 @@ class EmulationScreensController : EmulationVirtualControllerController {
         
         primaryLandscapeTopConstraint = primaryScreen.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10)
         primaryLandscapeBottomConstraint = primaryScreen.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
-        primaryLandscapeCenterXConstraint = primaryScreen.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
-        primaryLandscapeAspectRatioConstraint = primaryScreen.widthAnchor.constraint(equalTo: primaryScreen.heightAnchor, multiplier: 3 / 4)
+        primaryLandscapeCenterXConstraint = primaryScreen.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10)
+        primaryLandscapeAspectRatioConstraint = primaryScreen.widthAnchor.constraint(equalTo: primaryScreen.heightAnchor, multiplier: 4 / 3)
+        
+        secondaryPortraitTopConstraint = secondaryScreen.topAnchor.constraint(equalTo: primaryScreen.bottomAnchor, constant: 10)
+        secondaryPortraitLeadingConstraint = secondaryScreen.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10)
+        secondaryPortraitTrailingConstraint = secondaryScreen.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
+        secondaryPortraitAspectRatioConstraint = secondaryScreen.heightAnchor.constraint(equalTo: secondaryScreen.widthAnchor, multiplier: 3 / 4)
+        
+        secondaryLandscapeTopConstraint = secondaryScreen.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10)
+        secondaryLandscapeBottomConstraint = secondaryScreen.leadingAnchor.constraint(equalTo: primaryScreen.trailingAnchor, constant: 10)
+        secondaryLandscapeCenterXConstraint = secondaryScreen.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
+        secondaryLandscapeAspectRatioConstraint = secondaryScreen.heightAnchor.constraint(equalTo: secondaryScreen.widthAnchor, multiplier: 3 / 4)
+        
+        toggleConstraints()
     }
     
     func setupKiwiScreen() {
@@ -285,9 +302,29 @@ class EmulationScreensController : EmulationVirtualControllerController {
         case .portrait, .portraitUpsideDown:
             togglePrimaryLandscapeConstraints(false)
             togglePrimaryPortraitConstraints(true)
+            
+            switch game {
+            case let grapeGame as GrapeManager.Library.Game:
+                if grapeGame.gameType == .nds {
+                    toggleSecondaryLandscapeConstraints(false)
+                    toggleSecondaryPortraitConstraints(true)
+                }
+            default:
+                break
+            }
         case .landscapeLeft, .landscapeRight:
             togglePrimaryLandscapeConstraints(true)
             togglePrimaryPortraitConstraints(false)
+            
+            switch game {
+            case let grapeGame as GrapeManager.Library.Game:
+                if grapeGame.gameType == .nds {
+                    toggleSecondaryLandscapeConstraints(true)
+                    toggleSecondaryPortraitConstraints(false)
+                }
+            default:
+                break
+            }
         }
     }
     
@@ -303,6 +340,20 @@ class EmulationScreensController : EmulationVirtualControllerController {
         primaryPortraitLeadingConstraint.isActive = isActive
         primaryPortraitTrailingConstraint.isActive = isActive
         primaryPortraitAspectRatioConstraint.isActive = isActive
+    }
+    
+    fileprivate func toggleSecondaryLandscapeConstraints(_ isActive: Bool) {
+        secondaryLandscapeTopConstraint.isActive = isActive
+        secondaryLandscapeBottomConstraint.isActive = isActive
+        secondaryLandscapeCenterXConstraint.isActive = isActive
+        secondaryLandscapeAspectRatioConstraint.isActive = isActive
+    }
+    
+    fileprivate func toggleSecondaryPortraitConstraints(_ isActive: Bool) {
+        secondaryPortraitTopConstraint.isActive = isActive
+        secondaryPortraitLeadingConstraint.isActive = isActive
+        secondaryPortraitTrailingConstraint.isActive = isActive
+        secondaryPortraitAspectRatioConstraint.isActive = isActive
     }
 }
 

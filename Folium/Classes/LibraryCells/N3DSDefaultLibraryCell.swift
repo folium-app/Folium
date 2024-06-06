@@ -101,7 +101,7 @@ class N3DSDefaultLibraryCell : UICollectionViewCell {
         
         let information = Cytrus.shared.information(game.fileDetails.url)
         if let image = information.iconData.decodeRGB565(width: 48, height: 48) {
-            imageView.image = image.blurred(radius: 2)
+            imageView.image = image.blurred(radius: 1)
             gradientView.set((.clear, image.averageColor ?? .tintColor))
         }
         

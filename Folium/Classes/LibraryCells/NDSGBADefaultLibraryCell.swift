@@ -81,16 +81,6 @@ class NDSGBADefaultLibraryCell : UICollectionViewCell {
     
     fileprivate func menu() -> UIMenu {
         .init(children: [
-            UIMenu(title: "Boot Options", image: .init(systemName: "power"), children: [
-                UIAction(title: "Fast Boot", subtitle: "Skip the Home Menu", handler: { _ in
-                    let grapeController = GrapeEmulationController(self.game.core, self.game)
-                    grapeController.modalPresentationStyle = .fullScreen
-                    self.viewController.present(grapeController, animated: true)
-                }),
-                UIAction(title: "Slow Boot", subtitle: "Boot the Home Menu", attributes: [.disabled], handler: { _ in
-                    // TODO:
-                }),
-            ]),
             UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: [.destructive], handler: { _ in
                 guard let viewController = self.viewController as? LibraryController else {
                     return

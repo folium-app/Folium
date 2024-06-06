@@ -118,14 +118,28 @@ class CytrusEmulationController : EmulationScreensController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .black
+        
+        var gearButtonConfiguration = UIButton.Configuration.borderless()
+        gearButtonConfiguration.buttonSize = .small
+        gearButtonConfiguration.image = .init(systemName: "gearshape.fill")?
+            .applyingSymbolConfiguration(.init(paletteColors: [.white]))
+        
+        let button = UIButton(configuration: gearButtonConfiguration)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.menu = menu(button)
+        button.showsMenuAsPrimaryAction = true
+        view.addSubview(button)
+        button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5).isActive = true
+        button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
         
         NotificationCenter.default.addObserver(forName: .init("sceneDidChange"), object: nil, queue: .main) { notification in
             guard let userInfo = notification.userInfo, let state = userInfo["state"] as? Int else {
                 return
             }
             
-            self.cytrus.pausePlay(state == 1 ? true : false)
+            self.cytrus.pausePlay(state == 1)
+            button.menu = self.menu(button)
         }
         
         NotificationCenter.default.addObserver(forName: .init("openKeyboard"), object: nil, queue: .main) { notification in
@@ -155,7 +169,6 @@ class CytrusEmulationController : EmulationScreensController {
                 return
             }
             
-            print(primaryScreen.bounds, primaryScreen.frame)
             cytrus.configure(primaryScreen.metalLayer.layer as! CAMetalLayer, primaryScreen.metalLayer.frame.size/*,
                              secondaryLayer: secondaryScreen.layer as! CAMetalLayer, secondarySize: secondaryScreen.frame.size*/)
             cytrus.insert(game: game.fileDetails.url)
@@ -173,8 +186,28 @@ class CytrusEmulationController : EmulationScreensController {
         }
     }
     
+    fileprivate func menu(_ button: UIButton) -> UIMenu {
+        if #available(iOS 16, *) {
+            .init(preferredElementSize: .medium, children: [
+                UIAction(title: Cytrus.shared.isPaused() ? "Play" : "Pause", image: .init(systemName: Cytrus.shared.isPaused() ? "play.fill" : "pause.fill"), handler: { action in
+                    Cytrus.shared.pausePlay(Cytrus.shared.isPaused())
+                    button.menu = self.menu(button)
+                }),
+                UIAction(title: "Stop & Exit", image: .init(systemName: "stop.fill"), attributes: [.destructive, .disabled], handler: { action in })
+            ])
+        } else {
+            .init(children: [
+                UIAction(title: Cytrus.shared.isPaused() ? "Play" : "Pause", image: .init(systemName: Cytrus.shared.isPaused() ? "play.fill" : "pause.fill"), handler: { action in
+                    Cytrus.shared.pausePlay(Cytrus.shared.isPaused())
+                    button.menu = self.menu(button)
+                }),
+                UIAction(title: "Stop & Exit", image: .init(systemName: "stop.fill"), attributes: [.destructive, .disabled], handler: { action in })
+            ])
+        }
+    }
+    
     @objc fileprivate func step() {
-        while true {
+        while !Cytrus.shared.isPaused() {
             cytrus.step()
         }
     }
