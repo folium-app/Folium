@@ -27,7 +27,8 @@ class LayoutManager {
                 break
             }
             
-            let columns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? missingFiles ? 1 : 2 : missingFiles ? 2 : 4
+            let isiPad = UIDevice.current.userInterfaceIdiom == .pad
+            let columns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? missingFiles ? 1 : isiPad ? 4 : 2 : missingFiles ? 2 : isiPad ? 6 : 4
             
             let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1 / columns),
                                                                 heightDimension: .estimated(300)))

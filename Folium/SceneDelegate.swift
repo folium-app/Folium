@@ -27,7 +27,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         
-        window.rootViewController = ScanningController()
+        print(UIScreen.main.bounds)
+        
+        //  w     h
+        // 430 x 932 - iPhone 15 Pro Max (iPhone16,2)
+        /*
+        let buttons: [Skin.Button] = [
+            .init(useCustom: false, vibrateWhenTapped: true, vibrationStrength: 3, x: 80, y: 839-180, width: 60, height: 60, type: .dpadUp),
+            .init(useCustom: false, vibrateWhenTapped: true, vibrationStrength: 3, x: 80, y: 839-60, width: 60, height: 60, type: .dpadDown),
+            .init(useCustom: false, vibrateWhenTapped: true, vibrationStrength: 3, x: 20, y: 839-120, width: 60, height: 60, type: .dpadLeft),
+            .init(useCustom: false, vibrateWhenTapped: true, vibrationStrength: 3, x: 140, y: 839-120, width: 60, height: 60, type: .dpadRight),
+            
+            .init(useCustom: false, vibrateWhenTapped: true, vibrationStrength: 3, x: 430-140, y: 839-180, width: 60, height: 60, type: .north),
+            .init(useCustom: false, vibrateWhenTapped: true, vibrationStrength: 3, x: 430-80, y: 839-120, width: 60, height: 60, type: .east),
+            .init(useCustom: false, vibrateWhenTapped: true, vibrationStrength: 3, x: 430-140, y: 839-60, width: 60, height: 60, type: .south),
+            .init(useCustom: false, vibrateWhenTapped: true, vibrationStrength: 3, x: 430-200, y: 839-120, width: 60, height: 60, type: .west)
+        ]
+        
+        let devices: [Skin.Device] = [
+            .init(device: "iPhone16,2", orientation: .portrait, buttons: buttons, screens: [
+                .init(x: 0, y: 0, width: 430, height: 258 + 322)
+            ])
+        ]
+        
+        let skin = Skin(author: "Antique", description: "A basic skin for Game Boy Advance", name: "GBA Skin", core: .cytrus, devices: devices)
+         */
+        
+        window.rootViewController = /*CytrusDefaultViewController(with: skin)*/ ScanningController()
         window.tintColor = .systemGreen
         window.makeKeyAndVisible()
     }

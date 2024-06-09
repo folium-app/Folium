@@ -153,7 +153,7 @@ class VirtualControllerView : UIView {
         let portraitWidthConstraint = if UIDevice.current.userInterfaceIdiom == .phone {
             dpadView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -50)
         } else {
-            dpadView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1 / 5, constant: -50)
+            dpadView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1 / 5, constant: -20)
         }
         
         portraitConstraints.append([
@@ -166,7 +166,7 @@ class VirtualControllerView : UIView {
         let landscapeHeightConstraint = if UIDevice.current.userInterfaceIdiom == .phone {
             dpadView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 50)
         } else {
-            dpadView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 5, constant: -50)
+            dpadView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 5, constant: -20)
         }
         
         landscapeConstraints.append([
@@ -185,7 +185,7 @@ class VirtualControllerView : UIView {
         let portraitWidthConstraint = if UIDevice.current.userInterfaceIdiom == .phone {
             xybaView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 50)
         } else {
-            xybaView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1 / 5, constant: -50)
+            xybaView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1 / 5, constant: -20)
         }
         
         portraitConstraints.append([
@@ -198,7 +198,7 @@ class VirtualControllerView : UIView {
         let landscapeHeightConstraint = if UIDevice.current.userInterfaceIdiom == .phone {
             xybaView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 50)
         } else {
-            xybaView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 5, constant: -50)
+            xybaView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 5, constant: -20)
         }
         
         landscapeConstraints.append([

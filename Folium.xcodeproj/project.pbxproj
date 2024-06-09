@@ -391,6 +391,11 @@
 		E6A94D452BF60ACF001CC55F /* Grape in Frameworks */ = {isa = PBXBuildFile; productRef = E6A94D442BF60ACF001CC55F /* Grape */; };
 		E6A94D482BF60EF2001CC55F /* Bruno.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A94D472BF60EF2001CC55F /* Bruno.swift */; };
 		E6A94D4A2BF60FDA001CC55F /* CGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A94D492BF60FDA001CC55F /* CGImage.swift */; };
+		E6ACC3C92C13065900CB6780 /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6ACC3C82C13065900CB6780 /* KeyboardController.swift */; };
+		E6ACC3CD2C130ECF00CB6780 /* libGenericCodeGen.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ACC3CA2C130ECF00CB6780 /* libGenericCodeGen.xcframework */; };
+		E6ACC3CE2C130ECF00CB6780 /* libglslang.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ACC3CB2C130ECF00CB6780 /* libglslang.xcframework */; };
+		E6ACC3CF2C130ECF00CB6780 /* libMachineIndependent.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ACC3CC2C130ECF00CB6780 /* libMachineIndependent.xcframework */; };
+		E6ACC3D12C130ED500CB6780 /* libSPIRV.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ACC3D02C130ED500CB6780 /* libSPIRV.xcframework */; };
 		E6B6CE112BFC921D002E5577 /* NDSDefaultLibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B6CE102BFC921D002E5577 /* NDSDefaultLibraryCell.swift */; };
 		E6B6CE132BFCA029002E5577 /* NDSGBADefaultLibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B6CE122BFCA029002E5577 /* NDSGBADefaultLibraryCell.swift */; };
 		E6B6CE152BFCA27D002E5577 /* NESDefaultLibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B6CE142BFCA27D002E5577 /* NESDefaultLibraryCell.swift */; };
@@ -416,7 +421,7 @@
 		E6B6D2B22BFCA785002E5577 /* EmulationWindow_Vulkan.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6B6CE9D2BFCA784002E5577 /* EmulationWindow_Vulkan.mm */; };
 		E6B6D2B32BFCA785002E5577 /* GraphicsContext_Apple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B6CE9E2BFCA784002E5577 /* GraphicsContext_Apple.cpp */; };
 		E6B6D2B42BFCA785002E5577 /* GameInformation.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6B6CEA22BFCA784002E5577 /* GameInformation.mm */; };
-		E6B6D2B52BFCA785002E5577 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B6CEA42BFCA784002E5577 /* InputManager.cpp */; };
+		E6B6D2B52BFCA785002E5577 /* InputManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6B6CEA42BFCA784002E5577 /* InputManager.mm */; };
 		E6B6D2B62BFCA785002E5577 /* CytrusObjC.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6B6CEA82BFCA784002E5577 /* CytrusObjC.mm */; };
 		E6B6D41C2BFCA868002E5577 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E6B6D41B2BFCA868002E5577 /* libzstd */; };
 		E6B6D43B2BFCA88D002E5577 /* boost_context.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D41D2BFCA88D002E5577 /* boost_context.xcframework */; };
@@ -432,9 +437,6 @@
 		E6B6D4452BFCA88D002E5577 /* libenet.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4272BFCA88D002E5577 /* libenet.xcframework */; };
 		E6B6D4462BFCA88D002E5577 /* libfaad.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4282BFCA88D002E5577 /* libfaad.xcframework */; };
 		E6B6D4472BFCA88D002E5577 /* libfmt.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4292BFCA88D002E5577 /* libfmt.xcframework */; };
-		E6B6D4482BFCA88D002E5577 /* libGenericCodeGen.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D42A2BFCA88D002E5577 /* libGenericCodeGen.xcframework */; };
-		E6B6D4492BFCA88D002E5577 /* libglslang.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D42B2BFCA88D002E5577 /* libglslang.xcframework */; };
-		E6B6D44A2BFCA88D002E5577 /* libMachineIndependent.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D42C2BFCA88D002E5577 /* libMachineIndependent.xcframework */; };
 		E6B6D44B2BFCA88D002E5577 /* libmbedcrypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D42D2BFCA88D002E5577 /* libmbedcrypto.xcframework */; };
 		E6B6D44C2BFCA88D002E5577 /* libmbedtls.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D42E2BFCA88D002E5577 /* libmbedtls.xcframework */; };
 		E6B6D44D2BFCA88D002E5577 /* libmbedx509.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D42F2BFCA88D002E5577 /* libmbedx509.xcframework */; };
@@ -443,7 +445,6 @@
 		E6B6D4502BFCA88D002E5577 /* libopus.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4322BFCA88D002E5577 /* libopus.xcframework */; };
 		E6B6D4512BFCA88D002E5577 /* libsirit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4332BFCA88D002E5577 /* libsirit.xcframework */; };
 		E6B6D4522BFCA88D002E5577 /* libSoundTouch.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4342BFCA88D002E5577 /* libSoundTouch.xcframework */; };
-		E6B6D4532BFCA88D002E5577 /* libSPIRV.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4352BFCA88D002E5577 /* libSPIRV.xcframework */; };
 		E6B6D4542BFCA88D002E5577 /* libswresample.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4362BFCA88D002E5577 /* libswresample.xcframework */; };
 		E6B6D4552BFCA88D002E5577 /* libswscale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4372BFCA88D002E5577 /* libswscale.xcframework */; };
 		E6B6D4562BFCA88D002E5577 /* libteakra.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4382BFCA88D002E5577 /* libteakra.xcframework */; };
@@ -468,11 +469,13 @@
 		E6C2C0EA2BFDCE9B00547022 /* MinimalRoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C2C0E82BFDCE9B00547022 /* MinimalRoundedTextField.swift */; };
 		E6CADBEB2BF8A0E400ACBA87 /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E6CADBEA2BF8A0E400ACBA87 /* SDL */; };
 		E6CB59602BFB800200C3A95E /* KiwiEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6CB595F2BFB800200C3A95E /* KiwiEmulationController.swift */; };
-		E6DBF7F12C0CF0C400CD0E90 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6DBF7F02C0CF0C400CD0E90 /* MoltenVK.xcframework */; };
-		E6DBF7F22C0CF0CD00CD0E90 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6DBF7F02C0CF0C400CD0E90 /* MoltenVK.xcframework */; };
-		E6DBF7F32C0CF0CD00CD0E90 /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6DBF7F02C0CF0C400CD0E90 /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6E0F7FE2C10693000A8C308 /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E0F7FD2C10693000A8C308 /* Comparable.swift */; };
 		E6E24AE02C007ADC00DE5095 /* VirtualControllerThumbstick.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E24ADF2C007ADC00DE5095 /* VirtualControllerThumbstick.swift */; };
+		E6E820B42C15822300620256 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6E820B32C15822300620256 /* MoltenVK.xcframework */; };
+		E6E820B62C15828500620256 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6E820B32C15822300620256 /* MoltenVK.xcframework */; };
+		E6E820B72C15828500620256 /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6E820B32C15822300620256 /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E6E820B92C158B3300620256 /* ControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E820B82C158B3300620256 /* ControllerButton.swift */; };
+		E6E820BC2C158D9C00620256 /* CytrusDefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E820BB2C158D9C00620256 /* CytrusDefaultViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -501,7 +504,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E6DBF7F32C0CF0CD00CD0E90 /* MoltenVK.xcframework in Embed Frameworks */,
+				E6E820B72C15828500620256 /* MoltenVK.xcframework in Embed Frameworks */,
 				E6B6D4622BFCAA8A002E5577 /* libavutil.xcframework in Embed Frameworks */,
 				E6B6D4642BFCAA8A002E5577 /* libswresample.xcframework in Embed Frameworks */,
 				E6B6D45E2BFCAA89002E5577 /* libavfilter.xcframework in Embed Frameworks */,
@@ -902,6 +905,11 @@
 		E6A94D422BF60AC6001CC55F /* Grape */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Grape; sourceTree = "<group>"; };
 		E6A94D472BF60EF2001CC55F /* Bruno.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bruno.swift; sourceTree = "<group>"; };
 		E6A94D492BF60FDA001CC55F /* CGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGImage.swift; sourceTree = "<group>"; };
+		E6ACC3C82C13065900CB6780 /* KeyboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardController.swift; sourceTree = "<group>"; };
+		E6ACC3CA2C130ECF00CB6780 /* libGenericCodeGen.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libGenericCodeGen.xcframework; sourceTree = "<group>"; };
+		E6ACC3CB2C130ECF00CB6780 /* libglslang.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libglslang.xcframework; sourceTree = "<group>"; };
+		E6ACC3CC2C130ECF00CB6780 /* libMachineIndependent.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libMachineIndependent.xcframework; sourceTree = "<group>"; };
+		E6ACC3D02C130ED500CB6780 /* libSPIRV.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libSPIRV.xcframework; sourceTree = "<group>"; };
 		E6B6CE102BFC921D002E5577 /* NDSDefaultLibraryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NDSDefaultLibraryCell.swift; sourceTree = "<group>"; };
 		E6B6CE122BFCA029002E5577 /* NDSGBADefaultLibraryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NDSGBADefaultLibraryCell.swift; sourceTree = "<group>"; };
 		E6B6CE142BFCA27D002E5577 /* NESDefaultLibraryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NESDefaultLibraryCell.swift; sourceTree = "<group>"; };
@@ -1016,7 +1024,7 @@
 		E6B6CE9F2BFCA784002E5577 /* GraphicsContext_Apple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsContext_Apple.h; sourceTree = "<group>"; };
 		E6B6CEA12BFCA784002E5577 /* GameInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameInformation.h; sourceTree = "<group>"; };
 		E6B6CEA22BFCA784002E5577 /* GameInformation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameInformation.mm; sourceTree = "<group>"; };
-		E6B6CEA42BFCA784002E5577 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cpp; sourceTree = "<group>"; };
+		E6B6CEA42BFCA784002E5577 /* InputManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InputManager.mm; sourceTree = "<group>"; };
 		E6B6CEA52BFCA784002E5577 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
 		E6B6CEA72BFCA784002E5577 /* CytrusObjC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CytrusObjC.h; sourceTree = "<group>"; };
 		E6B6CEA82BFCA784002E5577 /* CytrusObjC.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CytrusObjC.mm; sourceTree = "<group>"; };
@@ -1033,9 +1041,6 @@
 		E6B6D4272BFCA88D002E5577 /* libenet.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libenet.xcframework; sourceTree = "<group>"; };
 		E6B6D4282BFCA88D002E5577 /* libfaad.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libfaad.xcframework; sourceTree = "<group>"; };
 		E6B6D4292BFCA88D002E5577 /* libfmt.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libfmt.xcframework; sourceTree = "<group>"; };
-		E6B6D42A2BFCA88D002E5577 /* libGenericCodeGen.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libGenericCodeGen.xcframework; sourceTree = "<group>"; };
-		E6B6D42B2BFCA88D002E5577 /* libglslang.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libglslang.xcframework; sourceTree = "<group>"; };
-		E6B6D42C2BFCA88D002E5577 /* libMachineIndependent.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libMachineIndependent.xcframework; sourceTree = "<group>"; };
 		E6B6D42D2BFCA88D002E5577 /* libmbedcrypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libmbedcrypto.xcframework; sourceTree = "<group>"; };
 		E6B6D42E2BFCA88D002E5577 /* libmbedtls.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libmbedtls.xcframework; sourceTree = "<group>"; };
 		E6B6D42F2BFCA88D002E5577 /* libmbedx509.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libmbedx509.xcframework; sourceTree = "<group>"; };
@@ -1044,7 +1049,6 @@
 		E6B6D4322BFCA88D002E5577 /* libopus.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libopus.xcframework; sourceTree = "<group>"; };
 		E6B6D4332BFCA88D002E5577 /* libsirit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libsirit.xcframework; sourceTree = "<group>"; };
 		E6B6D4342BFCA88D002E5577 /* libSoundTouch.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libSoundTouch.xcframework; sourceTree = "<group>"; };
-		E6B6D4352BFCA88D002E5577 /* libSPIRV.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libSPIRV.xcframework; sourceTree = "<group>"; };
 		E6B6D4362BFCA88D002E5577 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswresample.xcframework; sourceTree = "<group>"; };
 		E6B6D4372BFCA88D002E5577 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswscale.xcframework; sourceTree = "<group>"; };
 		E6B6D4382BFCA88D002E5577 /* libteakra.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libteakra.xcframework; sourceTree = "<group>"; };
@@ -1055,9 +1059,11 @@
 		E6C2C0EB2BFDDDCF00547022 /* Folium.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Folium.entitlements; sourceTree = "<group>"; };
 		E6CB595B2BFB4B1300C3A95E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		E6CB595F2BFB800200C3A95E /* KiwiEmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiwiEmulationController.swift; sourceTree = "<group>"; };
-		E6DBF7F02C0CF0C400CD0E90 /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
 		E6E0F7FD2C10693000A8C308 /* Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comparable.swift; sourceTree = "<group>"; };
 		E6E24ADF2C007ADC00DE5095 /* VirtualControllerThumbstick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualControllerThumbstick.swift; sourceTree = "<group>"; };
+		E6E820B32C15822300620256 /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
+		E6E820B82C158B3300620256 /* ControllerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerButton.swift; sourceTree = "<group>"; };
+		E6E820BB2C158D9C00620256 /* CytrusDefaultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CytrusDefaultViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1067,7 +1073,7 @@
 			files = (
 				E6CADBEB2BF8A0E400ACBA87 /* SDL in Frameworks */,
 				E6B6D45F2BFCAA89002E5577 /* libavformat.xcframework in Frameworks */,
-				E6DBF7F22C0CF0CD00CD0E90 /* MoltenVK.xcframework in Frameworks */,
+				E6E820B62C15828500620256 /* MoltenVK.xcframework in Frameworks */,
 				E6B6D4632BFCAA8A002E5577 /* libswresample.xcframework in Frameworks */,
 				E6B6D4732BFCC313002E5577 /* OpenSSL in Frameworks */,
 				E6B6D4712BFCC313002E5577 /* libzstd in Frameworks */,
@@ -1085,17 +1091,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6DBF7F12C0CF0C400CD0E90 /* MoltenVK.xcframework in Frameworks */,
+				E6E820B42C15822300620256 /* MoltenVK.xcframework in Frameworks */,
 				E6B6D4432BFCA88D002E5577 /* libcryptopp.xcframework in Frameworks */,
+				E6ACC3CF2C130ECF00CB6780 /* libMachineIndependent.xcframework in Frameworks */,
 				E6B6D4542BFCA88D002E5577 /* libswresample.xcframework in Frameworks */,
 				E6B6D4452BFCA88D002E5577 /* libenet.xcframework in Frameworks */,
-				E6B6D4482BFCA88D002E5577 /* libGenericCodeGen.xcframework in Frameworks */,
+				E6ACC3D12C130ED500CB6780 /* libSPIRV.xcframework in Frameworks */,
 				E6B6D4502BFCA88D002E5577 /* libopus.xcframework in Frameworks */,
+				E6ACC3CD2C130ECF00CB6780 /* libGenericCodeGen.xcframework in Frameworks */,
 				E6B6D43C2BFCA88D002E5577 /* boost_iostreams.xcframework in Frameworks */,
 				E6B6D4442BFCA88D002E5577 /* libdynarmic.xcframework in Frameworks */,
 				E6B6D4402BFCA88D002E5577 /* libavfilter.xcframework in Frameworks */,
 				E6B6D43F2BFCA88D002E5577 /* libavcodec.xcframework in Frameworks */,
-				E6B6D4532BFCA88D002E5577 /* libSPIRV.xcframework in Frameworks */,
 				E6B6D45A2BFCA8A4002E5577 /* OpenSSL in Frameworks */,
 				E6B6D41C2BFCA868002E5577 /* libzstd in Frameworks */,
 				E6B6D44C2BFCA88D002E5577 /* libmbedtls.xcframework in Frameworks */,
@@ -1105,12 +1112,11 @@
 				E6B6D43B2BFCA88D002E5577 /* boost_context.xcframework in Frameworks */,
 				E6B6D4462BFCA88D002E5577 /* libfaad.xcframework in Frameworks */,
 				E6B6D4412BFCA88D002E5577 /* libavformat.xcframework in Frameworks */,
-				E6B6D4492BFCA88D002E5577 /* libglslang.xcframework in Frameworks */,
 				E6B6D4522BFCA88D002E5577 /* libSoundTouch.xcframework in Frameworks */,
 				E6B6D43E2BFCA88D002E5577 /* boost_serialization.xcframework in Frameworks */,
 				E6B6D43D2BFCA88D002E5577 /* boost_program_options.xcframework in Frameworks */,
 				E6B6D4472BFCA88D002E5577 /* libfmt.xcframework in Frameworks */,
-				E6B6D44A2BFCA88D002E5577 /* libMachineIndependent.xcframework in Frameworks */,
+				E6ACC3CE2C130ECF00CB6780 /* libglslang.xcframework in Frameworks */,
 				E6B6D4512BFCA88D002E5577 /* libsirit.xcframework in Frameworks */,
 				E6B6D44F2BFCA88D002E5577 /* libOpenAL.xcframework in Frameworks */,
 				E6B6D4562BFCA88D002E5577 /* libteakra.xcframework in Frameworks */,
@@ -2307,6 +2313,7 @@
 		E68BBA512C0EF5570065C43F /* ControllerView */ = {
 			isa = PBXGroup;
 			children = (
+				E6E820B82C158B3300620256 /* ControllerButton.swift */,
 				E68BBA522C0EF5650065C43F /* ControllerView.swift */,
 			);
 			path = ControllerView;
@@ -2679,7 +2686,7 @@
 		E6B6CEA62BFCA784002E5577 /* InputManager */ = {
 			isa = PBXGroup;
 			children = (
-				E6B6CEA42BFCA784002E5577 /* InputManager.cpp */,
+				E6B6CEA42BFCA784002E5577 /* InputManager.mm */,
 				E6B6CEA52BFCA784002E5577 /* InputManager.h */,
 			);
 			path = InputManager;
@@ -2715,9 +2722,9 @@
 				E6B6D4272BFCA88D002E5577 /* libenet.xcframework */,
 				E6B6D4282BFCA88D002E5577 /* libfaad.xcframework */,
 				E6B6D4292BFCA88D002E5577 /* libfmt.xcframework */,
-				E6B6D42A2BFCA88D002E5577 /* libGenericCodeGen.xcframework */,
-				E6B6D42B2BFCA88D002E5577 /* libglslang.xcframework */,
-				E6B6D42C2BFCA88D002E5577 /* libMachineIndependent.xcframework */,
+				E6ACC3CA2C130ECF00CB6780 /* libGenericCodeGen.xcframework */,
+				E6ACC3CB2C130ECF00CB6780 /* libglslang.xcframework */,
+				E6ACC3CC2C130ECF00CB6780 /* libMachineIndependent.xcframework */,
 				E6B6D42D2BFCA88D002E5577 /* libmbedcrypto.xcframework */,
 				E6B6D42E2BFCA88D002E5577 /* libmbedtls.xcframework */,
 				E6B6D42F2BFCA88D002E5577 /* libmbedx509.xcframework */,
@@ -2726,11 +2733,11 @@
 				E6B6D4322BFCA88D002E5577 /* libopus.xcframework */,
 				E6B6D4332BFCA88D002E5577 /* libsirit.xcframework */,
 				E6B6D4342BFCA88D002E5577 /* libSoundTouch.xcframework */,
-				E6B6D4352BFCA88D002E5577 /* libSPIRV.xcframework */,
+				E6ACC3D02C130ED500CB6780 /* libSPIRV.xcframework */,
 				E6B6D4362BFCA88D002E5577 /* libswresample.xcframework */,
 				E6B6D4372BFCA88D002E5577 /* libswscale.xcframework */,
 				E6B6D4382BFCA88D002E5577 /* libteakra.xcframework */,
-				E6DBF7F02C0CF0C400CD0E90 /* MoltenVK.xcframework */,
+				E6E820B32C15822300620256 /* MoltenVK.xcframework */,
 			);
 			path = XCFrameworks;
 			sourceTree = "<group>";
@@ -2738,7 +2745,9 @@
 		E6C2C0E32BFDABE600547022 /* CytrusEmulationController */ = {
 			isa = PBXGroup;
 			children = (
-				E6C2C0E22BFDABE600547022 /* CytrusEmulationController.swift */,
+				E6E820BA2C158D8100620256 /* Old */,
+				E6E820BB2C158D9C00620256 /* CytrusDefaultViewController.swift */,
+				E6ACC3C82C13065900CB6780 /* KeyboardController.swift */,
 			);
 			path = CytrusEmulationController;
 			sourceTree = "<group>";
@@ -2757,6 +2766,14 @@
 				E6CB595F2BFB800200C3A95E /* KiwiEmulationController.swift */,
 			);
 			path = KiwiEmulationController;
+			sourceTree = "<group>";
+		};
+		E6E820BA2C158D8100620256 /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				E6C2C0E22BFDABE600547022 /* CytrusEmulationController.swift */,
+			);
+			path = Old;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2893,8 +2910,11 @@
 				E6C2C0EA2BFDCE9B00547022 /* MinimalRoundedTextField.swift in Sources */,
 				E6B6D46F2BFCC0F5002E5577 /* N3DSDefaultLibraryCell.swift in Sources */,
 				E6A94D412BF60A15001CC55F /* UIImage.swift in Sources */,
+				E6E820B92C158B3300620256 /* ControllerButton.swift in Sources */,
 				E693135F2BF51EF000CCE717 /* ScanningController.swift in Sources */,
 				E608F1672BF74D330078402D /* VirtualControllerButton.swift in Sources */,
+				E6ACC3C92C13065900CB6780 /* KeyboardController.swift in Sources */,
+				E6E820BC2C158D9C00620256 /* CytrusDefaultViewController.swift in Sources */,
 				E608F1762BF771B50078402D /* Shader.metal in Sources */,
 				E693135C2BF50FED00CCE717 /* DirectoryManager.swift in Sources */,
 				E6A94D392BF601D5001CC55F /* GradientView.swift in Sources */,
@@ -3135,7 +3155,7 @@
 				E620CD652C0DC11F00EBED97 /* nwm_cec.cpp in Sources */,
 				E6B6D2AD2BFCA785002E5577 /* parser_assembly.cpp in Sources */,
 				E68BBA552C0F05CB0065C43F /* Settings.swift in Sources */,
-				E6B6D2B52BFCA785002E5577 /* InputManager.cpp in Sources */,
+				E6B6D2B52BFCA785002E5577 /* InputManager.mm in Sources */,
 				E620CDD12C0DC11F00EBED97 /* vk_present_window.cpp in Sources */,
 				E620CCDA2C0DC11F00EBED97 /* ncch_container.cpp in Sources */,
 				E620CCF52C0DC11F00EBED97 /* recorder.cpp in Sources */,
@@ -3440,13 +3460,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Folium/Folium.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folium/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Folium uses your devices microphone to send audio input to emulator cores that make use of it";
+				INFOPLIST_KEY_NSMotionUsageDescription = "Folium uses your devices motion to send motion input to emulator cores that make use of it";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -3456,7 +3477,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -3476,13 +3497,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Folium/Folium.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folium/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Folium uses your devices microphone to send audio input to emulator cores that make use of it";
+				INFOPLIST_KEY_NSMotionUsageDescription = "Folium uses your devices motion to send motion input to emulator cores that make use of it";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -3492,7 +3514,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -3535,8 +3557,8 @@
 				SWIFT_VERSION = 5.0;
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					/usr/local/include,
-					"\"$(HOME)/VulkanSDK/1.3.280.1/macOS/include\"",
-					"\"$(HOME)/VulkanSDK/1.3.280.1/macOS/include/vma\"",
+					"\"$(HOME)/VulkanSDK/1.3.283.0/macOS/include\"",
+					"\"$(HOME)/VulkanSDK/1.3.283.0/macOS/include/vma\"",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = Cytrus/Core/include;
@@ -3571,8 +3593,8 @@
 				SWIFT_VERSION = 5.0;
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					/usr/local/include,
-					"\"$(HOME)/VulkanSDK/1.3.280.1/macOS/include\"",
-					"\"$(HOME)/VulkanSDK/1.3.280.1/macOS/include/vma\"",
+					"\"$(HOME)/VulkanSDK/1.3.283.0/macOS/include\"",
+					"\"$(HOME)/VulkanSDK/1.3.283.0/macOS/include/vma\"",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = Cytrus/Core/include;

@@ -40,7 +40,7 @@ class LibraryController : UICollectionViewController {
             if UserDefaults.standard.bool(forKey: "hasAcknowledgedImportGames") {
                 self.present(documentController, animated: true)
             } else {
-                let alertController = UIAlertController(title: "Import Games", message: "Select .3ds, .app, .cia, .cci, .cxi, .gba and .nds games to be imported into your library",
+                let alertController = UIAlertController(title: "Import", message: "Select .3ds, .app, .cia, .cci, .cxi, .ds, .gba, .nds and .nes games to be imported into your library",
                                                         preferredStyle: .alert)
                 alertController.addAction(.init(title: "Cancel", style: .cancel))
                 alertController.addAction(.init(title: "Import", style: .default, handler: { _ in
@@ -219,7 +219,7 @@ class LibraryController : UICollectionViewController {
         case let missingFile as MissingFile:
             self.importURL = missingFile.fileDetails.path
             
-            let alertController = UIAlertController(title: "Import System File", message: "Import \(missingFile.fileDetails.name) from the Files app?",
+            let alertController = UIAlertController(title: "Import", message: "Select \(missingFile.fileDetails.name) to import it into \(missingFile.fileDetails.core.rawValue)",
                                                     preferredStyle: .alert)
             alertController.addAction(.init(title: "Cancel", style: .cancel))
             alertController.addAction(.init(title: "Import", style: .default, handler: { _ in
@@ -262,36 +262,71 @@ extension LibraryController : UIDocumentPickerDelegate {
             switch url.pathExtension.lowercased() {
             case "gba", "nds":
                 Task {
-                    try FileManager.default.copyItem(at: url, to: documentsDirectory
+                    let toURL = documentsDirectory
                         .appendingPathComponent("Grape", conformingTo: .folder)
                         .appendingPathComponent("roms", conformingTo: .folder)
-                        .appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL))
+                        .appendingPathComponent(url.pathExtension.lowercased() == "ds" ? url.lastPathComponent.replacingOccurrences(of: ".ds", with: ".nds") : url.lastPathComponent, conformingTo: .fileURL)
                     
-                    LibraryManager.shared.games(.grape, urls)
-                    // try await populateGames()
+                    try FileManager.default.copyItem(at: url, to: toURL)
+                    
+                    var snapshot = self.dataSource.snapshot()
+                    snapshot.appendItems(LibraryManager.shared.games(.grape, [toURL]), toSection: .grape)
+                    await self.dataSource.apply(snapshot)
                 }
             case "nes":
                 Task {
-                    try FileManager.default.copyItem(at: url, to: documentsDirectory
+                    let toURL = documentsDirectory
                         .appendingPathComponent("Kiwi", conformingTo: .folder)
                         .appendingPathComponent("roms", conformingTo: .folder)
-                        .appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL))
+                        .appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL)
                     
-                    try await populateGames()
+                    try FileManager.default.copyItem(at: url, to: toURL)
+                    
+                    var snapshot = self.dataSource.snapshot()
+                    snapshot.appendItems(LibraryManager.shared.games(.kiwi, [toURL]), toSection: .kiwi)
+                    await self.dataSource.apply(snapshot)
                 }
             case "3ds", "app", "cci", "cxi":
                 Task {
-                    try FileManager.default.copyItem(at: url, to: documentsDirectory
+                    let toURL = documentsDirectory
                         .appendingPathComponent("Cytrus", conformingTo: .folder)
                         .appendingPathComponent("roms", conformingTo: .folder)
-                        .appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL))
+                        .appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL)
                     
-                    try await populateGames()
+                    try FileManager.default.copyItem(at: url, to: toURL)
+                    
+                    var snapshot = self.dataSource.snapshot()
+                    snapshot.appendItems(LibraryManager.shared.games(.cytrus, [toURL]), toSection: .cytrus)
+                    await self.dataSource.apply(snapshot)
                 }
             case "cia":
                 Task {
-                    _ = Cytrus.shared.import(game: url)
-                    try await populateGames()
+                    let result = Cytrus.shared.import(game: url)
+                    
+                    var message = ""
+                    
+                    switch result {
+                    case .success:
+                        try await populateGames()
+                    case .errorFailedToOpenFile:
+                        message = "Failed to open file"
+                    case .errorFileNotFound:
+                        message = "File not found"
+                    case .errorAborted:
+                        message = "Aborted"
+                    case .errorInvalid:
+                        message = "Invalid"
+                    case .errorEncrypted:
+                        message = "Encrypted"
+                    @unknown default:
+                        fatalError()
+                    }
+                    
+                    if result != .success {
+                        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+                        alertController.addAction(.init(title: "Cancel", style: .cancel))
+                        self.present(alertController, animated: true)
+                    }
                 }
                 break
             default:

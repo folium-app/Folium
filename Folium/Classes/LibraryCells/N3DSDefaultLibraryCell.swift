@@ -124,7 +124,7 @@ class N3DSDefaultLibraryCell : UICollectionViewCell {
                     return
                 }
                 
-                let alertController = UIAlertController(title: "Delete Game", message: "Are you sure you want to delete \(self.game.title)?", preferredStyle: .alert)
+                let alertController = UIAlertController(title: "Delete", message: "Are you sure you want to delete \(self.game.title)?", preferredStyle: .alert)
                 alertController.addAction(.init(title: "Cancel", style: .cancel))
                 alertController.addAction(.init(title: "Delete", style: .destructive, handler: { _ in
                     Task {

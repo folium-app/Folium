@@ -17,14 +17,10 @@ enum Core : String, Codable, Hashable {
         
         var shortened: String {
             switch self {
-            case .gba:
-                "GBA"
-            case .n3ds:
-                "3DS"
-            case .nds:
-                "NDS"
-            case .nes:
-                "NES"
+            case .gba: "GBA"
+            case .n3ds: "3DS"
+            case .nds: "NDS"
+            case .nes: "NES"
             }
         }
     }
@@ -35,13 +31,20 @@ enum Core : String, Codable, Hashable {
     
     var console: Console {
         switch self {
-        case .cytrus:
-            .n3ds
-        case .grape:
-            .nds
-        case .kiwi:
-            .nes
+        case .cytrus: .n3ds
+        case .grape: .nds
+        case .kiwi: .nes
         }
+    }
+    
+    var isNintendo: Bool {
+        self == .cytrus || self == .grape || self == .kiwi
+    }
+    
+    var newButtonColors: [Skin.Button.`Type` : (UIColor, UIColor)] {
+        [
+            :
+        ]
     }
     
     var buttonColors: [VirtualControllerButton.ButtonType : (UIColor, UIColor)] {

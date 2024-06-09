@@ -49,29 +49,6 @@ class MetalLayer : UIView {
     }
 }
 
-class MetalView : UIView {
-    var metalLayer: MetalLayer!
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        metalLayer = .init()
-        metalLayer.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(metalLayer)
-        addConstraints([
-            metalLayer.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            metalLayer.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            metalLayer.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            metalLayer.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
-        ])
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-
 class EmulationScreensController : EmulationVirtualControllerController {
     var primaryScreen, secondaryScreen: UIView!
     fileprivate var visualEffectView: UIVisualEffectView!
@@ -92,7 +69,8 @@ class EmulationScreensController : EmulationVirtualControllerController {
     
     override func loadView() {
         if core == .cytrus {
-            primaryScreen = MetalView()
+            primaryScreen = MTKView(frame: UIScreen.main.bounds, device: device)
+            primaryScreen.isUserInteractionEnabled = true
             view = primaryScreen
         } else {
             super.loadView()

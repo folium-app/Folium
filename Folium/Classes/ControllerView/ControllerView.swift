@@ -8,20 +8,42 @@
 import Foundation
 import UIKit
 
-struct Skin : Codable {
-    struct Button : Codable {
-        let origin: CGPoint
-        let size: CGSize
-        let type: VirtualControllerButton.ButtonType
+struct Skin : Codable, Hashable {
+    struct Button : Codable, Hashable {
+        enum `Type` : Int, Codable, Hashable {
+            case north, east, south, west
+            case dpadUp, dpadDown, dpadLeft, dpadRight
+        }
+        
+        var useCustom: Bool // TODO: (jarrodnorwell) Add support for custom images
+        var vibrateWhenTapped: Bool
+        var vibrationStrength: Int 
+        
+        let x, y: Int
+        let width, height: Int
+        let type: `Type`
+        
+        func image(for core: Core) -> UIImage? {
+            switch type {
+            case .north: .init(systemName: core.isNintendo ? "x.circle.fill" : "triangle.circle.fill")
+            case .east: .init(systemName: core.isNintendo ? "a.circle.fill" : "circle.circle.fill")
+            case .south: .init(systemName: core.isNintendo ? "b.circle.fill" : "xmark.circle.fill")
+            case .west: .init(systemName: core.isNintendo ? "y.circle.fill" : "square.circle.fill")
+            case .dpadUp: .init(systemName: "arrowtriangle.up.circle.fill")
+            case .dpadDown: .init(systemName: "arrowtriangle.down.circle.fill")
+            case .dpadLeft: .init(systemName: "arrowtriangle.left.circle.fill")
+            case .dpadRight: .init(systemName: "arrowtriangle.right.circle.fill")
+            }
+        }
     }
     
-    struct Screen : Codable {
-        let origin: CGPoint
-        let size: CGSize
+    struct Screen : Codable, Hashable {
+        let x, y: Int
+        let width, height: Int
     }
     
-    struct Device : Codable {
-        enum Orientation : Int, Codable {
+    struct Device : Codable, Hashable {
+        enum Orientation : Int, Codable, Hashable {
             case portrait, landscape
         }
         
@@ -30,6 +52,10 @@ struct Skin : Codable {
         
         let buttons: [Button]
         let screens: [Screen]
+        
+        static func == (lhs: Skin.Device, rhs: Skin.Device) -> Bool {
+            lhs.device == rhs.device
+        }
     }
     
     let author, description, name: String
@@ -38,25 +64,57 @@ struct Skin : Codable {
     let devices: [Device]
 }
 
-class ControllerView : UIView {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+var machine: String {
+    var utsnameInstance = utsname()
+    uname(&utsnameInstance)
+    let optionalString: String? = withUnsafePointer(to: &utsnameInstance.machine) {
+        $0.withMemoryRebound(to: CChar.self, capacity: 1) {
+            ptr in String.init(validatingUTF8: ptr)
+        }
+    }
+    return optionalString ?? "N/A"
+}
+
+class ControllerView : PassthroughView, ControllerButtonDelegate {
+    var device: Skin.Device
+    var skin: Skin
+    init(with device: Skin.Device, skin: Skin) {
+        self.device = device
+        self.skin = skin
+        super.init(frame: .zero)
         
-        _ = Skin(author: "Antique", description: "A basic skin for Game Boy Advance", name: "GBA Skin", core: .grape, devices: [
-            .init(device: "iPhone16,2", orientation: .portrait, buttons: [
-                .init(origin: .init(x: 100, y: 100), size: .init(width: 60, height: 60), type: .a)
-            ], screens: [
-                .init(origin: .init(x: 0, y: 0), size: .init(width: 0, height: 0))
-            ]),
-            .init(device: "iPhone16,2", orientation: .landscape, buttons: [
-                .init(origin: .init(x: 100, y: 100), size: .init(width: 60, height: 60), type: .a)
-            ], screens: [
-                .init(origin: .init(x: 0, y: 0), size: .init(width: 0, height: 0))
-            ])
-        ])
+        device.buttons.forEach { button in
+            let controllerButton = ControllerButton(with: button, colors: skin.core.newButtonColors[button.type] ?? (.black, .white), delegate: self, skin: skin)
+            controllerButton.frame = .init(x: button.x, y: button.y, width: button.width, height: button.height)
+            addSubview(controllerButton)
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func orientationChanged(with device: Skin.Device) {
+        subviews.forEach { subview in
+            subview.removeFromSuperview()
+        }
+        
+        device.buttons.forEach { button in
+            let controllerButton = ControllerButton(with: button, colors: skin.core.newButtonColors[button.type] ?? (.black, .white), delegate: self, skin: skin)
+            controllerButton.frame = .init(x: button.x, y: button.y, width: button.width, height: button.height)
+            self.addSubview(controllerButton)
+        }
+    }
+    
+    func touchBegan(with type: Skin.Button.`Type`) {
+        
+    }
+    
+    func touchEnded(with type: Skin.Button.`Type`) {
+        
+    }
+    
+    func touchMoved(with type: Skin.Button.`Type`) {
+        
     }
 }

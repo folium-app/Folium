@@ -55,7 +55,9 @@ class LibraryManager {
     }
     
     // TODO: Add cores to populate additional game information such as the icon, publisher, region, size and title
-    func games(_ core: Core, _ urls: [URL]) {
+    func games(_ core: Core, _ urls: [URL]) -> [AnyHashable] {
+        var gameArr: [AnyHashable] = []
+        
         urls.forEach { url in
             guard let nameWithoutExtension = url.lastPathComponent.components(separatedBy: ".").first else {
                 return
@@ -67,38 +69,64 @@ class LibraryManager {
                 if ["app", "cia"].contains(url.pathExtension.lowercased()) {
                     let title = cytrus.information(url).title
                     if !title.isEmpty {
-                        cytrusManager.library.add(.init(core: core, fileDetails: .init(extension: url.pathExtension.lowercased(), name: url.lastPathComponent,
-                            nameWithoutExtension: nameWithoutExtension, url: url), title: title))
+                        let game: CytrusManager.Library.Game = .init(core: core, fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                                                                    name: url.lastPathComponent,
+                                                                                                    nameWithoutExtension: nameWithoutExtension,
+                                                                                                    url: url), title: title)
+                        
+                        if !cytrusManager.library.games.contains(game) {
+                            cytrusManager.library.add(game)
+                            gameArr.append(game)
+                        }
                     }
                 } else {
-                    cytrusManager.library.add(.init(core: core, fileDetails: .init(extension: url.pathExtension.lowercased(), name: url.lastPathComponent,
-                                                                                   nameWithoutExtension: nameWithoutExtension, url: url), title: nameWithoutExtension))
+                    let game: CytrusManager.Library.Game = .init(core: core, fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                                                                name: url.lastPathComponent,
+                                                                                                nameWithoutExtension: nameWithoutExtension,
+                                                                                                url: url), title: nameWithoutExtension)
+                    
+                    if !cytrusManager.library.games.contains(game) {
+                        cytrusManager.library.add(game)
+                        gameArr.append(game)
+                    }
                 }
             case .grape:
-                grapeManager.library.add(.init(core: core, fileDetails: .init(extension: url.pathExtension.lowercased(), name: url.lastPathComponent,
-                    nameWithoutExtension: nameWithoutExtension,
-                    url: url), title: nameWithoutExtension))
+                let game: GrapeManager.Library.Game = .init(core: core, fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                                                           name: url.lastPathComponent,
+                                                                                           nameWithoutExtension: nameWithoutExtension,
+                                                                                           url: url), title: nameWithoutExtension)
+                
+                if !grapeManager.library.games.contains(game) {
+                    grapeManager.library.add(game)
+                    gameArr.append(game)
+                }
             case .kiwi:
-                kiwiManager.library.add(.init(core: core, fileDetails: .init(extension: url.pathExtension.lowercased(), name: url.lastPathComponent,
-                    nameWithoutExtension: nameWithoutExtension,
-                    url: url), title: nameWithoutExtension))
+                let game: KiwiManager.Library.Game = .init(core: core, fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                                                          name: url.lastPathComponent,
+                                                                                          nameWithoutExtension: nameWithoutExtension,
+                                                                                          url: url), title: nameWithoutExtension)
+                if !kiwiManager.library.games.contains(game) {
+                    kiwiManager.library.add(game)
+                    gameArr.append(game)
+                }
             }
         }
+        
+        return gameArr
     }
     
     func library() throws {
-        cytrusManager.library.games.removeAll()
         var cytrusCrawler = try crawler(.cytrus)
         cytrusCrawler.urls.append(contentsOf: Cytrus.shared.installed())
         cytrusCrawler.urls.append(contentsOf: Cytrus.shared.system())
-        games(cytrusCrawler.core, cytrusCrawler.urls)
+        _ = games(cytrusCrawler.core, cytrusCrawler.urls)
         
         grapeManager.library.games.removeAll()
         let grapeCrawler = try crawler(.grape)
-        games(grapeCrawler.core, grapeCrawler.urls)
+        _ = games(grapeCrawler.core, grapeCrawler.urls)
         
         kiwiManager.library.games.removeAll()
         let kiwiCrawler = try crawler(.kiwi)
-        games(kiwiCrawler.core, kiwiCrawler.urls)
+        _ = games(kiwiCrawler.core, kiwiCrawler.urls)
     }
 }
