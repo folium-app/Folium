@@ -215,6 +215,67 @@ class LibraryController : UICollectionViewController {
             return
         }
         
+        func defaultSkin() -> Skin {
+            let bounds = UIScreen.main.bounds
+            let width = bounds.width
+            let height = bounds.height
+            
+            let safeAreaInsets = UIApplication.shared.windows[0].safeAreaInsets
+            
+            let buttons: [Skin.Button] = [
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 80, y: height-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadUp),
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 80, y: height-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadDown),
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 20, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadLeft),
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 140, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadRight),
+            //
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: width-140, y: height-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .north),
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: width-80, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .east),
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: width-140, y: height-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .south),
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: width-200, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .west)
+            ]
+            
+            let buttonsLandscape: [Skin.Button] = [
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 80, y: width-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadUp),
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 80, y: width-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadDown),
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 20, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadLeft),
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 140, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadRight),
+            //
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: height-140, y: width-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .north),
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: height-80, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .east),
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: height-140, y: width-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .south),
+                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: height-200, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .west)
+            ]
+            
+            let thumbsticks: [Skin.Thumbstick] = [
+                .init(x: 20, y: height-(180+safeAreaInsets.bottom), width: 180, height: 180, type: .left),
+                .init(x: width-200, y: height-(180+safeAreaInsets.bottom), width: 180, height: 180, type: .right)
+            ]
+            
+            let thumbsticksLandscape: [Skin.Thumbstick] = [
+                .init(x: 20, y: width-(180+safeAreaInsets.bottom), width: 180, height: 180, type: .left),
+                .init(x: height-200, y: width-(180+safeAreaInsets.bottom), width: 180, height: 180, type: .right)
+            ]
+            //
+            let devices: [Skin.Device] = [
+                .init(device: machine, orientation: .portrait, buttons: buttons, screens: [
+                    .init(x: 0, y: safeAreaInsets.top, width: width, height: (width / 1.67) + (width / 1.33))
+                ], thumbsticks: thumbsticks),
+                .init(device: machine, orientation: .landscape, buttons: buttonsLandscape, screens: [
+                    .init(x: 0, y: 0, width: height, height: width)
+                ], thumbsticks: thumbsticksLandscape)
+            ]
+            //
+            return Skin(author: "Antique", description: "Default skin for the Nintendo 3DS", name: "Cytrus Skin", core: .cytrus, devices: devices)
+        }
+        
+        do {
+            let data = try JSONEncoder().encode(defaultSkin())
+            
+            let string = NSString(data: data, encoding: NSUTF8StringEncoding)
+            try string?.write(to: try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+                .appendingPathComponent("Skin.json", conformingTo: .fileURL), atomically: false, encoding: NSUTF8StringEncoding)
+        } catch { }
+        
         switch game {
         case let missingFile as MissingFile:
             self.importURL = missingFile.fileDetails.path
@@ -231,7 +292,7 @@ class LibraryController : UICollectionViewController {
             present(alertController, animated: true)
             break
         case let cytrusGame as CytrusManager.Library.Game:
-            let cytrusController = CytrusEmulationController(cytrusGame.core, cytrusGame)
+            let cytrusController = CytrusDefaultViewController(with: cytrusGame, skin: defaultSkin()) // CytrusEmulationController(cytrusGame.core, cytrusGame)
             cytrusController.modalPresentationStyle = .fullScreen
             present(cytrusController, animated: true)
         case let grapeGame as GrapeManager.Library.Game:

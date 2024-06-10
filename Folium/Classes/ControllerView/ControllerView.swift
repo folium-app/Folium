@@ -10,17 +10,17 @@ import UIKit
 
 struct Skin : Codable, Hashable {
     struct Button : Codable, Hashable {
-        enum `Type` : Int, Codable, Hashable {
-            case north, east, south, west
-            case dpadUp, dpadDown, dpadLeft, dpadRight
+        enum `Type` : String, Codable, Hashable {
+            case north = "north", east = "east", south = "south", west = "west"
+            case dpadUp = "dpadUp", dpadDown = "dpadDown", dpadLeft = "dpadLeft", dpadRight = "dpadRight"
+            case l = "l", zl = "zl", r = "r", zr = "zr"
         }
         
-        var useCustom: Bool // TODO: (jarrodnorwell) Add support for custom images
         var vibrateWhenTapped: Bool
         var vibrationStrength: Int 
         
-        let x, y: Int
-        let width, height: Int
+        let x, y: Double
+        let width, height: Double
         let type: `Type`
         
         func image(for core: Core) -> UIImage? {
@@ -33,18 +33,52 @@ struct Skin : Codable, Hashable {
             case .dpadDown: .init(systemName: "arrowtriangle.down.circle.fill")
             case .dpadLeft: .init(systemName: "arrowtriangle.left.circle.fill")
             case .dpadRight: .init(systemName: "arrowtriangle.right.circle.fill")
+            case .l:
+                if #available(iOS 17, *) {
+                    .init(systemName: core.isNintendo ? "l.button.roundedbottom.horizontal.fill" : "l1.button.roundedbottom.horizontal.fill")
+                } else {
+                    .init(systemName: core.isNintendo ? "l.rectangle.roundedbottom.fill" : "l1.rectangle.roundedbottom.fill")
+                }
+            case .zl:
+                if #available(iOS 17, *) {
+                    .init(systemName: core.isNintendo ? "zl.button.roundedbottom.horizontal.fill" : "l2.button.roundedbottom.horizontal.fill")
+                } else {
+                    .init(systemName: core.isNintendo ? "zl.rectangle.roundedbottom.fill" :"l2.rectangle.roundedbottom.fill")
+                }
+            case .r:
+                if #available(iOS 17, *) {
+                    .init(systemName: core.isNintendo ? "r.button.roundedbottom.horizontal.fill" : "r1.button.roundedbottom.horizontal.fill")
+                } else {
+                    .init(systemName: core.isNintendo ? "r.rectangle.roundedbottom.fill" : "r1.rectangle.roundedbottom.fill")
+                }
+            case .zr:
+                if #available(iOS 17, *) {
+                    .init(systemName: core.isNintendo ? "zr.button.roundedbottom.horizontal.fill" : "r2.button.roundedbottom.horizontal.fill")
+                } else {
+                    .init(systemName: core.isNintendo ? "zr.rectangle.roundedbottom.fill" :"r2.rectangle.roundedbottom.fill")
+                }
             }
         }
     }
     
     struct Screen : Codable, Hashable {
-        let x, y: Int
-        let width, height: Int
+        let x, y: Double
+        let width, height: Double
+    }
+    
+    struct Thumbstick : Codable, Hashable {
+        enum `Type` : String, Codable, Hashable {
+            case left = "left", right = "right"
+        }
+        
+        let x, y: Double
+        let width, height: Double
+        let type: `Type`
     }
     
     struct Device : Codable, Hashable {
-        enum Orientation : Int, Codable, Hashable {
-            case portrait, landscape
+        enum Orientation : String, Codable, Hashable {
+            case portrait = "portrait", landscape = "landscape"
         }
         
         let device: String
@@ -52,6 +86,7 @@ struct Skin : Codable, Hashable {
         
         let buttons: [Button]
         let screens: [Screen]
+        let thumbsticks: [Thumbstick]
         
         static func == (lhs: Skin.Device, rhs: Skin.Device) -> Bool {
             lhs.device == rhs.device
@@ -75,16 +110,26 @@ var machine: String {
     return optionalString ?? "N/A"
 }
 
-class ControllerView : PassthroughView, ControllerButtonDelegate {
+class ControllerView : PassthroughView {
     var device: Skin.Device
+    var delegates: (button: ControllerButtonDelegate, thumbstick: ControllerThumbstickDelegate)
     var skin: Skin
-    init(with device: Skin.Device, skin: Skin) {
+    init(with device: Skin.Device, delegates: (button: ControllerButtonDelegate, thumbstick: ControllerThumbstickDelegate), skin: Skin) {
         self.device = device
+        self.delegates = delegates
         self.skin = skin
         super.init(frame: .zero)
         
+        device.thumbsticks.forEach { thumbstick in
+            let controllerThumbstick = ControllerThumbstick(with: thumbstick, delegate: delegates.thumbstick, skin: skin)
+            controllerThumbstick.frame = .init(x: thumbstick.x, y: thumbstick.y, width: thumbstick.width, height: thumbstick.height)
+            controllerThumbstick.layer.cornerCurve = .continuous
+            controllerThumbstick.layer.cornerRadius = CGFloat(thumbstick.height / 2)
+            addSubview(controllerThumbstick)
+        }
+        
         device.buttons.forEach { button in
-            let controllerButton = ControllerButton(with: button, colors: skin.core.newButtonColors[button.type] ?? (.black, .white), delegate: self, skin: skin)
+            let controllerButton = ControllerButton(with: button, colors: skin.core.newButtonColors[button.type] ?? (.black, .white), delegate: delegates.button, skin: skin)
             controllerButton.frame = .init(x: button.x, y: button.y, width: button.width, height: button.height)
             addSubview(controllerButton)
         }
@@ -99,22 +144,18 @@ class ControllerView : PassthroughView, ControllerButtonDelegate {
             subview.removeFromSuperview()
         }
         
-        device.buttons.forEach { button in
-            let controllerButton = ControllerButton(with: button, colors: skin.core.newButtonColors[button.type] ?? (.black, .white), delegate: self, skin: skin)
-            controllerButton.frame = .init(x: button.x, y: button.y, width: button.width, height: button.height)
-            self.addSubview(controllerButton)
+        device.thumbsticks.forEach { thumbstick in
+            let controllerThumbstick = ControllerThumbstick(with: thumbstick, delegate: delegates.thumbstick, skin: skin)
+            controllerThumbstick.frame = .init(x: thumbstick.x, y: thumbstick.y, width: thumbstick.width, height: thumbstick.height)
+            controllerThumbstick.layer.cornerCurve = .continuous
+            controllerThumbstick.layer.cornerRadius = CGFloat(thumbstick.height / 2)
+            addSubview(controllerThumbstick)
         }
-    }
-    
-    func touchBegan(with type: Skin.Button.`Type`) {
         
-    }
-    
-    func touchEnded(with type: Skin.Button.`Type`) {
-        
-    }
-    
-    func touchMoved(with type: Skin.Button.`Type`) {
-        
+        device.buttons.forEach { button in
+            let controllerButton = ControllerButton(with: button, colors: skin.core.newButtonColors[button.type] ?? (.black, .white), delegate: delegates.button, skin: skin)
+            controllerButton.frame = .init(x: button.x, y: button.y, width: button.width, height: button.height)
+            addSubview(controllerButton)
+        }
     }
 }

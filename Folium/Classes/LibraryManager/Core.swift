@@ -42,9 +42,27 @@ enum Core : String, Codable, Hashable {
     }
     
     var newButtonColors: [Skin.Button.`Type` : (UIColor, UIColor)] {
-        [
-            :
-        ]
+        switch self {
+        case .cytrus:
+            [
+                .dpadUp : (.black, .white),
+                .dpadDown : (.black, .white),
+                .dpadLeft : (.black, .white),
+                .dpadRight : (.black, .white),
+                .east : (.systemRed, .white),
+                .south : (.systemYellow, .white),
+                .north : (.systemBlue, .white),
+                .west : (.systemGreen, .white),
+            ]
+        case .grape:
+            [
+                :
+            ]
+        case .kiwi:
+            [
+                :
+            ]
+        }
     }
     
     var buttonColors: [VirtualControllerButton.ButtonType : (UIColor, UIColor)] {

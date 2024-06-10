@@ -450,7 +450,7 @@ class CytrusManager {
         ]
         
         if isInGame {
-            guard let viewController = viewController as? CytrusEmulationController else {
+            guard let viewController = viewController as? CytrusDefaultViewController else {
                 return .init(children: children.reversed())
             }
             

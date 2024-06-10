@@ -465,28 +465,19 @@
 		E6B6D4712BFCC313002E5577 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E6B6D4702BFCC313002E5577 /* libzstd */; };
 		E6B6D4732BFCC313002E5577 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = E6B6D4722BFCC313002E5577 /* OpenSSL */; };
 		E6C2C0E42BFDABE600547022 /* CytrusEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C2C0E22BFDABE600547022 /* CytrusEmulationController.swift */; };
-		E6C2C0E52BFDCE7800547022 /* libCytrus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6CE1A2BFCA75A002E5577 /* libCytrus.a */; platformFilter = ios; };
 		E6C2C0EA2BFDCE9B00547022 /* MinimalRoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C2C0E82BFDCE9B00547022 /* MinimalRoundedTextField.swift */; };
 		E6CADBEB2BF8A0E400ACBA87 /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E6CADBEA2BF8A0E400ACBA87 /* SDL */; };
 		E6CB59602BFB800200C3A95E /* KiwiEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6CB595F2BFB800200C3A95E /* KiwiEmulationController.swift */; };
 		E6E0F7FE2C10693000A8C308 /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E0F7FD2C10693000A8C308 /* Comparable.swift */; };
 		E6E24AE02C007ADC00DE5095 /* VirtualControllerThumbstick.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E24ADF2C007ADC00DE5095 /* VirtualControllerThumbstick.swift */; };
+		E6E4CF2F2C16BE8D00FF64D2 /* ControllerThumbstick.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E4CF2E2C16BE8D00FF64D2 /* ControllerThumbstick.swift */; };
+		E6E4CF312C16D00500FF64D2 /* Skin.json in Resources */ = {isa = PBXBuildFile; fileRef = E6E4CF302C16D00500FF64D2 /* Skin.json */; };
 		E6E820B42C15822300620256 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6E820B32C15822300620256 /* MoltenVK.xcframework */; };
 		E6E820B62C15828500620256 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6E820B32C15822300620256 /* MoltenVK.xcframework */; };
 		E6E820B72C15828500620256 /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6E820B32C15822300620256 /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6E820B92C158B3300620256 /* ControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E820B82C158B3300620256 /* ControllerButton.swift */; };
 		E6E820BC2C158D9C00620256 /* CytrusDefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E820BB2C158D9C00620256 /* CytrusDefaultViewController.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		E6C2C0E62BFDCE7800547022 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E6477EFB2BEF48C30062975D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E6B6CE192BFCA75A002E5577;
-			remoteInfo = Cytrus;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		E6B6CE182BFCA75A002E5577 /* CopyFiles */ = {
@@ -1061,6 +1052,8 @@
 		E6CB595F2BFB800200C3A95E /* KiwiEmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiwiEmulationController.swift; sourceTree = "<group>"; };
 		E6E0F7FD2C10693000A8C308 /* Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comparable.swift; sourceTree = "<group>"; };
 		E6E24ADF2C007ADC00DE5095 /* VirtualControllerThumbstick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualControllerThumbstick.swift; sourceTree = "<group>"; };
+		E6E4CF2E2C16BE8D00FF64D2 /* ControllerThumbstick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerThumbstick.swift; sourceTree = "<group>"; };
+		E6E4CF302C16D00500FF64D2 /* Skin.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Skin.json; sourceTree = "<group>"; };
 		E6E820B32C15822300620256 /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
 		E6E820B82C158B3300620256 /* ControllerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerButton.swift; sourceTree = "<group>"; };
 		E6E820BB2C158D9C00620256 /* CytrusDefaultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CytrusDefaultViewController.swift; sourceTree = "<group>"; };
@@ -1082,7 +1075,6 @@
 				E6B6D45D2BFCAA89002E5577 /* libavfilter.xcframework in Frameworks */,
 				E6B6D4612BFCAA8A002E5577 /* libavutil.xcframework in Frameworks */,
 				E6B6D4652BFCAA8A002E5577 /* libswscale.xcframework in Frameworks */,
-				E6C2C0E52BFDCE7800547022 /* libCytrus.a in Frameworks */,
 				E6467F232BFB9AAA009D8A73 /* Kiwi in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2235,6 +2227,7 @@
 				E6477F112BEF48C40062975D /* LaunchScreen.storyboard */,
 				E6CB595B2BFB4B1300C3A95E /* PrivacyInfo.xcprivacy */,
 				E608F1752BF771B50078402D /* Shader.metal */,
+				E6E4CF302C16D00500FF64D2 /* Skin.json */,
 			);
 			path = Folium;
 			sourceTree = "<group>";
@@ -2315,6 +2308,7 @@
 			children = (
 				E6E820B82C158B3300620256 /* ControllerButton.swift */,
 				E68BBA522C0EF5650065C43F /* ControllerView.swift */,
+				E6E4CF2E2C16BE8D00FF64D2 /* ControllerThumbstick.swift */,
 			);
 			path = ControllerView;
 			sourceTree = "<group>";
@@ -2791,7 +2785,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				E6C2C0E72BFDCE7800547022 /* PBXTargetDependency */,
 			);
 			name = Folium;
 			packageProductDependencies = (
@@ -2875,6 +2868,7 @@
 			files = (
 				E6477F102BEF48C40062975D /* Assets.xcassets in Resources */,
 				E6477F132BEF48C40062975D /* Base in Resources */,
+				E6E4CF312C16D00500FF64D2 /* Skin.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2902,6 +2896,7 @@
 				E608F1692BF74D330078402D /* VirtualControllerView.swift in Sources */,
 				E6A94D482BF60EF2001CC55F /* Bruno.swift in Sources */,
 				E6E24AE02C007ADC00DE5095 /* VirtualControllerThumbstick.swift in Sources */,
+				E6E4CF2F2C16BE8D00FF64D2 /* ControllerThumbstick.swift in Sources */,
 				E69313552BF5001200CCE717 /* Core.swift in Sources */,
 				E6631A442BF4AF5A007AE66E /* KiwiManager.swift in Sources */,
 				E6631A472BF4AFBA007AE66E /* CytrusManager.swift in Sources */,
@@ -3313,15 +3308,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		E6C2C0E72BFDCE7800547022 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = E6B6CE192BFCA75A002E5577 /* Cytrus */;
-			targetProxy = E6C2C0E62BFDCE7800547022 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
 		E6477F112BEF48C40062975D /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -3460,7 +3446,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Folium/Folium.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folium/Info.plist;
@@ -3477,7 +3463,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4;
+				"OTHER_LDFLAGS[sdk=iphoneos*]" = "-lCytrus";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -3497,7 +3484,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Folium/Folium.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folium/Info.plist;
@@ -3514,7 +3501,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.4;
+				"OTHER_LDFLAGS[sdk=iphoneos*]" = "-lCytrus";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
