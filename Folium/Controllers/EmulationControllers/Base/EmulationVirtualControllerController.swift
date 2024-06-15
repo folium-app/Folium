@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 13/3/2024.
 //
 
+/*
 import Foundation
 import GameController
 import UIKit
@@ -99,3 +100,4 @@ class EmulationVirtualControllerController : UIViewController, VirtualController
         virtualControllerView.unfade()
     }
 }
+*/

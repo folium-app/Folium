@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 7/6/2024.
 //
 
+#if canImport(Cytrus)
 import Cytrus
 import Foundation
 import UIKit
@@ -108,3 +109,4 @@ class KeyboardController : UIViewController, UITextFieldDelegate {
         ])
     }
 }
+#endif

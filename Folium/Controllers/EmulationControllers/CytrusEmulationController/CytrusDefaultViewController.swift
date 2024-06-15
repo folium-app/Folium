@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 9/6/2024.
 //
 
+#if canImport(Cytrus)
 import Cytrus
 import Foundation
 import GameController
@@ -17,9 +18,9 @@ class CytrusDefaultViewController : UIViewController {
     
     let cytrus: Cytrus = .shared
     
-    fileprivate var game: AnyHashable
+    fileprivate var game: AnyHashableSendable
     fileprivate var skin: Skin
-    init(with game: AnyHashable, skin: Skin) {
+    init(with game: AnyHashableSendable, skin: Skin) {
         self.game = game
         self.skin = skin
         super.init(nibName: nil, bundle: nil)
@@ -43,6 +44,11 @@ class CytrusDefaultViewController : UIViewController {
         }
         
         mtkView = MTKView(frame: .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height), device: MTLCreateSystemDefaultDevice())
+        if let cornerRadius = screen.cornerRadius, cornerRadius > 0 {
+            mtkView.clipsToBounds = true
+            mtkView.layer.cornerCurve = .continuous
+            mtkView.layer.cornerRadius = cornerRadius
+        }
         view.addSubview(mtkView)
         
         cytrus.setMTKView(mtkView, mtkView.frame.size)
@@ -52,7 +58,11 @@ class CytrusDefaultViewController : UIViewController {
         
         controllerView = .init(with: device, delegates: (button: self, thumbstick: self), skin: skin)
         controllerView.translatesAutoresizingMaskIntoConstraints = false
+        if let alpha = device.alpha {
+            controllerView.alpha = alpha
+        }
         view.addSubview(controllerView)
+        view.bringSubviewToFront(controllerView)
         
         controllerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         controllerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -133,7 +143,7 @@ class CytrusDefaultViewController : UIViewController {
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        let orientations = skin.devices.reduce(into: [Skin.Device.Orientation](), { $0.append($1.orientation) })
+        let orientations = skin.devices.reduce(into: [Orientation](), { $0.append($1.orientation) })
         
         let containsPortrait = orientations.contains(.portrait)
         let containsLandscape = orientations.contains(.landscape)
@@ -179,16 +189,6 @@ class CytrusDefaultViewController : UIViewController {
 
 extension CytrusDefaultViewController {
     func controllerDidConnect(_ notification: Notification) {
-        guard let controller = notification.object as? GCController else {
-            return
-        }
-        
-        UIView.animate(withDuration: 0.2) {
-            self.controllerView.alpha = 0
-        }
-    }
-    
-    func controllerDidDisconnect(_ notification: Notification) {
         guard let controller = notification.object as? GCController, let extendedGamepad = controller.extendedGamepad else {
             return
         }
@@ -209,13 +209,13 @@ extension CytrusDefaultViewController {
             pressed ? self.touchBegan(with: .dpadRight) : self.touchEnded(with: .dpadRight)
         }
         
-        // extendedGamepad.buttonOptions?.pressedChangedHandler = { button, value, pressed in
-        //     pressed ? self.touchDown(.minus) : self.touchUpInside(.minus)
-        // }
-        //
-        // extendedGamepad.buttonMenu.pressedChangedHandler = { button, value, pressed in
-        //     pressed ? self.touchDown(.plus) : self.touchUpInside(.plus)
-        // }
+        extendedGamepad.buttonOptions?.pressedChangedHandler = { button, value, pressed in
+            pressed ? self.touchBegan(with: .select) : self.touchEnded(with: .select)
+        }
+        
+        extendedGamepad.buttonMenu.pressedChangedHandler = { button, value, pressed in
+            pressed ? self.touchBegan(with: .start) : self.touchEnded(with: .start)
+        }
         
         extendedGamepad.buttonA.pressedChangedHandler = { button, value, pressed in
             pressed ? self.touchBegan(with: .east) : self.touchEnded(with: .east)
@@ -258,11 +258,17 @@ extension CytrusDefaultViewController {
         }
         
         UIView.animate(withDuration: 0.2) {
+            self.controllerView.alpha = 0
+        }
+    }
+    
+    func controllerDidDisconnect(_ notification: Notification) {
+        UIView.animate(withDuration: 0.2) {
             self.controllerView.alpha = 1
         }
     }
     
-    func orientationForCurrentOrientation() -> Skin.Device.Orientation {
+    func orientationForCurrentOrientation() -> Orientation {
         switch UIApplication.shared.statusBarOrientation {
         case .unknown, .portrait, .portraitUpsideDown:
             .portrait
@@ -281,7 +287,7 @@ extension CytrusDefaultViewController {
 }
 
 extension CytrusDefaultViewController : ControllerButtonDelegate {
-    func touchBegan(with type: Skin.Button.`Type`) {
+    func touchBegan(with type: Button.`Type`) {
         switch type {
         case .dpadUp:
             cytrus.virtualControllerButtonDown(.directionalPadUp)
@@ -291,6 +297,12 @@ extension CytrusDefaultViewController : ControllerButtonDelegate {
             cytrus.virtualControllerButtonDown(.directionalPadLeft)
         case .dpadRight:
             cytrus.virtualControllerButtonDown(.directionalPadRight)
+        case .select:
+            cytrus.virtualControllerButtonDown(.select)
+        case .start:
+            cytrus.virtualControllerButtonDown(.start)
+        case .menu:
+            cytrus.virtualControllerButtonDown(.home)
         case .east:
             cytrus.virtualControllerButtonDown(.A)
         case .south:
@@ -312,7 +324,7 @@ extension CytrusDefaultViewController : ControllerButtonDelegate {
         }
     }
     
-    func touchEnded(with type: Skin.Button.`Type`) {
+    func touchEnded(with type: Button.`Type`) {
         switch type {
         case .dpadUp:
             cytrus.virtualControllerButtonUp(.directionalPadUp)
@@ -322,6 +334,12 @@ extension CytrusDefaultViewController : ControllerButtonDelegate {
             cytrus.virtualControllerButtonUp(.directionalPadLeft)
         case .dpadRight:
             cytrus.virtualControllerButtonUp(.directionalPadRight)
+        case .select:
+            cytrus.virtualControllerButtonUp(.select)
+        case .start:
+            cytrus.virtualControllerButtonUp(.start)
+        case .menu:
+            cytrus.virtualControllerButtonUp(.home)
         case .east:
             cytrus.virtualControllerButtonUp(.A)
         case .south:
@@ -343,19 +361,20 @@ extension CytrusDefaultViewController : ControllerButtonDelegate {
         }
     }
     
-    func touchMoved(with type: Skin.Button.`Type`) {}
+    func touchMoved(with type: Button.`Type`) {}
 }
 
 extension CytrusDefaultViewController : ControllerThumbstickDelegate {
-    func touchBegan(with type: Skin.Thumbstick.`Type`, position: (x: Float, y: Float)) {
+    func touchBegan(with type: Thumbstick.`Type`, position: (x: Float, y: Float)) {
         cytrus.thumbstickMoved(type == .left ? .circlePad : .cStick, position.x, position.y)
     }
     
-    func touchEnded(with type: Skin.Thumbstick.`Type`, position: (x: Float, y: Float)) {
+    func touchEnded(with type: Thumbstick.`Type`, position: (x: Float, y: Float)) {
         cytrus.thumbstickMoved(type == .left ? .circlePad : .cStick, position.x, position.y)
     }
     
-    func touchMoved(with type: Skin.Thumbstick.`Type`, position: (x: Float, y: Float)) {
+    func touchMoved(with type: Thumbstick.`Type`, position: (x: Float, y: Float)) {
         cytrus.thumbstickMoved(type == .left ? .circlePad : .cStick, position.x, position.y)
     }
 }
+#endif

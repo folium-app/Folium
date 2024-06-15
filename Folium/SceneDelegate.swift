@@ -5,7 +5,10 @@
 //  Created by Jarrod Norwell on 11/5/2024.
 //
 
+#if canImport(Cytrus)
 import Cytrus
+#endif
+import ZIPFoundation
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -15,8 +18,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        // print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path)
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path)
+        do {
+            try DirectoryManager.shared.createMissingDirectoriesInDocumentsDirectory()
+        } catch { }
+        Core.cores.forEach { core in
+            DirectoryManager.shared.scanDirectoriesForRequiredFiles(core)
+        }
+#if canImport(Cytrus)
         CytrusSettings.Settings.shared.setDefaultSettingsIfNeeded()
+#endif
         
         guard let windowScene = (scene as? UIWindowScene) else {
             return
@@ -27,41 +38,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         
-        //  w     h
-        // 430 x 932 - iPhone 15 Pro Max (iPhone16,2)
-        // let buttons: [Skin.Button] = [
-        //     .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 80, y: 839-180, width: 60, height: 60, type: .dpadUp),
-        //     .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 80, y: 839-60, width: 60, height: 60, type: .dpadDown),
-        //     .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 20, y: 839-120, width: 60, height: 60, type: .dpadLeft),
-        //     .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 140, y: 839-120, width: 60, height: 60, type: .dpadRight),
-        //
-        //     .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 430-140, y: 839-180, width: 60, height: 60, type: .north),
-        //     .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 430-80, y: 839-120, width: 60, height: 60, type: .east),
-        //     .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 430-140, y: 839-60, width: 60, height: 60, type: .south),
-        //     .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 430-200, y: 839-120, width: 60, height: 60, type: .west)
-        // ]
-        //
-        // let devices: [Skin.Device] = [
-        //     .init(device: "iPhone16,2", orientation: .portrait, buttons: buttons, screens: [
-        //         .init(x: 0, y: 0, width: 430, height: 258 + 322)
-        //     ], thumbsticks: [
-        //         .init(x: 20, y: 839-180, width: 180, height: 180, type: .left),
-        //         .init(x: 430-200, y: 839-180, width: 180, height: 180, type: .right)
-        //     ])
-        // ]
-        //
-        // let skin = Skin(author: "Antique", description: "A basic skin for Game Boy Advance", name: "GBA Skin", core: .cytrus, devices: devices)
+        if [AppStoreCheck.Environment.appStore, AppStoreCheck.Environment.testFlight].contains(AppStoreCheck.shared.currentAppEnvironment()) {
+            let defaultSkins = [("Cytrus", "mtcbxDeltaSkin3DS"), ("Grape", "mtcbxDeltaSkinDS")]
+            do {
+                try defaultSkins.forEach { defaultSkin in
+                    let destinationURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+                        .appendingPathComponent(defaultSkin.0, conformingTo: .folder)
+                        .appendingPathComponent("skins", conformingTo: .folder)
+                    
+                    if !FileManager.default.fileExists(atPath: destinationURL.appendingPathComponent(defaultSkin.1, conformingTo: .folder).path),
+                       let url = Bundle.main.url(forResource: defaultSkin.1, withExtension: "zip") {
+                        do {
+                            try FileManager.default.unzipItem(at: url, to: destinationURL)
+                        } catch { print(error, error.localizedDescription) }
+                    }
+                }
+            } catch { print(error, error.localizedDescription) }
+        }
         
-        window.rootViewController = ScanningController()
+        window.rootViewController = UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
         window.tintColor = .systemGreen
         window.makeKeyAndVisible()
-        
-        
-        if let url = Bundle.main.url(forResource: "Skin", withExtension: "json") {
-            if let skin = try? JSONDecoder().decode(Skin.self, from: Data(contentsOf: url)) {
-                print(skin)
-            }
-        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

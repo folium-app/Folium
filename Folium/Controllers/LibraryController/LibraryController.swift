@@ -5,15 +5,29 @@
 //  Created by Jarrod Norwell on 16/5/2024.
 //
 
+#if canImport(Cytrus)
 import Cytrus
+#endif
 import Foundation
 import Grape
 import UniformTypeIdentifiers
 import UIKit
 
+class AnyHashableSendable : Hashable, Identifiable, @unchecked Sendable {
+    let id = UUID()
+    
+    static func == (lhs: AnyHashableSendable, rhs: AnyHashableSendable) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
 class LibraryController : UICollectionViewController {
-    var dataSource: UICollectionViewDiffableDataSource<Core, AnyHashable>! = nil
-    var snapshot: NSDiffableDataSourceSnapshot<Core, AnyHashable>! = nil
+    var dataSource: UICollectionViewDiffableDataSource<Core, AnyHashableSendable>! = nil
+    var snapshot: NSDiffableDataSourceSnapshot<Core, AnyHashableSendable>! = nil
     
     var importURLCore: Core? = nil
     var importURL: URL? = nil
@@ -86,6 +100,7 @@ class LibraryController : UICollectionViewController {
                 .applyingSymbolConfiguration(.init(weight: .bold))
             
             switch sectionIdentifier {
+#if canImport(Cytrus)
             case .cytrus:
                 let button = UIButton(configuration: buttonConfiguration)
                 button.menu = CytrusManager.shared.menu(button, self)
@@ -94,6 +109,7 @@ class LibraryController : UICollectionViewController {
                 supplementaryView.accessories = [
                     .customView(configuration: .init(customView: button, placement: .trailing(), reservedLayoutWidth: .actual))
                 ]
+#endif
             case .grape:
                 let button = UIButton(configuration: buttonConfiguration)
                 button.menu = GrapeManager.shared.menu(button)
@@ -110,12 +126,16 @@ class LibraryController : UICollectionViewController {
                 supplementaryView.accessories = [
                     .customView(configuration: .init(customView: button, placement: .trailing(), reservedLayoutWidth: .actual))
                 ]
+            default:
+                supplementaryView.accessories = []
             }
         }
         
+#if canImport(Cytrus)
         let n3dsCellRegistration = UICollectionView.CellRegistration<N3DSDefaultLibraryCell, CytrusManager.Library.Game> { cell, indexPath, itemIdentifier in
             cell.set(itemIdentifier, self)
         }
+#endif
         
         let ndsCellRegistration = UICollectionView.CellRegistration<NDSDefaultLibraryCell, GrapeManager.Library.Game> { cell, indexPath, itemIdentifier in
             cell.set(itemIdentifier, self)
@@ -145,8 +165,10 @@ class LibraryController : UICollectionViewController {
             switch itemIdentifier {
             case let missingFile as MissingFile:
                 collectionView.dequeueConfiguredReusableCell(using: missingFilesCellRegistration, for: indexPath, item: missingFile)
+#if canImport(Cytrus)
             case let cytrusGame as CytrusManager.Library.Game:
                 collectionView.dequeueConfiguredReusableCell(using: n3dsCellRegistration, for: indexPath, item: cytrusGame)
+#endif
             case let grapeGame as GrapeManager.Library.Game:
                 if grapeGame.gameType == .nds {
                     collectionView.dequeueConfiguredReusableCell(using: ndsCellRegistration, for: indexPath, item: grapeGame)
@@ -175,8 +197,9 @@ class LibraryController : UICollectionViewController {
         snapshot = .init()
         snapshot.appendSections(Core.cores)
         Core.cores.forEach { core in
-            var items: [AnyHashable] = []
+            var items: [AnyHashableSendable]
             switch core {
+#if canImport(Cytrus)
             case .cytrus:
                 LibraryManager.shared.cytrusManager.library.missingFiles.removeAll()
                 DirectoryManager.shared.scanDirectoriesForRequiredFiles(core)
@@ -185,6 +208,7 @@ class LibraryController : UICollectionViewController {
                 } else {
                     LibraryManager.shared.cytrusManager.library.games
                 }
+#endif
             case .grape:
                 LibraryManager.shared.grapeManager.library.missingFiles.removeAll()
                 DirectoryManager.shared.scanDirectoriesForRequiredFiles(core)
@@ -201,6 +225,8 @@ class LibraryController : UICollectionViewController {
                 } else {
                     LibraryManager.shared.kiwiManager.library.games
                 }
+            default:
+                items = []
             }
             
             snapshot.appendItems(items, toSection: core)
@@ -214,67 +240,6 @@ class LibraryController : UICollectionViewController {
         guard let game = dataSource.itemIdentifier(for: indexPath) else {
             return
         }
-        
-        func defaultSkin() -> Skin {
-            let bounds = UIScreen.main.bounds
-            let width = bounds.width
-            let height = bounds.height
-            
-            let safeAreaInsets = UIApplication.shared.windows[0].safeAreaInsets
-            
-            let buttons: [Skin.Button] = [
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 80, y: height-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadUp),
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 80, y: height-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadDown),
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 20, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadLeft),
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 140, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadRight),
-            //
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: width-140, y: height-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .north),
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: width-80, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .east),
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: width-140, y: height-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .south),
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: width-200, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .west)
-            ]
-            
-            let buttonsLandscape: [Skin.Button] = [
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 80, y: width-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadUp),
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 80, y: width-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadDown),
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 20, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadLeft),
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: 140, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadRight),
-            //
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: height-140, y: width-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .north),
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: height-80, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .east),
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: height-140, y: width-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .south),
-                .init(vibrateWhenTapped: true, vibrationStrength: 3, x: height-200, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .west)
-            ]
-            
-            let thumbsticks: [Skin.Thumbstick] = [
-                .init(x: 20, y: height-(180+safeAreaInsets.bottom), width: 180, height: 180, type: .left),
-                .init(x: width-200, y: height-(180+safeAreaInsets.bottom), width: 180, height: 180, type: .right)
-            ]
-            
-            let thumbsticksLandscape: [Skin.Thumbstick] = [
-                .init(x: 20, y: width-(180+safeAreaInsets.bottom), width: 180, height: 180, type: .left),
-                .init(x: height-200, y: width-(180+safeAreaInsets.bottom), width: 180, height: 180, type: .right)
-            ]
-            //
-            let devices: [Skin.Device] = [
-                .init(device: machine, orientation: .portrait, buttons: buttons, screens: [
-                    .init(x: 0, y: safeAreaInsets.top, width: width, height: (width / 1.67) + (width / 1.33))
-                ], thumbsticks: thumbsticks),
-                .init(device: machine, orientation: .landscape, buttons: buttonsLandscape, screens: [
-                    .init(x: 0, y: 0, width: height, height: width)
-                ], thumbsticks: thumbsticksLandscape)
-            ]
-            //
-            return Skin(author: "Antique", description: "Default skin for the Nintendo 3DS", name: "Cytrus Skin", core: .cytrus, devices: devices)
-        }
-        
-        do {
-            let data = try JSONEncoder().encode(defaultSkin())
-            
-            let string = NSString(data: data, encoding: NSUTF8StringEncoding)
-            try string?.write(to: try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                .appendingPathComponent("Skin.json", conformingTo: .fileURL), atomically: false, encoding: NSUTF8StringEncoding)
-        } catch { }
         
         switch game {
         case let missingFile as MissingFile:
@@ -290,19 +255,20 @@ class LibraryController : UICollectionViewController {
                 self.present(documentController, animated: true)
             }))
             present(alertController, animated: true)
-            break
+#if canImport(Cytrus)
         case let cytrusGame as CytrusManager.Library.Game:
-            let cytrusController = CytrusDefaultViewController(with: cytrusGame, skin: defaultSkin()) // CytrusEmulationController(cytrusGame.core, cytrusGame)
+            let cytrusController = CytrusDefaultViewController(with: cytrusGame, skin: CytrusManager.shared.defaultSkin())
             cytrusController.modalPresentationStyle = .fullScreen
             present(cytrusController, animated: true)
+#endif
         case let grapeGame as GrapeManager.Library.Game:
-            let grapeController = GrapeEmulationController(grapeGame.core, grapeGame)
+            let grapeController = GrapeDefaultViewController(with: grapeGame, skin: GrapeManager.shared.defaultSkin())
             grapeController.modalPresentationStyle = .fullScreen
             present(grapeController, animated: true)
-        case let kiwiGame as KiwiManager.Library.Game:
-            let kiwiController = KiwiEmulationController(kiwiGame.core, kiwiGame)
-            kiwiController.modalPresentationStyle = .fullScreen
-            present(kiwiController, animated: true)
+        // case let kiwiGame as KiwiManager.Library.Game:
+        //     let kiwiController = KiwiEmulationController(kiwiGame.core, kiwiGame)
+        //     kiwiController.modalPresentationStyle = .fullScreen
+        //     present(kiwiController, animated: true)
         default:
             break
         }
@@ -347,6 +313,7 @@ extension LibraryController : UIDocumentPickerDelegate {
                     snapshot.appendItems(LibraryManager.shared.games(.kiwi, [toURL]), toSection: .kiwi)
                     await self.dataSource.apply(snapshot)
                 }
+#if canImport(Cytrus)
             case "3ds", "app", "cci", "cxi":
                 Task {
                     let toURL = documentsDirectory
@@ -389,7 +356,7 @@ extension LibraryController : UIDocumentPickerDelegate {
                         self.present(alertController, animated: true)
                     }
                 }
-                break
+#endif
             default:
                 guard let importURL else {
                     return
@@ -415,8 +382,10 @@ extension LibraryController : UISearchControllerDelegate, UISearchResultsUpdatin
         let games = snapshot.itemIdentifiers
         let filteredGames = games.filter {
             switch $0 {
+#if canImport(Cytrus)
             case let cytrusGame as CytrusManager.Library.Game:
                 return cytrusGame.title.lowercased().contains(text.lowercased())
+#endif
             case let grapeGame as GrapeManager.Library.Game:
                 return grapeGame.title.lowercased().contains(text.lowercased())
             case let kiwiGame as KiwiManager.Library.Game:
@@ -426,12 +395,14 @@ extension LibraryController : UISearchControllerDelegate, UISearchResultsUpdatin
             }
         }
         
-        var snapshot = NSDiffableDataSourceSnapshot<Core, AnyHashable>()
+        var snapshot = NSDiffableDataSourceSnapshot<Core, AnyHashableSendable>()
         snapshot.appendSections(Core.cores)
         filteredGames.forEach { game in
             switch game {
+#if canImport(Cytrus)
             case let cytrusGame as CytrusManager.Library.Game:
                 snapshot.appendItems([cytrusGame], toSection: cytrusGame.core)
+#endif
             case let grapeGame as GrapeManager.Library.Game:
                 snapshot.appendItems([grapeGame], toSection: grapeGame.core)
             case let kiwiGame as KiwiManager.Library.Game:

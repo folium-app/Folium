@@ -7,12 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E608F1672BF74D330078402D /* VirtualControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608F1632BF74D330078402D /* VirtualControllerButton.swift */; };
-		E608F1682BF74D330078402D /* VirtualControllerDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608F1642BF74D330078402D /* VirtualControllerDelegates.swift */; };
-		E608F1692BF74D330078402D /* VirtualControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608F1652BF74D330078402D /* VirtualControllerView.swift */; };
 		E608F16F2BF74D3B0078402D /* EmulationScreensController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608F16A2BF74D3B0078402D /* EmulationScreensController.swift */; };
 		E608F1702BF74D3B0078402D /* EmulationVirtualControllerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608F16B2BF74D3B0078402D /* EmulationVirtualControllerController.swift */; };
-		E608F1712BF74D3B0078402D /* GrapeEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608F16D2BF74D3B0078402D /* GrapeEmulationController.swift */; };
+		E608F1712BF74D3B0078402D /* GrapeDefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608F16D2BF74D3B0078402D /* GrapeDefaultViewController.swift */; };
 		E608F1762BF771B50078402D /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = E608F1752BF771B50078402D /* Shader.metal */; };
 		E620CC8E2C0DC11F00EBED97 /* aac_decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E620C89C2C0DC11F00EBED97 /* aac_decoder.cpp */; };
 		E620CC8F2C0DC11F00EBED97 /* decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E620C89D2C0DC11F00EBED97 /* decoder.cpp */; };
@@ -382,7 +379,6 @@
 		E69313552BF5001200CCE717 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69313542BF5001200CCE717 /* Core.swift */; };
 		E69313592BF503A000CCE717 /* MissingFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69313582BF503A000CCE717 /* MissingFile.swift */; };
 		E693135C2BF50FED00CCE717 /* DirectoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E693135B2BF50FED00CCE717 /* DirectoryManager.swift */; };
-		E693135F2BF51EF000CCE717 /* ScanningController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E693135E2BF51EF000CCE717 /* ScanningController.swift */; };
 		E6A94D332BF5FBEF001CC55F /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A94D322BF5FBEF001CC55F /* LibraryController.swift */; };
 		E6A94D392BF601D5001CC55F /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A94D382BF601D5001CC55F /* GradientView.swift */; };
 		E6A94D3C2BF6043F001CC55F /* LayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A94D3B2BF6043F001CC55F /* LayoutManager.swift */; };
@@ -428,10 +424,6 @@
 		E6B6D43C2BFCA88D002E5577 /* boost_iostreams.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D41E2BFCA88D002E5577 /* boost_iostreams.xcframework */; };
 		E6B6D43D2BFCA88D002E5577 /* boost_program_options.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D41F2BFCA88D002E5577 /* boost_program_options.xcframework */; };
 		E6B6D43E2BFCA88D002E5577 /* boost_serialization.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4202BFCA88D002E5577 /* boost_serialization.xcframework */; };
-		E6B6D43F2BFCA88D002E5577 /* libavcodec.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4212BFCA88D002E5577 /* libavcodec.xcframework */; };
-		E6B6D4402BFCA88D002E5577 /* libavfilter.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4222BFCA88D002E5577 /* libavfilter.xcframework */; };
-		E6B6D4412BFCA88D002E5577 /* libavformat.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4232BFCA88D002E5577 /* libavformat.xcframework */; };
-		E6B6D4422BFCA88D002E5577 /* libavutil.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4242BFCA88D002E5577 /* libavutil.xcframework */; };
 		E6B6D4432BFCA88D002E5577 /* libcryptopp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4252BFCA88D002E5577 /* libcryptopp.xcframework */; };
 		E6B6D4442BFCA88D002E5577 /* libdynarmic.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4262BFCA88D002E5577 /* libdynarmic.xcframework */; };
 		E6B6D4452BFCA88D002E5577 /* libenet.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4272BFCA88D002E5577 /* libenet.xcframework */; };
@@ -445,36 +437,48 @@
 		E6B6D4502BFCA88D002E5577 /* libopus.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4322BFCA88D002E5577 /* libopus.xcframework */; };
 		E6B6D4512BFCA88D002E5577 /* libsirit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4332BFCA88D002E5577 /* libsirit.xcframework */; };
 		E6B6D4522BFCA88D002E5577 /* libSoundTouch.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4342BFCA88D002E5577 /* libSoundTouch.xcframework */; };
-		E6B6D4542BFCA88D002E5577 /* libswresample.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4362BFCA88D002E5577 /* libswresample.xcframework */; };
-		E6B6D4552BFCA88D002E5577 /* libswscale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4372BFCA88D002E5577 /* libswscale.xcframework */; };
 		E6B6D4562BFCA88D002E5577 /* libteakra.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4382BFCA88D002E5577 /* libteakra.xcframework */; };
 		E6B6D45A2BFCA8A4002E5577 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = E6B6D4592BFCA8A4002E5577 /* OpenSSL */; };
-		E6B6D45B2BFCAA89002E5577 /* libavcodec.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4212BFCA88D002E5577 /* libavcodec.xcframework */; };
-		E6B6D45C2BFCAA89002E5577 /* libavcodec.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4212BFCA88D002E5577 /* libavcodec.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E6B6D45D2BFCAA89002E5577 /* libavfilter.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4222BFCA88D002E5577 /* libavfilter.xcframework */; };
-		E6B6D45E2BFCAA89002E5577 /* libavfilter.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4222BFCA88D002E5577 /* libavfilter.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E6B6D45F2BFCAA89002E5577 /* libavformat.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4232BFCA88D002E5577 /* libavformat.xcframework */; };
-		E6B6D4602BFCAA89002E5577 /* libavformat.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4232BFCA88D002E5577 /* libavformat.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E6B6D4612BFCAA8A002E5577 /* libavutil.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4242BFCA88D002E5577 /* libavutil.xcframework */; };
-		E6B6D4622BFCAA8A002E5577 /* libavutil.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4242BFCA88D002E5577 /* libavutil.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E6B6D4632BFCAA8A002E5577 /* libswresample.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4362BFCA88D002E5577 /* libswresample.xcframework */; };
-		E6B6D4642BFCAA8A002E5577 /* libswresample.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4362BFCA88D002E5577 /* libswresample.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E6B6D4652BFCAA8A002E5577 /* libswscale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4372BFCA88D002E5577 /* libswscale.xcframework */; };
-		E6B6D4662BFCAA8A002E5577 /* libswscale.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6B6D4372BFCA88D002E5577 /* libswscale.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6B6D46F2BFCC0F5002E5577 /* N3DSDefaultLibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B6D46E2BFCC0F5002E5577 /* N3DSDefaultLibraryCell.swift */; };
 		E6B6D4712BFCC313002E5577 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E6B6D4702BFCC313002E5577 /* libzstd */; };
 		E6B6D4732BFCC313002E5577 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = E6B6D4722BFCC313002E5577 /* OpenSSL */; };
-		E6C2C0E42BFDABE600547022 /* CytrusEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C2C0E22BFDABE600547022 /* CytrusEmulationController.swift */; };
 		E6C2C0EA2BFDCE9B00547022 /* MinimalRoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C2C0E82BFDCE9B00547022 /* MinimalRoundedTextField.swift */; };
 		E6CADBEB2BF8A0E400ACBA87 /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E6CADBEA2BF8A0E400ACBA87 /* SDL */; };
 		E6CB59602BFB800200C3A95E /* KiwiEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6CB595F2BFB800200C3A95E /* KiwiEmulationController.swift */; };
+		E6CEAF582C1D638400D46450 /* libavutil.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF532C1D638400D46450 /* libavutil.xcframework */; };
+		E6CEAF592C1D638400D46450 /* libavcodec.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF502C1D638400D46450 /* libavcodec.xcframework */; };
+		E6CEAF5A2C1D638400D46450 /* libavfilter.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF512C1D638400D46450 /* libavfilter.xcframework */; };
+		E6CEAF5B2C1D638400D46450 /* libavformat.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF522C1D638400D46450 /* libavformat.xcframework */; };
+		E6CEAF602C1D639600D46450 /* libswresample.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF5C2C1D639600D46450 /* libswresample.xcframework */; };
+		E6CEAF612C1D639600D46450 /* libswscale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF5D2C1D639600D46450 /* libswscale.xcframework */; };
+		E6CEAF622C1D63A200D46450 /* libavcodec.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF502C1D638400D46450 /* libavcodec.xcframework */; };
+		E6CEAF632C1D63A200D46450 /* libavcodec.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF502C1D638400D46450 /* libavcodec.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E6CEAF642C1D63A200D46450 /* libavfilter.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF512C1D638400D46450 /* libavfilter.xcframework */; };
+		E6CEAF652C1D63A200D46450 /* libavfilter.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF512C1D638400D46450 /* libavfilter.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E6CEAF662C1D63A200D46450 /* libavformat.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF522C1D638400D46450 /* libavformat.xcframework */; };
+		E6CEAF672C1D63A200D46450 /* libavformat.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF522C1D638400D46450 /* libavformat.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E6CEAF682C1D63A200D46450 /* libavutil.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF532C1D638400D46450 /* libavutil.xcframework */; };
+		E6CEAF692C1D63A200D46450 /* libavutil.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF532C1D638400D46450 /* libavutil.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E6CEAF6A2C1D63A200D46450 /* libswresample.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF5C2C1D639600D46450 /* libswresample.xcframework */; };
+		E6CEAF6B2C1D63A200D46450 /* libswresample.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF5C2C1D639600D46450 /* libswresample.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E6CEAF6C2C1D63A200D46450 /* libswscale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF5D2C1D639600D46450 /* libswscale.xcframework */; };
+		E6CEAF6D2C1D63A200D46450 /* libswscale.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF5D2C1D639600D46450 /* libswscale.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E6CEAF6F2C1D63E500D46450 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF6E2C1D63E500D46450 /* MoltenVK.xcframework */; };
+		E6CEAF712C1D63E700D46450 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF6E2C1D63E500D46450 /* MoltenVK.xcframework */; };
+		E6CEAF722C1D63E700D46450 /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF6E2C1D63E500D46450 /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E6CEAF852C1D8B6800D46450 /* AppStoreCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6CEAF842C1D8B6800D46450 /* AppStoreCheck.swift */; };
+		E6CEAF8D2C1D972A00D46450 /* mtcbxDeltaSkin3DS.zip in Resources */ = {isa = PBXBuildFile; fileRef = E6CEAF8B2C1D972A00D46450 /* mtcbxDeltaSkin3DS.zip */; };
+		E6CEAF8E2C1D972A00D46450 /* mtcbxDeltaSkinDS.zip in Resources */ = {isa = PBXBuildFile; fileRef = E6CEAF8C2C1D972A00D46450 /* mtcbxDeltaSkinDS.zip */; };
+		E6CEAF912C1D9BA400D46450 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = E6CEAF902C1D9BA400D46450 /* ZIPFoundation */; };
+		E6D292682C1A2EE900ADBE64 /* Skin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D292672C1A2EE900ADBE64 /* Skin.swift */; };
+		E6D2926A2C1A2F0300ADBE64 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D292692C1A2F0300ADBE64 /* Button.swift */; };
+		E6D2926C2C1A2F2000ADBE64 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2926B2C1A2F2000ADBE64 /* Screen.swift */; };
+		E6D2926E2C1A2F2D00ADBE64 /* Thumbstick.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2926D2C1A2F2D00ADBE64 /* Thumbstick.swift */; };
+		E6D292702C1A2F3900ADBE64 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2926F2C1A2F3900ADBE64 /* Device.swift */; };
+		E6D292722C1A2F7D00ADBE64 /* Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D292712C1A2F7D00ADBE64 /* Orientation.swift */; };
+		E6D292772C1A3AB000ADBE64 /* SkinManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D292762C1A3AB000ADBE64 /* SkinManager.swift */; };
 		E6E0F7FE2C10693000A8C308 /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E0F7FD2C10693000A8C308 /* Comparable.swift */; };
-		E6E24AE02C007ADC00DE5095 /* VirtualControllerThumbstick.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E24ADF2C007ADC00DE5095 /* VirtualControllerThumbstick.swift */; };
 		E6E4CF2F2C16BE8D00FF64D2 /* ControllerThumbstick.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E4CF2E2C16BE8D00FF64D2 /* ControllerThumbstick.swift */; };
-		E6E4CF312C16D00500FF64D2 /* Skin.json in Resources */ = {isa = PBXBuildFile; fileRef = E6E4CF302C16D00500FF64D2 /* Skin.json */; };
-		E6E820B42C15822300620256 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6E820B32C15822300620256 /* MoltenVK.xcframework */; };
-		E6E820B62C15828500620256 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6E820B32C15822300620256 /* MoltenVK.xcframework */; };
-		E6E820B72C15828500620256 /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6E820B32C15822300620256 /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6E820B92C158B3300620256 /* ControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E820B82C158B3300620256 /* ControllerButton.swift */; };
 		E6E820BC2C158D9C00620256 /* CytrusDefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E820BB2C158D9C00620256 /* CytrusDefaultViewController.swift */; };
 /* End PBXBuildFile section */
@@ -495,13 +499,13 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E6E820B72C15828500620256 /* MoltenVK.xcframework in Embed Frameworks */,
-				E6B6D4622BFCAA8A002E5577 /* libavutil.xcframework in Embed Frameworks */,
-				E6B6D4642BFCAA8A002E5577 /* libswresample.xcframework in Embed Frameworks */,
-				E6B6D45E2BFCAA89002E5577 /* libavfilter.xcframework in Embed Frameworks */,
-				E6B6D4602BFCAA89002E5577 /* libavformat.xcframework in Embed Frameworks */,
-				E6B6D4662BFCAA8A002E5577 /* libswscale.xcframework in Embed Frameworks */,
-				E6B6D45C2BFCAA89002E5577 /* libavcodec.xcframework in Embed Frameworks */,
+				E6CEAF722C1D63E700D46450 /* MoltenVK.xcframework in Embed Frameworks */,
+				E6CEAF652C1D63A200D46450 /* libavfilter.xcframework in Embed Frameworks */,
+				E6CEAF672C1D63A200D46450 /* libavformat.xcframework in Embed Frameworks */,
+				E6CEAF632C1D63A200D46450 /* libavcodec.xcframework in Embed Frameworks */,
+				E6CEAF6B2C1D63A200D46450 /* libswresample.xcframework in Embed Frameworks */,
+				E6CEAF6D2C1D63A200D46450 /* libswscale.xcframework in Embed Frameworks */,
+				E6CEAF692C1D63A200D46450 /* libavutil.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -509,12 +513,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		E608F1632BF74D330078402D /* VirtualControllerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualControllerButton.swift; sourceTree = "<group>"; };
-		E608F1642BF74D330078402D /* VirtualControllerDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualControllerDelegates.swift; sourceTree = "<group>"; };
-		E608F1652BF74D330078402D /* VirtualControllerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualControllerView.swift; sourceTree = "<group>"; };
 		E608F16A2BF74D3B0078402D /* EmulationScreensController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmulationScreensController.swift; sourceTree = "<group>"; };
 		E608F16B2BF74D3B0078402D /* EmulationVirtualControllerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmulationVirtualControllerController.swift; sourceTree = "<group>"; };
-		E608F16D2BF74D3B0078402D /* GrapeEmulationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrapeEmulationController.swift; sourceTree = "<group>"; };
+		E608F16D2BF74D3B0078402D /* GrapeDefaultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrapeDefaultViewController.swift; sourceTree = "<group>"; };
 		E608F1752BF771B50078402D /* Shader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
 		E620C89C2C0DC11F00EBED97 /* aac_decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = aac_decoder.cpp; sourceTree = "<group>"; };
 		E620C89D2C0DC11F00EBED97 /* decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = decoder.cpp; sourceTree = "<group>"; };
@@ -887,7 +888,6 @@
 		E69313542BF5001200CCE717 /* Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; };
 		E69313582BF503A000CCE717 /* MissingFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissingFile.swift; sourceTree = "<group>"; };
 		E693135B2BF50FED00CCE717 /* DirectoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryManager.swift; sourceTree = "<group>"; };
-		E693135E2BF51EF000CCE717 /* ScanningController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanningController.swift; sourceTree = "<group>"; };
 		E6A94D322BF5FBEF001CC55F /* LibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryController.swift; sourceTree = "<group>"; };
 		E6A94D382BF601D5001CC55F /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		E6A94D3B2BF6043F001CC55F /* LayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutManager.swift; sourceTree = "<group>"; };
@@ -1023,10 +1023,6 @@
 		E6B6D41E2BFCA88D002E5577 /* boost_iostreams.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = boost_iostreams.xcframework; sourceTree = "<group>"; };
 		E6B6D41F2BFCA88D002E5577 /* boost_program_options.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = boost_program_options.xcframework; sourceTree = "<group>"; };
 		E6B6D4202BFCA88D002E5577 /* boost_serialization.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = boost_serialization.xcframework; sourceTree = "<group>"; };
-		E6B6D4212BFCA88D002E5577 /* libavcodec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavcodec.xcframework; sourceTree = "<group>"; };
-		E6B6D4222BFCA88D002E5577 /* libavfilter.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavfilter.xcframework; sourceTree = "<group>"; };
-		E6B6D4232BFCA88D002E5577 /* libavformat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavformat.xcframework; sourceTree = "<group>"; };
-		E6B6D4242BFCA88D002E5577 /* libavutil.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavutil.xcframework; sourceTree = "<group>"; };
 		E6B6D4252BFCA88D002E5577 /* libcryptopp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libcryptopp.xcframework; sourceTree = "<group>"; };
 		E6B6D4262BFCA88D002E5577 /* libdynarmic.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libdynarmic.xcframework; sourceTree = "<group>"; };
 		E6B6D4272BFCA88D002E5577 /* libenet.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libenet.xcframework; sourceTree = "<group>"; };
@@ -1040,21 +1036,32 @@
 		E6B6D4322BFCA88D002E5577 /* libopus.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libopus.xcframework; sourceTree = "<group>"; };
 		E6B6D4332BFCA88D002E5577 /* libsirit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libsirit.xcframework; sourceTree = "<group>"; };
 		E6B6D4342BFCA88D002E5577 /* libSoundTouch.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libSoundTouch.xcframework; sourceTree = "<group>"; };
-		E6B6D4362BFCA88D002E5577 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswresample.xcframework; sourceTree = "<group>"; };
-		E6B6D4372BFCA88D002E5577 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswscale.xcframework; sourceTree = "<group>"; };
 		E6B6D4382BFCA88D002E5577 /* libteakra.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libteakra.xcframework; sourceTree = "<group>"; };
 		E6B6D46D2BFCAB5A002E5577 /* Cytrus-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cytrus-Bridging-Header.h"; sourceTree = "<group>"; };
 		E6B6D46E2BFCC0F5002E5577 /* N3DSDefaultLibraryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = N3DSDefaultLibraryCell.swift; sourceTree = "<group>"; };
-		E6C2C0E22BFDABE600547022 /* CytrusEmulationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CytrusEmulationController.swift; sourceTree = "<group>"; };
 		E6C2C0E82BFDCE9B00547022 /* MinimalRoundedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinimalRoundedTextField.swift; sourceTree = "<group>"; };
 		E6C2C0EB2BFDDDCF00547022 /* Folium.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Folium.entitlements; sourceTree = "<group>"; };
 		E6CB595B2BFB4B1300C3A95E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		E6CB595F2BFB800200C3A95E /* KiwiEmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiwiEmulationController.swift; sourceTree = "<group>"; };
+		E6CEAF502C1D638400D46450 /* libavcodec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavcodec.xcframework; sourceTree = "<group>"; };
+		E6CEAF512C1D638400D46450 /* libavfilter.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavfilter.xcframework; sourceTree = "<group>"; };
+		E6CEAF522C1D638400D46450 /* libavformat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavformat.xcframework; sourceTree = "<group>"; };
+		E6CEAF532C1D638400D46450 /* libavutil.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libavutil.xcframework; sourceTree = "<group>"; };
+		E6CEAF5C2C1D639600D46450 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswresample.xcframework; sourceTree = "<group>"; };
+		E6CEAF5D2C1D639600D46450 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswscale.xcframework; sourceTree = "<group>"; };
+		E6CEAF6E2C1D63E500D46450 /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
+		E6CEAF842C1D8B6800D46450 /* AppStoreCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreCheck.swift; sourceTree = "<group>"; };
+		E6CEAF8B2C1D972A00D46450 /* mtcbxDeltaSkin3DS.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = mtcbxDeltaSkin3DS.zip; sourceTree = "<group>"; };
+		E6CEAF8C2C1D972A00D46450 /* mtcbxDeltaSkinDS.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = mtcbxDeltaSkinDS.zip; sourceTree = "<group>"; };
+		E6D292672C1A2EE900ADBE64 /* Skin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skin.swift; sourceTree = "<group>"; };
+		E6D292692C1A2F0300ADBE64 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		E6D2926B2C1A2F2000ADBE64 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
+		E6D2926D2C1A2F2D00ADBE64 /* Thumbstick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thumbstick.swift; sourceTree = "<group>"; };
+		E6D2926F2C1A2F3900ADBE64 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		E6D292712C1A2F7D00ADBE64 /* Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orientation.swift; sourceTree = "<group>"; };
+		E6D292762C1A3AB000ADBE64 /* SkinManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkinManager.swift; sourceTree = "<group>"; };
 		E6E0F7FD2C10693000A8C308 /* Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comparable.swift; sourceTree = "<group>"; };
-		E6E24ADF2C007ADC00DE5095 /* VirtualControllerThumbstick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualControllerThumbstick.swift; sourceTree = "<group>"; };
 		E6E4CF2E2C16BE8D00FF64D2 /* ControllerThumbstick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerThumbstick.swift; sourceTree = "<group>"; };
-		E6E4CF302C16D00500FF64D2 /* Skin.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Skin.json; sourceTree = "<group>"; };
-		E6E820B32C15822300620256 /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
 		E6E820B82C158B3300620256 /* ControllerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerButton.swift; sourceTree = "<group>"; };
 		E6E820BB2C158D9C00620256 /* CytrusDefaultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CytrusDefaultViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1065,16 +1072,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6CADBEB2BF8A0E400ACBA87 /* SDL in Frameworks */,
-				E6B6D45F2BFCAA89002E5577 /* libavformat.xcframework in Frameworks */,
-				E6E820B62C15828500620256 /* MoltenVK.xcframework in Frameworks */,
-				E6B6D4632BFCAA8A002E5577 /* libswresample.xcframework in Frameworks */,
+				E6CEAF662C1D63A200D46450 /* libavformat.xcframework in Frameworks */,
+				E6CEAF622C1D63A200D46450 /* libavcodec.xcframework in Frameworks */,
+				E6CEAF712C1D63E700D46450 /* MoltenVK.xcframework in Frameworks */,
+				E6CEAF682C1D63A200D46450 /* libavutil.xcframework in Frameworks */,
 				E6B6D4732BFCC313002E5577 /* OpenSSL in Frameworks */,
+				E6CEAF642C1D63A200D46450 /* libavfilter.xcframework in Frameworks */,
 				E6B6D4712BFCC313002E5577 /* libzstd in Frameworks */,
-				E6B6D45B2BFCAA89002E5577 /* libavcodec.xcframework in Frameworks */,
 				E6A94D452BF60ACF001CC55F /* Grape in Frameworks */,
-				E6B6D45D2BFCAA89002E5577 /* libavfilter.xcframework in Frameworks */,
-				E6B6D4612BFCAA8A002E5577 /* libavutil.xcframework in Frameworks */,
-				E6B6D4652BFCAA8A002E5577 /* libswscale.xcframework in Frameworks */,
+				E6CEAF6A2C1D63A200D46450 /* libswresample.xcframework in Frameworks */,
+				E6CEAF6C2C1D63A200D46450 /* libswscale.xcframework in Frameworks */,
+				E6CEAF912C1D9BA400D46450 /* ZIPFoundation in Frameworks */,
 				E6467F232BFB9AAA009D8A73 /* Kiwi in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1083,27 +1091,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6E820B42C15822300620256 /* MoltenVK.xcframework in Frameworks */,
+				E6CEAF6F2C1D63E500D46450 /* MoltenVK.xcframework in Frameworks */,
 				E6B6D4432BFCA88D002E5577 /* libcryptopp.xcframework in Frameworks */,
 				E6ACC3CF2C130ECF00CB6780 /* libMachineIndependent.xcframework in Frameworks */,
-				E6B6D4542BFCA88D002E5577 /* libswresample.xcframework in Frameworks */,
 				E6B6D4452BFCA88D002E5577 /* libenet.xcframework in Frameworks */,
 				E6ACC3D12C130ED500CB6780 /* libSPIRV.xcframework in Frameworks */,
 				E6B6D4502BFCA88D002E5577 /* libopus.xcframework in Frameworks */,
+				E6CEAF582C1D638400D46450 /* libavutil.xcframework in Frameworks */,
+				E6CEAF592C1D638400D46450 /* libavcodec.xcframework in Frameworks */,
+				E6CEAF5A2C1D638400D46450 /* libavfilter.xcframework in Frameworks */,
+				E6CEAF5B2C1D638400D46450 /* libavformat.xcframework in Frameworks */,
 				E6ACC3CD2C130ECF00CB6780 /* libGenericCodeGen.xcframework in Frameworks */,
 				E6B6D43C2BFCA88D002E5577 /* boost_iostreams.xcframework in Frameworks */,
 				E6B6D4442BFCA88D002E5577 /* libdynarmic.xcframework in Frameworks */,
-				E6B6D4402BFCA88D002E5577 /* libavfilter.xcframework in Frameworks */,
-				E6B6D43F2BFCA88D002E5577 /* libavcodec.xcframework in Frameworks */,
 				E6B6D45A2BFCA8A4002E5577 /* OpenSSL in Frameworks */,
 				E6B6D41C2BFCA868002E5577 /* libzstd in Frameworks */,
 				E6B6D44C2BFCA88D002E5577 /* libmbedtls.xcframework in Frameworks */,
+				E6CEAF602C1D639600D46450 /* libswresample.xcframework in Frameworks */,
+				E6CEAF612C1D639600D46450 /* libswscale.xcframework in Frameworks */,
 				E6B6D44B2BFCA88D002E5577 /* libmbedcrypto.xcframework in Frameworks */,
-				E6B6D4422BFCA88D002E5577 /* libavutil.xcframework in Frameworks */,
 				E6B6D44E2BFCA88D002E5577 /* libmcl.xcframework in Frameworks */,
 				E6B6D43B2BFCA88D002E5577 /* boost_context.xcframework in Frameworks */,
 				E6B6D4462BFCA88D002E5577 /* libfaad.xcframework in Frameworks */,
-				E6B6D4412BFCA88D002E5577 /* libavformat.xcframework in Frameworks */,
 				E6B6D4522BFCA88D002E5577 /* libSoundTouch.xcframework in Frameworks */,
 				E6B6D43E2BFCA88D002E5577 /* boost_serialization.xcframework in Frameworks */,
 				E6B6D43D2BFCA88D002E5577 /* boost_program_options.xcframework in Frameworks */,
@@ -1112,7 +1121,6 @@
 				E6B6D4512BFCA88D002E5577 /* libsirit.xcframework in Frameworks */,
 				E6B6D44F2BFCA88D002E5577 /* libOpenAL.xcframework in Frameworks */,
 				E6B6D4562BFCA88D002E5577 /* libteakra.xcframework in Frameworks */,
-				E6B6D4552BFCA88D002E5577 /* libswscale.xcframework in Frameworks */,
 				E6B6D44D2BFCA88D002E5577 /* libmbedx509.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1120,17 +1128,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E608F1662BF74D330078402D /* VirtualController */ = {
-			isa = PBXGroup;
-			children = (
-				E608F1632BF74D330078402D /* VirtualControllerButton.swift */,
-				E608F1642BF74D330078402D /* VirtualControllerDelegates.swift */,
-				E6E24ADF2C007ADC00DE5095 /* VirtualControllerThumbstick.swift */,
-				E608F1652BF74D330078402D /* VirtualControllerView.swift */,
-			);
-			path = VirtualController;
-			sourceTree = "<group>";
-		};
 		E608F16C2BF74D3B0078402D /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -1154,7 +1151,7 @@
 		E608F1722BF7550E0078402D /* GrapeEmulationController */ = {
 			isa = PBXGroup;
 			children = (
-				E608F16D2BF74D3B0078402D /* GrapeEmulationController.swift */,
+				E608F16D2BF74D3B0078402D /* GrapeDefaultViewController.swift */,
 			);
 			path = GrapeEmulationController;
 			sourceTree = "<group>";
@@ -2216,6 +2213,7 @@
 		E6477F052BEF48C30062975D /* Folium */ = {
 			isa = PBXGroup;
 			children = (
+				E6CEAF732C1D8A7100D46450 /* DefaultSkins */,
 				E6C2C0EB2BFDDDCF00547022 /* Folium.entitlements */,
 				E6631A3E2BF4AF34007AE66E /* Classes */,
 				E6477F1A2BEF49460062975D /* Controllers */,
@@ -2227,7 +2225,6 @@
 				E6477F112BEF48C40062975D /* LaunchScreen.storyboard */,
 				E6CB595B2BFB4B1300C3A95E /* PrivacyInfo.xcprivacy */,
 				E608F1752BF771B50078402D /* Shader.metal */,
-				E6E4CF302C16D00500FF64D2 /* Skin.json */,
 			);
 			path = Folium;
 			sourceTree = "<group>";
@@ -2237,7 +2234,6 @@
 			children = (
 				E608F16E2BF74D3B0078402D /* EmulationControllers */,
 				E6631A3D2BF4AEF8007AE66E /* LibraryController */,
-				E693135D2BF51EE300CCE717 /* ScanningController */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2253,15 +2249,11 @@
 		E6631A3E2BF4AF34007AE66E /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				E68BBA512C0EF5570065C43F /* ControllerView */,
+				E6D292752C1A3A7000ADBE64 /* Views */,
+				E6D292742C1A3A5C00ADBE64 /* Managers */,
+				E6D292662C1A2EDE00ADBE64 /* Skin */,
 				E6A94D462BF60EEB001CC55F /* Bruno */,
-				E693135A2BF50FD900CCE717 /* DirectoryManager */,
-				E6A94D372BF601C6001CC55F /* GradientView */,
-				E6A94D3A2BF60429001CC55F /* LayoutManager */,
-				E6A94D342BF5FE9A001CC55F /* LibraryCells */,
-				E6631A3F2BF4AF38007AE66E /* LibraryManager */,
-				E6C2C0E92BFDCE9B00547022 /* MinimalRoundedTextField */,
-				E608F1662BF74D330078402D /* VirtualController */,
+				E6CEAF842C1D8B6800D46450 /* AppStoreCheck.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -2319,14 +2311,6 @@
 				E693135B2BF50FED00CCE717 /* DirectoryManager.swift */,
 			);
 			path = DirectoryManager;
-			sourceTree = "<group>";
-		};
-		E693135D2BF51EE300CCE717 /* ScanningController */ = {
-			isa = PBXGroup;
-			children = (
-				E693135E2BF51EF000CCE717 /* ScanningController.swift */,
-			);
-			path = ScanningController;
 			sourceTree = "<group>";
 		};
 		E6A94D342BF5FE9A001CC55F /* LibraryCells */ = {
@@ -2707,10 +2691,10 @@
 				E6B6D41E2BFCA88D002E5577 /* boost_iostreams.xcframework */,
 				E6B6D41F2BFCA88D002E5577 /* boost_program_options.xcframework */,
 				E6B6D4202BFCA88D002E5577 /* boost_serialization.xcframework */,
-				E6B6D4212BFCA88D002E5577 /* libavcodec.xcframework */,
-				E6B6D4222BFCA88D002E5577 /* libavfilter.xcframework */,
-				E6B6D4232BFCA88D002E5577 /* libavformat.xcframework */,
-				E6B6D4242BFCA88D002E5577 /* libavutil.xcframework */,
+				E6CEAF502C1D638400D46450 /* libavcodec.xcframework */,
+				E6CEAF512C1D638400D46450 /* libavfilter.xcframework */,
+				E6CEAF522C1D638400D46450 /* libavformat.xcframework */,
+				E6CEAF532C1D638400D46450 /* libavutil.xcframework */,
 				E6B6D4252BFCA88D002E5577 /* libcryptopp.xcframework */,
 				E6B6D4262BFCA88D002E5577 /* libdynarmic.xcframework */,
 				E6B6D4272BFCA88D002E5577 /* libenet.xcframework */,
@@ -2728,10 +2712,10 @@
 				E6B6D4332BFCA88D002E5577 /* libsirit.xcframework */,
 				E6B6D4342BFCA88D002E5577 /* libSoundTouch.xcframework */,
 				E6ACC3D02C130ED500CB6780 /* libSPIRV.xcframework */,
-				E6B6D4362BFCA88D002E5577 /* libswresample.xcframework */,
-				E6B6D4372BFCA88D002E5577 /* libswscale.xcframework */,
+				E6CEAF5C2C1D639600D46450 /* libswresample.xcframework */,
+				E6CEAF5D2C1D639600D46450 /* libswscale.xcframework */,
 				E6B6D4382BFCA88D002E5577 /* libteakra.xcframework */,
-				E6E820B32C15822300620256 /* MoltenVK.xcframework */,
+				E6CEAF6E2C1D63E500D46450 /* MoltenVK.xcframework */,
 			);
 			path = XCFrameworks;
 			sourceTree = "<group>";
@@ -2739,7 +2723,6 @@
 		E6C2C0E32BFDABE600547022 /* CytrusEmulationController */ = {
 			isa = PBXGroup;
 			children = (
-				E6E820BA2C158D8100620256 /* Old */,
 				E6E820BB2C158D9C00620256 /* CytrusDefaultViewController.swift */,
 				E6ACC3C82C13065900CB6780 /* KeyboardController.swift */,
 			);
@@ -2762,12 +2745,56 @@
 			path = KiwiEmulationController;
 			sourceTree = "<group>";
 		};
-		E6E820BA2C158D8100620256 /* Old */ = {
+		E6CEAF732C1D8A7100D46450 /* DefaultSkins */ = {
 			isa = PBXGroup;
 			children = (
-				E6C2C0E22BFDABE600547022 /* CytrusEmulationController.swift */,
+				E6CEAF8B2C1D972A00D46450 /* mtcbxDeltaSkin3DS.zip */,
+				E6CEAF8C2C1D972A00D46450 /* mtcbxDeltaSkinDS.zip */,
 			);
-			path = Old;
+			path = DefaultSkins;
+			sourceTree = "<group>";
+		};
+		E6D292662C1A2EDE00ADBE64 /* Skin */ = {
+			isa = PBXGroup;
+			children = (
+				E6D292692C1A2F0300ADBE64 /* Button.swift */,
+				E6D2926F2C1A2F3900ADBE64 /* Device.swift */,
+				E6D292712C1A2F7D00ADBE64 /* Orientation.swift */,
+				E6D2926B2C1A2F2000ADBE64 /* Screen.swift */,
+				E6D292672C1A2EE900ADBE64 /* Skin.swift */,
+				E6D2926D2C1A2F2D00ADBE64 /* Thumbstick.swift */,
+			);
+			path = Skin;
+			sourceTree = "<group>";
+		};
+		E6D292732C1A3A5100ADBE64 /* SkinManager */ = {
+			isa = PBXGroup;
+			children = (
+				E6D292762C1A3AB000ADBE64 /* SkinManager.swift */,
+			);
+			path = SkinManager;
+			sourceTree = "<group>";
+		};
+		E6D292742C1A3A5C00ADBE64 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				E693135A2BF50FD900CCE717 /* DirectoryManager */,
+				E6A94D3A2BF60429001CC55F /* LayoutManager */,
+				E6631A3F2BF4AF38007AE66E /* LibraryManager */,
+				E6D292732C1A3A5100ADBE64 /* SkinManager */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		E6D292752C1A3A7000ADBE64 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E68BBA512C0EF5570065C43F /* ControllerView */,
+				E6A94D342BF5FE9A001CC55F /* LibraryCells */,
+				E6A94D372BF601C6001CC55F /* GradientView */,
+				E6C2C0E92BFDCE9B00547022 /* MinimalRoundedTextField */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2793,6 +2820,7 @@
 				E6467F222BFB9AAA009D8A73 /* Kiwi */,
 				E6B6D4702BFCC313002E5577 /* libzstd */,
 				E6B6D4722BFCC313002E5577 /* OpenSSL */,
+				E6CEAF902C1D9BA400D46450 /* ZIPFoundation */,
 			);
 			productName = Folium;
 			productReference = E6477F032BEF48C30062975D /* Folium.app */;
@@ -2850,6 +2878,7 @@
 				E6CADBE92BF8A0E400ACBA87 /* XCRemoteSwiftPackageReference "SwiftSDL2" */,
 				E6B6D41A2BFCA868002E5577 /* XCRemoteSwiftPackageReference "zstd" */,
 				E6B6D4582BFCA8A4002E5577 /* XCRemoteSwiftPackageReference "OpenSSL" */,
+				E6CEAF8F2C1D9BA400D46450 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			productRefGroup = E6477F042BEF48C30062975D /* Products */;
 			projectDirPath = "";
@@ -2868,7 +2897,8 @@
 			files = (
 				E6477F102BEF48C40062975D /* Assets.xcassets in Resources */,
 				E6477F132BEF48C40062975D /* Base in Resources */,
-				E6E4CF312C16D00500FF64D2 /* Skin.json in Resources */,
+				E6CEAF8D2C1D972A00D46450 /* mtcbxDeltaSkin3DS.zip in Resources */,
+				E6CEAF8E2C1D972A00D46450 /* mtcbxDeltaSkinDS.zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2882,32 +2912,31 @@
 				E6B6CE152BFCA27D002E5577 /* NESDefaultLibraryCell.swift in Sources */,
 				E608F1702BF74D3B0078402D /* EmulationVirtualControllerController.swift in Sources */,
 				E6477F072BEF48C30062975D /* AppDelegate.swift in Sources */,
-				E608F1712BF74D3B0078402D /* GrapeEmulationController.swift in Sources */,
+				E6D292722C1A2F7D00ADBE64 /* Orientation.swift in Sources */,
+				E6D292772C1A3AB000ADBE64 /* SkinManager.swift in Sources */,
+				E608F1712BF74D3B0078402D /* GrapeDefaultViewController.swift in Sources */,
 				E6A94D3C2BF6043F001CC55F /* LayoutManager.swift in Sources */,
 				E6A94D332BF5FBEF001CC55F /* LibraryController.swift in Sources */,
 				E6B6CE112BFC921D002E5577 /* NDSDefaultLibraryCell.swift in Sources */,
 				E6A94D4A2BF60FDA001CC55F /* CGImage.swift in Sources */,
 				E6477F092BEF48C30062975D /* SceneDelegate.swift in Sources */,
 				E6A94D3F2BF6093E001CC55F /* UIColor.swift in Sources */,
-				E6C2C0E42BFDABE600547022 /* CytrusEmulationController.swift in Sources */,
 				E6E0F7FE2C10693000A8C308 /* Comparable.swift in Sources */,
-				E608F1682BF74D330078402D /* VirtualControllerDelegates.swift in Sources */,
 				E6631A422BF4AF52007AE66E /* LibraryManager.swift in Sources */,
-				E608F1692BF74D330078402D /* VirtualControllerView.swift in Sources */,
+				E6D2926C2C1A2F2000ADBE64 /* Screen.swift in Sources */,
+				E6D2926E2C1A2F2D00ADBE64 /* Thumbstick.swift in Sources */,
 				E6A94D482BF60EF2001CC55F /* Bruno.swift in Sources */,
-				E6E24AE02C007ADC00DE5095 /* VirtualControllerThumbstick.swift in Sources */,
 				E6E4CF2F2C16BE8D00FF64D2 /* ControllerThumbstick.swift in Sources */,
 				E69313552BF5001200CCE717 /* Core.swift in Sources */,
 				E6631A442BF4AF5A007AE66E /* KiwiManager.swift in Sources */,
 				E6631A472BF4AFBA007AE66E /* CytrusManager.swift in Sources */,
 				E6B6CE132BFCA029002E5577 /* NDSGBADefaultLibraryCell.swift in Sources */,
 				E68BBA532C0EF5650065C43F /* ControllerView.swift in Sources */,
+				E6CEAF852C1D8B6800D46450 /* AppStoreCheck.swift in Sources */,
 				E6C2C0EA2BFDCE9B00547022 /* MinimalRoundedTextField.swift in Sources */,
 				E6B6D46F2BFCC0F5002E5577 /* N3DSDefaultLibraryCell.swift in Sources */,
 				E6A94D412BF60A15001CC55F /* UIImage.swift in Sources */,
 				E6E820B92C158B3300620256 /* ControllerButton.swift in Sources */,
-				E693135F2BF51EF000CCE717 /* ScanningController.swift in Sources */,
-				E608F1672BF74D330078402D /* VirtualControllerButton.swift in Sources */,
 				E6ACC3C92C13065900CB6780 /* KeyboardController.swift in Sources */,
 				E6E820BC2C158D9C00620256 /* CytrusDefaultViewController.swift in Sources */,
 				E608F1762BF771B50078402D /* Shader.metal in Sources */,
@@ -2915,7 +2944,10 @@
 				E6A94D392BF601D5001CC55F /* GradientView.swift in Sources */,
 				E6CB59602BFB800200C3A95E /* KiwiEmulationController.swift in Sources */,
 				E69313592BF503A000CCE717 /* MissingFile.swift in Sources */,
+				E6D292702C1A2F3900ADBE64 /* Device.swift in Sources */,
 				E608F16F2BF74D3B0078402D /* EmulationScreensController.swift in Sources */,
+				E6D292682C1A2EE900ADBE64 /* Skin.swift in Sources */,
+				E6D2926A2C1A2F0300ADBE64 /* Button.swift in Sources */,
 				E6631A4A2BF4AFEB007AE66E /* GrapeManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3450,6 +3482,8 @@
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folium/Info.plist;
+				INFOPLIST_KEY_GCSupportsControllerUserInteraction = YES;
+				INFOPLIST_KEY_GCSupportsGameMode = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Folium uses your devices microphone to send audio input to emulator cores that make use of it";
@@ -3473,7 +3507,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -3488,6 +3522,8 @@
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folium/Info.plist;
+				INFOPLIST_KEY_GCSupportsControllerUserInteraction = YES;
+				INFOPLIST_KEY_GCSupportsGameMode = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Folium uses your devices microphone to send audio input to emulator cores that make use of it";
@@ -3511,7 +3547,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -3646,6 +3682,14 @@
 				minimumVersion = 1.4.1;
 			};
 		};
+		E6CEAF8F2C1D9BA400D46450 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.19;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3681,6 +3725,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E6CADBE92BF8A0E400ACBA87 /* XCRemoteSwiftPackageReference "SwiftSDL2" */;
 			productName = SDL;
+		};
+		E6CEAF902C1D9BA400D46450 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6CEAF8F2C1D9BA400D46450 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
