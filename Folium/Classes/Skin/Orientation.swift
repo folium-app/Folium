@@ -8,5 +8,6 @@
 import Foundation
 
 enum Orientation : String, Codable, Hashable {
-    case portrait = "portrait", landscape = "landscape"
+    case portrait = "portrait"
+    case landscape = "landscape"
 }

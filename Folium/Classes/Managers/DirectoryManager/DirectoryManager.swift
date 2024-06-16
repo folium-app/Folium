@@ -111,8 +111,6 @@ class DirectoryManager {
                         LibraryManager.shared.grapeManager.library.add(.init(fileDetails: fileDetails))
                     case .kiwi:
                         LibraryManager.shared.kiwiManager.library.add(.init(fileDetails: fileDetails))
-                    default:
-                        break
                     }
                 }
             }

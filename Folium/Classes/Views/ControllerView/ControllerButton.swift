@@ -30,18 +30,21 @@ class ControllerButton : UIView {
             imageView = .init()
             imageView.backgroundColor = .systemRed.withAlphaComponent(1 / 3)
         } else {
-            if [AppStoreCheck.Environment.appStore, AppStoreCheck.Environment.testFlight].contains(AppStoreCheck.shared.currentAppEnvironment()) {
-                if let customisation = button.customisation {
-                    if let backgroundImageName = customisation.backgroundImageName, let path = skin.path {
-                        imageView = .init(image: .init(contentsOfFile: path
-                            .appendingPathComponent("buttons", conformingTo: .folder)
-                            .appendingPathComponent(machine, conformingTo: .folder)
-                            .appendingPathComponent(backgroundImageName, conformingTo: .fileURL).pathExtension))
-                    } else {
-                        imageView = .init()
-                    }
+            if let customisation = button.customisation {
+                if let backgroundImageName = customisation.backgroundImageName, let path = skin.path {
+                    imageView = .init(image: .init(contentsOfFile: path
+                        .appendingPathComponent("buttons", conformingTo: .folder)
+                        .appendingPathComponent(machine, conformingTo: .folder)
+                        .appendingPathComponent(backgroundImageName, conformingTo: .fileURL).pathExtension) ?? .init(systemName: backgroundImageName))
                 } else {
-                    imageView = .init()
+                    if customisation.isTransparent ?? false {
+                        imageView = .init()
+                    } else {
+                        let colors = skin.core.newButtonColors[button.type] ?? (.black, .white)
+                        
+                        imageView = .init(image: button.image(for: skin.core)?
+                            .applyingSymbolConfiguration(.init(paletteColors: [colors.0, colors.1])))
+                    }
                 }
             } else {
                 let colors = skin.core.newButtonColors[button.type] ?? (.black, .white)
@@ -70,7 +73,7 @@ class ControllerButton : UIView {
             return
         }
         
-        if [AppStoreCheck.Environment.appStore, AppStoreCheck.Environment.testFlight].contains(AppStoreCheck.shared.currentAppEnvironment()), let customisation = button.customisation, let tappedBackgroundImageName = customisation.tappedBackgroundImageName, let path = skin.path {
+        if let customisation = button.customisation, let tappedBackgroundImageName = customisation.tappedBackgroundImageName, let path = skin.path {
             imageView = .init(image: .init(contentsOfFile: path
                 .appendingPathComponent("buttons", conformingTo: .folder)
                 .appendingPathComponent(machine, conformingTo: .folder)

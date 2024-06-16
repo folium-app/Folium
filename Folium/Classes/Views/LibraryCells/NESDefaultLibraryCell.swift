@@ -38,7 +38,7 @@ class NESDefaultLibraryCell : UICollectionViewCell {
         addSubview(headlineLabel)
         
         var configuration = UIButton.Configuration.filled()
-        configuration.buttonSize = .mini
+        configuration.buttonSize = .small
         configuration.cornerStyle = .capsule
         configuration.image = .init(systemName: "ellipsis")?
             .applyingSymbolConfiguration(.init(weight: .bold))

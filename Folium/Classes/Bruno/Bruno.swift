@@ -33,9 +33,14 @@ public class RawBuffer: Bufferable {
 
     public var buffer: vImage_Buffer {
         // get bytes pointer
-        let ptr = bytes.withUnsafeBytes {
-            return UnsafeMutablePointer<UInt8>.init(mutating: $0)
+        
+        let ptr = bytes.withUnsafeBytes { (rawBufferPointer: UnsafeRawBufferPointer) -> UnsafeMutablePointer<UInt8>? in
+            guard let baseAddress = rawBufferPointer.baseAddress else {
+                return nil
+            }
+            return UnsafeMutablePointer<UInt8>(mutating: baseAddress.assumingMemoryBound(to: UInt8.self))
         }
+
 
         return vImage_Buffer(data: ptr, height: vImagePixelCount(height), width: vImagePixelCount(width), rowBytes: rowBytes)
     }
@@ -143,7 +148,9 @@ internal extension UIImage {
         context.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
 
         // create buffer
-        let data = Data(buffer: UnsafeBufferPointer(start: &bytes, count: bytes.count))
+        let data = bytes.withUnsafeBufferPointer { bufferPointer -> Data in
+            return Data(buffer: bufferPointer)
+        }
         // let data = Data(buffer: UnsafeBufferPointer(start: &bytes, count: bytes.count))
         return RawBuffer(data: data, width: width, height: height, rowBytes: rowBytes)
     }

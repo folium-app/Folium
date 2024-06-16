@@ -20,8 +20,8 @@ class GrapeDefaultViewController : UIViewController {
     let grape: Grape = .shared
     fileprivate var isRunning: Bool = false
     
-    fileprivate var topScreen: MTKView? = nil
-    fileprivate var bottomScreen: MTKView? = nil
+    fileprivate var topScreen: UIImageView? = nil
+    fileprivate var bottomScreen: UIImageView? = nil
     
     fileprivate var audioDeviceID: SDL_AudioDeviceID!
     fileprivate var displayLink: CADisplayLink!
@@ -45,7 +45,7 @@ class GrapeDefaultViewController : UIViewController {
         grape.insert(game: game.fileDetails.url)
         
         configureAudio()
-        configureMetal()
+        // configureMetal()
     }
     
     required init?(coder: NSCoder) {
@@ -56,28 +56,48 @@ class GrapeDefaultViewController : UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         
-        guard let device = skin.devices.first(where: { $0.device == machine && $0.orientation == orientationForCurrentOrientation() }) else {
+        guard let game = game as? GrapeManager.Library.Game else {
             return
         }
         
-        device.screens.enumerated().forEach { index, screen in
-            let mtkView = MTKView(frame: .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height), device: self.device)
-            if let cornerRadius = screen.cornerRadius, cornerRadius > 0 {
-                mtkView.clipsToBounds = true
-                mtkView.layer.cornerCurve = .continuous
-                mtkView.layer.cornerRadius = cornerRadius
+        guard let device = skin.devices.first(where: { $0.device == machine && $0.orientation == self.orientationForCurrentOrientation() }) else {
+            return
+        }
+        
+        if game.gameType == .nds {
+            device.screens.enumerated().forEach { index, screen in
+                let mtkView = UIImageView(frame: .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height))
+                if let cornerRadius = screen.cornerRadius, cornerRadius > 0 {
+                    mtkView.clipsToBounds = true
+                    mtkView.layer.cornerCurve = .continuous
+                    mtkView.layer.cornerRadius = cornerRadius
+                }
+                
+                if index == 0 {
+                    self.topScreen = mtkView
+                    if let topScreen = self.topScreen {
+                        self.view.addSubview(topScreen)
+                    }
+                } else {
+                    mtkView.isUserInteractionEnabled = true
+                    self.bottomScreen = mtkView
+                    if let bottomScreen = self.bottomScreen {
+                        self.view.addSubview(bottomScreen)
+                    }
+                }
             }
-            mtkView.delegate = self
-            
-            if index == 0 {
-                self.topScreen = mtkView
+        } else {
+            if let screen = device.screens.first {
+                let mtkView = UIImageView(frame: .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height))
+                if let cornerRadius = screen.cornerRadius, cornerRadius > 0 {
+                    mtkView.clipsToBounds = true
+                    mtkView.layer.cornerCurve = .continuous
+                    mtkView.layer.cornerRadius = cornerRadius
+                }
+                
+                topScreen = mtkView
                 if let topScreen = self.topScreen {
                     self.view.addSubview(topScreen)
-                }
-            } else {
-                self.bottomScreen = mtkView
-                if let bottomScreen = self.bottomScreen {
-                    self.view.addSubview(bottomScreen)
                 }
             }
         }
@@ -108,15 +128,21 @@ class GrapeDefaultViewController : UIViewController {
                 return
             }
             
-            device.screens.enumerated().forEach { index, screen in
-                if index == 0 {
-                    if let topScreen = self.topScreen {
-                        topScreen.frame = .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height)
+            if game.gameType == .nds {
+                device.screens.enumerated().forEach { index, screen in
+                    if index == 0 {
+                        if let topScreen = self.topScreen {
+                            topScreen.frame = .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height)
+                        }
+                    } else {
+                        if let bottomScreen = self.bottomScreen {
+                            bottomScreen.frame = .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height)
+                        }
                     }
-                } else {
-                    if let bottomScreen = self.bottomScreen {
-                        bottomScreen.frame = .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height)
-                    }
+                }
+            } else {
+                if let screen = device.screens.first, let topScreen = self.topScreen {
+                    topScreen.frame = .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height)
                 }
             }
             
@@ -131,11 +157,11 @@ class GrapeDefaultViewController : UIViewController {
         super.viewDidLayoutSubviews()
         if !isRunning {
             isRunning = true
-            guard let game = game as? GrapeManager.Library.Game, let bottomScreen = bottomScreen else {
+            guard let game = game as? GrapeManager.Library.Game else {
                 return
             }
             
-            if game.gameType == .nds {
+            if game.gameType == .nds, let bottomScreen = self.bottomScreen {
                 grape.updateScreenLayout(with: bottomScreen.frame.size)
             }
             
@@ -282,27 +308,27 @@ extension GrapeDefaultViewController {
         }
         
         extendedGamepad.buttonOptions?.pressedChangedHandler = { button, value, pressed in
-            pressed ? self.touchBegan(with: .select) : self.touchEnded(with: .select)
+            pressed ? self.touchBegan(with: .minus) : self.touchEnded(with: .minus)
         }
         
         extendedGamepad.buttonMenu.pressedChangedHandler = { button, value, pressed in
-            pressed ? self.touchBegan(with: .start) : self.touchEnded(with: .start)
+            pressed ? self.touchBegan(with: .plus) : self.touchEnded(with: .plus)
         }
         
         extendedGamepad.buttonA.pressedChangedHandler = { button, value, pressed in
-            pressed ? self.touchBegan(with: .east) : self.touchEnded(with: .east)
+            pressed ? self.touchBegan(with: .a) : self.touchEnded(with: .a)
         }
         
         extendedGamepad.buttonB.pressedChangedHandler = { button, value, pressed in
-            pressed ? self.touchBegan(with: .south) : self.touchEnded(with: .south)
+            pressed ? self.touchBegan(with: .b) : self.touchEnded(with: .b)
         }
         
         extendedGamepad.buttonX.pressedChangedHandler = { button, value, pressed in
-            pressed ? self.touchBegan(with: .north) : self.touchEnded(with: .north)
+            pressed ? self.touchBegan(with: .x) : self.touchEnded(with: .x)
         }
         
         extendedGamepad.buttonY.pressedChangedHandler = { button, value, pressed in
-            pressed ? self.touchBegan(with: .west) : self.touchBegan(with: .west)
+            pressed ? self.touchBegan(with: .y) : self.touchBegan(with: .y)
         }
         
         extendedGamepad.leftShoulder.pressedChangedHandler = { button, value, pressed in
@@ -324,17 +350,39 @@ extension GrapeDefaultViewController {
         }
     }
     
-    func orientationForCurrentOrientation() -> Orientation {
-        switch UIApplication.shared.statusBarOrientation {
-        case .unknown, .portrait, .portraitUpsideDown:
-            .portrait
-        case .landscapeLeft, .landscapeRight:
-            .landscape
-        }
-    }
-    
     @objc func run() {
-        grape.step()
+        guard let game = game as? GrapeManager.Library.Game else {
+            return
+        }
+        
+        while !Grape.shared.isPaused() {
+            grape.step()
+            
+            let videoBuffer = grape.videoBuffer(isGBA: game.gameType == .gba)
+            
+            let upscalingFilter = grape.useUpscalingFilter()
+            let upscalingFactor = Int(grape.useUpscalingFactor())
+            
+            var width = game.gameType == .gba ? 240 : 256
+            var height = game.gameType == .gba ? 160 : 192
+            
+            if [0, 1, 2].contains(upscalingFilter) {
+                width *= upscalingFactor
+                height *= upscalingFactor
+            }
+            
+            if let topScreen = topScreen, let cgImage = CGImage.cgImage(videoBuffer, width, height) {
+                Task {
+                    topScreen.image = .init(cgImage: cgImage)
+                }
+            }
+            
+            if let bottomScreen = bottomScreen, let cgImage = CGImage.cgImage(videoBuffer.advanced(by: width * height), width, height) {
+                Task {
+                    bottomScreen.image = .init(cgImage: cgImage)
+                }
+            }
+        }
     }
 }
 
@@ -349,17 +397,17 @@ extension GrapeDefaultViewController : ControllerButtonDelegate {
             grape.virtualControllerButtonDown(5)
         case .dpadRight:
             grape.virtualControllerButtonDown(4)
-        case .select:
+        case .minus:
             grape.virtualControllerButtonDown(2)
-        case .start:
+        case .plus:
             grape.virtualControllerButtonDown(3)
-        case .east:
+        case .a:
             grape.virtualControllerButtonDown(0)
-        case .south:
+        case .b:
             grape.virtualControllerButtonDown(1)
-        case .north:
+        case .x:
             grape.virtualControllerButtonDown(10)
-        case .west:
+        case .y:
             grape.virtualControllerButtonDown(11)
         case .l:
             grape.virtualControllerButtonDown(9)
@@ -380,17 +428,17 @@ extension GrapeDefaultViewController : ControllerButtonDelegate {
             grape.virtualControllerButtonUp(5)
         case .dpadRight:
             grape.virtualControllerButtonUp(4)
-        case .select:
+        case .minus:
             grape.virtualControllerButtonDown(2)
-        case .start:
+        case .plus:
             grape.virtualControllerButtonDown(3)
-        case .east:
+        case .a:
             grape.virtualControllerButtonUp(0)
-        case .south:
+        case .b:
             grape.virtualControllerButtonUp(1)
-        case .north:
+        case .x:
             grape.virtualControllerButtonUp(10)
-        case .west:
+        case .y:
             grape.virtualControllerButtonUp(11)
         case .l:
             grape.virtualControllerButtonUp(9)
@@ -404,6 +452,7 @@ extension GrapeDefaultViewController : ControllerButtonDelegate {
     func touchMoved(with type: Button.`Type`) {}
 }
 
+/*
 extension GrapeDefaultViewController : MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {}
     
@@ -501,3 +550,4 @@ extension GrapeDefaultViewController : MTKViewDelegate {
         }
     }
 }
+*/

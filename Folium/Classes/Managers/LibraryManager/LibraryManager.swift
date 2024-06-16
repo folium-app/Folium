@@ -54,8 +54,6 @@ class LibraryManager {
                         if ["nes"].contains(pathExtension) {
                             partialResult.append(url)
                         }
-                    default:
-                        break
                     }
                 }
             default:
@@ -79,7 +77,7 @@ class LibraryManager {
                 let cytrus = Cytrus.shared
                 if ["app", "cia"].contains(url.pathExtension.lowercased()) {
                     let title = cytrus.information(url).title
-                    if !title.isEmpty {
+                    if !title.isEmpty || title != "" {
                         let game: CytrusManager.Library.Game = .init(core: core, fileDetails: .init(extension: url.pathExtension.lowercased(),
                                                                                                     name: url.lastPathComponent,
                                                                                                     nameWithoutExtension: nameWithoutExtension,
@@ -121,8 +119,6 @@ class LibraryManager {
                     kiwiManager.library.add(game)
                     gameArr.append(game)
                 }
-            default:
-                break
             }
         }
         
@@ -147,7 +143,12 @@ class LibraryManager {
     
     func library() throws {
 #if canImport(Cytrus)
+        cytrusManager.library.games.removeAll()
         var cytrusCrawler = try crawler(.cytrus)
+        
+        Cytrus.shared.installed().forEach { url in cytrusCrawler.urls.removeAll(where: { $0 == url }) }
+        Cytrus.shared.system().forEach { url in cytrusCrawler.urls.removeAll(where: { $0 == url }) }
+        
         cytrusCrawler.urls.append(contentsOf: Cytrus.shared.installed())
         cytrusCrawler.urls.append(contentsOf: Cytrus.shared.system())
         _ = games(cytrusCrawler.core, cytrusCrawler.urls)

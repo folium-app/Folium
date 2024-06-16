@@ -29,16 +29,6 @@ class LayoutManager {
                 break
             }
             
-            let isiPad = UIDevice.current.userInterfaceIdiom == .pad
-            let columns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? missingFiles ? 1 : isiPad ? 5 : 2 : missingFiles ? 2 : isiPad ? 7 : 4
-            
-            let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1 / columns),
-                                                                heightDimension: .estimated(300)))
-            
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(300)),
-                                                           subitems: [item])
-            group.interItemSpacing = .fixed(10)
-            
             if missingFiles {
                 var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
                 configuration.backgroundColor = .secondarySystemBackground
@@ -51,6 +41,46 @@ class LayoutManager {
                 
                 return section
             } else {
+                let isiPad = UIDevice.current.userInterfaceIdiom == .pad
+                let columns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? isiPad ? 5 : 2 : isiPad ? 7 : 4
+                let bottomColumns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? isiPad ? 6 : 3 : isiPad ? 8 : 5
+                
+                let isLandscape: Bool = layoutEnvironment.container.effectiveContentSize.width > UIScreen.main.bounds.height
+                
+                let topItem = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1 / columns), heightDimension: .estimated(300)))
+                let bottomItem = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1 / (isLandscape ? bottomColumns : columns)), heightDimension: .estimated(300)))
+                
+                let topGroup = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1),
+                                                                                    heightDimension: .estimated(300)), subitem: topItem, count: Int(columns))
+                topGroup.interItemSpacing = .fixed(10)
+                
+                let bottomGroup = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1),
+                                                                                       heightDimension: .estimated(300)), subitem: bottomItem, count: Int((isLandscape ? bottomColumns : columns)))
+                bottomGroup.interItemSpacing = .fixed(10)
+                
+                let nestedGroup = NSCollectionLayoutGroup.vertical(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(600)), subitems: [topGroup, bottomGroup])
+                nestedGroup.interItemSpacing = .fixed(10)
+                
+                let section = NSCollectionLayoutSection(group: nestedGroup)
+                section.boundarySupplementaryItems = [
+                    .init(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(44)),
+                          elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                ]
+                section.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
+                section.interGroupSpacing = 10
+                return section
+                
+                /*
+                 let isiPad = UIDevice.current.userInterfaceIdiom == .pad
+                let columns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? isiPad ? 5 : 2 : isiPad ? 7 : 4
+                
+                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1 / columns),
+                                                                    heightDimension: .estimated(300)))
+                
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(300)),
+                                                               subitems: [item])
+                group.interItemSpacing = .fixed(10)
+                
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
                 section.interGroupSpacing = 10
@@ -59,7 +89,8 @@ class LayoutManager {
                           elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
                 ]
                 
-                return section
+                return section*/
+                
             }
         }, configuration: configuration)
     }

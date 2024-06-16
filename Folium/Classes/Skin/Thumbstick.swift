@@ -9,7 +9,8 @@ import Foundation
 
 struct Thumbstick : Codable, Hashable {
     enum `Type` : String, Codable, Hashable {
-        case left = "left", right = "right"
+        case left = "left"
+        case right = "right"
     }
     
     let x, y: Double

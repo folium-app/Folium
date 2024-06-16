@@ -66,41 +66,43 @@ class CytrusManager {
         let width = bounds.width
         let height = bounds.height
         
-        let safeAreaInsets = UIApplication.shared.windows[0].safeAreaInsets
+        let safeAreaInsets = UIApplication.shared.connectedScenes.compactMap {
+            ($0 as? UIWindowScene)?.keyWindow
+        }.last?.safeAreaInsets ?? .init(top: 0, left: 0, bottom: 0, right: 0)
         
         let buttons: [Button] = [
+            .init(x: width-80, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .a),
+            .init(x: width-140, y: height-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .x),
+            .init(x: width-140, y: height-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .b),
+            .init(x: width-200, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .y),
+            
             .init(x: 80, y: height-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadUp),
             .init(x: 80, y: height-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadDown),
             .init(x: 20, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadLeft),
             .init(x: 140, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadRight),
             
-            .init(x: width-140, y: height-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .north),
-            .init(x: width-80, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .east),
-            .init(x: width-140, y: height-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .south),
-            .init(x: width-200, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .west),
-            
             .init(x: 20, y: height-(240+safeAreaInsets.bottom), width: 70, height: 50, type: .l),
-            .init(x: 110, y: height-(240+safeAreaInsets.bottom), width: 70, height: 50, type: .zl),
-            
             .init(x: width-90, y: height-(240+safeAreaInsets.bottom), width: 70, height: 50, type: .r),
+            
+            .init(x: 110, y: height-(240+safeAreaInsets.bottom), width: 70, height: 50, type: .zl),
             .init(x: width-180, y: height-(240+safeAreaInsets.bottom), width: 70, height: 50, type: .zr)
         ]
         
         let buttonsLandscape: [Button] = [
+            .init(x: height-80, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .a),
+            .init(x: height-140, y: width-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .b),
+            .init(x: height-140, y: width-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .x),
+            .init(x: height-200, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .y),
+            
             .init(x: 80, y: width-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadUp),
             .init(x: 80, y: width-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadDown),
             .init(x: 20, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadLeft),
             .init(x: 140, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadRight),
             
-            .init(x: height-140, y: width-(180+safeAreaInsets.bottom), width: 60, height: 60, type: .north),
-            .init(x: height-80, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .east),
-            .init(x: height-140, y: width-(60+safeAreaInsets.bottom), width: 60, height: 60, type: .south),
-            .init(x: height-200, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .west),
-            
             .init(x: 20, y: 20, width: 70, height: 50, type: .l),
-            .init(x: 110, y: 20, width: 70, height: 50, type: .zl),
-            
             .init(x: height-90, y: 20, width: 70, height: 50, type: .r),
+            
+            .init(x: 110, y: 20, width: 70, height: 50, type: .zl),
             .init(x: height-180, y: 20, width: 70, height: 50, type: .zr)
         ]
         

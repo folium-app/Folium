@@ -49,10 +49,10 @@ enum Core : String, Codable, Hashable {
                 .dpadDown : (.black, .white),
                 .dpadLeft : (.black, .white),
                 .dpadRight : (.black, .white),
-                .east : (.systemRed, .white),
-                .south : (.systemYellow, .white),
-                .north : (.systemBlue, .white),
-                .west : (.systemGreen, .white),
+                .a : isNintendo ? (.systemRed, .white) : (.systemRed, .white),
+                .b : isNintendo ? (.systemYellow, .white) : (.systemBlue, .white),
+                .x : isNintendo ? (.systemBlue, .white) : (.systemGreen, .white),
+                .y : isNintendo ? (.systemGreen, .white) : (.systemPink, .white),
             ]
         case .grape:
             [
@@ -65,5 +65,9 @@ enum Core : String, Codable, Hashable {
         }
     }
     
+#if targetEnvironment(simulator)
+    static let cores: [Core] = [.grape]
+#else
     static let cores: [Core] = [.cytrus, .grape]
+#endif
 }

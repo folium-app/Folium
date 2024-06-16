@@ -379,6 +379,9 @@
 		E69313552BF5001200CCE717 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69313542BF5001200CCE717 /* Core.swift */; };
 		E69313592BF503A000CCE717 /* MissingFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69313582BF503A000CCE717 /* MissingFile.swift */; };
 		E693135C2BF50FED00CCE717 /* DirectoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E693135B2BF50FED00CCE717 /* DirectoryManager.swift */; };
+		E69992AF2C1F3E80001D82A6 /* CytrusDefaultViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69992AE2C1F3E80001D82A6 /* CytrusDefaultViewController+Extension.swift */; };
+		E69992B12C1F429F001D82A6 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69992B02C1F429F001D82A6 /* UIViewController.swift */; };
+		E69992B32C1F54B8001D82A6 /* mtcbxDeltaSkinDS.zip in Resources */ = {isa = PBXBuildFile; fileRef = E69992B22C1F54B8001D82A6 /* mtcbxDeltaSkinDS.zip */; };
 		E6A94D332BF5FBEF001CC55F /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A94D322BF5FBEF001CC55F /* LibraryController.swift */; };
 		E6A94D392BF601D5001CC55F /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A94D382BF601D5001CC55F /* GradientView.swift */; };
 		E6A94D3C2BF6043F001CC55F /* LayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A94D3B2BF6043F001CC55F /* LayoutManager.swift */; };
@@ -467,8 +470,6 @@
 		E6CEAF712C1D63E700D46450 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF6E2C1D63E500D46450 /* MoltenVK.xcframework */; };
 		E6CEAF722C1D63E700D46450 /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6CEAF6E2C1D63E500D46450 /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6CEAF852C1D8B6800D46450 /* AppStoreCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6CEAF842C1D8B6800D46450 /* AppStoreCheck.swift */; };
-		E6CEAF8D2C1D972A00D46450 /* mtcbxDeltaSkin3DS.zip in Resources */ = {isa = PBXBuildFile; fileRef = E6CEAF8B2C1D972A00D46450 /* mtcbxDeltaSkin3DS.zip */; };
-		E6CEAF8E2C1D972A00D46450 /* mtcbxDeltaSkinDS.zip in Resources */ = {isa = PBXBuildFile; fileRef = E6CEAF8C2C1D972A00D46450 /* mtcbxDeltaSkinDS.zip */; };
 		E6CEAF912C1D9BA400D46450 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = E6CEAF902C1D9BA400D46450 /* ZIPFoundation */; };
 		E6D292682C1A2EE900ADBE64 /* Skin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D292672C1A2EE900ADBE64 /* Skin.swift */; };
 		E6D2926A2C1A2F0300ADBE64 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D292692C1A2F0300ADBE64 /* Button.swift */; };
@@ -888,6 +889,9 @@
 		E69313542BF5001200CCE717 /* Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; };
 		E69313582BF503A000CCE717 /* MissingFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissingFile.swift; sourceTree = "<group>"; };
 		E693135B2BF50FED00CCE717 /* DirectoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryManager.swift; sourceTree = "<group>"; };
+		E69992AE2C1F3E80001D82A6 /* CytrusDefaultViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CytrusDefaultViewController+Extension.swift"; sourceTree = "<group>"; };
+		E69992B02C1F429F001D82A6 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		E69992B22C1F54B8001D82A6 /* mtcbxDeltaSkinDS.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = mtcbxDeltaSkinDS.zip; sourceTree = "<group>"; };
 		E6A94D322BF5FBEF001CC55F /* LibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryController.swift; sourceTree = "<group>"; };
 		E6A94D382BF601D5001CC55F /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		E6A94D3B2BF6043F001CC55F /* LayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutManager.swift; sourceTree = "<group>"; };
@@ -1051,8 +1055,6 @@
 		E6CEAF5D2C1D639600D46450 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswscale.xcframework; sourceTree = "<group>"; };
 		E6CEAF6E2C1D63E500D46450 /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
 		E6CEAF842C1D8B6800D46450 /* AppStoreCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreCheck.swift; sourceTree = "<group>"; };
-		E6CEAF8B2C1D972A00D46450 /* mtcbxDeltaSkin3DS.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = mtcbxDeltaSkin3DS.zip; sourceTree = "<group>"; };
-		E6CEAF8C2C1D972A00D46450 /* mtcbxDeltaSkinDS.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = mtcbxDeltaSkinDS.zip; sourceTree = "<group>"; };
 		E6D292672C1A2EE900ADBE64 /* Skin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skin.swift; sourceTree = "<group>"; };
 		E6D292692C1A2F0300ADBE64 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		E6D2926B2C1A2F2000ADBE64 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
@@ -2213,7 +2215,7 @@
 		E6477F052BEF48C30062975D /* Folium */ = {
 			isa = PBXGroup;
 			children = (
-				E6CEAF732C1D8A7100D46450 /* DefaultSkins */,
+				E69992AB2C1ED404001D82A6 /* DefaultSkins */,
 				E6C2C0EB2BFDDDCF00547022 /* Folium.entitlements */,
 				E6631A3E2BF4AF34007AE66E /* Classes */,
 				E6477F1A2BEF49460062975D /* Controllers */,
@@ -2313,6 +2315,14 @@
 			path = DirectoryManager;
 			sourceTree = "<group>";
 		};
+		E69992AB2C1ED404001D82A6 /* DefaultSkins */ = {
+			isa = PBXGroup;
+			children = (
+				E69992B22C1F54B8001D82A6 /* mtcbxDeltaSkinDS.zip */,
+			);
+			path = DefaultSkins;
+			sourceTree = "<group>";
+		};
 		E6A94D342BF5FE9A001CC55F /* LibraryCells */ = {
 			isa = PBXGroup;
 			children = (
@@ -2347,6 +2357,7 @@
 				E6A94D3E2BF6093E001CC55F /* UIColor.swift */,
 				E6A94D402BF60A15001CC55F /* UIImage.swift */,
 				E6E0F7FD2C10693000A8C308 /* Comparable.swift */,
+				E69992B02C1F429F001D82A6 /* UIViewController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2724,6 +2735,7 @@
 			isa = PBXGroup;
 			children = (
 				E6E820BB2C158D9C00620256 /* CytrusDefaultViewController.swift */,
+				E69992AE2C1F3E80001D82A6 /* CytrusDefaultViewController+Extension.swift */,
 				E6ACC3C82C13065900CB6780 /* KeyboardController.swift */,
 			);
 			path = CytrusEmulationController;
@@ -2743,15 +2755,6 @@
 				E6CB595F2BFB800200C3A95E /* KiwiEmulationController.swift */,
 			);
 			path = KiwiEmulationController;
-			sourceTree = "<group>";
-		};
-		E6CEAF732C1D8A7100D46450 /* DefaultSkins */ = {
-			isa = PBXGroup;
-			children = (
-				E6CEAF8B2C1D972A00D46450 /* mtcbxDeltaSkin3DS.zip */,
-				E6CEAF8C2C1D972A00D46450 /* mtcbxDeltaSkinDS.zip */,
-			);
-			path = DefaultSkins;
 			sourceTree = "<group>";
 		};
 		E6D292662C1A2EDE00ADBE64 /* Skin */ = {
@@ -2897,8 +2900,7 @@
 			files = (
 				E6477F102BEF48C40062975D /* Assets.xcassets in Resources */,
 				E6477F132BEF48C40062975D /* Base in Resources */,
-				E6CEAF8D2C1D972A00D46450 /* mtcbxDeltaSkin3DS.zip in Resources */,
-				E6CEAF8E2C1D972A00D46450 /* mtcbxDeltaSkinDS.zip in Resources */,
+				E69992B32C1F54B8001D82A6 /* mtcbxDeltaSkinDS.zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2923,6 +2925,7 @@
 				E6A94D3F2BF6093E001CC55F /* UIColor.swift in Sources */,
 				E6E0F7FE2C10693000A8C308 /* Comparable.swift in Sources */,
 				E6631A422BF4AF52007AE66E /* LibraryManager.swift in Sources */,
+				E69992B12C1F429F001D82A6 /* UIViewController.swift in Sources */,
 				E6D2926C2C1A2F2000ADBE64 /* Screen.swift in Sources */,
 				E6D2926E2C1A2F2D00ADBE64 /* Thumbstick.swift in Sources */,
 				E6A94D482BF60EF2001CC55F /* Bruno.swift in Sources */,
@@ -2949,6 +2952,7 @@
 				E6D292682C1A2EE900ADBE64 /* Skin.swift in Sources */,
 				E6D2926A2C1A2F0300ADBE64 /* Button.swift in Sources */,
 				E6631A4A2BF4AFEB007AE66E /* GrapeManager.swift in Sources */,
+				E69992AF2C1F3E80001D82A6 /* CytrusDefaultViewController+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3478,7 +3482,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Folium/Folium.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folium/Info.plist;
@@ -3518,7 +3522,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Folium/Folium.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folium/Info.plist;
@@ -3577,6 +3581,10 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Cytrus/Wrapper/Cytrus-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -3584,7 +3592,7 @@
 					"\"$(HOME)/VulkanSDK/1.3.283.0/macOS/include\"",
 					"\"$(HOME)/VulkanSDK/1.3.283.0/macOS/include/vma\"",
 				);
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = Cytrus/Core/include;
 			};
 			name = Debug;
@@ -3613,6 +3621,10 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Cytrus/Wrapper/Cytrus-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				SYSTEM_HEADER_SEARCH_PATHS = (
@@ -3620,7 +3632,7 @@
 					"\"$(HOME)/VulkanSDK/1.3.283.0/macOS/include\"",
 					"\"$(HOME)/VulkanSDK/1.3.283.0/macOS/include/vma\"",
 				);
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = Cytrus/Core/include;
 			};
 			name = Release;

@@ -35,7 +35,13 @@ class LibraryController : UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.setRightBarButton(.init(systemItem: .add, primaryAction: .init(handler: { _ in
+        
+        var configuration = UIButton.Configuration.plain()
+        configuration.buttonSize = .small
+        configuration.cornerStyle = .capsule
+        configuration.image = .init(systemName: "plus")
+        
+        let button = UIButton(configuration: configuration, primaryAction: .init(handler: { _ in
             let documentController = UIDocumentPickerViewController(forOpeningContentTypes: [
                 .init("com.antique.Folium-iOS.gba")!,
                 .init("com.antique.Folium-iOS.nds")!,
@@ -63,7 +69,9 @@ class LibraryController : UICollectionViewController {
                 }))
                 self.present(alertController, animated: true)
             }
-        })), animated: true)
+        }))
+        
+        navigationItem.perform(NSSelectorFromString("_setLargeTitleAccessoryView:"), with: button)
         title = "Library"
         collectionView.backgroundColor = .secondarySystemBackground
         
@@ -90,11 +98,13 @@ class LibraryController : UICollectionViewController {
             
             var contentConfiguration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
             contentConfiguration.text = sectionIdentifier.rawValue
+            contentConfiguration.textProperties.font = .boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title1).pointSize)
             contentConfiguration.secondaryText = sectionIdentifier.console.rawValue
+            contentConfiguration.secondaryTextProperties.font = .preferredFont(forTextStyle: .body)
             supplementaryView.contentConfiguration = contentConfiguration
             
             var buttonConfiguration = UIButton.Configuration.filled()
-            buttonConfiguration.buttonSize = .mini
+            buttonConfiguration.buttonSize = .small
             buttonConfiguration.cornerStyle = .capsule
             buttonConfiguration.image = .init(systemName: "ellipsis")?
                 .applyingSymbolConfiguration(.init(weight: .bold))
@@ -126,8 +136,6 @@ class LibraryController : UICollectionViewController {
                 supplementaryView.accessories = [
                     .customView(configuration: .init(customView: button, placement: .trailing(), reservedLayoutWidth: .actual))
                 ]
-            default:
-                supplementaryView.accessories = []
             }
         }
         
@@ -225,8 +233,6 @@ class LibraryController : UICollectionViewController {
                 } else {
                     LibraryManager.shared.kiwiManager.library.games
                 }
-            default:
-                items = []
             }
             
             snapshot.appendItems(items, toSection: core)

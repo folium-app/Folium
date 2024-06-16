@@ -10,21 +10,55 @@ import UIKit
 
 struct Button : Codable, Hashable {
     enum `Type` : String, Codable, Hashable {
-        case north = "north", east = "east", south = "south", west = "west"
-        case dpadUp = "dpadUp", dpadDown = "dpadDown", dpadLeft = "dpadLeft", dpadRight = "dpadRight"
-        case l = "l", zl = "zl", r = "r", zr = "zr"
+        case a = "a"
+        case b = "b"
+        case x = "x"
+        case y = "y"
         
-        case menu = "menu" // nds=menu, 3ds=home
-        case select = "select", start = "start"
+        case dpadUp = "dpadUp"
+        case dpadDown = "dpadDown"
+        case dpadLeft = "dpadLeft"
+        case dpadRight = "dpadRight"
+        
+        case l = "l"
+        case r = "r"
+        
+        case zl = "zl"
+        case zr = "zr"
+        
+        case home = "home"
+        case minus = "minus"
+        case plus = "plus"
+        
+        enum CodingKeys : String, CodingKey {
+            case a = "circle"
+            case b = "cross"
+            case x = "triangle"
+            case y = "square"
+            
+            case l = "l1"
+            case r = "r1"
+            
+            case zl = "l2"
+            case zr = "r2"
+            
+            case minus = "select"
+            case plus = "start"
+        }
     }
     
     struct Customisation : Codable, Hashable {
         enum VibrationStrength : Int, Codable, Hashable {
-            case light = 0, medium = 1, heavy = 2, soft = 3, rigid = 4
+            case light = 0
+            case medium = 1
+            case heavy = 2
+            case soft = 3
+            case rigid = 4
         }
         
-        var backgroundImageName: String? = nil // nil or ""=transparent
+        var backgroundImageName: String? = nil
         var tappedBackgroundImageName: String? = nil
+        var isTransparent: Bool? = false
         
         var vibrateOnTap: Bool? = true
         var vibrationStrength: VibrationStrength? = .heavy
@@ -37,28 +71,29 @@ struct Button : Codable, Hashable {
     
     func image(for core: Core) -> UIImage? {
         switch type {
-        case .north: .init(systemName: core.isNintendo ? "x.circle.fill" : "triangle.circle.fill")
-        case .east: .init(systemName: core.isNintendo ? "a.circle.fill" : "circle.circle.fill")
-        case .south: .init(systemName: core.isNintendo ? "b.circle.fill" : "xmark.circle.fill")
-        case .west: .init(systemName: core.isNintendo ? "y.circle.fill" : "square.circle.fill")
-        case .select: .init(systemName: "minus.circle.fill")
-        case .start: .init(systemName: "plus.circle.fill")
-        case .menu: .init(systemName: "ellipsis.circle.fill")
-        case .dpadUp: .init(systemName: "arrowtriangle.up.circle.fill")
-        case .dpadDown: .init(systemName: "arrowtriangle.down.circle.fill")
-        case .dpadLeft: .init(systemName: "arrowtriangle.left.circle.fill")
-        case .dpadRight: .init(systemName: "arrowtriangle.right.circle.fill")
+        case .a:
+            .init(systemName: core.isNintendo ? "a.circle.fill" : "circle.circle.fill")
+        case .b:
+            .init(systemName: core.isNintendo ? "b.circle.fill" : "xmark.circle.fill")
+        case .x:
+            .init(systemName: core.isNintendo ? "x.circle.fill" : "triangle.circle.fill")
+        case .y:
+            .init(systemName: core.isNintendo ? "y.circle.fill" : "square.circle.fill")
+            
+        case .dpadUp:
+            .init(systemName: "arrowtriangle.up.circle.fill")
+        case .dpadDown:
+            .init(systemName: "arrowtriangle.down.circle.fill")
+        case .dpadLeft:
+            .init(systemName: "arrowtriangle.left.circle.fill")
+        case .dpadRight:
+            .init(systemName: "arrowtriangle.right.circle.fill")
+            
         case .l:
             if #available(iOS 17, *) {
                 .init(systemName: core.isNintendo ? "l.button.roundedbottom.horizontal.fill" : "l1.button.roundedbottom.horizontal.fill")
             } else {
                 .init(systemName: core.isNintendo ? "l.rectangle.roundedbottom.fill" : "l1.rectangle.roundedbottom.fill")
-            }
-        case .zl:
-            if #available(iOS 17, *) {
-                .init(systemName: core.isNintendo ? "zl.button.roundedbottom.horizontal.fill" : "l2.button.roundedbottom.horizontal.fill")
-            } else {
-                .init(systemName: core.isNintendo ? "zl.rectangle.roundedbottom.fill" :"l2.rectangle.roundedbottom.fill")
             }
         case .r:
             if #available(iOS 17, *) {
@@ -66,12 +101,26 @@ struct Button : Codable, Hashable {
             } else {
                 .init(systemName: core.isNintendo ? "r.rectangle.roundedbottom.fill" : "r1.rectangle.roundedbottom.fill")
             }
+            
+        case .zl:
+            if #available(iOS 17, *) {
+                .init(systemName: core.isNintendo ? "zl.button.roundedtop.horizontal.fill" : "l2.button.roundedtop.horizontal.fill")
+            } else {
+                .init(systemName: core.isNintendo ? "zl.rectangle.roundedtop.fill" :"l2.rectangle.roundedtop.fill")
+            }
         case .zr:
             if #available(iOS 17, *) {
-                .init(systemName: core.isNintendo ? "zr.button.roundedbottom.horizontal.fill" : "r2.button.roundedbottom.horizontal.fill")
+                .init(systemName: core.isNintendo ? "zr.button.roundedtop.horizontal.fill" : "r2.button.roundedtop.horizontal.fill")
             } else {
-                .init(systemName: core.isNintendo ? "zr.rectangle.roundedbottom.fill" :"r2.rectangle.roundedbottom.fill")
+                .init(systemName: core.isNintendo ? "zr.rectangle.roundedtop.fill" :"r2.rectangle.roundedtop.fill")
             }
+            
+        case .home:
+            .init(systemName: "ellipsis.circle.fill")
+        case .minus:
+            .init(systemName: "minus.circle.fill")
+        case .plus:
+            .init(systemName: "plus.circle.fill")
         }
     }
 }

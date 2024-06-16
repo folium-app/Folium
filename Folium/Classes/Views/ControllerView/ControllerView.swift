@@ -73,7 +73,10 @@ class ControllerView : PassthroughView {
         }
         
         if let backgroundImageName = device.backgroundImageName, let path = skin.path {
-            let imageView = UIImageView(image: .init(contentsOfFile: path.appendingPathComponent(backgroundImageName, conformingTo: .fileURL).path))
+            let imageView = UIImageView(image: .init(contentsOfFile: path
+                .appendingPathComponent("backgrounds", conformingTo: .folder)
+                .appendingPathComponent(machine, conformingTo: .folder)
+                .appendingPathComponent(backgroundImageName, conformingTo: .fileURL).path))
             imageView.translatesAutoresizingMaskIntoConstraints = false
             addSubview(imageView)
             

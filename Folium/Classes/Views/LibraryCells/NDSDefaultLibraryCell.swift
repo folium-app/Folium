@@ -12,16 +12,22 @@ import UIKit
 class NDSDefaultLibraryCell : UICollectionViewCell {
     fileprivate var imageView: UIImageView!
     fileprivate var gradientView: GradientView!
-    fileprivate var headlineLabel, titleLabel: UILabel!
+    fileprivate var titleLabel: UILabel!
     fileprivate var optionsButton: UIButton!
     
     fileprivate var game: GrapeManager.Library.Game!
     fileprivate var viewController: UIViewController!
     
+    fileprivate var hasImage: Bool = true
+    fileprivate var averageImageColor: UIColor?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         backgroundColor = .tertiarySystemBackground
         clipsToBounds = true
+        layer.borderColor = UIColor.tertiarySystemBackground.cgColor
+        layer.borderWidth = 3
         layer.cornerCurve = .continuous
         layer.cornerRadius = 15
         
@@ -30,29 +36,34 @@ class NDSDefaultLibraryCell : UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         addSubview(imageView)
         
+        imageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        
         gradientView = .init()
         gradientView.translatesAutoresizingMaskIntoConstraints = false
         imageView.addSubview(gradientView)
         
+        gradientView.topAnchor.constraint(equalTo: imageView.topAnchor).isActive = true
+        gradientView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
+        gradientView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor).isActive = true
+        gradientView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive = true
+        
         titleLabel = .init()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = .boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize)
-        titleLabel.numberOfLines = 2
+        titleLabel.numberOfLines = 3
         titleLabel.textAlignment = .left
-        titleLabel.textColor = .white
         gradientView.addSubview(titleLabel)
         
-        headlineLabel = .init()
-        headlineLabel.translatesAutoresizingMaskIntoConstraints = false
-        headlineLabel.font = .boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .headline).pointSize)
-        headlineLabel.textAlignment = .left
-        headlineLabel.textColor = .lightText
-        gradientView.addSubview(headlineLabel)
+        titleLabel.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: 16).isActive = true
+        titleLabel.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -16).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -16).isActive = true
         
         var configuration = UIButton.Configuration.tinted()
         configuration.baseBackgroundColor = .white
         configuration.baseForegroundColor = .white
-        configuration.buttonSize = .mini
+        configuration.buttonSize = .small
         configuration.cornerStyle = .capsule
         configuration.image = .init(systemName: "ellipsis")?
             .applyingSymbolConfiguration(.init(weight: .bold))
@@ -62,34 +73,41 @@ class NDSDefaultLibraryCell : UICollectionViewCell {
         optionsButton.showsMenuAsPrimaryAction = true
         addSubview(optionsButton)
         
-        addConstraints([
-            imageView.topAnchor.constraint(equalTo: topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            
-            gradientView.topAnchor.constraint(equalTo: imageView.topAnchor),
-            gradientView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-            gradientView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
-            gradientView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
-            
-            titleLabel.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: 12),
-            titleLabel.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -12),
-            titleLabel.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -12),
-            
-            headlineLabel.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: 12),
-            headlineLabel.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -4),
-            headlineLabel.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -12),
-            
-            optionsButton.topAnchor.constraint(equalTo: topAnchor, constant: 12),
-            optionsButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            
-            heightAnchor.constraint(equalTo: widthAnchor, multiplier: 3 / 4)
-        ])
+        optionsButton.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
+        optionsButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
+        
+        heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
+        
+        if #available(iOS 17, *) {
+            registerForTraitChanges([UITraitUserInterfaceStyle.self], action: #selector(traitDidChange))
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.borderColor = averageImageColor?.cgColor ?? UIColor.tertiarySystemBackground.cgColor
+        if let configuration = optionsButton.configuration {
+            layer.cornerRadius = configuration.background.cornerRadius + 16
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        layer.borderColor = averageImageColor?.cgColor ?? UIColor.tertiarySystemBackground.cgColor
+        if !hasImage {
+            gradientView.set(.tertiarySystemBackground)
+        }
+    }
+    
+    @objc func traitDidChange() {
+        layer.borderColor = averageImageColor?.cgColor ?? UIColor.tertiarySystemBackground.cgColor
+        if !hasImage {
+            gradientView.set(.tertiarySystemBackground)
+        }
     }
     
     func set(_ game: GrapeManager.Library.Game, _ viewController: UIViewController) {
@@ -101,20 +119,25 @@ class NDSDefaultLibraryCell : UICollectionViewCell {
         let pointer = Grape.shared.icon(game.fileDetails.url)
         let cgImage = CGImage.cgImage(pointer, 32, 32)
         if let cgImage {
-            imageView.image = .init(cgImage: cgImage).blurred(radius: 1)
-            if let uiImage = imageView.image {
-                gradientView.set((.clear, uiImage.averageColor ?? .tintColor))
-            }
+            let averageColor = UIImage(cgImage: cgImage).averageColor
+            averageImageColor = averageColor
+            
+            imageView.image = .init(cgImage: cgImage).blurred(radius: 2)
+            gradientView.set((.clear, averageColor ?? .tintColor))
+        } else {
+            imageView.image = nil
+            hasImage = false
+            gradientView.set(.tertiarySystemBackground)
         }
         
-        headlineLabel.text = game.core.console.shortened
-        titleLabel.text = game.title
+        titleLabel.attributedText = .init(string: game.title, attributes: [
+            .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize)
+        ])
     }
     
     fileprivate func menu() -> UIMenu {
-        let environments: [AppStoreCheck.Environment] = [.appStore, .testFlight]
-        let children: [UIMenuElement] = if environments.contains(AppStoreCheck.shared.currentAppEnvironment()) {
-            [
+        return .init(children: [
+            UIMenu(title: "Boot Options", image: .init(systemName: "power"), children: [
                 UIMenu(title: "Boot with Skin", image: .init(systemName: "paintbrush"), children: GrapeManager.shared.skinsManager.skins.reduce(into: [UIAction](), { partialResult, skin in
                     partialResult.append(UIAction(title: skin.name, subtitle: "by \(skin.author)", handler: { _ in
                         let grapeController = GrapeDefaultViewController(with: self.game, skin: skin)
@@ -122,13 +145,7 @@ class NDSDefaultLibraryCell : UICollectionViewCell {
                         self.viewController.present(grapeController, animated: true)
                     }))
                 }))
-            ]
-        } else {
-            []
-        }
-        
-        return .init(children: [
-            UIMenu(title: "Boot Options", image: .init(systemName: "power"), children: children),
+            ]),
             UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: [.destructive], handler: { _ in
                 guard let viewController = self.viewController as? LibraryController else {
                     return
