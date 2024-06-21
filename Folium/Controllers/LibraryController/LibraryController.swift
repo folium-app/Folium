@@ -36,10 +36,11 @@ class LibraryController : UICollectionViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        var configuration = UIButton.Configuration.plain()
+        var configuration = UIButton.Configuration.filled()
         configuration.buttonSize = .small
         configuration.cornerStyle = .capsule
-        configuration.image = .init(systemName: "plus")
+        configuration.image = .init(systemName: "plus")?
+            .applyingSymbolConfiguration(.init(weight: .bold))
         
         let button = UIButton(configuration: configuration, primaryAction: .init(handler: { _ in
             let documentController = UIDocumentPickerViewController(forOpeningContentTypes: [
@@ -136,6 +137,8 @@ class LibraryController : UICollectionViewController {
                 supplementaryView.accessories = [
                     .customView(configuration: .init(customView: button, placement: .trailing(), reservedLayoutWidth: .actual))
                 ]
+            default:
+                break
             }
         }
         
@@ -233,6 +236,8 @@ class LibraryController : UICollectionViewController {
                 } else {
                     LibraryManager.shared.kiwiManager.library.games
                 }
+            default:
+                items = []
             }
             
             snapshot.appendItems(items, toSection: core)
@@ -291,7 +296,7 @@ extension LibraryController : UIDocumentPickerDelegate {
             return
         }
         
-        urls.forEach { url in
+        urls.enumerated().forEach { index, url in
             switch url.pathExtension.lowercased() {
             case "gba", "nds":
                 Task {
@@ -334,26 +339,29 @@ extension LibraryController : UIDocumentPickerDelegate {
                     await self.dataSource.apply(snapshot)
                 }
             case "cia":
+                // TODO: Create a list of failed imports and show their error status (UICollectionViewController)
                 Task {
                     let result = Cytrus.shared.import(game: url)
                     
-                    var message = ""
-                    
-                    switch result {
+                    let message = switch result {
                     case .success:
-                        try await populateGames()
+                        "Success"
                     case .errorFailedToOpenFile:
-                        message = "Failed to open file"
+                        "Failed to open file"
                     case .errorFileNotFound:
-                        message = "File not found"
+                        "File not found"
                     case .errorAborted:
-                        message = "Aborted"
+                        "Aborted"
                     case .errorInvalid:
-                        message = "Invalid"
+                        "Invalid"
                     case .errorEncrypted:
-                        message = "Encrypted"
+                        "Encrypted"
                     @unknown default:
-                        fatalError()
+                        "Unknown"
+                    }
+                    
+                    if index == urls.count {
+                        try await populateGames()
                     }
                     
                     if result != .success {

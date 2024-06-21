@@ -123,28 +123,56 @@ class N3DSDefaultLibraryCell : UICollectionViewCell {
             
             imageView.image = image.blurred(radius: 2)
             gradientView.set((.clear, image.averageColor ?? .tintColor))
+            
+            titleLabel.attributedText = .init(string: game.title, attributes: [
+                .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize),
+                .foregroundColor : UIColor.white
+            ])
         } else {
             imageView.image = nil
             hasImage = false
             gradientView.set(.tertiarySystemBackground)
+            
+            titleLabel.attributedText = .init(string: game.title, attributes: [
+                .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize),
+                .foregroundColor : UIColor.label
+            ])
         }
-        
-        titleLabel.attributedText = .init(string: game.title, attributes: [
-            .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize)
-        ])
     }
     
     fileprivate func menu(_ isCIA: Bool = false) -> UIMenu {
         return .init(children: [
             UIMenu(title: "Boot Options", image: .init(systemName: "power"), children: [
-                UIMenu(title: "Boot with Skin", image: .init(systemName: "paintbrush"), children: CytrusManager.shared.skinsManager.skins.reduce(into: [UIAction](), { partialResult, skin in
+                UIMenu(title: "Boot with Skin (Fast)", image: .init(systemName: "paintbrush"), children: CytrusManager.shared.skinsManager.skins.reduce(into: [UIAction](), { partialResult, skin in
                     partialResult.append(UIAction(title: skin.name, subtitle: "by \(skin.author)", handler: { _ in
                         let cytrusController = CytrusDefaultViewController(with: self.game, skin: skin)
                         cytrusController.modalPresentationStyle = .fullScreen
                         self.viewController.present(cytrusController, animated: true)
                     }))
-                }))
+                })),
+                UIMenu(title: "Boot with Skin (Slow)", image: .init(systemName: "paintbrush"), children: CytrusManager.shared.skinsManager.skins.reduce(into: [UIAction](), { partialResult, skin in
+                    partialResult.append(UIAction(title: skin.name, subtitle: "by \(skin.author)", handler: { _ in
+                        let cytrusController = CytrusDefaultViewController(with: self.game, skin: skin, true)
+                        cytrusController.modalPresentationStyle = .fullScreen
+                        self.viewController.present(cytrusController, animated: true)
+                    }))
+                })),
+                UIAction(title: "Boot (Fast)", image: .init(systemName: "power"), handler: { _ in
+                    let cytrusController = CytrusDefaultViewController(with: self.game, skin: CytrusManager.shared.defaultSkin())
+                    cytrusController.modalPresentationStyle = .fullScreen
+                    self.viewController.present(cytrusController, animated: true)
+                }),
+                UIAction(title: "Boot (Slow)", image: .init(systemName: "power"), handler: { _ in
+                    let cytrusController = CytrusDefaultViewController(with: self.game, skin: CytrusManager.shared.defaultSkin(), true)
+                    cytrusController.modalPresentationStyle = .fullScreen
+                    self.viewController.present(cytrusController, animated: true)
+                })
             ]),
+            UIAction(title: "Cheats", image: .init(systemName: "wrench.and.screwdriver"), handler: { _ in
+                let cheatsViewController = UINavigationController(rootViewController: CheatsViewController(Cytrus.shared.information(self.game.fileDetails.url).titleIdentifier))
+                cheatsViewController.modalPresentationStyle = .fullScreen
+                self.viewController.present(cheatsViewController, animated: true)
+            }),
             UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: isCIA ? [.destructive, .disabled] : [.destructive], handler: { _ in
                 guard let viewController = self.viewController as? LibraryController else {
                     return

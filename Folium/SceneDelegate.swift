@@ -85,26 +85,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 extension SceneDelegate {
     func extractDefaultSkinsIfAllowed() {
-        if AppStoreCheck.shared.currentAppEnvironment() == .appStore || AppStoreCheck.shared.currentAppEnvironment() == .testFlight || AppStoreCheck.shared.currentAppEnvironment() == .other {
-            let defaultSkins = [("Grape", "mtcbxDeltaSkinDS")]
-            do {
-                try defaultSkins.forEach { defaultSkin in
-                    let destinationURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                        .appendingPathComponent(defaultSkin.0, conformingTo: .folder)
-                        .appendingPathComponent("skins", conformingTo: .folder)
-                    
-                    if FileManager.default.fileExists(atPath: destinationURL.appendingPathComponent(defaultSkin.1, conformingTo: .folder).path) {
-                        try FileManager.default.removeItem(atPath: destinationURL.appendingPathComponent("__MACOSX", conformingTo: .folder).path)
-                        try FileManager.default.removeItem(atPath: destinationURL.appendingPathComponent(defaultSkin.1, conformingTo: .folder).path)
-                    }
-                    
-                    if let url = Bundle.main.url(forResource: defaultSkin.1, withExtension: "zip") {
-                        do {
-                            try FileManager.default.unzipItem(at: url, to: destinationURL)
-                        } catch { print(error, error.localizedDescription) }
-                    }
-                }
-            } catch { print(error, error.localizedDescription) }
+        if AppStoreCheck.shared.currentAppEnvironment() == .appStore {
+            // let defaultSkins = [("Grape", "mtcbxDeltaSkinDS")]
+            // do {
+            //     try defaultSkins.forEach { defaultSkin in
+            //         let destinationURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            //             .appendingPathComponent(defaultSkin.0, conformingTo: .folder)
+            //             .appendingPathComponent("skins", conformingTo: .folder)
+            //
+            //         if FileManager.default.fileExists(atPath: destinationURL.appendingPathComponent(defaultSkin.1, conformingTo: .folder).path) {
+            //             try FileManager.default.removeItem(atPath: destinationURL.appendingPathComponent("__MACOSX", conformingTo: .folder).path)
+            //             try FileManager.default.removeItem(atPath: destinationURL.appendingPathComponent(defaultSkin.1, conformingTo: .folder).path)
+            //         }
+            //
+            //         if let url = Bundle.main.url(forResource: defaultSkin.1, withExtension: "zip") {
+            //             do {
+            //                 try FileManager.default.unzipItem(at: url, to: destinationURL)
+            //             } catch { print(error, error.localizedDescription) }
+            //         }
+            //     }
+            // } catch { print(error, error.localizedDescription) }
         }
     }
     

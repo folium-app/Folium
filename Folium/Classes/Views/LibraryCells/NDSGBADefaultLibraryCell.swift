@@ -120,7 +120,8 @@ class NDSGBADefaultLibraryCell : UICollectionViewCell {
         gradientView.set(.tertiarySystemBackground)
         
         titleLabel.attributedText = .init(string: game.title, attributes: [
-            .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize)
+            .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize),
+            .foregroundColor : UIColor.label
         ])
     }
     

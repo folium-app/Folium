@@ -66,9 +66,9 @@ class CytrusManager {
         let width = bounds.width
         let height = bounds.height
         
-        let safeAreaInsets = UIApplication.shared.connectedScenes.compactMap {
-            ($0 as? UIWindowScene)?.keyWindow
-        }.last?.safeAreaInsets ?? .init(top: 0, left: 0, bottom: 0, right: 0)
+        let safeAreaInsets = UIApplication.shared.windows[0].safeAreaInsets
+        
+        var homeButtonX = (width / 2) - 15
         
         let buttons: [Button] = [
             .init(x: width-80, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .a),
@@ -85,8 +85,14 @@ class CytrusManager {
             .init(x: width-90, y: height-(240+safeAreaInsets.bottom), width: 70, height: 50, type: .r),
             
             .init(x: 110, y: height-(240+safeAreaInsets.bottom), width: 70, height: 50, type: .zl),
-            .init(x: width-180, y: height-(240+safeAreaInsets.bottom), width: 70, height: 50, type: .zr)
+            .init(x: width-180, y: height-(240+safeAreaInsets.bottom), width: 70, height: 50, type: .zr),
+            
+            .init(x: homeButtonX, y: height-(20+safeAreaInsets.bottom), width: 30, height: 30, type: .home),
+            .init(x: homeButtonX-45, y: height-(20+safeAreaInsets.bottom), width: 30, height: 30, type: .minus),
+            .init(x: homeButtonX+45, y: height-(20+safeAreaInsets.bottom), width: 30, height: 30, type: .plus)
         ]
+        
+        homeButtonX = (height / 2) - 15
         
         let buttonsLandscape: [Button] = [
             .init(x: height-80, y: width-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .a),
@@ -103,7 +109,11 @@ class CytrusManager {
             .init(x: height-90, y: 20, width: 70, height: 50, type: .r),
             
             .init(x: 110, y: 20, width: 70, height: 50, type: .zl),
-            .init(x: height-180, y: 20, width: 70, height: 50, type: .zr)
+            .init(x: height-180, y: 20, width: 70, height: 50, type: .zr),
+            
+            .init(x: homeButtonX, y: width-(20+safeAreaInsets.bottom), width: 30, height: 30, type: .home),
+            .init(x: homeButtonX-45, y: width-(20+safeAreaInsets.bottom), width: 30, height: 30, type: .minus),
+            .init(x: homeButtonX+45, y: width-(20+safeAreaInsets.bottom), width: 30, height: 30, type: .plus)
         ]
         
         let thumbsticks: [Thumbstick] = [
@@ -521,8 +531,13 @@ class CytrusManager {
                 ])
             ]),
             UIAction(title: "Reset Settings", image: .init(systemName: resetSettingsSystemName), attributes: [.destructive], handler: { _ in
-                CytrusSettings.Settings.shared.resetSettings()
-                button.menu = self.menu(button, viewController, isInGame)
+                let alertController = UIAlertController(title: "Reset Settings", message: "Are you sure?", preferredStyle: .alert)
+                alertController.addAction(.init(title: "Cancel", style: .cancel))
+                alertController.addAction(.init(title: "Reset Settings", style: .destructive, handler: { _ in
+                    CytrusSettings.Settings.shared.resetSettings()
+                    button.menu = self.menu(button, viewController, isInGame)
+                }))
+                viewController.present(alertController, animated: true)
             })
         ]
         

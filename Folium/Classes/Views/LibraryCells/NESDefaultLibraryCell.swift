@@ -25,7 +25,7 @@ class NESDefaultLibraryCell : UICollectionViewCell {
         titleLabel = .init()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = .boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize)
-        titleLabel.numberOfLines = 2
+        titleLabel.numberOfLines = 3
         titleLabel.textAlignment = .left
         titleLabel.textColor = .label
         addSubview(titleLabel)
@@ -37,7 +37,9 @@ class NESDefaultLibraryCell : UICollectionViewCell {
         headlineLabel.textColor = .secondaryLabel
         addSubview(headlineLabel)
         
-        var configuration = UIButton.Configuration.filled()
+        var configuration = UIButton.Configuration.tinted()
+        configuration.baseBackgroundColor = .white
+        configuration.baseForegroundColor = .white
         configuration.buttonSize = .small
         configuration.cornerStyle = .capsule
         configuration.image = .init(systemName: "ellipsis")?

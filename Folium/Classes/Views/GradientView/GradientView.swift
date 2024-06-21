@@ -13,7 +13,7 @@ class GradientView : UIView {
         CAGradientLayer.self
     }
     
-    func set(_ color: UIColor, _ locations: [NSNumber]? = nil, _ darker: Bool = true, componentDelta: CGFloat = 0.02) {
+    func set(_ color: UIColor, _ locations: [NSNumber]? = nil, _ darker: Bool = true, componentDelta: CGFloat = 0.033333) {
         guard let layer = layer as? CAGradientLayer else {
             return
         }
@@ -24,7 +24,7 @@ class GradientView : UIView {
         layer.locations = locations
     }
     
-    func set(_ colors: (UIColor, UIColor), _ locations: [NSNumber]? = nil, _ darker: Bool = true, componentDelta: CGFloat = 0.02) {
+    func set(_ colors: (UIColor, UIColor), _ locations: [NSNumber]? = nil, _ darker: Bool = true, componentDelta: CGFloat = 0.033333) {
         guard let layer = layer as? CAGradientLayer else {
             return
         }

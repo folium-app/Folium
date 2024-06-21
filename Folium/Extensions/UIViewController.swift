@@ -10,15 +10,11 @@ import UIKit
 
 extension UIViewController {
     func orientationForCurrentOrientation() -> Orientation {
-        guard let window = view.window, let windowScene = window.windowScene else {
-            return Orientation.portrait
-        }
-        
-        switch windowScene.interfaceOrientation {
+        switch UIApplication.shared.statusBarOrientation {
         case .unknown, .portrait, .portraitUpsideDown:
-            return Orientation.portrait
+            .portrait
         case .landscapeLeft, .landscapeRight:
-            return Orientation.landscape
+            .landscape
         @unknown default:
             fatalError("[\(String(describing: type(of: self))).orientationForCurrentOrientation]: Unknown interface orientation")
         }

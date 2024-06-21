@@ -11,6 +11,26 @@ import UIKit
 class LayoutManager {
     static let shared = LayoutManager()
     
+    var cheats: UICollectionViewCompositionalLayout {
+        .init { sectionIndex, layoutEnvironment in
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(300))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(300))
+            let group: NSCollectionLayoutGroup = if #available(iOS 16, *) {
+                .horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 1)
+            } else {
+                .horizontal(layoutSize: groupSize, subitem: item, count: 1)
+            }
+            group.interItemSpacing = .fixed(10)
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
+            section.interGroupSpacing = 10
+            return section
+        }
+    }
+    
     var library: UICollectionViewCompositionalLayout {
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
         configuration.interSectionSpacing = 10
@@ -43,7 +63,7 @@ class LayoutManager {
             } else {
                 let isiPad = UIDevice.current.userInterfaceIdiom == .pad
                 let columns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? isiPad ? 5 : 2 : isiPad ? 7 : 4
-                let bottomColumns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? isiPad ? 6 : 3 : isiPad ? 8 : 5
+                let bottomColumns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? isiPad ? 6 : 3 : isiPad ? 8 : 4
                 
                 let isLandscape: Bool = layoutEnvironment.container.effectiveContentSize.width > UIScreen.main.bounds.height
                 

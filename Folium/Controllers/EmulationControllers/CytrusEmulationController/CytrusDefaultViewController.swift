@@ -20,12 +20,14 @@ class CytrusDefaultViewController : UIViewController {
     
     let cytrus: Cytrus = .shared
     fileprivate var isRunning: Bool = false
+    fileprivate var bootHomeMenu: Bool = false
     
     var game: AnyHashableSendable
     var skin: Skin
-    init(with game: AnyHashableSendable, skin: Skin) {
+    init(with game: AnyHashableSendable, skin: Skin, _ bootHomeMenu: Bool = false) {
         self.game = game
         self.skin = skin
+        self.bootHomeMenu = bootHomeMenu
         super.init(nibName: nil, bundle: nil)
         cytrus.getVulkanLibrary()
     }
@@ -57,6 +59,14 @@ class CytrusDefaultViewController : UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
+    override var prefersHomeIndicatorAutoHidden: Bool {
+        true
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        true
+    }
+    
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         skin.supportedOrientations()
     }
@@ -66,7 +76,7 @@ class CytrusDefaultViewController : UIViewController {
             return
         }
         
-        cytrus.run(game.fileDetails.url)
+        bootHomeMenu ? cytrus.bootHomeMenu() : cytrus.run(game.fileDetails.url)
     }
 }
 

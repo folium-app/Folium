@@ -30,6 +30,9 @@ struct Button : Codable, Hashable {
         case minus = "minus"
         case plus = "plus"
         
+        case fastForward = "fastForward"
+        case settings = "settings"
+        
         enum CodingKeys : String, CodingKey {
             case a = "circle"
             case b = "cross"
@@ -116,11 +119,16 @@ struct Button : Codable, Hashable {
             }
             
         case .home:
-            .init(systemName: "ellipsis.circle.fill")
+            .init(systemName: "house.circle.fill")
         case .minus:
             .init(systemName: "minus.circle.fill")
         case .plus:
             .init(systemName: "plus.circle.fill")
+            
+        case .fastForward:
+            .init(systemName: "forward.fill")
+        case .settings:
+            .init(systemName: "gearshape.fill")
         }
     }
 }

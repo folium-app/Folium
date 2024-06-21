@@ -73,9 +73,31 @@ class GrapeManager {
         let width = bounds.width
         let height = bounds.height
         
-        let safeAreaInsets = UIApplication.shared.connectedScenes.compactMap {
-            ($0 as? UIWindowScene)?.keyWindow
-        }.last?.safeAreaInsets ?? .init(top: 0, left: 0, bottom: 0, right: 0)
+        func iPadScreens() -> [Screen] {
+            let iPadWidth = (width / 2) + (width / 4)
+            let portraitHeight = iPadWidth / 1.33
+            
+            let bottomTopInset = (height / 2) + 10
+            return [
+                .init(x: (width / 2) - (iPadWidth / 2), y: (height / 2) - (portraitHeight + 10), width: iPadWidth, height: portraitHeight),
+                .init(x: (width / 2) - (iPadWidth / 2), y: bottomTopInset, width: iPadWidth, height: portraitHeight)
+            ]
+        }
+        
+        func iPhoneScreens() -> [Screen] {
+            let portraitHeight = width / 1.33
+            
+            return [
+                .init(x: 10, y: safeAreaInsets.top + 10, width: width - 20, height: portraitHeight - 20),
+                .init(x: 10, y: (safeAreaInsets.top + 10) + portraitHeight, width: width - 20, height: portraitHeight - 20)
+            ]
+        }
+        
+        
+        
+        let safeAreaInsets = UIApplication.shared.windows[0].safeAreaInsets
+        
+        let homeButtonX = (width / 2) - 15
         
         let buttons: [Button] = [
             .init(x: width-80, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .a),
@@ -89,19 +111,23 @@ class GrapeManager {
             .init(x: 140, y: height-(120+safeAreaInsets.bottom), width: 60, height: 60, type: .dpadRight),
             
             .init(x: 20, y: height-(240+safeAreaInsets.bottom), width: 70, height: 50, type: .l),
-            .init(x: width-90, y: height-(240+safeAreaInsets.bottom), width: 70, height: 50, type: .r)
+            .init(x: width-90, y: height-(240+safeAreaInsets.bottom), width: 70, height: 50, type: .r),
+            
+            .init(x: homeButtonX-45, y: height-(20+safeAreaInsets.bottom), width: 30, height: 30, type: .minus),
+            .init(x: homeButtonX+45, y: height-(20+safeAreaInsets.bottom), width: 30, height: 30, type: .plus)
         ]
         
-        let portraitHeight = width / 1.33
+        let screens: [Screen] = if UIDevice.current.userInterfaceIdiom == .pad {
+            iPadScreens()
+        } else {
+            iPhoneScreens()
+        }
         
         let devices: [Device] = [
-            .init(device: machine, orientation: .portrait, buttons: buttons, screens: [
-                .init(x: 10, y: safeAreaInsets.top + 10, width: width - 20, height: portraitHeight - 20),
-                .init(x: 10, y: (safeAreaInsets.top + 10) + portraitHeight, width: width - 20, height: portraitHeight - 20)
-            ], thumbsticks: [])
+            .init(device: machine, orientation: .portrait, buttons: buttons, screens: screens, thumbsticks: [])
         ]
         
-        return Skin(author: "Antique", description: "Default skin for the Nintendo 3DS", name: "Cytrus Skin", core: .cytrus, devices: devices)
+        return Skin(author: "Antique", description: "Default skin for the Nintendo DS", name: "Grape Skin", core: .grape, devices: devices)
     }
     
     func menu(_ button: UIButton) -> UIMenu {
@@ -113,7 +139,7 @@ class GrapeManager {
         }
         
         return .init(children: [
-            UIAction(title: "Direct Boot", image: .init(systemName: "scale.3d"),
+            UIAction(title: "Direct Boot", image: .init(systemName: "power"),
                      state: Grape.shared.useDirectBoot() == 1 ? .on : .off, handler: { _ in
                          Grape.shared.setDirectBoot(Grape.shared.useDirectBoot() == 1 ? 0 : 1)
                          

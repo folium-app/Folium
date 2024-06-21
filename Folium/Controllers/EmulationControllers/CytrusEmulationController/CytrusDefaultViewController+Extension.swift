@@ -45,6 +45,7 @@ extension CytrusDefaultViewController {
         
         var config = UIButton.Configuration.plain()
         config.buttonSize = .small
+        config.cornerStyle = .capsule
         config.image = .init(systemName: "gearshape.fill")?
             .applyingSymbolConfiguration(.init(paletteColors: [.white]))
         
@@ -54,8 +55,8 @@ extension CytrusDefaultViewController {
         button.menu = CytrusManager.shared.menu(button, self, true)
         view.addSubview(button)
         
-        button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
+        button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
     }
 }
 
@@ -91,13 +92,9 @@ extension CytrusDefaultViewController {
                 return
             }
             
-            guard let window = self.view.window, let windowScene = window.windowScene else {
-                return
-            }
-            
             self.metalView.frame = .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height)
             self.cytrus.setMTKViewSize(size: self.metalView.frame.size)
-            self.cytrus.orientationChanged(windowScene.interfaceOrientation, self.metalView)
+            self.cytrus.orientationChanged(UIApplication.shared.statusBarOrientation, self.metalView)
             
             self.controllerView.orientationChanged(with: device)
         }
@@ -128,6 +125,7 @@ extension CytrusDefaultViewController {
         extendedGamepad.rightTrigger.pressedChangedHandler = { $2 ? self.touchBegan(with: .zr) : self.touchBegan(with: .zr) }
         
         // TODO: home
+        extendedGamepad.buttonHome?.pressedChangedHandler = { $2 ? self.touchBegan(with: .home) : self.touchEnded(with: .home) }
         extendedGamepad.buttonOptions?.pressedChangedHandler = { $2 ? self.touchBegan(with: .minus) : self.touchEnded(with: .minus) }
         extendedGamepad.buttonMenu.pressedChangedHandler = { $2 ? self.touchBegan(with: .plus) : self.touchEnded(with: .plus) }
         
@@ -214,6 +212,9 @@ extension CytrusDefaultViewController : ControllerButtonDelegate {
             cytrus.virtualControllerButtonDown(.select)
         case .plus:
             cytrus.virtualControllerButtonDown(.start)
+            
+        default:
+            break
         }
     }
     
@@ -253,6 +254,9 @@ extension CytrusDefaultViewController : ControllerButtonDelegate {
             cytrus.virtualControllerButtonUp(.select)
         case .plus:
             cytrus.virtualControllerButtonUp(.start)
+            
+        default:
+            break
         }
     }
     

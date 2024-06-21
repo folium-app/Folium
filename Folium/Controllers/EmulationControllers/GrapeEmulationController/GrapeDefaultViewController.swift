@@ -116,11 +116,11 @@ class GrapeDefaultViewController : UIViewController {
         controllerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
         NotificationCenter.default.addObserver(forName: .init("sceneDidChange"), object: nil, queue: .main) { notification in
-            guard let userInfo = notification.userInfo, let state = userInfo["state"] as? Int else {
+            guard let state = notification.object as? SceneDelegate.ApplicationState else {
                 return
             }
             
-            self.grape.setPaused(state == 0)
+            self.grape.setPaused(state == .background)
         }
         
         NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: .main) { _ in
@@ -172,27 +172,19 @@ class GrapeDefaultViewController : UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: .init("sceneDidChange"), object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.GCControllerDidConnect, object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.GCControllerDidDisconnect, object: nil)
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    override var prefersHomeIndicatorAutoHidden: Bool {
+        true
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        true
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        let orientations = skin.devices.reduce(into: [Orientation](), { $0.append($1.orientation) })
-        
-        let containsPortrait = orientations.contains(.portrait)
-        let containsLandscape = orientations.contains(.landscape)
-        
-        if containsPortrait && containsLandscape {
-            return [.all]
-        } else if containsPortrait {
-            return [.portrait, .portraitUpsideDown]
-        } else if containsLandscape {
-            return [.landscape]
-        } else {
-            return [.all]
-        }
+        skin.supportedOrientations()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -355,7 +347,7 @@ extension GrapeDefaultViewController {
             return
         }
         
-        while !Grape.shared.isPaused() {
+        while !Grape.shared.isStopped() {
             grape.step()
             
             let videoBuffer = grape.videoBuffer(isGBA: game.gameType == .gba)

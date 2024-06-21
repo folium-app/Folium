@@ -124,15 +124,21 @@ class NDSDefaultLibraryCell : UICollectionViewCell {
             
             imageView.image = .init(cgImage: cgImage).blurred(radius: 2)
             gradientView.set((.clear, averageColor ?? .tintColor))
+            
+            titleLabel.attributedText = .init(string: game.title, attributes: [
+                .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize),
+                .foregroundColor : UIColor.white
+            ])
         } else {
             imageView.image = nil
             hasImage = false
             gradientView.set(.tertiarySystemBackground)
+            
+            titleLabel.attributedText = .init(string: game.title, attributes: [
+                .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize),
+                .foregroundColor : UIColor.label
+            ])
         }
-        
-        titleLabel.attributedText = .init(string: game.title, attributes: [
-            .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize)
-        ])
     }
     
     fileprivate func menu() -> UIMenu {

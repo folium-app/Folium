@@ -15,10 +15,10 @@ class LibraryManager {
     static let shared = LibraryManager()
     
 #if canImport(Cytrus)
-    var cytrusManager = CytrusManager.shared
+    var cytrusManager = CytrusManager()
 #endif
-    var grapeManager = GrapeManager.shared
-    var kiwiManager = KiwiManager.shared
+    var grapeManager = GrapeManager()
+    var kiwiManager = KiwiManager()
     
     func crawler(_ core: Core) throws -> (core: Core, urls: [URL]) {
         enum CrawlerError : Error {
@@ -54,6 +54,8 @@ class LibraryManager {
                         if ["nes"].contains(pathExtension) {
                             partialResult.append(url)
                         }
+                    default:
+                        break
                     }
                 }
             default:
@@ -75,13 +77,13 @@ class LibraryManager {
 #if canImport(Cytrus)
             case .cytrus:
                 let cytrus = Cytrus.shared
+                let information = cytrus.information(url)
                 if ["app", "cia"].contains(url.pathExtension.lowercased()) {
-                    let title = cytrus.information(url).title
-                    if !title.isEmpty || title != "" {
+                    if !information.title.isEmpty {
                         let game: CytrusManager.Library.Game = .init(core: core, fileDetails: .init(extension: url.pathExtension.lowercased(),
                                                                                                     name: url.lastPathComponent,
                                                                                                     nameWithoutExtension: nameWithoutExtension,
-                                                                                                    url: url), title: title)
+                                                                                                    url: url), title: information.title)
                         
                         if !cytrusManager.library.games.contains(game) {
                             cytrusManager.library.add(game)
@@ -92,7 +94,7 @@ class LibraryManager {
                     let game: CytrusManager.Library.Game = .init(core: core, fileDetails: .init(extension: url.pathExtension.lowercased(),
                                                                                                 name: url.lastPathComponent,
                                                                                                 nameWithoutExtension: nameWithoutExtension,
-                                                                                                url: url), title: nameWithoutExtension)
+                                                                                                url: url), title: information.title)
                     
                     if !cytrusManager.library.games.contains(game) {
                         cytrusManager.library.add(game)
@@ -119,6 +121,8 @@ class LibraryManager {
                     kiwiManager.library.add(game)
                     gameArr.append(game)
                 }
+            default:
+                break
             }
         }
         
@@ -143,12 +147,8 @@ class LibraryManager {
     
     func library() throws {
 #if canImport(Cytrus)
-        cytrusManager.library.games.removeAll()
+        cytrusManager = .init()
         var cytrusCrawler = try crawler(.cytrus)
-        
-        Cytrus.shared.installed().forEach { url in cytrusCrawler.urls.removeAll(where: { $0 == url }) }
-        Cytrus.shared.system().forEach { url in cytrusCrawler.urls.removeAll(where: { $0 == url }) }
-        
         cytrusCrawler.urls.append(contentsOf: Cytrus.shared.installed())
         cytrusCrawler.urls.append(contentsOf: Cytrus.shared.system())
         _ = games(cytrusCrawler.core, cytrusCrawler.urls)
@@ -157,15 +157,15 @@ class LibraryManager {
         } catch { print(error, error.localizedDescription) }
 #endif
         
-        grapeManager.library.games.removeAll()
+        grapeManager = .init()
         let grapeCrawler = try crawler(.grape)
         _ = games(grapeCrawler.core, grapeCrawler.urls)
         do {
             try skins(.grape)
         } catch { print(error, error.localizedDescription) }
         
-        kiwiManager.library.games.removeAll()
-        let kiwiCrawler = try crawler(.kiwi)
-        _ = games(kiwiCrawler.core, kiwiCrawler.urls)
+        // kiwiManager.library.games.removeAll()
+        // let kiwiCrawler = try crawler(.kiwi)
+        // _ = games(kiwiCrawler.core, kiwiCrawler.urls)
     }
 }
