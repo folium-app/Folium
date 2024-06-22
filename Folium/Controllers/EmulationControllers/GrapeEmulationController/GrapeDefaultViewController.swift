@@ -320,15 +320,15 @@ extension GrapeDefaultViewController {
         }
         
         extendedGamepad.buttonY.pressedChangedHandler = { button, value, pressed in
-            pressed ? self.touchBegan(with: .y) : self.touchBegan(with: .y)
+            pressed ? self.touchBegan(with: .y) : self.touchEnded(with: .y)
         }
         
         extendedGamepad.leftShoulder.pressedChangedHandler = { button, value, pressed in
-            pressed ? self.touchBegan(with: .l) : self.touchBegan(with: .l)
+            pressed ? self.touchBegan(with: .l) : self.touchEnded(with: .l)
         }
         
         extendedGamepad.rightShoulder.pressedChangedHandler = { button, value, pressed in
-            pressed ? self.touchBegan(with: .r) : self.touchBegan(with: .r)
+            pressed ? self.touchBegan(with: .r) : self.touchEnded(with: .r)
         }
         
         UIView.animate(withDuration: 0.2) {
@@ -421,9 +421,9 @@ extension GrapeDefaultViewController : ControllerButtonDelegate {
         case .dpadRight:
             grape.virtualControllerButtonUp(4)
         case .minus:
-            grape.virtualControllerButtonDown(2)
+            grape.virtualControllerButtonUp(2)
         case .plus:
-            grape.virtualControllerButtonDown(3)
+            grape.virtualControllerButtonUp(3)
         case .a:
             grape.virtualControllerButtonUp(0)
         case .b:
