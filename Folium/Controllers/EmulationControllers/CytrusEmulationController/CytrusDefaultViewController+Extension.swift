@@ -111,18 +111,18 @@ extension CytrusDefaultViewController {
         extendedGamepad.buttonA.pressedChangedHandler = { $2 ? self.touchBegan(with: .a) : self.touchEnded(with: .a) }
         extendedGamepad.buttonB.pressedChangedHandler = { $2 ? self.touchBegan(with: .b) : self.touchEnded(with: .b) }
         extendedGamepad.buttonX.pressedChangedHandler = { $2 ? self.touchBegan(with: .x) : self.touchEnded(with: .x) }
-        extendedGamepad.buttonY.pressedChangedHandler = { $2 ? self.touchBegan(with: .y) : self.touchBegan(with: .y) }
+        extendedGamepad.buttonY.pressedChangedHandler = { $2 ? self.touchBegan(with: .y) : self.touchEnded(with: .y) }
         
         extendedGamepad.dpad.up.pressedChangedHandler = { $2 ? self.touchBegan(with: .dpadUp) : self.touchEnded(with: .dpadUp) }
         extendedGamepad.dpad.down.pressedChangedHandler = { $2 ? self.touchBegan(with: .dpadDown) : self.touchEnded(with: .dpadDown) }
         extendedGamepad.dpad.left.pressedChangedHandler = { $2 ? self.touchBegan(with: .dpadLeft) : self.touchEnded(with: .dpadLeft) }
         extendedGamepad.dpad.right.pressedChangedHandler = { $2 ? self.touchBegan(with: .dpadRight) : self.touchEnded(with: .dpadRight) }
         
-        extendedGamepad.leftShoulder.pressedChangedHandler = { $2 ? self.touchBegan(with: .l) : self.touchBegan(with: .l) }
-        extendedGamepad.rightShoulder.pressedChangedHandler = { $2 ? self.touchBegan(with: .r) : self.touchBegan(with: .r) }
+        extendedGamepad.leftShoulder.pressedChangedHandler = { $2 ? self.touchBegan(with: .l) : self.touchEnded(with: .l) }
+        extendedGamepad.rightShoulder.pressedChangedHandler = { $2 ? self.touchBegan(with: .r) : self.touchEnded(with: .r) }
         
-        extendedGamepad.leftTrigger.pressedChangedHandler = { $2 ? self.touchBegan(with: .zl) : self.touchBegan(with: .zl) }
-        extendedGamepad.rightTrigger.pressedChangedHandler = { $2 ? self.touchBegan(with: .zr) : self.touchBegan(with: .zr) }
+        extendedGamepad.leftTrigger.pressedChangedHandler = { $2 ? self.touchBegan(with: .zl) : self.touchEnded(with: .zl) }
+        extendedGamepad.rightTrigger.pressedChangedHandler = { $2 ? self.touchBegan(with: .zr) : self.touchEnded(with: .zr) }
         
         // TODO: home
         extendedGamepad.buttonHome?.pressedChangedHandler = { $2 ? self.touchBegan(with: .home) : self.touchEnded(with: .home) }
