@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyD8Y7Y0GSIE9r6yMUMNyOg6VZ9Msj5IzBk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>343991340941</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.antique.Folium-iOS</string>
+	<key>PROJECT_ID</key>
+	<string>folium-45df2</string>
+	<key>STORAGE_BUCKET</key>
+	<string>folium-45df2.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:343991340941:ios:5b16e4d58f9451b635b7c4</string>
+</dict>
+</plist>

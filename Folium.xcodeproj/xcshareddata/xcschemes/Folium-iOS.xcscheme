@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E666166E2C410E130065B363"
-               BuildableName = "libCytrus.a"
-               BlueprintName = "Cytrus"
+               BlueprintIdentifier = "E690A6A72C33B09E00652203"
+               BuildableName = "Folium-iOS.app"
+               BlueprintName = "Folium-iOS"
                ReferencedContainer = "container:Folium.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -39,7 +39,19 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
+      enableGPUFrameCaptureMode = "3"
+      enableGPUValidationMode = "1"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "E690A6A72C33B09E00652203"
+            BuildableName = "Folium-iOS.app"
+            BlueprintName = "Folium-iOS"
+            ReferencedContainer = "container:Folium.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -47,15 +59,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E666166E2C410E130065B363"
-            BuildableName = "libCytrus.a"
-            BlueprintName = "Cytrus"
+            BlueprintIdentifier = "E690A6A72C33B09E00652203"
+            BuildableName = "Folium-iOS.app"
+            BlueprintName = "Folium-iOS"
             ReferencedContainer = "container:Folium.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E666166E2C410E130065B363"
-               BuildableName = "libCytrus.a"
-               BlueprintName = "Cytrus"
+               BlueprintIdentifier = "E63D9EAB2C33BADC0038257F"
+               BuildableName = "Folium-tvOS.app"
+               BlueprintName = "Folium-tvOS"
                ReferencedContainer = "container:Folium.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -40,6 +40,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "E63D9EAB2C33BADC0038257F"
+            BuildableName = "Folium-tvOS.app"
+            BlueprintName = "Folium-tvOS"
+            ReferencedContainer = "container:Folium.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -47,15 +57,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E666166E2C410E130065B363"
-            BuildableName = "libCytrus.a"
-            BlueprintName = "Cytrus"
+            BlueprintIdentifier = "E63D9EAB2C33BADC0038257F"
+            BuildableName = "Folium-tvOS.app"
+            BlueprintName = "Folium-tvOS"
             ReferencedContainer = "container:Folium.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

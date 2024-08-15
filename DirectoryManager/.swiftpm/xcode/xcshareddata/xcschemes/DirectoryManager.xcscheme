@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E666166E2C410E130065B363"
-               BuildableName = "libCytrus.a"
-               BlueprintName = "Cytrus"
-               ReferencedContainer = "container:Folium.xcodeproj">
+               BlueprintIdentifier = "DirectoryManager"
+               BuildableName = "DirectoryManager"
+               BlueprintName = "DirectoryManager"
+               ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -50,10 +50,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E666166E2C410E130065B363"
-            BuildableName = "libCytrus.a"
-            BlueprintName = "Cytrus"
-            ReferencedContainer = "container:Folium.xcodeproj">
+            BlueprintIdentifier = "DirectoryManager"
+            BuildableName = "DirectoryManager"
+            BlueprintName = "DirectoryManager"
+            ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
