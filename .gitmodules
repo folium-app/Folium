@@ -4,3 +4,6 @@
 [submodule "Grape"]
 	path = Cores/Grape
 	url = https://github.com/folium-app/Grape
+[submodule "XCFrameworks"]
+	path = Dependencies/XCFrameworks
+	url = https://github.com/folium-app/XCFrameworks
