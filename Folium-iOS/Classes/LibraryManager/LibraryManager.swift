@@ -60,7 +60,7 @@ class GameBase : AnyHashableSendable, @unchecked Sendable {
     }
 }
 
-enum Core : String, Codable, Hashable, @unchecked Sendable {
+enum Core : String, Codable, CustomStringConvertible, Hashable, @unchecked Sendable {
     case cytrus = "Cytrus"
     case grape = "Grape"
     case guava = "Guava"
@@ -103,6 +103,10 @@ enum Core : String, Codable, Hashable, @unchecked Sendable {
         case .tomato:
             "Game Boy Advance"
         }
+    }
+    
+    var description: String {
+        rawValue
     }
     
     var isNintendo: Bool {

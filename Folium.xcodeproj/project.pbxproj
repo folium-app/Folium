@@ -34,6 +34,7 @@
 		E63D9EB92C33BADD0038257F /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E63D9EB82C33BADD0038257F /* Base */; };
 		E63D9EC02C33BF3B0038257F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E63D9EBF2C33BF3B0038257F /* FirebaseAuth */; };
 		E63D9EC32C33BF560038257F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E63D9EC22C33BF560038257F /* FirebaseAuth */; };
+		E63E90642C6F3B9E00F318A0 /* Bundle.swift in Resources */ = {isa = PBXBuildFile; fileRef = E63E90632C6F3B9E00F318A0 /* Bundle.swift */; };
 		E641265A2C5B553900C060A4 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64126592C5B553900C060A4 /* CGFloat.swift */; };
 		E64126622C5B669400C060A4 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E64126602C5B669400C060A4 /* MoltenVK.xcframework */; };
 		E64126632C5B669D00C060A4 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E64126602C5B669400C060A4 /* MoltenVK.xcframework */; };
@@ -579,6 +580,7 @@
 		E63D9EB52C33BADD0038257F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E63D9EB82C33BADD0038257F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E63D9EBD2C33BB170038257F /* Folium-tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Folium-tvOS.entitlements"; sourceTree = "<group>"; };
+		E63E90632C6F3B9E00F318A0 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		E64126592C5B553900C060A4 /* CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloat.swift; sourceTree = "<group>"; };
 		E64126602C5B669400C060A4 /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
 		E6496A6C2C63E851002594CD /* libZydis.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libZydis.xcframework; sourceTree = "<group>"; };
@@ -1204,6 +1206,7 @@
 		E62345E42C33D2810061FE55 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E63E90632C6F3B9E00F318A0 /* Bundle.swift */,
 				E64126592C5B553900C060A4 /* CGFloat.swift */,
 				E61E6EB42C3BDA2C00ADA7A2 /* CGImage.swift */,
 				E67D13FE2C366117000C46BD /* CIImage.swift */,
@@ -2692,6 +2695,7 @@
 			files = (
 				E690A6B52C33B09F00652203 /* Assets.xcassets in Resources */,
 				E690A6B82C33B09F00652203 /* Base in Resources */,
+				E63E90642C6F3B9E00F318A0 /* Bundle.swift in Resources */,
 				E6BE63B82C5775D600A47428 /* PrivacyInfo.xcprivacy in Resources */,
 				E6B4A6C62C6DEC7E00B5D0E1 /* Grape in Resources */,
 				E667BEDA2C47AE5300DB0327 /* GoogleService-Info.plist in Resources */,
@@ -3194,6 +3198,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_INTEROP_MODE = objc;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 16.0;
@@ -3226,6 +3231,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_INTEROP_MODE = objc;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 16.0;

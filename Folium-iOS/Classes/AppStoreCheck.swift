@@ -46,4 +46,8 @@ struct AppStoreCheck {
         return .appStore
 #endif
     }
+    
+    func additionalFeaturesAreAllowed() -> Bool {
+        [.appStore, .other].contains(currentAppEnvironment())
+    }
 }

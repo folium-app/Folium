@@ -208,22 +208,22 @@ class CytrusSettingsController : UICollectionViewController {
         ])
         
         snapshot.appendItems([
-            StepperSetting(key: "cytrus.v1.7.cpuClockPercentage",
+            StepperSetting(key: "cytrus.cpuClockPercentage",
                            title: "CPU Clock Percentage",
                            min: 5,
                            max: 200,
-                           value: UserDefaults.standard.double(forKey: "cytrus.v1.7.cpuClockPercentage"),
+                           value: UserDefaults.standard.double(forKey: "cytrus.cpuClockPercentage"),
                            delegate: self),
-            BoolSetting(key: "cytrus.v1.7.useNew3DS",
+            BoolSetting(key: "cytrus.useNew3DS",
                         title: "New 3DS",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.v1.7.useNew3DS"),
+                        value: UserDefaults.standard.bool(forKey: "cytrus.useNew3DS"),
                         delegate: self),
             // SelectionSetting(key: "",
             //                  title: "LLE Applets",
             //                  values: [
             //                     ""
             //                  ], delegate: self),
-            SelectionSetting(key: "cytrus.v1.7.regionValue",
+            SelectionSetting(key: "cytrus.regionValue",
                              title: "Console Region",
                              values: [
                                 "Automatic" : -1,
@@ -235,38 +235,38 @@ class CytrusSettingsController : UICollectionViewController {
                                 "Korea" : 5,
                                 "Taiwan" : 6
                              ],
-                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.v1.7.regionValue"),
+                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.regionValue"),
                              delegate: self)
         ], toSection: "Core")
         
         snapshot.appendItems([
-            BoolSetting(key: "cytrus.v1.7.spirvShaderGeneration",
+            BoolSetting(key: "cytrus.spirvShaderGeneration",
                         title: "SPIRV Shader Generation",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.v1.7.spirvShaderGeneration"),
+                        value: UserDefaults.standard.bool(forKey: "cytrus.spirvShaderGeneration"),
                         delegate: self),
-            BoolSetting(key: "cytrus.v1.7.useAsyncShaderCompilation",
+            BoolSetting(key: "cytrus.useAsyncShaderCompilation",
                         title: "Asynchronous Shader Compilation",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.v1.7.useAsyncShaderCompilation"),
+                        value: UserDefaults.standard.bool(forKey: "cytrus.useAsyncShaderCompilation"),
                         delegate: self),
-            BoolSetting(key: "cytrus.v1.7.useAsyncPresentation",
+            BoolSetting(key: "cytrus.useAsyncPresentation",
                         title: "Asynchronous Presentation",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.v1.7.useAsyncPresentation"),
+                        value: UserDefaults.standard.bool(forKey: "cytrus.useAsyncPresentation"),
                         delegate: self),
-            BoolSetting(key: "cytrus.v1.7.useHardwareShaders",
+            BoolSetting(key: "cytrus.useHardwareShaders",
                         title: "Hardware Shaders",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.v1.7.useHardwareShaders"),
+                        value: UserDefaults.standard.bool(forKey: "cytrus.useHardwareShaders"),
                         delegate: self),
-            BoolSetting(key: "cytrus.v1.7.useDiskShaderCache",
+            BoolSetting(key: "cytrus.useDiskShaderCache",
                         title: "Disk Shader Cache",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.v1.7.useDiskShaderCache"),
+                        value: UserDefaults.standard.bool(forKey: "cytrus.useDiskShaderCache"),
                         delegate: self),
-            BoolSetting(key: "cytrus.v1.7.useShadersAccurateMul",
+            BoolSetting(key: "cytrus.useShadersAccurateMul",
                         title: "Accurate Shader Multiplication",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.v1.7.useShadersAccurateMul"),
+                        value: UserDefaults.standard.bool(forKey: "cytrus.useShadersAccurateMul"),
                         delegate: self),
-            BoolSetting(key: "cytrus.v1.7.useNewVSync",
+            BoolSetting(key: "cytrus.useNewVSync",
                         title: "New Vertical Sync",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.v1.7.useNewVSync"),
+                        value: UserDefaults.standard.bool(forKey: "cytrus.useNewVSync"),
                         delegate: self)
         ], toSection: "Renderer")
         

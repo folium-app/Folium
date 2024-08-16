@@ -14,6 +14,7 @@ import UIKit
 enum ApplicationState : Int {
     case backgrounded = 0
     case foregrounded = 1
+    case disconnected = 2
 }
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -23,7 +24,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        // print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].path)
         FirebaseApp.configure()
         
         guard let windowScene = scene as? UIWindowScene else {
@@ -35,54 +35,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         
-        // for testing skins with the simulator
-        // window.rootViewController = ControllerTestEmulationController(skin: SkinManager.shared.cytrusSkin!)
-        // window.makeKeyAndVisible()
-        
-        // this is needed because Auth doesn't initialize right away
-        _ = Auth.auth().addStateDidChangeListener { auth, user in
-            window.rootViewController = if [.appStore, .other].contains(AppStoreCheck.shared.currentAppEnvironment()) {
-                if let _ = user {
-                    UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
-                } else {
-                    AuthenticationController()
-                }
-            } else {
-                UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
-            }
-            
-            window.makeKeyAndVisible()
+        do {
+            try cleanupForLatestRelease()
+        } catch {
+            print(#function, "cleanupForLatestRelease()", error)
         }
         
-        let task = Task { try DirectoryManager.shared.createMissingDirectoriesInDocumentsDirectory(for: LibraryManager.shared.cores.reduce(into: [String](), { $0.append($1.rawValue) })) }
-        Task {
-            switch await task.result {
-            case .failure(let error):
-                print("\(#function): failed: \(error.localizedDescription)")
-            case .success(_):
-                print("\(#function): success")
-            }
+        configureAuthenticationStateListener(with: window)
+        
+        do {
+            try configureMissingDirectories(for: LibraryManager.shared.cores.reduce(into: [String](), { partialResult, element in
+                partialResult.append(element.description)
+            }))
+        } catch {
+            print(#function, "configureMissingDirectories(for:)", error)
         }
         
-        let defaults: [String : Any] = [
-            "cytrus.v1.7.cpuClockPercentage" : 100,
-            "cytrus.v1.7.useNew3DS" : true,
-            "cytrus.v1.7.regionValue" : -1,
-            
-            "cytrus.v1.7.spirvShaderGeneration" : true,
-            "cytrus.v1.7.useAsyncShaderCompilation" : false,
-            "cytrus.v1.7.useAsyncPresentation" : true,
-            "cytrus.v1.7.useHardwareShaders" : true,
-            "cytrus.v1.7.useDiskShaderCache" : true,
-            "cytrus.v1.7.useShadersAccurateMul" : false,
-            "cytrus.v1.7.useNewVSync" : true
-        ]
-        
-        defaults.forEach { key, value in
-            if UserDefaults.standard.value(forKey: key) == nil {
-                UserDefaults.standard.set(value, forKey: key)
-            }
-        }
+        configureDefaultUserDefaults()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -90,6 +59,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This occurs shortly after the scene enters the background, or when its session is discarded.
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
+        NotificationCenter.default.post(name: .init("applicationStateDidChange"), object: ApplicationState.disconnected)
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
@@ -113,5 +83,72 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
         NotificationCenter.default.post(name: .init("applicationStateDidChange"), object: ApplicationState.backgrounded)
+    }
+}
+
+extension SceneDelegate {
+    fileprivate func configureAuthenticationStateListener(with window: UIWindow) {
+        _ = Auth.auth().addStateDidChangeListener { auth, user in
+            window.rootViewController = if AppStoreCheck.shared.additionalFeaturesAreAllowed() {
+                if user == nil {
+                    AuthenticationController()
+                } else {
+                    UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
+                }
+            } else {
+                UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
+            }
+            
+            window.makeKeyAndVisible()
+        }
+    }
+    
+    fileprivate func configureMissingDirectories(for cores: [String]) throws {
+        try DirectoryManager.shared.createMissingDirectoriesInDocumentsDirectory(for: cores)
+    }
+    
+    fileprivate func cleanupForLatestRelease() throws {
+        let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? NSString
+        
+        if let version, version.doubleValue >= 1.7, !UserDefaults.standard.bool(forKey: "isCleanedUpForLatestRelease") {
+            if let bundleIdentifier = Bundle.main.bundleIdentifier {
+                UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
+            }
+            
+            let documentsDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            try FileManager.default.contentsOfDirectory(atPath: documentsDirectory.path).forEach { content in
+                if !content.contains("/roms/") {
+                    try FileManager.default.removeItem(atPath: documentsDirectory.appending(path: content).path)
+                }
+            }
+            
+            UserDefaults.standard.set(true, forKey: "isCleanedUpForLatestRelease")
+        }
+    }
+    
+    fileprivate func configureDefaultUserDefaults() {
+        let defaults: [String : [String : Any]] = [
+            "Cytrus" : [
+                "cpuClockPercentage" : 100,
+                "useNew3DS" : true,
+                "regionValue" : -1,
+                
+                "spirvShaderGeneration" : true,
+                "useAsyncShaderCompilation" : false,
+                "useAsyncPresentation" : true,
+                "useHardwareShaders" : true,
+                "useDiskShaderCache" : true,
+                "useShadersAccurateMul" : false,
+                "useNewVSync" : true
+            ]
+        ]
+        
+        defaults.forEach { core, values in
+            values.forEach { key, value in
+                if UserDefaults.standard.value(forKey: "\(core.lowercased()).\(key)") == nil {
+                    UserDefaults.standard.set(value, forKey: "\(core.lowercased()).\(key)")
+                }
+            }
+        }
     }
 }
