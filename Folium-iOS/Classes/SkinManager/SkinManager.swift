@@ -9,6 +9,11 @@ import Foundation
 import UIKit
 
 enum Machine : String, Codable, CaseIterable, CustomStringConvertible, Hashable {
+    case iPhone12mini = "iPhone13,1"
+    case iPhone12 = "iPhone13,2"
+    case iPhone12Pro = "iPhone13,3"
+    case iPhone12ProMax = "iPhone13,4"
+    
     case iPhone13Pro = "iPhone14,2"
     case iPhone13ProMax = "iPhone14,3"
     case iPhone13mini = "iPhone14,4"
@@ -26,6 +31,14 @@ enum Machine : String, Codable, CaseIterable, CustomStringConvertible, Hashable 
     
     var description: String {
         switch self {
+        case .iPhone12mini:
+            "iPhone 12 mini"
+        case .iPhone12:
+            "iPhone 12"
+        case .iPhone12Pro:
+            "iPhone 12 Pro"
+        case .iPhone12ProMax:
+            "iPhone 12 Pro Max"
         case .iPhone13Pro:
             "iPhone 13 Pro"
         case .iPhone13ProMax:
@@ -108,7 +121,7 @@ class SkinManager {
         }
         
         switch machine {
-        case .iPhone13mini:
+        case .iPhone12mini, .iPhone13mini:
             let lrzlzrButtonHeight = Double(45 * (3 / 2))
             
             let portrait: Orientation = .init(buttons: [
@@ -143,9 +156,10 @@ class SkinManager {
             return .init(author: .init(name: "Antique", socials: [
                 .init(type: .twitter, username: "antique_codes")
             ]), core: .cytrus, orientations: .init(portrait: portrait, landscapeLeft: landscapeLeft, landscapeRight: landscapeRight, supportedDevices: [
-                .iPhone13mini
+                .iPhone12mini, .iPhone13mini
             ]))
-        case .iPhone13Pro, .iPhone13ProMax, .iPhone13,
+        case .iPhone12, .iPhone12Pro, .iPhone12ProMax,
+                .iPhone13Pro, .iPhone13ProMax, .iPhone13,
                 .iPhone14, .iPhone14Plus, .iPhone14Pro, .iPhone14ProMax,
                 .iPhone15, .iPhone15Plus, .iPhone15Pro, .iPhone15ProMax:
             let portrait: Orientation = .init(buttons: [
@@ -180,6 +194,7 @@ class SkinManager {
             return .init(author: .init(name: "Antique", socials: [
                 .init(type: .twitter, username: "antique_codes")
             ]), core: .cytrus, orientations: .init(portrait: portrait, landscapeLeft: landscapeLeft, landscapeRight: landscapeRight, supportedDevices: [
+                .iPhone12, .iPhone12Pro, .iPhone12ProMax,
                 .iPhone13Pro, .iPhone13ProMax, .iPhone13,
                 .iPhone14, .iPhone14Plus, .iPhone14Pro, .iPhone14ProMax,
                 .iPhone15, .iPhone15Plus, .iPhone15Pro, .iPhone15ProMax
@@ -203,7 +218,7 @@ class SkinManager {
         }
         
         switch machine {
-        case .iPhone13mini:
+        case .iPhone12mini, .iPhone13mini:
             let lrzlzrButtonHeight = Double(45 * (3 / 2))
             
             let portrait: Orientation = .init(buttons: [
@@ -233,9 +248,10 @@ class SkinManager {
             return .init(author: .init(name: "Antique", socials: [
                 .init(type: .twitter, username: "antique_codes")
             ]), core: .cytrus, orientations: .init(portrait: portrait, landscapeLeft: landscapeLeft, landscapeRight: landscapeRight, supportedDevices: [
-                .iPhone13mini
+                .iPhone12mini, .iPhone13mini
             ]))
-        case .iPhone13Pro, .iPhone13ProMax, .iPhone13,
+        case .iPhone12, .iPhone12Pro, .iPhone12ProMax,
+                .iPhone13Pro, .iPhone13ProMax, .iPhone13,
                 .iPhone14, .iPhone14Plus, .iPhone14Pro, .iPhone14ProMax,
                 .iPhone15, .iPhone15Plus, .iPhone15Pro, .iPhone15ProMax:
             let portrait: Orientation = .init(buttons: [
@@ -262,6 +278,7 @@ class SkinManager {
             return .init(author: .init(name: "Antique", socials: [
                 .init(type: .twitter, username: "antique_codes")
             ]), core: .cytrus, orientations: .init(portrait: portrait, supportedDevices: [
+                .iPhone12, .iPhone12Pro, .iPhone12ProMax,
                 .iPhone13Pro, .iPhone13ProMax, .iPhone13,
                 .iPhone14, .iPhone14Plus, .iPhone14Pro, .iPhone14ProMax,
                 .iPhone15, .iPhone15Plus, .iPhone15Pro, .iPhone15ProMax
