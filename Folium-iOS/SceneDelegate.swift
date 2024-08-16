@@ -89,7 +89,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 extension SceneDelegate {
     fileprivate func configureAuthenticationStateListener(with window: UIWindow) {
         _ = Auth.auth().addStateDidChangeListener { auth, user in
-            window.rootViewController = if AppStoreCheck.shared.additionalFeaturesAreAllowed() {
+            window.rootViewController = if AppStoreCheck.shared.additionalFeaturesAreAllowed {
                 if user == nil {
                     AuthenticationController()
                 } else {
@@ -139,7 +139,11 @@ extension SceneDelegate {
                 "useHardwareShaders" : true,
                 "useDiskShaderCache" : true,
                 "useShadersAccurateMul" : false,
-                "useNewVSync" : true
+                "useNewVSync" : true,
+                "useShaderJIT" : false,
+                "resolutionFactor" : 1,
+                "textureFilter" : 0,
+                "textureSampling" : 0
             ]
         ]
         

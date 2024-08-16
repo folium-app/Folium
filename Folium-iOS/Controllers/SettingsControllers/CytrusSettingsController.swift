@@ -68,7 +68,7 @@ class CytrusSettingsController : UICollectionViewController {
             self.dismiss(animated: true)
         })), animated: true)
         prefersLargeTitles(true)
-        title = "Cytrus Settings"
+        title = "Cytrus"
         
         let boolCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, BoolSetting> { cell, indexPath, itemIdentifier in
             var contentConfiguration = UIListContentConfiguration.cell()
@@ -267,7 +267,38 @@ class CytrusSettingsController : UICollectionViewController {
             BoolSetting(key: "cytrus.useNewVSync",
                         title: "New Vertical Sync",
                         value: UserDefaults.standard.bool(forKey: "cytrus.useNewVSync"),
-                        delegate: self)
+                        delegate: self),
+            BoolSetting(key: "cytrus.useShaderJIT",
+                        title: "Shader JIT",
+                        value: UserDefaults.standard.bool(forKey: "cytrus.useShaderJIT"),
+                        delegate: self),
+            StepperSetting(key: "cytrus.resolutionFactor",
+                           title: "Resolution Factor",
+                           min: 0,
+                           max: 10,
+                           value: UserDefaults.standard.double(forKey: "cytrus.resolutionFactor"),
+                           delegate: self),
+            SelectionSetting(key: "cytrus.textureFilter",
+                             title: "Texture Filter",
+                             values: [
+                                "None" : 0,
+                                "Anime4K" : 1,
+                                "Bicubic" : 2,
+                                "ScaleForce" : 3,
+                                "xBRZ" : 4,
+                                "MMPX" : 5
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.textureFilter"),
+                             delegate: self),
+            SelectionSetting(key: "cytrus.textureSampling",
+                             title: "Texture Sampling",
+                             values: [
+                                "GameControlled" : 0,
+                                "NearestNeighbor" : 1,
+                                "Linear" : 2
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.textureSampling"),
+                             delegate: self)
         ], toSection: "Renderer")
         
         Task {

@@ -15,19 +15,19 @@ struct AppStoreCheck {
     
     static let shared = AppStoreCheck()
     
-    func currentAppEnvironment() -> Environment {
+    var currentAppEnvironment: Environment {
 #if targetEnvironment(simulator)
         return .other
 #else
-        func hasEmbeddedMobileProvision() -> Bool {
+        var hasEmbeddedMobileProvision: Bool {
             Bundle.main.path(forResource: "embedded", ofType: "mobileprovision") != nil
         }
         
-        if hasEmbeddedMobileProvision() {
+        if hasEmbeddedMobileProvision {
             return .other
         }
         
-        func isAppStoreReceipt() -> Bool {
+        var isAppStoreReceipt: Bool {
             #if targetEnvironment(simulator)
             false
             #else
@@ -39,7 +39,7 @@ struct AppStoreCheck {
             #endif
         }
         
-        if isAppStoreReceipt() {
+        if isAppStoreReceipt {
             return .testFlight
         }
         
@@ -47,7 +47,16 @@ struct AppStoreCheck {
 #endif
     }
     
-    func additionalFeaturesAreAllowed() -> Bool {
-        [.appStore, .other].contains(currentAppEnvironment())
+    fileprivate var debugging: Bool {
+        var info = kinfo_proc()
+        var size = MemoryLayout.stride(ofValue: info)
+        var mib : [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid()]
+        let junk = sysctl(&mib, UInt32(mib.count), &info, &size, nil, 0)
+        assert(junk == 0, "sysctl failed")
+        return (info.kp_proc.p_flag & P_TRACED) != 0
+    }
+    
+    var additionalFeaturesAreAllowed: Bool {
+        debugging || currentAppEnvironment == .appStore
     }
 }

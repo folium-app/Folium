@@ -21,7 +21,7 @@ class LibraryController: UICollectionViewController {
         super.viewDidLoad()
         prefersLargeTitles(true)
         title = "Library"
-        if [.appStore, .other].contains(AppStoreCheck.shared.currentAppEnvironment()), let currentUser = Auth.auth().currentUser, let displayName = currentUser.displayName,
+        if AppStoreCheck.shared.additionalFeaturesAreAllowed, let currentUser = Auth.auth().currentUser, let displayName = currentUser.displayName,
            let firstName = displayName.components(separatedBy: " ").first {
             let prefix = switch Calendar.current.component(.hour, from: .now) {
             case 6...11:
@@ -64,7 +64,7 @@ class LibraryController: UICollectionViewController {
                 ])
             ])
         ]
-        if [.appStore, .other].contains(AppStoreCheck.shared.currentAppEnvironment()), Auth.auth().currentUser != nil {
+        if AppStoreCheck.shared.additionalFeaturesAreAllowed, Auth.auth().currentUser != nil {
             children.append(contentsOf: [
                 UIAction(title: "View Account", image: .init(systemName: "person.text.rectangle"), handler: { _ in
                     
