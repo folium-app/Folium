@@ -5,10 +5,13 @@
 //  Created by Jarrod Norwell on 2/7/2024.
 //
 
+import AppleArchive
+import Accelerate
 import DirectoryManager
 import Firebase
 import FirebaseAuth
 import LayoutManager
+import System
 import UIKit
 
 enum ApplicationState : Int {
@@ -108,21 +111,76 @@ extension SceneDelegate {
     }
     
     fileprivate func cleanupForLatestRelease() throws {
-        let version = Bundle.main.infoDictionary?["CFBundleVersion"] as? NSString
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
         
-        if let version, version.doubleValue >= 1.7, !UserDefaults.standard.bool(forKey: "isCleanedUpForLatestRelease") {
-            if let bundleIdentifier = Bundle.main.bundleIdentifier {
-                UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
-            }
+        if let bundleIdentifier = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
+        }
+        
+        if let version, let build {
+            let currentlyInstalledVersion = "\(version).\(build)"
             
-            let documentsDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            try FileManager.default.contentsOfDirectory(atPath: documentsDirectory.path).forEach { content in
-                if !content.contains("/roms/") {
-                    try FileManager.default.removeItem(atPath: documentsDirectory.appending(path: content).path)
+            let currentlySavedVersion = UserDefaults.standard.string(forKey: "currentlySavedVersion")
+            if currentlySavedVersion == nil || currentlySavedVersion != currentlyInstalledVersion {
+                if let bundleIdentifier = Bundle.main.bundleIdentifier {
+                    UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
                 }
+                
+                let documentDirectory = try FileManager.default.url(for: .documentDirectory,
+                                                                    in: .userDomainMask,
+                                                                    appropriateFor: nil,
+                                                                    create: false)
+                let temp = NSTemporaryDirectory() + "\(currentlyInstalledVersion).aar"
+                let archiveDestination = FilePath(temp)
+
+                guard let writeFileStream = ArchiveByteStream.fileStream(path: archiveDestination,
+                                                                                                 mode: .writeOnly,
+                                                                                                 options: [
+                                                                                                    .create
+                                                                                                 ],
+                                                                                                 permissions: .init(rawValue: 0o644)) else {
+                    return
+                }
+                
+                guard let compressStream = ArchiveByteStream.compressionStream(using: .lzfse,
+                                                                               writingTo: writeFileStream) else {
+                    return
+                }
+                
+                guard let encodeStream = ArchiveStream.encodeStream(writingTo: compressStream) else {
+                    return
+                }
+                
+                defer {
+                    try? writeFileStream.close()
+                    try? compressStream.close()
+                    try? encodeStream.close()
+                }
+                
+                guard let keySet = ArchiveHeader.FieldKeySet("TYP,PAT,LNK,DEV,DAT,UID,GID,MOD,FLG,MTM,BTM,CTM") else {
+                    return
+                }
+                
+                guard let source = FilePath(documentDirectory) else {
+                    return
+                }
+
+                do {
+                    try encodeStream.writeDirectoryContents(archiveFrom: source, keySet: keySet)
+                } catch {
+                    fatalError("Write directory contents failed.")
+                }
+                
+                try FileManager.default.contentsOfDirectory(atPath: documentDirectory.path).forEach { content in
+                    try FileManager.default.removeItem(at: documentDirectory.appending(path: content))
+                }
+                
+                try FileManager.default.moveItem(atPath: archiveDestination.string,
+                                                 toPath: documentDirectory.appending(path: "\(currentlyInstalledVersion).aar").path)
+                
+                UserDefaults.standard.set("\(version).\(build)", forKey: "currentlySavedVersion")
             }
-            
-            UserDefaults.standard.set(true, forKey: "isCleanedUpForLatestRelease")
         }
     }
     
@@ -130,7 +188,8 @@ extension SceneDelegate {
         let defaults: [String : [String : Any]] = [
             "Cytrus" : [
                 "cpuClockPercentage" : 100,
-                "useNew3DS" : true,
+                "new3DS" : true,
+                "lleApplets" : false,
                 "regionValue" : -1,
                 
                 "spirvShaderGeneration" : true,
@@ -143,7 +202,24 @@ extension SceneDelegate {
                 "useShaderJIT" : false,
                 "resolutionFactor" : 1,
                 "textureFilter" : 0,
-                "textureSampling" : 0
+                "textureSampling" : 0,
+                "render3D" : 0,
+                "factor3D" : 0,
+                "monoRender" : 0,
+                "preloadTextures" : false,
+                
+                "audioMuted" : false,
+                "audioEmulation" : 0,
+                "audioStretching" : true,
+                "realtimeAudio" : false,
+                "outputType" : 0,
+                "inputType" : 0,
+                
+                "hardwareVertexShaders" : false,
+                "surfaceTextureCopy" : false,
+                "flushCPUWrite" : false,
+                "priorityBoostStarvedThreads" : true,
+                "reduceDowncountSlice" : false
             ]
         ]
         

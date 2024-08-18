@@ -81,11 +81,6 @@ extension AuthenticationController : ASAuthorizationControllerPresentationContex
             case .success(_):
                 print("\(#function): success")
                 
-                let authenticatedUser: AuthenticatedUser = .init(email: credential.email, fullName: credential.fullName)
-                let encoded = try JSONEncoder().encode(authenticatedUser)
-                let json = try JSONSerialization.jsonObject(with: encoded)
-                UserDefaults.standard.set(json, forKey: "authenticatedUser")
-                
                 let libraryController = UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
                 libraryController.modalPresentationStyle = .fullScreen
                 self.present(libraryController, animated: true)

@@ -204,7 +204,9 @@ class CytrusSettingsController : UICollectionViewController {
         snapshot = .init()
         snapshot.appendSections([
             "Core",
-            "Renderer"
+            "Renderer",
+            "Audio",
+            "Tweaks"
         ])
         
         snapshot.appendItems([
@@ -214,15 +216,14 @@ class CytrusSettingsController : UICollectionViewController {
                            max: 200,
                            value: UserDefaults.standard.double(forKey: "cytrus.cpuClockPercentage"),
                            delegate: self),
-            BoolSetting(key: "cytrus.useNew3DS",
+            BoolSetting(key: "cytrus.new3DS",
                         title: "New 3DS",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.useNew3DS"),
+                        value: UserDefaults.standard.bool(forKey: "cytrus.new3DS"),
                         delegate: self),
-            // SelectionSetting(key: "",
-            //                  title: "LLE Applets",
-            //                  values: [
-            //                     ""
-            //                  ], delegate: self),
+            BoolSetting(key: "cytrus.lleApplets",
+                        title: "LLE Applets",
+                        value: UserDefaults.standard.bool(forKey: "cytrus.lleApplets"),
+                        delegate: self),
             SelectionSetting(key: "cytrus.regionValue",
                              title: "Console Region",
                              values: [
@@ -293,13 +294,107 @@ class CytrusSettingsController : UICollectionViewController {
             SelectionSetting(key: "cytrus.textureSampling",
                              title: "Texture Sampling",
                              values: [
-                                "GameControlled" : 0,
-                                "NearestNeighbor" : 1,
+                                "Game Controlled" : 0,
+                                "Nearest Neighbor" : 1,
                                 "Linear" : 2
                              ],
                              selectedValue: UserDefaults.standard.value(forKey: "cytrus.textureSampling"),
-                             delegate: self)
+                             delegate: self),
+            SelectionSetting(key: "cytrus.render3D",
+                             title: "Render 3D",
+                             values: [
+                                "Off" : 0,
+                                "Side by Side" : 1,
+                                "Anaglyph" : 2,
+                                "Interlaced" : 3,
+                                "ReverseInterlaced" : 4,
+                                "CardboardVR" : 5
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.render3D"),
+                             delegate: self),
+            StepperSetting(key: "cytrus.factor3D",
+                           title: "3D Factor",
+                           min: 0,
+                           max: 100,
+                           value: UserDefaults.standard.double(forKey: "cytrus.factor3D"),
+                           delegate: self),
+            SelectionSetting(key: "cytrus.monoRender",
+                             title: "Mono Render",
+                             values: [
+                                "Left Eye" : 0,
+                                "Right Eye" : 1
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.monoRender"),
+                             delegate: self),
+            BoolSetting(key: "cytrus.preloadTextures",
+                        title: "Preload textures",
+                        value: UserDefaults.standard.bool(forKey: "cytrus.preloadTextures"),
+                        delegate: self)
         ], toSection: "Renderer")
+        
+        snapshot.appendItems([
+            BoolSetting(key: "cytrus.audioMuted",
+                        title: "Audio Muted",
+                        value: UserDefaults.standard.bool(forKey: "cytrus.audioMuted")),
+            SelectionSetting(key: "cytrus.audioEmulation",
+                             title: "Audio Emulation",
+                             values: [
+                                "HLE" : 0,
+                                "LLE" : 1,
+                                "LLE (Multithreaded)" : 2
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.audioEmulation"),
+                             delegate: self),
+            BoolSetting(key: "cytrus.audioStretching",
+                        title: "Audio Stretching",
+                        value: UserDefaults.standard.bool(forKey: "cytrus.audioStretching")),
+            BoolSetting(key: "cytrus.realtimeAudio",
+                        title: "Realtime Audio",
+                        value: UserDefaults.standard.bool(forKey: "cytrus.realtimeAudio")),
+            SelectionSetting(key: "cytrus.outputType",
+                             title: "Output Type",
+                             values: [
+                                "Automatic" : 0,
+                                "None" : 1,
+                                "OpenAL" : 2,
+                                "SDL2" : 3
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.outputType"),
+                             delegate: self),
+            SelectionSetting(key: "cytrus.inputType",
+                             title: "Input Type",
+                             values: [
+                                "Automatic" : 0,
+                                "None" : 1,
+                                "Static" : 2,
+                                "OpenAL" : 3
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.inputType"),
+                             delegate: self)
+        ], toSection: "Audio")
+        
+        snapshot.appendItems([
+            BoolSetting(key: "cytrus.hardwareVertexShaders",
+                        title: "Force Hardware Vertex Shaders",
+                        value: UserDefaults.standard.bool(forKey: "cytrus.hardwareVertexShaders"),
+                        delegate: self),
+            BoolSetting(key: "cytrus.surfaceTextureCopy",
+                        title: "Disable Surface Texture Copy",
+                        value: UserDefaults.standard.bool(forKey: "cytrus.surfaceTextureCopy"),
+                        delegate: self),
+            BoolSetting(key: "cytrus.flushCPUWrite",
+                        title: "Disable Flush CPU Write",
+                        value: UserDefaults.standard.bool(forKey: "cytrus.flushCPUWrite"),
+                        delegate: self),
+            BoolSetting(key: "cytrus.priorityBoostStarvedThreads",
+                        title: "Priority Boost Starved Threads",
+                        value: UserDefaults.standard.bool(forKey: "cytrus.priorityBoostStarvedThreads"),
+                        delegate: self),
+            BoolSetting(key: "cytrus.reduceDowncountSlice",
+                        title: "Reduce Downcount Slice",
+                        value: UserDefaults.standard.bool(forKey: "cytrus.reduceDowncountSlice"),
+                        delegate: self)
+        ], toSection: "Tweaks")
         
         Task {
             await dataSource.apply(snapshot)

@@ -1381,8 +1381,8 @@
 		E67D44142C37972800D76E54 /* Cores */ = {
 			isa = PBXGroup;
 			children = (
-				E6B4A6C52C6DEC7E00B5D0E1 /* Grape */,
 				E66616702C410E130065B363 /* Cytrus */,
+				E6B4A6C52C6DEC7E00B5D0E1 /* Grape */,
 			);
 			path = Cores;
 			sourceTree = "<group>";
@@ -1528,20 +1528,12 @@
 			path = logging;
 			sourceTree = "<group>";
 		};
-		E6AC4B8F2C69E37D00FF5FA7 /* serialization */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = serialization;
-			sourceTree = "<group>";
-		};
 		E6AC4B9E2C69E37D00FF5FA7 /* common */ = {
 			isa = PBXGroup;
 			children = (
 				E6AC4B872C69E37D00FF5FA7 /* aarch64 */,
 				E6AC4B8A2C69E37D00FF5FA7 /* dynamic_library */,
 				E6AC4B8E2C69E37D00FF5FA7 /* logging */,
-				E6AC4B8F2C69E37D00FF5FA7 /* serialization */,
 				E6AC4B902C69E37D00FF5FA7 /* cityhash.cpp */,
 				E6AC4B912C69E37D00FF5FA7 /* detached_tasks.cpp */,
 				E6AC4B922C69E37D00FF5FA7 /* error.cpp */,
@@ -3469,7 +3461,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3516,7 +3508,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
