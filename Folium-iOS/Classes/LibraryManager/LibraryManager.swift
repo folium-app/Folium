@@ -132,7 +132,31 @@ struct LibraryManager : @unchecked Sendable {
         }
         
         let result = Result {
-            try enumerator.reduce(into: [GameBase]()) {
+            var games: [GameBase] = []
+            
+            try Cytrus.shared.installed().forEach { url in
+                let nameWithoutExtension = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
+                
+                games.append(Nintendo3DSGame(icon: try Nintendo3DSGame.iconFromHeader(for: url), core: "Cytrus",
+                                          fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                             name: url.lastPathComponent,
+                                                             nameWithoutExtension: nameWithoutExtension,
+                                                             url: url),
+                                          title: try Nintendo3DSGame.titleFromHeader(for: url)))
+            }
+            
+            try Cytrus.shared.system().forEach { url in
+                let nameWithoutExtension = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
+                
+                games.append(Nintendo3DSGame(icon: try Nintendo3DSGame.iconFromHeader(for: url), core: "Cytrus",
+                                          fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                             name: url.lastPathComponent,
+                                                             nameWithoutExtension: nameWithoutExtension,
+                                                             url: url),
+                                          title: try Nintendo3DSGame.titleFromHeader(for: url)))
+            }
+            
+            games.append(contentsOf: try enumerator.reduce(into: [GameBase]()) {
                 switch $1 {
                 case let url as URL:
                     let attributes = try url.resourceValues(forKeys: [.isRegularFileKey])
@@ -189,7 +213,9 @@ struct LibraryManager : @unchecked Sendable {
                 default:
                     break
                 }
-            }
+            })
+            
+            return games
         }
         
         return result

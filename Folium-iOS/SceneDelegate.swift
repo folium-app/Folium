@@ -39,19 +39,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         do {
-            try cleanupForLatestRelease()
+            try cleanupForLatestRelease(with: window)
         } catch {
-            print(#function, "cleanupForLatestRelease()", error)
-        }
-        
-        configureAuthenticationStateListener(with: window)
-        
-        do {
-            try configureMissingDirectories(for: LibraryManager.shared.cores.reduce(into: [String](), { partialResult, element in
-                partialResult.append(element.description)
-            }))
-        } catch {
-            print(#function, "configureMissingDirectories(for:)", error)
+            print(#function, error)
         }
         
         configureDefaultUserDefaults()
@@ -90,19 +80,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 }
 
 extension SceneDelegate {
-    fileprivate func configureAuthenticationStateListener(with window: UIWindow) {
+    fileprivate func configureAuthenticationStateListener() {
+        guard let window else {
+            return
+        }
+        
         _ = Auth.auth().addStateDidChangeListener { auth, user in
-            window.rootViewController = if AppStoreCheck.shared.additionalFeaturesAreAllowed {
-                if user == nil {
-                    AuthenticationController()
+            if let rootViewController = window.rootViewController {
+                let viewController = if AppStoreCheck.shared.additionalFeaturesAreAllowed {
+                    if user == nil {
+                        AuthenticationController()
+                    } else {
+                        UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
+                    }
                 } else {
                     UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
                 }
+                
+                viewController.modalPresentationStyle = .fullScreen
+                rootViewController.present(viewController, animated: true)
             } else {
-                UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
+                window.rootViewController = if AppStoreCheck.shared.additionalFeaturesAreAllowed {
+                    if user == nil {
+                        AuthenticationController()
+                    } else {
+                        UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
+                    }
+                } else {
+                    UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
+                }
+                
+                window.makeKeyAndVisible()
             }
-            
-            window.makeKeyAndVisible()
         }
     }
     
@@ -110,13 +119,9 @@ extension SceneDelegate {
         try DirectoryManager.shared.createMissingDirectoriesInDocumentsDirectory(for: cores)
     }
     
-    fileprivate func cleanupForLatestRelease() throws {
+    fileprivate func cleanupForLatestRelease(with window: UIWindow) throws {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
-        
-        if let bundleIdentifier = Bundle.main.bundleIdentifier {
-            UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
-        }
         
         if let version, let build {
             let currentlyInstalledVersion = "\(version).\(build)"
@@ -127,60 +132,19 @@ extension SceneDelegate {
                     UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
                 }
                 
-                let documentDirectory = try FileManager.default.url(for: .documentDirectory,
-                                                                    in: .userDomainMask,
-                                                                    appropriateFor: nil,
-                                                                    create: false)
-                let temp = NSTemporaryDirectory() + "\(currentlyInstalledVersion).aar"
-                let archiveDestination = FilePath(temp)
-
-                guard let writeFileStream = ArchiveByteStream.fileStream(path: archiveDestination,
-                                                                                                 mode: .writeOnly,
-                                                                                                 options: [
-                                                                                                    .create
-                                                                                                 ],
-                                                                                                 permissions: .init(rawValue: 0o644)) else {
-                    return
-                }
+                let archivalViewController = ArchivingViewController()
+                archivalViewController.currentlyInstalledVersion = currentlyInstalledVersion
+                archivalViewController.delegate = self
                 
-                guard let compressStream = ArchiveByteStream.compressionStream(using: .lzfse,
-                                                                               writingTo: writeFileStream) else {
-                    return
-                }
-                
-                guard let encodeStream = ArchiveStream.encodeStream(writingTo: compressStream) else {
-                    return
-                }
-                
-                defer {
-                    try? writeFileStream.close()
-                    try? compressStream.close()
-                    try? encodeStream.close()
-                }
-                
-                guard let keySet = ArchiveHeader.FieldKeySet("TYP,PAT,LNK,DEV,DAT,UID,GID,MOD,FLG,MTM,BTM,CTM") else {
-                    return
-                }
-                
-                guard let source = FilePath(documentDirectory) else {
-                    return
-                }
-
-                do {
-                    try encodeStream.writeDirectoryContents(archiveFrom: source, keySet: keySet)
-                } catch {
-                    fatalError("Write directory contents failed.")
-                }
-                
-                try FileManager.default.contentsOfDirectory(atPath: documentDirectory.path).forEach { content in
-                    try FileManager.default.removeItem(at: documentDirectory.appending(path: content))
-                }
-                
-                try FileManager.default.moveItem(atPath: archiveDestination.string,
-                                                 toPath: documentDirectory.appending(path: "\(currentlyInstalledVersion).aar").path)
+                window.rootViewController = archivalViewController
+                window.makeKeyAndVisible()
                 
                 UserDefaults.standard.set("\(version).\(build)", forKey: "currentlySavedVersion")
+            } else {
+                configureAuthenticationStateListener()
             }
+        } else {
+            configureAuthenticationStateListener()
         }
     }
     
@@ -230,5 +194,21 @@ extension SceneDelegate {
                 }
             }
         }
+    }
+}
+
+extension SceneDelegate : ArchivingDelegate {
+    func archivingDidFinish() {
+        let cores = LibraryManager.shared.cores.reduce(into: [String](), { partialResult, element in
+            partialResult.append(element.description)
+        })
+        
+        do {
+            try configureMissingDirectories(for: cores)
+        } catch {
+            print(#function, error, error.localizedDescription)
+        }
+        
+        configureAuthenticationStateListener()
     }
 }

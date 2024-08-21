@@ -507,6 +507,7 @@
 		E6C615502C47896100DE0CD6 /* libavutil.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C614B52C4788E800DE0CD6 /* libavutil.xcframework */; };
 		E6C615522C47896100DE0CD6 /* libswresample.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C614C82C4788E800DE0CD6 /* libswresample.xcframework */; };
 		E6C615542C47896100DE0CD6 /* libswscale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C614C92C4788E800DE0CD6 /* libswscale.xcframework */; };
+		E6D373552C71E3EE0096EB9D /* ArchivingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D373542C71E3EE0096EB9D /* ArchivingViewController.swift */; };
 		E6D6C1E02C4FAB6F006B8F3E /* NintendoDSEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D6C1DF2C4FAB6F006B8F3E /* NintendoDSEmulationController.swift */; };
 		E6F31F632C6536E700DE5FA0 /* CytrusSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F31F622C6536E700DE5FA0 /* CytrusSettingsController.swift */; };
 /* End PBXBuildFile section */
@@ -1039,6 +1040,7 @@
 		E6C614C72C4788E800DE0CD6 /* libSPIRV.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libSPIRV.xcframework; sourceTree = "<group>"; };
 		E6C614C82C4788E800DE0CD6 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswresample.xcframework; sourceTree = "<group>"; };
 		E6C614C92C4788E800DE0CD6 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswscale.xcframework; sourceTree = "<group>"; };
+		E6D373542C71E3EE0096EB9D /* ArchivingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivingViewController.swift; sourceTree = "<group>"; };
 		E6D6C1DF2C4FAB6F006B8F3E /* NintendoDSEmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NintendoDSEmulationController.swift; sourceTree = "<group>"; };
 		E6F31F622C6536E700DE5FA0 /* CytrusSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CytrusSettingsController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1199,6 +1201,7 @@
 				E61CD9932C4F986400C7775B /* EmulationControllers */,
 				E62345E02C33D2650061FE55 /* AuthenticationController.swift */,
 				E6A483B42C36766800CFA6DA /* LibraryController.swift */,
+				E6D373542C71E3EE0096EB9D /* ArchivingViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -3125,6 +3128,7 @@
 				E659A1D72C522A960040D803 /* ControllerView.swift in Sources */,
 				E659A1D82C522A960040D803 /* ControllerThumbstick.swift in Sources */,
 				E66BBFB92C578E29007B0F0A /* PlayStation1Game.swift in Sources */,
+				E6D373552C71E3EE0096EB9D /* ArchivingViewController.swift in Sources */,
 				E641265A2C5B553900C060A4 /* CGFloat.swift in Sources */,
 				E659A1D92C522A960040D803 /* ControllerButton.swift in Sources */,
 				E667C0732C47C6C000DB0327 /* GameBoyGame.swift in Sources */,
@@ -3461,7 +3465,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3508,7 +3512,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;

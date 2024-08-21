@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 4/7/2024.
 //
 
+import Cytrus
 import Firebase
 import FirebaseAuth
 import Foundation
@@ -78,11 +79,6 @@ class LibraryController: UICollectionViewController {
         button.showsMenuAsPrimaryAction = true
         
         navigationItem.perform(NSSelectorFromString("_setLargeTitleAccessoryView:"), with: button)
-        
-        //navigationItem.setRightBarButtonItems([
-        //    .init(title: nil, image: .init(systemName: "plus"), target: self, action: #selector(openDocumentPickerController)),
-        //    .init(title: nil, image: .init(systemName: "gearshape"), target: self, action: #selector(openSettingsController)),
-        //], animated: true)
         
         beginAddingSubviews()
         beginConfiguringCollectionView()
@@ -178,7 +174,7 @@ extension LibraryController: UIDocumentPickerDelegate {
                 case "ds", "dsi", "nds":
                     documentDirectory.appendingPathComponent("Grape", conformingTo: .folder)
                         .appendingPathComponent("roms", conformingTo: .folder)
-                case "3ds", "app", "cci", "cia", "cxi":
+                case "3ds", "app", "cci", "cxi":
                     documentDirectory.appendingPathComponent("Cytrus", conformingTo: .folder)
                         .appendingPathComponent("roms", conformingTo: .folder)
                 case "n64", "z64":
@@ -191,7 +187,11 @@ extension LibraryController: UIDocumentPickerDelegate {
                     documentDirectory
                 }
                 
-                try FileManager.default.moveItem(at: url, to: romsDirectoryURL.appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL))
+                if url.pathExtension.lowercased() == "cia" {
+                    _ = Cytrus.shared.importGame(at: url)
+                } else {
+                    try FileManager.default.moveItem(at: url, to: romsDirectoryURL.appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL))
+                }
             }
             
             beginPopulatingGames(with: try LibraryManager.shared.games().get())
