@@ -68,7 +68,8 @@ class ControllerButton : UIView {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let delegate, let _ = touches.first else {
+        super.touchesBegan(touches, with: event)
+        guard let delegate else {
             return
         }
         
@@ -80,7 +81,8 @@ class ControllerButton : UIView {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let delegate, let _ = touches.first else {
+        super.touchesEnded(touches, with: event)
+        guard let delegate else {
             return
         }
         
@@ -88,7 +90,8 @@ class ControllerButton : UIView {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let delegate, let _ = touches.first else {
+        super.touchesMoved(touches, with: event)
+        guard let delegate else {
             return
         }
         

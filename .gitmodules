@@ -7,3 +7,6 @@
 [submodule "XCFrameworks"]
 	path = Dependencies/XCFrameworks
 	url = https://github.com/folium-app/XCFrameworks
+[submodule "Mango"]
+	path = Cores/Mango
+	url = https://github.com/folium-app/Mango

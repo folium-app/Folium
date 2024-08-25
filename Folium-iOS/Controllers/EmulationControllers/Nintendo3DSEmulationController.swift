@@ -79,12 +79,23 @@ class Nintendo3DSEmulationController : UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.showsMenuAsPrimaryAction = true
         button.menu = .init(children: [
+            UIAction(title: "Open Settings", image: .init(systemName: "gearshape"), attributes: [.disabled], handler: { _ in
+                var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+                configuration.headerMode = .supplementary
+                let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
+                
+                let cytrusSettingsController = UINavigationController(rootViewController: CytrusSettingsController(collectionViewLayout: listCollectionViewLayout))
+                if let sheetPresentationController = cytrusSettingsController.sheetPresentationController {
+                    sheetPresentationController.detents = [.medium(), .large()]
+                }
+                self.present(cytrusSettingsController, animated: true)
+            }),
             UIAction(title: "Toggle Play/Pause", handler: { _ in
                 Cytrus.shared.pausePlay(Cytrus.shared.isPaused())
             }),
             UIAction(title: "Stop & Exit", attributes: [.destructive], handler: { _ in
                 let alertController = UIAlertController(title: "Stop & Exit", message: "Are you sure?", preferredStyle: .alert)
-                alertController.addAction(.init(title: "Cancel", style: .cancel))
+                alertController.addAction(.init(title: "Dismiss", style: .cancel))
                 alertController.addAction(.init(title: "Stop & Exit", style: .destructive, handler: { _ in
                     Cytrus.shared.stop()
                     self.dismiss(animated: true)

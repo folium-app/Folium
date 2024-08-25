@@ -8,19 +8,16 @@
 import Foundation
 import UIKit
 
-struct Author : Codable, Hashable, Identifiable {
-    var id = UUID()
-    
+struct Author : Codable, Hashable {
     let name: String
     let socials: [Social]
 }
 
-struct Skin : Codable, Hashable, Identifiable {
-    var id = UUID()
-    
+struct Skin : Codable, Hashable {
     let author: Author
     let core: Core
     let orientations: Orientations
+    let title: String
     
     var debugging: Bool? = false
     

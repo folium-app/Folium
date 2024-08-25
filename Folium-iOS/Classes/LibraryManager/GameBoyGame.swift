@@ -24,6 +24,7 @@ class GameBoyGame : GameBase, @unchecked Sendable {
                 pointer = bytes
             }
             
+            try file.close()
             return String(cString: pointer).capitalized
         } else {
             return title

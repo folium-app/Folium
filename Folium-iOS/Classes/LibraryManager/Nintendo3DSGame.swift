@@ -12,9 +12,9 @@ import Foundation
 class Nintendo3DSGame : GameBase, @unchecked Sendable {
     let icon: Data
     
-    init(icon: Data, core: String, fileDetails: GameBase.FileDetails, title: String) {
+    init(icon: Data, core: String, fileDetails: GameBase.FileDetails, skins: [Skin], title: String) {
         self.icon = icon
-        super.init(core: core, fileDetails: fileDetails, title: title)
+        super.init(core: core, fileDetails: fileDetails, skins: skins, title: title)
     }
     
     static func iconFromHeader(for url: URL) throws -> Data {

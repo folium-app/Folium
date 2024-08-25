@@ -75,7 +75,7 @@ extension AuthenticationController : ASAuthorizationControllerPresentationContex
             case .failure(let error):
                 print("\(#function): failed: \(error.localizedDescription)")
                 
-                present(alert(with: "Error", message: error.localizedDescription, preferredStyle: .alert, actions: [
+                present(alert(title: "Error", message: error.localizedDescription, preferredStyle: .alert, actions: [
                     .init(title: "Close", style: .cancel)
                 ]), animated: true)
             case .success(_):
@@ -91,7 +91,7 @@ extension AuthenticationController : ASAuthorizationControllerPresentationContex
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: any Error) {
         print("\(#function): failed: \(error.localizedDescription)")
         
-        present(alert(with: "Error", message: error.localizedDescription, preferredStyle: .alert, actions: [
+        present(alert(title: "Error", message: error.localizedDescription, preferredStyle: .alert, actions: [
             .init(title: "Close", style: .cancel)
         ]), animated: true)
     }

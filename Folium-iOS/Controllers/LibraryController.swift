@@ -52,7 +52,7 @@ class LibraryController: UICollectionViewController {
                 UIAction(title: "Import Games", image: .init(systemName: "plus"), handler: { _ in
                     self.openDocumentPickerController()
                 }),
-                UIMenu(title: "Open Settings", image: .init(systemName: "gearshape"), children: [
+                UIMenu(title: "Core Settings", image: .init(systemName: "gearshape"), children: [
                     UIAction(title: "Cytrus", handler: { _ in
                         var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
                         configuration.headerMode = .supplementary
@@ -83,8 +83,20 @@ class LibraryController: UICollectionViewController {
         beginAddingSubviews()
         beginConfiguringCollectionView()
         
+        populateGameLibrary()
+    }
+    
+    @objc func refreshGameLibrary(_ refreshControl: UIRefreshControl) {
+        refreshControl.beginRefreshing()
+        
+        populateGameLibrary()
+        
+        refreshControl.endRefreshing()
+    }
+    
+    func populateGameLibrary() {
         let task = Task { try LibraryManager.shared.games() }
-        Task {
+        let task2 = Task {
             switch await task.result {
             case .failure(let error):
                 print(print("\(#function): failed: \(error.localizedDescription)"))
@@ -92,6 +104,15 @@ class LibraryController: UICollectionViewController {
                 print("\(#function): success")
                 
                 beginPopulatingGames(with: try games.get())
+            }
+        }
+        
+        Task {
+            switch await task2.result {
+            case .failure(let error):
+                print(print("\(#function): failed: \(error), \(error.localizedDescription)"))
+            case .success(_):
+                print("\(#function): success")
             }
         }
     }
@@ -107,14 +128,6 @@ extension LibraryController {
         }
         
         switch item {
-        case let nintendoDSGame as NintendoDSGame:
-            guard let skin = SkinManager.shared.grapeSkin else {
-                return
-            }
-            
-            let nintendoDSEmulationController = NintendoDSEmulationController(game: nintendoDSGame, skin: skin)
-            nintendoDSEmulationController.modalPresentationStyle = .fullScreen
-            present(nintendoDSEmulationController, animated: true)
         case let nintendo3DSGame as Nintendo3DSGame:
             guard let skin = SkinManager.shared.cytrusSkin else {
                 return
@@ -123,14 +136,14 @@ extension LibraryController {
             let nintendo3DSEmulationController = Nintendo3DSEmulationController(game: nintendo3DSGame, skin: skin)
             nintendo3DSEmulationController.modalPresentationStyle = .fullScreen
             present(nintendo3DSEmulationController, animated: true)
-        case let nintendo64Game as Nintendo64Game:
-            let nintendo64EmulationController = Nintendo64EmulationController(game: nintendo64Game)
-            nintendo64EmulationController.modalPresentationStyle = .fullScreen
-            present(nintendo64EmulationController, animated: true)
-        case let playstation1Game as PlayStation1Game:
-            let playStation1EmulationController = PlayStation1EmulationController(game: playstation1Game)
-            playStation1EmulationController.modalPresentationStyle = .fullScreen
-            present(playStation1EmulationController, animated: true)
+        case let superNESGame as SuperNESGame:
+            guard let skin = SkinManager.shared.mangoSkin else {
+                return
+            }
+            
+            let superNESEmulationController = SuperNESEmulationController(game: superNESGame, skin: skin)
+            superNESEmulationController.modalPresentationStyle = .fullScreen
+            present(superNESEmulationController, animated: true)
         default:
             break
         }
@@ -182,6 +195,9 @@ extension LibraryController: UIDocumentPickerDelegate {
                         .appendingPathComponent("roms", conformingTo: .folder)
                 case "cue":
                     documentDirectory.appendingPathComponent("Lychee", conformingTo: .folder)
+                        .appendingPathComponent("roms", conformingTo: .folder)
+                case "sfc", "smc":
+                    documentDirectory.appendingPathComponent("Mango", conformingTo: .folder)
                         .appendingPathComponent("roms", conformingTo: .folder)
                 default:
                     documentDirectory
@@ -262,7 +278,8 @@ extension LibraryController {
             .init("com.antique.Folium-iOS.cxi")!,
             .init("com.antique.Folium-iOS.n64")!,
             .init("com.antique.Folium-iOS.z64")!,
-            // TODO: add .cue
+            // TODO: add .cue,
+            .init("com.antique.Folium-iOS.snes")!,
                 
             .init("com.rileytestut.delta.game")!,
             .init("com.rileytestut.delta.game.gba")!,
@@ -289,21 +306,45 @@ extension LibraryController {
         searchController.searchResultsUpdater = self
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.searchController = searchController
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshGameLibrary(_:)), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
     }
     
     fileprivate func beginConfiguringCollectionView() {
         let gameBoyCellRegistration = UICollectionView.CellRegistration<GameBoyCell, GameBoyGame> { $0.set(text: $2.title, with: .white) }
         let gameBoyAdvanceCellRegistration = UICollectionView.CellRegistration<GameBoyCell, GameBoyAdvanceGame> { $0.set(text: $2.title, with: .white) }
-        let nintendo3DSCellRegistration = UICollectionView.CellRegistration<Nintendo3DSCell, Nintendo3DSGame> { $0.set(text: $2.title, image: $2.icon, with: .white) }
+        let nintendo3DSCellRegistration = UICollectionView.CellRegistration<Nintendo3DSCell, Nintendo3DSGame> { $0.set($2, with: self) }
         let nintendo64CellRegistration = UICollectionView.CellRegistration<Nintendo64Cell, Nintendo64Game> { $0.set(text: $2.title, with: .white) }
         let nintendoDSCellRegistration = UICollectionView.CellRegistration<NintendoDSCell, NintendoDSGame> { $0.set(text: $2.title, image: $2.icon, with: .white) }
         let playStation1CellRegistration = UICollectionView.CellRegistration<PlayStation1Cell, PlayStation1Game> { $0.set(text: $2.title, with: .white) }
+        let superNESCellRegistration = UICollectionView.CellRegistration<SuperNESCell, SuperNESGame> { $0.set(text: $2.title, with: .white) }
         
         let headerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) {
             var configuration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
             configuration.text = self.dataSource?.sectionIdentifier(for: $2.section)?.rawValue ?? ""
             configuration.secondaryText = self.dataSource?.sectionIdentifier(for: $2.section)?.console ?? ""
             $0.contentConfiguration = configuration
+            
+            if let dataSource = self.dataSource, let core = dataSource.sectionIdentifier(for: $2.section) {
+                if core.isBeta {
+                    var configuration = UIButton.Configuration.tinted()
+                    configuration.baseBackgroundColor = .systemOrange
+                    configuration.baseForegroundColor = .systemOrange
+                    configuration.attributedTitle = .init("BETA", attributes: .init([
+                        .font : UIFont.boldSystemFont(ofSize: UIFont.buttonFontSize)
+                    ]))
+                    configuration.buttonSize = .small
+                    configuration.cornerStyle = .capsule
+                    
+                    $0.accessories = [
+                        .customView(configuration: .init(customView: UIButton(configuration: configuration), placement: .trailing()))
+                    ]
+                } else {
+                    $0.accessories = []
+                }
+            }
         }
         
         dataSource = .init(collectionView: collectionView) {
@@ -320,6 +361,8 @@ extension LibraryController {
                 $0.dequeueConfiguredReusableCell(using: nintendoDSCellRegistration, for: $1, item: nintendoDSGame)
             case let playStation1Game as PlayStation1Game:
                 $0.dequeueConfiguredReusableCell(using: playStation1CellRegistration, for: $1, item: playStation1Game)
+            case let superNESGame as SuperNESGame:
+                $0.dequeueConfiguredReusableCell(using: superNESCellRegistration, for: $1, item: superNESGame)
             default:
                 nil
             }

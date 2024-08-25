@@ -12,7 +12,7 @@ import UIKit
 class ProgressiveVisualEffectView : UIVisualEffectView {}
 
 extension UIViewController {
-    func alert(with title: String? = nil, message: String? = nil, preferredStyle: UIAlertController.Style = .alert,
+    func alert(title: String? = nil, message: String? = nil, preferredStyle: UIAlertController.Style = .alert,
                       actions: [UIAlertAction]? = nil) -> UIAlertController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
         

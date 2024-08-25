@@ -55,6 +55,7 @@ class ControllerThumbstick : UIView {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
         guard let delegate, let touch = touches.first else {
             return
         }
@@ -67,7 +68,8 @@ class ControllerThumbstick : UIView {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let delegate, let _ = touches.first else {
+        super.touchesEnded(touches, with: event)
+        guard let delegate else {
             return
         }
         
@@ -83,6 +85,7 @@ class ControllerThumbstick : UIView {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
         guard let delegate, let touch = touches.first else {
             return
         }

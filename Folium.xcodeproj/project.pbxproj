@@ -10,6 +10,12 @@
 		E60F60D32C412517006902E2 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E60F60D22C412517006902E2 /* libzstd */; };
 		E60F60DE2C413092006902E2 /* CytrusObjC.mm in Sources */ = {isa = PBXBuildFile; fileRef = E60F60DD2C413092006902E2 /* CytrusObjC.mm */; };
 		E6101AB12C63FC0F00AEF0B5 /* Grape in Frameworks */ = {isa = PBXBuildFile; productRef = E6101AB02C63FC0F00AEF0B5 /* Grape */; };
+		E6106E6F2C79C47A0045A2C4 /* Mango in Resources */ = {isa = PBXBuildFile; fileRef = E6106E6E2C79C47A0045A2C4 /* Mango */; };
+		E6106E702C79C47A0045A2C4 /* Mango in Resources */ = {isa = PBXBuildFile; fileRef = E6106E6E2C79C47A0045A2C4 /* Mango */; };
+		E6106E722C79C5210045A2C4 /* Mango in Frameworks */ = {isa = PBXBuildFile; productRef = E6106E712C79C5210045A2C4 /* Mango */; };
+		E61A85552C79D0D100AFC053 /* SuperNESGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61A85542C79D0D100AFC053 /* SuperNESGame.swift */; };
+		E61A85572C79D25200AFC053 /* SuperNESCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61A85562C79D25200AFC053 /* SuperNESCell.swift */; };
+		E61A85592C79D36E00AFC053 /* SuperNESEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61A85582C79D36E00AFC053 /* SuperNESEmulationController.swift */; };
 		E61CD94E2C4F7E3F00C7775B /* AppStoreCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61CD94D2C4F7E3F00C7775B /* AppStoreCheck.swift */; };
 		E61CD9952C4F987B00C7775B /* Nintendo64EmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61CD9942C4F987B00C7775B /* Nintendo64EmulationController.swift */; };
 		E61E33972C4915E6006F3759 /* Nintendo64Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61E33962C4915E6006F3759 /* Nintendo64Game.swift */; };
@@ -25,7 +31,7 @@
 		E62345E62C33D2810061FE55 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62345E32C33D2810061FE55 /* UIViewController.swift */; };
 		E62345E92C33DF590061FE55 /* AuthenticatedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62345E82C33DF590061FE55 /* AuthenticatedUser.swift */; };
 		E62345EB2C33E48D0061FE55 /* DefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62345EA2C33E48D0061FE55 /* DefaultCell.swift */; };
-		E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E666166F2C410E130065B363 /* libCytrus.a */; platformFilter = ios; };
+		E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E666166F2C410E130065B363 /* libCytrus.a */; };
 		E626CA342C58A65A00CA2B9F /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E626CA332C58A65A00CA2B9F /* SDL */; };
 		E626CA362C58A67600CA2B9F /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E626CA352C58A67600CA2B9F /* SDL */; };
 		E62BC9F02C64B2300000CFB2 /* libZydis.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6496A6C2C63E851002594CD /* libZydis.xcframework */; };
@@ -83,7 +89,7 @@
 		E667C0752C47C73E00DB0327 /* Nintendo3DSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E667C0742C47C73E00DB0327 /* Nintendo3DSCell.swift */; };
 		E667C0782C47C7EA00DB0327 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = E667C0772C47C7EA00DB0327 /* OpenSSL */; };
 		E667C07A2C47C7F700DB0327 /* CoreHaptics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E667C0792C47C7F700DB0327 /* CoreHaptics.framework */; };
-		E667C07C2C47C81500DB0327 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E667C07B2C47C81500DB0327 /* CoreMotion.framework */; platformFilter = ios; };
+		E667C07C2C47C81500DB0327 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E667C07B2C47C81500DB0327 /* CoreMotion.framework */; };
 		E667C0F32C47E2B900DB0327 /* preprocessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E667C0B92C47E2B900DB0327 /* preprocessor.cpp */; };
 		E667C0F42C47E2B900DB0327 /* common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E667C0A82C47E2B900DB0327 /* common.cpp */; };
 		E667C0F52C47E2B900DB0327 /* parser_assembly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E667C0B42C47E2B900DB0327 /* parser_assembly.cpp */; };
@@ -507,7 +513,6 @@
 		E6C615502C47896100DE0CD6 /* libavutil.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C614B52C4788E800DE0CD6 /* libavutil.xcframework */; };
 		E6C615522C47896100DE0CD6 /* libswresample.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C614C82C4788E800DE0CD6 /* libswresample.xcframework */; };
 		E6C615542C47896100DE0CD6 /* libswscale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C614C92C4788E800DE0CD6 /* libswscale.xcframework */; };
-		E6D373552C71E3EE0096EB9D /* ArchivingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D373542C71E3EE0096EB9D /* ArchivingViewController.swift */; };
 		E6D6C1E02C4FAB6F006B8F3E /* NintendoDSEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D6C1DF2C4FAB6F006B8F3E /* NintendoDSEmulationController.swift */; };
 		E6F31F632C6536E700DE5FA0 /* CytrusSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F31F622C6536E700DE5FA0 /* CytrusSettingsController.swift */; };
 /* End PBXBuildFile section */
@@ -561,6 +566,10 @@
 		E60F60DC2C413092006902E2 /* CytrusObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CytrusObjC.h; sourceTree = "<group>"; };
 		E60F60DD2C413092006902E2 /* CytrusObjC.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CytrusObjC.mm; sourceTree = "<group>"; };
 		E60F60DF2C413167006902E2 /* Cytrus-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cytrus-Bridging-Header.h"; sourceTree = "<group>"; };
+		E6106E6E2C79C47A0045A2C4 /* Mango */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Mango; sourceTree = "<group>"; };
+		E61A85542C79D0D100AFC053 /* SuperNESGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperNESGame.swift; sourceTree = "<group>"; };
+		E61A85562C79D25200AFC053 /* SuperNESCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperNESCell.swift; sourceTree = "<group>"; };
+		E61A85582C79D36E00AFC053 /* SuperNESEmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperNESEmulationController.swift; sourceTree = "<group>"; };
 		E61CD94D2C4F7E3F00C7775B /* AppStoreCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreCheck.swift; sourceTree = "<group>"; };
 		E61CD9942C4F987B00C7775B /* Nintendo64EmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nintendo64EmulationController.swift; sourceTree = "<group>"; };
 		E61E33962C4915E6006F3759 /* Nintendo64Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nintendo64Game.swift; sourceTree = "<group>"; };
@@ -1040,7 +1049,6 @@
 		E6C614C72C4788E800DE0CD6 /* libSPIRV.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libSPIRV.xcframework; sourceTree = "<group>"; };
 		E6C614C82C4788E800DE0CD6 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswresample.xcframework; sourceTree = "<group>"; };
 		E6C614C92C4788E800DE0CD6 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswscale.xcframework; sourceTree = "<group>"; };
-		E6D373542C71E3EE0096EB9D /* ArchivingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivingViewController.swift; sourceTree = "<group>"; };
 		E6D6C1DF2C4FAB6F006B8F3E /* NintendoDSEmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NintendoDSEmulationController.swift; sourceTree = "<group>"; };
 		E6F31F622C6536E700DE5FA0 /* CytrusSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CytrusSettingsController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1112,6 +1120,7 @@
 				E667C0782C47C7EA00DB0327 /* OpenSSL in Frameworks */,
 				E667BEC42C4793E200DB0327 /* libswresample.xcframework in Frameworks */,
 				E64126632C5B669D00C060A4 /* MoltenVK.xcframework in Frameworks */,
+				E6106E722C79C5210045A2C4 /* Mango in Frameworks */,
 				E667BEBE2C4793E200DB0327 /* libavfilter.xcframework in Frameworks */,
 				E667BEBC2C4793E200DB0327 /* libavcodec.xcframework in Frameworks */,
 				E6A483C22C36A27700CFA6DA /* LayoutManager in Frameworks */,
@@ -1161,6 +1170,7 @@
 				E61E33982C4916E8006F3759 /* Nintendo64Cell.swift */,
 				E67398872C48D7AB00E09E93 /* NintendoDSCell.swift */,
 				E66BBFBA2C579189007B0F0A /* PlayStation1Cell.swift */,
+				E61A85562C79D25200AFC053 /* SuperNESCell.swift */,
 			);
 			path = LibraryCells;
 			sourceTree = "<group>";
@@ -1173,6 +1183,7 @@
 				E6BC474F2C521BD100857918 /* Nintendo3DSEmulationController.swift */,
 				E66BBFB62C578DDB007B0F0A /* PlayStation1EmulationController.swift */,
 				E6496A6E2C63EA88002594CD /* ControllerTestEmulationController.swift */,
+				E61A85582C79D36E00AFC053 /* SuperNESEmulationController.swift */,
 			);
 			path = EmulationControllers;
 			sourceTree = "<group>";
@@ -1201,7 +1212,6 @@
 				E61CD9932C4F986400C7775B /* EmulationControllers */,
 				E62345E02C33D2650061FE55 /* AuthenticationController.swift */,
 				E6A483B42C36766800CFA6DA /* LibraryController.swift */,
-				E6D373542C71E3EE0096EB9D /* ArchivingViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1315,6 +1325,7 @@
 				E61E33962C4915E6006F3759 /* Nintendo64Game.swift */,
 				E67398852C48D65800E09E93 /* NintendoDSGame.swift */,
 				E66BBFB82C578E29007B0F0A /* PlayStation1Game.swift */,
+				E61A85542C79D0D100AFC053 /* SuperNESGame.swift */,
 			);
 			path = LibraryManager;
 			sourceTree = "<group>";
@@ -1384,6 +1395,7 @@
 		E67D44142C37972800D76E54 /* Cores */ = {
 			isa = PBXGroup;
 			children = (
+				E6106E6E2C79C47A0045A2C4 /* Mango */,
 				E66616702C410E130065B363 /* Cytrus */,
 				E6B4A6C52C6DEC7E00B5D0E1 /* Grape */,
 			);
@@ -2618,6 +2630,7 @@
 				E667C0772C47C7EA00DB0327 /* OpenSSL */,
 				E626CA332C58A65A00CA2B9F /* SDL */,
 				E6101AB02C63FC0F00AEF0B5 /* Grape */,
+				E6106E712C79C5210045A2C4 /* Mango */,
 			);
 			productName = Folium;
 			productReference = E690A6A82C33B09E00652203 /* Folium-iOS.app */;
@@ -2677,6 +2690,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6106E702C79C47A0045A2C4 /* Mango in Resources */,
 				E6B4A6C72C6DEC7E00B5D0E1 /* Grape in Resources */,
 				E63D9EB62C33BADD0038257F /* Assets.xcassets in Resources */,
 				E63D9EB92C33BADD0038257F /* Base in Resources */,
@@ -2691,6 +2705,7 @@
 				E690A6B52C33B09F00652203 /* Assets.xcassets in Resources */,
 				E690A6B82C33B09F00652203 /* Base in Resources */,
 				E63E90642C6F3B9E00F318A0 /* Bundle.swift in Resources */,
+				E6106E6F2C79C47A0045A2C4 /* Mango in Resources */,
 				E6BE63B82C5775D600A47428 /* PrivacyInfo.xcprivacy in Resources */,
 				E6B4A6C62C6DEC7E00B5D0E1 /* Grape in Resources */,
 				E667BEDA2C47AE5300DB0327 /* GoogleService-Info.plist in Resources */,
@@ -3118,6 +3133,7 @@
 				E6D6C1E02C4FAB6F006B8F3E /* NintendoDSEmulationController.swift in Sources */,
 				E690A6AC2C33B09E00652203 /* AppDelegate.swift in Sources */,
 				E67398882C48D7AB00E09E93 /* NintendoDSCell.swift in Sources */,
+				E61A85592C79D36E00AFC053 /* SuperNESEmulationController.swift in Sources */,
 				E61E33992C4916E8006F3759 /* Nintendo64Cell.swift in Sources */,
 				E61CD9952C4F987B00C7775B /* Nintendo64EmulationController.swift in Sources */,
 				E667C0702C47C6C000DB0327 /* Nintendo3DSGame.swift in Sources */,
@@ -3128,8 +3144,9 @@
 				E659A1D72C522A960040D803 /* ControllerView.swift in Sources */,
 				E659A1D82C522A960040D803 /* ControllerThumbstick.swift in Sources */,
 				E66BBFB92C578E29007B0F0A /* PlayStation1Game.swift in Sources */,
-				E6D373552C71E3EE0096EB9D /* ArchivingViewController.swift in Sources */,
+				E61A85572C79D25200AFC053 /* SuperNESCell.swift in Sources */,
 				E641265A2C5B553900C060A4 /* CGFloat.swift in Sources */,
+				E61A85552C79D0D100AFC053 /* SuperNESGame.swift in Sources */,
 				E659A1D92C522A960040D803 /* ControllerButton.swift in Sources */,
 				E667C0732C47C6C000DB0327 /* GameBoyGame.swift in Sources */,
 				E6A483BF2C369EA100CFA6DA /* GameBoyCell.swift in Sources */,
@@ -3197,7 +3214,7 @@
 				SWIFT_OBJC_INTEROP_MODE = objc;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 16.0;
+				TVOS_DEPLOYMENT_TARGET = 16.6;
 			};
 			name = Debug;
 		};
@@ -3230,7 +3247,7 @@
 				SWIFT_OBJC_INTEROP_MODE = objc;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 16.0;
+				TVOS_DEPLOYMENT_TARGET = 16.6;
 			};
 			name = Release;
 		};
@@ -3260,7 +3277,7 @@
 					Cores/Cytrus/Dependencies/microprofile,
 					Cores/Cytrus/Dependencies/nlohmann,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3278,7 +3295,7 @@
 					"\"$(HOME)/VulkanSDK/1.3.290.0/macOS/include/vma\"",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 16.0;
+				TVOS_DEPLOYMENT_TARGET = 16.6;
 				USER_HEADER_SEARCH_PATHS = Cores/Cytrus/Core/include;
 			};
 			name = Debug;
@@ -3308,7 +3325,7 @@
 					Cores/Cytrus/Dependencies/microprofile,
 					Cores/Cytrus/Dependencies/nlohmann,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3326,7 +3343,7 @@
 					"\"$(HOME)/VulkanSDK/1.3.290.0/macOS/include/vma\"",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 16.0;
+				TVOS_DEPLOYMENT_TARGET = 16.6;
 				USER_HEADER_SEARCH_PATHS = Cores/Cytrus/Core/include;
 			};
 			name = Release;
@@ -3465,7 +3482,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3480,7 +3497,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3512,7 +3529,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3527,7 +3544,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3633,6 +3650,10 @@
 		E6101AB02C63FC0F00AEF0B5 /* Grape */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Grape;
+		};
+		E6106E712C79C5210045A2C4 /* Mango */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Mango;
 		};
 		E626CA332C58A65A00CA2B9F /* SDL */ = {
 			isa = XCSwiftPackageProductDependency;

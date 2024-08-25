@@ -38,6 +38,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         
+        window.tintColor = .systemGreen
+        
         do {
             try cleanupForLatestRelease(with: window)
         } catch {
@@ -132,12 +134,17 @@ extension SceneDelegate {
                     UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
                 }
                 
-                let archivalViewController = ArchivingViewController()
-                archivalViewController.currentlyInstalledVersion = currentlyInstalledVersion
-                archivalViewController.delegate = self
+                let cores = LibraryManager.shared.cores.reduce(into: [String](), { partialResult, element in
+                    partialResult.append(element.description)
+                })
                 
-                window.rootViewController = archivalViewController
-                window.makeKeyAndVisible()
+                do {
+                    try configureMissingDirectories(for: cores)
+                } catch {
+                    print(#function, error, error.localizedDescription)
+                }
+                
+                configureAuthenticationStateListener()
                 
                 UserDefaults.standard.set("\(version).\(build)", forKey: "currentlySavedVersion")
             } else {
@@ -194,21 +201,5 @@ extension SceneDelegate {
                 }
             }
         }
-    }
-}
-
-extension SceneDelegate : ArchivingDelegate {
-    func archivingDidFinish() {
-        let cores = LibraryManager.shared.cores.reduce(into: [String](), { partialResult, element in
-            partialResult.append(element.description)
-        })
-        
-        do {
-            try configureMissingDirectories(for: cores)
-        } catch {
-            print(#function, error, error.localizedDescription)
-        }
-        
-        configureAuthenticationStateListener()
     }
 }

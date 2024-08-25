@@ -11,7 +11,7 @@ import UIKit
 @MainActor class DefaultCell : UICollectionViewCell {
     var imageView: UIImageView? = nil, blurredImageView: UIImageView? = nil
     fileprivate var textLabel: UILabel? = nil
-    fileprivate var optionsButton: UIButton? = nil
+    var optionsButton: UIButton? = nil
     
     var color: UIColor? = nil
     override init(frame: CGRect) {
@@ -98,10 +98,11 @@ import UIKit
         }
         
         optionsButton.translatesAutoresizingMaskIntoConstraints = false
-        imageView.addSubview(optionsButton)
+        optionsButton.showsMenuAsPrimaryAction = true
+        addSubview(optionsButton)
         
-        optionsButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 16).isActive = true
-        optionsButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -16).isActive = true
+        optionsButton.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
+        optionsButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
         
         if #available(iOS 17, *) {
             registerForTraitChanges([UITraitUserInterfaceStyle.self], action: #selector(traitCollectionDidChange(with:traitCollection:)))

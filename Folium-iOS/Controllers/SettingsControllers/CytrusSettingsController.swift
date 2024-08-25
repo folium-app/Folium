@@ -10,13 +10,15 @@ import UIKit
 
 class BoolSetting : AnyHashableSendable, @unchecked Sendable {
     var key, title: String
+    var details: String?
     var value: Bool
     
     var delegate: SettingDelegate? = nil
     
-    init(key: String, title: String, value: Bool, delegate: SettingDelegate? = nil) {
+    init(key: String, title: String, details: String? = nil, value: Bool, delegate: SettingDelegate? = nil) {
         self.key = key
         self.title = title
+        self.details = details
         self.value = value
         self.delegate = delegate
     }
@@ -24,13 +26,15 @@ class BoolSetting : AnyHashableSendable, @unchecked Sendable {
 
 class StepperSetting : AnyHashableSendable, @unchecked Sendable {
     var key, title: String
+    var details: String?
     var min, max, value: Double
     
     var delegate: SettingDelegate? = nil
     
-    init(key: String, title: String, min: Double, max: Double, value: Double, delegate: SettingDelegate? = nil) {
+    init(key: String, title: String, details: String? = nil, min: Double, max: Double, value: Double, delegate: SettingDelegate? = nil) {
         self.key = key
         self.title = title
+        self.details = details
         self.min = min
         self.max = max
         self.value = value
@@ -40,14 +44,16 @@ class StepperSetting : AnyHashableSendable, @unchecked Sendable {
 
 class SelectionSetting : AnyHashableSendable, @unchecked Sendable {
     var key, title: String
+    var details: String?
     var values: [String : Any]
     var selectedValue: Any? = nil
     
     var delegate: SettingDelegate? = nil
     
-    init(key: String, title: String, values: [String : Any], selectedValue: Any? = nil, delegate: SettingDelegate? = nil) {
+    init(key: String, title: String, details: String? = nil, values: [String : Any], selectedValue: Any? = nil, delegate: SettingDelegate? = nil) {
         self.key = key
         self.title = title
+        self.details = details
         self.values = values
         self.selectedValue = selectedValue
         self.delegate = delegate
@@ -87,9 +93,20 @@ class CytrusSettingsController : UICollectionViewController {
             }))
             toggle.isOn = itemIdentifier.value
             
-            cell.accessories = [
-                .customView(configuration: .init(customView: toggle, placement: .trailing()))
-            ]
+            cell.accessories = if let details = itemIdentifier.details {
+                [
+                    .customView(configuration: .init(customView: toggle, placement: .trailing())),
+                    .detail(options: .init(tintColor: .systemBlue), actionHandler: {
+                        let alertController = UIAlertController(title: "\(itemIdentifier.title) Details", message: details, preferredStyle: .alert)
+                        alertController.addAction(.init(title: "Dismiss", style: .cancel))
+                        self.present(alertController, animated: true)
+                    })
+                ]
+            } else {
+                [
+                    .customView(configuration: .init(customView: toggle, placement: .trailing()))
+                ]
+            }
         }
         
         let stepperCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, StepperSetting> { cell, indexPath, itemIdentifier in
@@ -113,9 +130,20 @@ class CytrusSettingsController : UICollectionViewController {
             stepper.maximumValue = itemIdentifier.max
             stepper.value = itemIdentifier.value
             
-            cell.accessories = [
-                .customView(configuration: .init(customView: stepper, placement: .trailing(), reservedLayoutWidth: .actual))
-            ]
+            cell.accessories = if let details = itemIdentifier.details {
+                [
+                    .customView(configuration: .init(customView: stepper, placement: .trailing(), reservedLayoutWidth: .actual)),
+                    .detail(options: .init(tintColor: .systemBlue), actionHandler: {
+                        let alertController = UIAlertController(title: "\(itemIdentifier.title) Details", message: details, preferredStyle: .alert)
+                        alertController.addAction(.init(title: "Dismiss", style: .cancel))
+                        self.present(alertController, animated: true)
+                    })
+                ]
+            } else {
+                [
+                    .customView(configuration: .init(customView: stepper, placement: .trailing(), reservedLayoutWidth: .actual))
+                ]
+            }
         }
         
         let selectionCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, SelectionSetting> { cell, indexPath, itemIdentifier in
@@ -172,10 +200,22 @@ class CytrusSettingsController : UICollectionViewController {
                 }
             }
             
-            cell.accessories = [
-                .label(text: title),
-                .popUpMenu(UIMenu(children: children.sorted(by: { $0.title < $1.title })))
-            ]
+            cell.accessories = if let details = itemIdentifier.details {
+                [
+                    .label(text: title),
+                    .popUpMenu(UIMenu(children: children.sorted(by: { $0.title < $1.title }))),
+                    .detail(options: .init(tintColor: .systemBlue), actionHandler: {
+                        let alertController = UIAlertController(title: "\(itemIdentifier.title) Details", message: details, preferredStyle: .alert)
+                        alertController.addAction(.init(title: "Dismiss", style: .cancel))
+                        self.present(alertController, animated: true)
+                    })
+                ]
+            } else {
+                [
+                    .label(text: title),
+                    .popUpMenu(UIMenu(children: children.sorted(by: { $0.title < $1.title })))
+                ]
+            }
         }
         
         let headerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) { supplementaryView, elementKind, indexPath in
@@ -212,20 +252,24 @@ class CytrusSettingsController : UICollectionViewController {
         snapshot.appendItems([
             StepperSetting(key: "cytrus.cpuClockPercentage",
                            title: "CPU Clock Percentage",
+                           details: "Change the Clock Frequency of the emulated 3DS CPU\n\nUnderclocking can increase the performance of the game at the risk of freezing\n\nOverclocking may fix lag that happens on console, but also comes with the risk of freezing",
                            min: 5,
                            max: 200,
                            value: UserDefaults.standard.double(forKey: "cytrus.cpuClockPercentage"),
                            delegate: self),
             BoolSetting(key: "cytrus.new3DS",
                         title: "New 3DS",
+                        details: "The system model that Mandarine will try to emulate",
                         value: UserDefaults.standard.bool(forKey: "cytrus.new3DS"),
                         delegate: self),
             BoolSetting(key: "cytrus.lleApplets",
                         title: "LLE Applets",
+                        details: "Whether to use LLE system applets, if installed",
                         value: UserDefaults.standard.bool(forKey: "cytrus.lleApplets"),
                         delegate: self),
             SelectionSetting(key: "cytrus.regionValue",
                              title: "Console Region",
+                             details: "The system region that Mandarine will use during emulation",
                              values: [
                                 "Automatic" : -1,
                                 "Japan" : 0,
@@ -243,10 +287,12 @@ class CytrusSettingsController : UICollectionViewController {
         snapshot.appendItems([
             BoolSetting(key: "cytrus.spirvShaderGeneration",
                         title: "SPIRV Shader Generation",
+                        details: "Emits the fragment shader used to emulate PICA using SPIR-V instead of GLSL",
                         value: UserDefaults.standard.bool(forKey: "cytrus.spirvShaderGeneration"),
                         delegate: self),
             BoolSetting(key: "cytrus.useAsyncShaderCompilation",
                         title: "Asynchronous Shader Compilation",
+                        details: "Compiles shaders in the background to reduce stuttering during gameplay. When enabled expect temporary graphical glitches",
                         value: UserDefaults.standard.bool(forKey: "cytrus.useAsyncShaderCompilation"),
                         delegate: self),
             BoolSetting(key: "cytrus.useAsyncPresentation",
@@ -255,32 +301,39 @@ class CytrusSettingsController : UICollectionViewController {
                         delegate: self),
             BoolSetting(key: "cytrus.useHardwareShaders",
                         title: "Hardware Shaders",
+                        details: "Uses hardware to emulate 3DS shaders. When enabled, game performance will be significantly improved",
                         value: UserDefaults.standard.bool(forKey: "cytrus.useHardwareShaders"),
                         delegate: self),
             BoolSetting(key: "cytrus.useDiskShaderCache",
                         title: "Disk Shader Cache",
+                        details: "Reduce stuttering by storing and loading generated shaders to disk. It cannot be used without Enabling Hardware Shader",
                         value: UserDefaults.standard.bool(forKey: "cytrus.useDiskShaderCache"),
                         delegate: self),
             BoolSetting(key: "cytrus.useShadersAccurateMul",
                         title: "Accurate Shader Multiplication",
+                        details: "Uses more accurate multiplication in hardware shaders, which may fix some graphical bugs. When enabled, performance will be reduced",
                         value: UserDefaults.standard.bool(forKey: "cytrus.useShadersAccurateMul"),
                         delegate: self),
             BoolSetting(key: "cytrus.useNewVSync",
                         title: "New Vertical Sync",
+                        details: "Synchronizes the game frame rate to the refresh rate of your device",
                         value: UserDefaults.standard.bool(forKey: "cytrus.useNewVSync"),
                         delegate: self),
             BoolSetting(key: "cytrus.useShaderJIT",
                         title: "Shader JIT",
+                        details: "Whether to use the Just-In-Time (JIT) compiler for shader emulation",
                         value: UserDefaults.standard.bool(forKey: "cytrus.useShaderJIT"),
                         delegate: self),
             StepperSetting(key: "cytrus.resolutionFactor",
                            title: "Resolution Factor",
+                           details: "Factor for the 3DS resolution",
                            min: 0,
                            max: 10,
                            value: UserDefaults.standard.double(forKey: "cytrus.resolutionFactor"),
                            delegate: self),
             SelectionSetting(key: "cytrus.textureFilter",
                              title: "Texture Filter",
+                             details: "Enhances the visuals of games by applying a filter to textures. The supported filters are Anime4K Ultrafast, Bicubic, ScaleForce, and xBRZ freescale",
                              values: [
                                 "None" : 0,
                                 "Anime4K" : 1,
@@ -302,6 +355,7 @@ class CytrusSettingsController : UICollectionViewController {
                              delegate: self),
             SelectionSetting(key: "cytrus.render3D",
                              title: "Render 3D",
+                             details: "Whether and how Stereoscopic 3D should be rendered",
                              values: [
                                 "Off" : 0,
                                 "Side by Side" : 1,
@@ -314,12 +368,14 @@ class CytrusSettingsController : UICollectionViewController {
                              delegate: self),
             StepperSetting(key: "cytrus.factor3D",
                            title: "3D Factor",
+                           details: "Specifies the value of the 3D slider. This should be set to higher than 0% when Stereoscopic 3D is enabled",
                            min: 0,
                            max: 100,
                            value: UserDefaults.standard.double(forKey: "cytrus.factor3D"),
                            delegate: self),
             SelectionSetting(key: "cytrus.monoRender",
                              title: "Mono Render",
+                             details: "Change Default Eye to Render When in Monoscopic Mode",
                              values: [
                                 "Left Eye" : 0,
                                 "Right Eye" : 1
@@ -328,6 +384,7 @@ class CytrusSettingsController : UICollectionViewController {
                              delegate: self),
             BoolSetting(key: "cytrus.preloadTextures",
                         title: "Preload textures",
+                        details: "Loads all custom textures into memory. This feature can use a lot of memory",
                         value: UserDefaults.standard.bool(forKey: "cytrus.preloadTextures"),
                         delegate: self)
         ], toSection: "Renderer")
@@ -347,9 +404,11 @@ class CytrusSettingsController : UICollectionViewController {
                              delegate: self),
             BoolSetting(key: "cytrus.audioStretching",
                         title: "Audio Stretching",
+                        details: "Stretches audio to reduce stuttering. When enabled, increases audio latency and slightly reduces performance",
                         value: UserDefaults.standard.bool(forKey: "cytrus.audioStretching")),
             BoolSetting(key: "cytrus.realtimeAudio",
                         title: "Realtime Audio",
+                        details: "Scales audio playback speed to account for drops in emulation framerate",
                         value: UserDefaults.standard.bool(forKey: "cytrus.realtimeAudio")),
             SelectionSetting(key: "cytrus.outputType",
                              title: "Output Type",
@@ -376,22 +435,27 @@ class CytrusSettingsController : UICollectionViewController {
         snapshot.appendItems([
             BoolSetting(key: "cytrus.hardwareVertexShaders",
                         title: "Force Hardware Vertex Shaders",
+                        details: "Ignores software vertex shaders from PICA core",
                         value: UserDefaults.standard.bool(forKey: "cytrus.hardwareVertexShaders"),
                         delegate: self),
             BoolSetting(key: "cytrus.surfaceTextureCopy",
                         title: "Disable Surface Texture Copy",
+                        details: "Ignores texture copies if src_surface_id is null",
                         value: UserDefaults.standard.bool(forKey: "cytrus.surfaceTextureCopy"),
                         delegate: self),
             BoolSetting(key: "cytrus.flushCPUWrite",
                         title: "Disable Flush CPU Write",
+                        details: "Ignores CPU write if there is a region to invalidate from rasterizer cache",
                         value: UserDefaults.standard.bool(forKey: "cytrus.flushCPUWrite"),
                         delegate: self),
             BoolSetting(key: "cytrus.priorityBoostStarvedThreads",
                         title: "Priority Boost Starved Threads",
+                        details: "Boost low priority starved threads during kernel rescheduling",
                         value: UserDefaults.standard.bool(forKey: "cytrus.priorityBoostStarvedThreads"),
                         delegate: self),
             BoolSetting(key: "cytrus.reduceDowncountSlice",
                         title: "Reduce Downcount Slice",
+                        details: "Downcount will be limited to a smaller time slice",
                         value: UserDefaults.standard.bool(forKey: "cytrus.reduceDowncountSlice"),
                         delegate: self)
         ], toSection: "Tweaks")

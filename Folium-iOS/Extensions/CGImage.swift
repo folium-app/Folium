@@ -31,6 +31,29 @@ extension CGImage {
         return imageRef
     }
     
+    static func cgImage(buffer8: UnsafeMutablePointer<UInt8>, _ width: Int, _ height: Int) -> CGImage? {
+        let colorSpaceRef = CGColorSpaceCreateDeviceRGB()
+        
+        let bitsPerComponent = 8
+        let bytesPerPixel = 4
+        let bitsPerPixel = bytesPerPixel * bitsPerComponent
+        let bytesPerRow = bytesPerPixel * width
+        let totalBytes = height * bytesPerRow
+        
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue).union(.byteOrder32Little)
+        guard let providerRef = CGDataProvider(dataInfo: nil, data: buffer8, size: totalBytes,
+                                               releaseData: { _, _, _  in }) else {
+            return nil
+        }
+        
+        var imageRef: CGImage? = nil
+        imageRef = CGImage(width: width, height: height, bitsPerComponent: bitsPerComponent, bitsPerPixel: bitsPerPixel,
+                           bytesPerRow: bytesPerRow, space: colorSpaceRef, bitmapInfo: bitmapInfo, provider: providerRef,
+                           decode: nil, shouldInterpolate: false, intent: .defaultIntent)
+        
+        return imageRef
+    }
+    
     static func cgImage(rawPointer buffer: UnsafeMutableRawPointer, _ width: Int, _ height: Int) -> CGImage? {
         let colorSpaceRef = CGColorSpaceCreateDeviceRGB()
             

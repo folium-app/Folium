@@ -41,6 +41,9 @@ public struct DirectoryManager {
                 "roms",
                 "sysdata"
             ],
+            "Mango" : [ // SNES
+                "roms"
+            ],
             "Tomato" : [ // GBA
                 "roms"
             ]

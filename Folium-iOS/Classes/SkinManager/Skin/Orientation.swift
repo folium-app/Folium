@@ -8,18 +8,14 @@
 import Foundation
 import UIKit
 
-struct Orientation : Codable, Hashable, Identifiable {
-    var id = UUID()
-    
+struct Orientation : Codable, Hashable {
     // TODO:
     let buttons: [Button]
     let screens: [Screen]
     let thumbsticks: [Thumbstick]
 }
 
-struct Orientations : Codable, Hashable, Identifiable {
-    var id = UUID()
-    
+struct Orientations : Codable, Hashable {
     let portrait: Orientation
     var portraitUpsideDown: Orientation? = nil
     var landscapeLeft: Orientation? = nil, landscapeRight: Orientation? = nil

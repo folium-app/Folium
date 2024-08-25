@@ -155,6 +155,16 @@
 			</array>
 		</dict>
 		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Super Nintendo Entertainment System</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.antique.Folium-iOS.snes</string>
+			</array>
+		</dict>
+		<dict>
 			<key>CFBundleTypeIconFiles</key>
 			<array/>
 			<key>CFBundleTypeName</key>
@@ -551,6 +561,27 @@
 				<array>
 					<string>BIN</string>
 					<string>bin</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.content</string>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Super Nintendo Entertainment System</string>
+			<key>UTTypeIconFiles</key>
+			<array/>
+			<key>UTTypeIdentifier</key>
+			<string>com.antique.Folium-iOS.snes</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>sfc</string>
+					<string>smc</string>
 				</array>
 			</dict>
 		</dict>
