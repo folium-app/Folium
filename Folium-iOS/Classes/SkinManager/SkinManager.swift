@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 enum Machine : String, Codable, CaseIterable, CustomStringConvertible, Hashable {
+    // MARK: iPhone Begin
     case iPhone12mini = "iPhone13,1"
     case iPhone12 = "iPhone13,2"
     case iPhone12Pro = "iPhone13,3"
@@ -28,6 +29,28 @@ enum Machine : String, Codable, CaseIterable, CustomStringConvertible, Hashable 
     case iPhone15Plus = "iPhone15,5"
     case iPhone15Pro = "iPhone16,1"
     case iPhone15ProMax = "iPhone16,2"
+    // MARK: iPhone End
+    
+    // MARK: iPad Begin
+    case iPad_10th = "iPad13,19"
+    case iPadPro_11_inch_4th = "iPad14,4"
+    case iPadPro_12_9_inch_6th = "iPad14,6"
+    case iPadAir_6th = "iPad14,9"
+    case iPadAir_7th = "iPad14,11"
+    case iPadPro_11_inch_5th = "iPad16,4"
+    case iPadPro_12_9_inch_7th = "iPad16,6"
+    // MARK: iPad End
+    
+    enum CodingKeys : String, CodingKey {
+        case iPad_10th = "iPad13,18"
+        case iPadPro_11_inch_4th = "iPad14,3"
+        case iPadPro_12_9_inch_6th = "iPad14,5"
+        case iPadAir_6th = "iPad14,8"
+        case iPadAir_7th = "iPad14,10"
+        case iPadPro_11_inch_5th = "iPad16,3"
+        case iPadPro_12_9_inch_7th = "iPad16,5"
+    }
+    
     
     var description: String {
         switch self {
@@ -63,6 +86,21 @@ enum Machine : String, Codable, CaseIterable, CustomStringConvertible, Hashable 
             "iPhone 15 Pro"
         case .iPhone15ProMax:
             "iPhone 15 Pro Max"
+            
+        case .iPad_10th:
+            "iPad 10th Gen"
+        case .iPadPro_11_inch_4th:
+            "iPad Pro 11 inch 4th Gen"
+        case .iPadPro_12_9_inch_6th:
+            "iPad Pro 12.9 inch 6th Gen"
+        case .iPadAir_6th:
+            "iPad Air 6th Gen"
+        case .iPadAir_7th:
+            "iPad Air 7th Gen"
+        case .iPadPro_11_inch_5th:
+            "iPad Pro 11 inch 5th Gen"
+        case .iPadPro_12_9_inch_7th:
+            "iPad Pro 12.9 inch 7th Gen"
         }
     }
 }
@@ -201,6 +239,47 @@ class SkinManager {
                 .iPhone14, .iPhone14Plus, .iPhone14Pro, .iPhone14ProMax,
                 .iPhone15, .iPhone15Plus, .iPhone15Pro, .iPhone15ProMax
             ]), title: "Default Skin")
+        case .iPad_10th,
+                .iPadPro_11_inch_4th, .iPadPro_12_9_inch_6th,
+                .iPadAir_6th, .iPadAir_7th,
+                .iPadPro_11_inch_5th, .iPadPro_12_9_inch_7th:
+            let portrait: Orientation = .init(buttons: [
+                .init(x: width - (50 + 10 + safeAreaInsets.right), y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .a),
+                .init(x: width - (100 + 10 + safeAreaInsets.right), y: height - (50 + safeAreaInsets.bottom), width: 50, height: 50, type: .b),
+                .init(x: width - (100 + 10 + safeAreaInsets.right), y: height - (150 + safeAreaInsets.bottom), width: 50, height: 50, type: .x),
+                .init(x: width - (150 + 10 + safeAreaInsets.right), y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .y),
+                
+                .init(x: 50 + 10 + safeAreaInsets.left, y: height - (150 + safeAreaInsets.bottom), width: 50, height: 50, type: .dpadUp),
+                .init(x: 50 + 10 + safeAreaInsets.left, y: height - (50 + safeAreaInsets.bottom), width: 50, height: 50, type: .dpadDown),
+                .init(x: 10 + safeAreaInsets.left, y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .dpadLeft),
+                .init(x: 100 + 10 + safeAreaInsets.left, y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .dpadRight),
+                
+                .init(x: width / 2 - 15, y: height - (30 + safeAreaInsets.bottom), width: 30, height: 30, type: .home),
+                .init(x: width / 2 - 65, y: height - (30 + safeAreaInsets.bottom), width: 30, height: 30, type: .minus),
+                .init(x: width / 2 + 35, y: height - (30 + safeAreaInsets.bottom), width: 30, height: 30, type: .plus),
+                
+                .init(x: 10 + safeAreaInsets.left, y: height - (210 + safeAreaInsets.bottom), width: Double(50 * (3 / 2)), height: 50, type: .l),
+                .init(x: 10 + Double(50 * (3 / 2)) + 20 + safeAreaInsets.left, y: height - (210 + safeAreaInsets.bottom), width: Double(50 * (3 / 2)), height: 50, type: .zl),
+                .init(x: width - (10 + Double(50 * (3 / 2)) + safeAreaInsets.right), y: height - (210 + safeAreaInsets.bottom), width: Double(50 * (3 / 2)), height: 50, type: .r),
+                .init(x: width - (10 + (Double(50 * (3 / 2)) * 2) + 20 + safeAreaInsets.right), y: height - (210 + safeAreaInsets.bottom), width: Double(50 * (3 / 2)), height: 50, type: .zr),
+            ], screens: [
+                .init(x: safeAreaInsets.left, y: safeAreaInsets.top, width: width - (safeAreaInsets.left + safeAreaInsets.right), height: height - (safeAreaInsets.top + safeAreaInsets.bottom))
+            ], thumbsticks: [
+                .init(x: 10 + safeAreaInsets.left, y: height - (150 + safeAreaInsets.bottom), width: 150, height: 150, type: .left),
+                .init(x: width - (150 + 10 + safeAreaInsets.right), y: height - (150 + safeAreaInsets.bottom), width: 150, height: 150, type: .right)
+            ])
+            
+            let landscapeLeft = portrait
+            let landscapeRight = landscapeLeft
+            
+            return .init(author: .init(name: "Antique", socials: [
+                .init(type: .twitter, username: "antique_codes")
+            ]), core: .cytrus, orientations: .init(portrait: portrait, landscapeLeft: landscapeLeft, landscapeRight: landscapeRight, supportedDevices: [
+                .iPad_10th,
+                .iPadPro_11_inch_4th, .iPadPro_12_9_inch_6th,
+                .iPadAir_6th, .iPadAir_7th,
+                .iPadPro_11_inch_5th, .iPadPro_12_9_inch_7th
+            ]), title: "Default Skin")
         }
     }
     
@@ -285,6 +364,39 @@ class SkinManager {
                 .iPhone14, .iPhone14Plus, .iPhone14Pro, .iPhone14ProMax,
                 .iPhone15, .iPhone15Plus, .iPhone15Pro, .iPhone15ProMax
             ]), title: "Default Skin")
+        case .iPad_10th,
+                .iPadPro_11_inch_4th, .iPadPro_12_9_inch_6th,
+                .iPadAir_6th, .iPadAir_7th,
+                .iPadPro_11_inch_5th, .iPadPro_12_9_inch_7th:
+            let portrait: Orientation = .init(buttons: [
+                .init(x: width - (50 + 10 + safeAreaInsets.right), y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .a),
+                .init(x: width - (100 + 10 + safeAreaInsets.right), y: height - (50 + safeAreaInsets.bottom), width: 50, height: 50, type: .b),
+                .init(x: width - (100 + 10 + safeAreaInsets.right), y: height - (150 + safeAreaInsets.bottom), width: 50, height: 50, type: .x),
+                .init(x: width - (150 + 10 + safeAreaInsets.right), y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .y),
+                
+                .init(x: 50 + 10 + safeAreaInsets.left, y: height - (150 + safeAreaInsets.bottom), width: 50, height: 50, type: .dpadUp),
+                .init(x: 50 + 10 + safeAreaInsets.left, y: height - (50 + safeAreaInsets.bottom), width: 50, height: 50, type: .dpadDown),
+                .init(x: 10 + safeAreaInsets.left, y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .dpadLeft),
+                .init(x: 100 + 10 + safeAreaInsets.left, y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .dpadRight),
+                
+                .init(x: width / 2 - 65, y: height - (30 + safeAreaInsets.bottom), width: 30, height: 30, type: .minus),
+                .init(x: width / 2 + 35, y: height - (30 + safeAreaInsets.bottom), width: 30, height: 30, type: .plus),
+                
+                .init(x: 10 + safeAreaInsets.left, y: height - (210 + safeAreaInsets.bottom), width: Double(50 * (3 / 2)), height: 50, type: .l),
+                .init(x: width - (10 + Double(50 * (3 / 2)) + safeAreaInsets.right), y: height - (210 + safeAreaInsets.bottom), width: Double(50 * (3 / 2)), height: 50, type: .r),
+            ], screens: [
+                .init(x: 0, y: safeAreaInsets.top, width: width, height: width * (3 / 4)),
+                .init(x: 0, y: safeAreaInsets.top + (width * (3 / 4)), width: width, height: width * (3 / 4))
+            ], thumbsticks: [])
+            
+            return .init(author: .init(name: "Antique", socials: [
+                .init(type: .twitter, username: "antique_codes")
+            ]), core: .grape, orientations: .init(portrait: portrait, supportedDevices: [
+                .iPad_10th,
+                .iPadPro_11_inch_4th, .iPadPro_12_9_inch_6th,
+                .iPadAir_6th, .iPadAir_7th,
+                .iPadPro_11_inch_5th, .iPadPro_12_9_inch_7th
+            ]), title: "Default Skin")
         }
     }
     
@@ -324,8 +436,7 @@ class SkinManager {
                 .init(x: 10 + safeAreaInsets.left, y: height - (190 + safeAreaInsets.bottom), width: lrzlzrButtonHeight, height: 45, type: .l),
                 .init(x: width - (10 + lrzlzrButtonHeight + safeAreaInsets.right), y: height - (190 + safeAreaInsets.bottom), width: lrzlzrButtonHeight, height: 45, type: .r),
             ], screens: [
-                .init(x: 0, y: safeAreaInsets.top, width: width, height: width * (3 / 4)),
-                .init(x: 0, y: safeAreaInsets.top + (width * (3 / 4)), width: width, height: width * (3 / 4))
+                .init(x: 0, y: safeAreaInsets.top, width: width, height: width * (7 / 8))
             ], thumbsticks: [])
             
             let landscapeLeft = portrait
@@ -357,8 +468,7 @@ class SkinManager {
                 .init(x: 10 + safeAreaInsets.left, y: height - (210 + safeAreaInsets.bottom), width: Double(50 * (3 / 2)), height: 50, type: .l),
                 .init(x: width - (10 + Double(50 * (3 / 2)) + safeAreaInsets.right), y: height - (210 + safeAreaInsets.bottom), width: Double(50 * (3 / 2)), height: 50, type: .r),
             ], screens: [
-                .init(x: 0, y: safeAreaInsets.top, width: width, height: width * (3 / 4)),
-                .init(x: 0, y: safeAreaInsets.top + (width * (3 / 4)), width: width, height: width * (3 / 4))
+                .init(x: 0, y: safeAreaInsets.top, width: width, height: width * (7 / 8))
             ], thumbsticks: [])
             
             return .init(author: .init(name: "Antique", socials: [
@@ -369,43 +479,38 @@ class SkinManager {
                 .iPhone14, .iPhone14Plus, .iPhone14Pro, .iPhone14ProMax,
                 .iPhone15, .iPhone15Plus, .iPhone15Pro, .iPhone15ProMax
             ]), title: "Default Skin")
+        case .iPad_10th,
+                .iPadPro_11_inch_4th, .iPadPro_12_9_inch_6th,
+                .iPadAir_6th, .iPadAir_7th,
+                .iPadPro_11_inch_5th, .iPadPro_12_9_inch_7th:
+            let portrait: Orientation = .init(buttons: [
+                .init(x: width - (50 + 10 + safeAreaInsets.right), y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .a),
+                .init(x: width - (100 + 10 + safeAreaInsets.right), y: height - (50 + safeAreaInsets.bottom), width: 50, height: 50, type: .b),
+                .init(x: width - (100 + 10 + safeAreaInsets.right), y: height - (150 + safeAreaInsets.bottom), width: 50, height: 50, type: .x),
+                .init(x: width - (150 + 10 + safeAreaInsets.right), y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .y),
+                
+                .init(x: 50 + 10 + safeAreaInsets.left, y: height - (150 + safeAreaInsets.bottom), width: 50, height: 50, type: .dpadUp),
+                .init(x: 50 + 10 + safeAreaInsets.left, y: height - (50 + safeAreaInsets.bottom), width: 50, height: 50, type: .dpadDown),
+                .init(x: 10 + safeAreaInsets.left, y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .dpadLeft),
+                .init(x: 100 + 10 + safeAreaInsets.left, y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .dpadRight),
+                
+                .init(x: width / 2 - 65, y: height - (30 + safeAreaInsets.bottom), width: 30, height: 30, type: .minus),
+                .init(x: width / 2 + 35, y: height - (30 + safeAreaInsets.bottom), width: 30, height: 30, type: .plus),
+                
+                .init(x: 10 + safeAreaInsets.left, y: height - (210 + safeAreaInsets.bottom), width: Double(50 * (3 / 2)), height: 50, type: .l),
+                .init(x: width - (10 + Double(50 * (3 / 2)) + safeAreaInsets.right), y: height - (210 + safeAreaInsets.bottom), width: Double(50 * (3 / 2)), height: 50, type: .r),
+            ], screens: [
+                .init(x: 0, y: safeAreaInsets.top, width: width, height: width * (7 / 8))
+            ], thumbsticks: [])
+            
+            return .init(author: .init(name: "Antique", socials: [
+                .init(type: .twitter, username: "antique_codes")
+            ]), core: .mango, orientations: .init(portrait: portrait, supportedDevices: [
+                .iPad_10th,
+                .iPadPro_11_inch_4th, .iPadPro_12_9_inch_6th,
+                .iPadAir_6th, .iPadAir_7th,
+                .iPadPro_11_inch_5th, .iPadPro_12_9_inch_7th
+            ]), title: "Default Skin")
         }
     }
-    
-    /*
-    var skins: [Skin] = []
-    
-    func skins(for core: Core, root: URL) throws {
-        enum SkinError : Error {
-            case enumeratorFailed
-        }
-        
-        let documentsDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        let coreDirectory = documentsDirectory.appendingPathComponent(core.rawValue, conformingTo: .folder)
-        
-        guard let enumerator = FileManager.default.enumerator(at: coreDirectory
-            .appendingPathComponent("skins", conformingTo: .folder), includingPropertiesForKeys: [.isRegularFileKey]) else {
-            throw SkinError.enumeratorFailed
-        }
-        
-        try enumerator.forEach { element in
-            switch element {
-            case let url as URL:
-                let attributes = try url.resourceValues(forKeys: [.isRegularFileKey])
-                if let isRegularFile = attributes.isRegularFile, isRegularFile {
-                    let pathExtension = url.pathExtension.lowercased()
-                    if pathExtension == "json" {
-                        let data = try Data(contentsOf: url)
-                        var skin = try JSONDecoder().decode(Skin.self, from: data)
-                        skin.path = url.deletingLastPathComponent()
-                        
-                        skins.append(skin)
-                    }
-                }
-            default:
-                break
-            }
-        }
-    }
-     */
 }

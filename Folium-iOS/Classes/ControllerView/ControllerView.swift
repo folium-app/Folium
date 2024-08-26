@@ -67,22 +67,22 @@ class ControllerView : PassthroughView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesMoved(touches, with: event)
-        touches.forEach { touch in
-            guard let currentlyTouchedSubviews = subviews.filter({ $0.isKind(of: ControllerButton.classForCoder() )}) as? [ControllerButton] else {
-                return
-            }
-            
-            currentlyTouchedSubviews.forEach { button in
-                if button.frame.contains(touch.location(in: self)) {
-                    button.touchDown()
-                } else {
-                    button.touchUpInside()
-                }
-            }
-        }
-    }
+    //override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    //    super.touchesMoved(touches, with: event)
+    //    touches.forEach { touch in
+    //        guard let currentlyTouchedSubviews = subviews.filter({ $0.isKind(of: ControllerButton.classForCoder() )}) as? [ControllerButton] else {
+    //            return
+    //        }
+    //
+    //        currentlyTouchedSubviews.forEach { button in
+    //            if button.frame.contains(touch.location(in: self)) {
+    //                button.touchDown()
+    //            } else {
+    //                button.touchUpInside()
+    //            }
+    //        }
+    //    }
+    //}
     
     func updateFrames(for orientation: Orientation) {
         subviews.filter {

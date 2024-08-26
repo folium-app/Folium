@@ -2366,29 +2366,6 @@
 			path = debug_utils;
 			sourceTree = "<group>";
 		};
-		E6AC4CE72C69E37D00FF5FA7 /* format_reinterpreter */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = format_reinterpreter;
-			sourceTree = "<group>";
-		};
-		E6AC4CE82C69E37D00FF5FA7 /* texture_filtering */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = texture_filtering;
-			sourceTree = "<group>";
-		};
-		E6AC4CE92C69E37D00FF5FA7 /* host_shaders */ = {
-			isa = PBXGroup;
-			children = (
-				E6AC4CE72C69E37D00FF5FA7 /* format_reinterpreter */,
-				E6AC4CE82C69E37D00FF5FA7 /* texture_filtering */,
-			);
-			path = host_shaders;
-			sourceTree = "<group>";
-		};
 		E6AC4CF22C69E37D00FF5FA7 /* pica */ = {
 			isa = PBXGroup;
 			children = (
@@ -2493,7 +2470,6 @@
 			children = (
 				E6AC4CE42C69E37D00FF5FA7 /* custom_textures */,
 				E6AC4CE62C69E37D00FF5FA7 /* debug_utils */,
-				E6AC4CE92C69E37D00FF5FA7 /* host_shaders */,
 				E6AC4CF22C69E37D00FF5FA7 /* pica */,
 				E6AC4CF82C69E37D00FF5FA7 /* rasterizer_cache */,
 				E6AC4CFA2C69E37D00FF5FA7 /* renderer_software */,
@@ -3214,7 +3190,7 @@
 				SWIFT_OBJC_INTEROP_MODE = objc;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 16.6;
+				TVOS_DEPLOYMENT_TARGET = 16.0;
 			};
 			name = Debug;
 		};
@@ -3247,7 +3223,7 @@
 				SWIFT_OBJC_INTEROP_MODE = objc;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 16.6;
+				TVOS_DEPLOYMENT_TARGET = 16.0;
 			};
 			name = Release;
 		};
@@ -3277,7 +3253,7 @@
 					Cores/Cytrus/Dependencies/microprofile,
 					Cores/Cytrus/Dependencies/nlohmann,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3295,7 +3271,7 @@
 					"\"$(HOME)/VulkanSDK/1.3.290.0/macOS/include/vma\"",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 16.6;
+				TVOS_DEPLOYMENT_TARGET = 16.0;
 				USER_HEADER_SEARCH_PATHS = Cores/Cytrus/Core/include;
 			};
 			name = Debug;
@@ -3325,7 +3301,7 @@
 					Cores/Cytrus/Dependencies/microprofile,
 					Cores/Cytrus/Dependencies/nlohmann,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3343,7 +3319,7 @@
 					"\"$(HOME)/VulkanSDK/1.3.290.0/macOS/include/vma\"",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 16.6;
+				TVOS_DEPLOYMENT_TARGET = 16.0;
 				USER_HEADER_SEARCH_PATHS = Cores/Cytrus/Core/include;
 			};
 			name = Release;
@@ -3482,7 +3458,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3497,7 +3473,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3529,7 +3505,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3544,7 +3520,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

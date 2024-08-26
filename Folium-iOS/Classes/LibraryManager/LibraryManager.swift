@@ -74,18 +74,20 @@ enum Core : String, Codable, CustomStringConvertible, Hashable, @unchecked Senda
     var colors: [Button.`Type` : (UIColor, UIColor)] {
         switch self {
         case .cytrus:
-            [
+            let isNew3DS = UserDefaults.standard.bool(forKey: "cytrus.new3DS")
+            
+            return [
                 .dpadUp : (.black, .white),
                 .dpadDown : (.black, .white),
                 .dpadLeft : (.black, .white),
                 .dpadRight : (.black, .white),
-                .a : (.systemRed, .white),
-                .b : (.systemYellow, .white),
-                .x : (.systemBlue, .white),
-                .y : (.systemGreen, .white)
+                .a : isNew3DS ? (.white, .systemRed) : (.black, .white),
+                .b : isNew3DS ? (.white, .systemYellow) : (.black, .white),
+                .x : isNew3DS ? (.white, .systemBlue) : (.black, .white),
+                .y : isNew3DS ? (.white, .systemGreen) : (.black, .white)
             ]
         case .mango:
-            [
+            return [
                 .dpadUp : (.black, .white),
                 .dpadDown : (.black, .white),
                 .dpadLeft : (.black, .white),
@@ -96,7 +98,7 @@ enum Core : String, Codable, CustomStringConvertible, Hashable, @unchecked Senda
                 .y : (.white, .systemGreen)
             ]
         default:
-            [
+            return [
                 :
             ]
         }
@@ -143,7 +145,7 @@ struct LibraryManager : @unchecked Sendable {
     static let shared = LibraryManager()
     
     var cores: [Core] {
-        [.cytrus, .mango/*, .grape, .guava, .kiwi, .lychee, .tomato*/] // 3DS, SNES, NDS, N64, GB/GBC, PS1, GBA
+        [.cytrus, .grape, .mango/* .guava, .kiwi, .lychee, .tomato*/] // 3DS, NDS, SNES, N64, GB/GBC, PS1, GBA
     }
     
     func games() throws -> Result<[GameBase], Error> {

@@ -52,25 +52,21 @@ class SuperNESEmulationController : UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         
-        imageView = .init(frame: .zero)
-        guard let imageView else {
-            return
-        }
-        
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView)
-        
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        imageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        imageView.heightAnchor.constraint(equalTo: imageView.safeAreaLayoutGuide.widthAnchor, multiplier: 7 / 8).isActive = true
-        
         guard let orientation = skin.orientation(for: interfaceOrientation()) else {
             return
         }
         
+        imageView = if !orientation.screens.isEmpty, let screen = orientation.screens.first {
+            .init(frame: .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height))
+        } else {
+            .init(frame: view.bounds)
+        }
+        guard let imageView else {
+            return
+        }
+        
         controllerView = .init(orientation: orientation, skin: skin, delegates: (self, self))
-        guard let controllerView else {
+        guard let controllerView, let screensView = controllerView.screensView else {
             return
         }
         
@@ -81,6 +77,8 @@ class SuperNESEmulationController : UIViewController {
         controllerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         controllerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         controllerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        
+        screensView.addSubview(imageView)
         
         SDL_SetMainReady()
         SDL_InitSubSystem(SDL_INIT_AUDIO)
@@ -106,7 +104,7 @@ class SuperNESEmulationController : UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate { _ in } completion: { _ in
-            guard let controllerView = self.controllerView, let skin = SkinManager.shared.mangoSkin else {
+            guard let imageView = self.imageView, let controllerView = self.controllerView, let skin = SkinManager.shared.mangoSkin else {
                 return
             }
             
@@ -117,6 +115,12 @@ class SuperNESEmulationController : UIViewController {
             }
             
             controllerView.updateFrames(for: orientation)
+            
+            imageView.frame = if !orientation.screens.isEmpty, let screen = orientation.screens.first {
+                .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height)
+            } else {
+                self.view.bounds
+            }
         }
     }
     
