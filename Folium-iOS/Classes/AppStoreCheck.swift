@@ -47,7 +47,7 @@ struct AppStoreCheck {
 #endif
     }
     
-    fileprivate var debugging: Bool {
+    var debugging: Bool {
         var info = kinfo_proc()
         var size = MemoryLayout.stride(ofValue: info)
         var mib : [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid()]

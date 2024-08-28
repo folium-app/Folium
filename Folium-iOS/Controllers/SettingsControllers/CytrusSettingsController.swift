@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 9/8/2024.
 //
 
+import Cytrus
 import Foundation
 import UIKit
 
@@ -249,7 +250,7 @@ class CytrusSettingsController : UICollectionViewController {
             "Tweaks"
         ])
         
-        snapshot.appendItems([
+        var coreItems = [
             StepperSetting(key: "cytrus.cpuClockPercentage",
                            title: "CPU Clock Percentage",
                            details: "Change the Clock Frequency of the emulated 3DS CPU\n\nUnderclocking can increase the performance of the game at the risk of freezing\n\nOverclocking may fix lag that happens on console, but also comes with the risk of freezing",
@@ -282,7 +283,17 @@ class CytrusSettingsController : UICollectionViewController {
                              ],
                              selectedValue: UserDefaults.standard.value(forKey: "cytrus.regionValue"),
                              delegate: self)
-        ], toSection: "Core")
+        ]
+        
+        if AppStoreCheck.shared.debugging {
+            coreItems.insert(BoolSetting(key: "cytrus.cpuJIT",
+                                         title: "CPU JIT",
+                                         value: UserDefaults.standard.bool(forKey: "cytrus.cpuJIT"),
+                                         delegate: self),
+                             at: 0)
+        }
+        
+        snapshot.appendItems(coreItems, toSection: "Core")
         
         snapshot.appendItems([
             BoolSetting(key: "cytrus.spirvShaderGeneration",
@@ -472,6 +483,8 @@ class CytrusSettingsController : UICollectionViewController {
 
 extension CytrusSettingsController : SettingDelegate {
     func didChangeSetting(at indexPath: IndexPath) {
+        Cytrus.shared.updateSettings()
+        
         guard let sectionIdentifier = dataSource.sectionIdentifier(for: indexPath.section) else {
             return
         }

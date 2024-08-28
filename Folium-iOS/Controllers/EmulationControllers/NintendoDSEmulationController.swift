@@ -38,8 +38,16 @@ class AudioStreamer : NSObject {
         }
 
         do {
-            // try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: .defaultToSpeaker)
-            // try AVAudioSession.sharedInstance().setActive(true)
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord)
+            if #available(iOS 17, *) {
+                AVAudioApplication.requestRecordPermission { success in
+                    print(#function, "requestRecordPermission:", success)
+                }
+            } else {
+                AVAudioSession.sharedInstance().requestRecordPermission { success in
+                    print(#function, "requestRecordPermission:", success)
+                }
+            }
             
             try audioEngine.start()
         } catch {
@@ -76,6 +84,14 @@ class NintendoDSEmulationController : UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        .portrait
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        skin.orientations.supportedInterfaceOrientations
     }
     
     override func viewDidLoad() {
@@ -149,9 +165,17 @@ class NintendoDSEmulationController : UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate { _ in } completion: { _ in
-            guard let orientation = self.skin.orientation(for: self.interfaceOrientation()) else {
+            let skin = if let url = self.skin.url {
+                try? SkinManager.shared.skin(from: url)
+            } else {
+                SkinManager.shared.grapeSkin
+            }
+            
+            guard let skin, let orientation = skin.orientation(for: self.interfaceOrientation()) else {
                 return
             }
+            
+            self.skin = skin
             
             orientation.screens.enumerated().forEach { index, screen in
                 switch index {
@@ -253,7 +277,7 @@ extension NintendoDSEmulationController {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
-        guard let touch = touches.first, let view = touch.view else {
+        guard let touch = touches.first else {
             return
         }
         
@@ -344,7 +368,7 @@ extension NintendoDSEmulationController : ControllerThumbstickDelegate {
 
 extension NintendoDSEmulationController : AudioStreamerDelegate {
     func processMicrophoneBuffer(with buffer: AVAudioPCMBuffer) {
-        let frameLength = buffer.frameLength
+        let _ = buffer.frameLength
         let channelData = buffer.int16ChannelData
 
         guard let channelData else {

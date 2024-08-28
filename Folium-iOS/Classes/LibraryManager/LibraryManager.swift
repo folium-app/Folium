@@ -164,6 +164,7 @@ struct LibraryManager : @unchecked Sendable {
             try skinManager.getSkins()
             
             try Cytrus.shared.installed().forEach { url in
+                print("system = ", url.path)
                 let nameWithoutExtension = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
                 
                 games.append(Nintendo3DSGame(icon: try Nintendo3DSGame.iconFromHeader(for: url),
@@ -177,6 +178,7 @@ struct LibraryManager : @unchecked Sendable {
             }
             
             try Cytrus.shared.system().forEach { url in
+                print("system = ", url.path)
                 let nameWithoutExtension = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
                 
                 games.append(Nintendo3DSGame(icon: try Nintendo3DSGame.iconFromHeader(for: url),
@@ -214,7 +216,7 @@ struct LibraryManager : @unchecked Sendable {
                                                                                 name: url.lastPathComponent,
                                                                                 nameWithoutExtension: nameWithoutExtension,
                                                                                 url: url),
-                                                             skins: [],
+                                                             skins: skinManager.skins(for: .tomato),
                                                              title: try GameBoyAdvanceGame.titleFromHeader(for: url)))
                             case "3ds", "app", "cci", "cia", "cxi":
                                 $0.append(Nintendo3DSGame(icon: try Nintendo3DSGame.iconFromHeader(for: url), core: "Cytrus",

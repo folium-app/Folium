@@ -33,14 +33,14 @@ class ControllerTestEmulationController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .black
         
         guard let orientation = skin.orientation(for: interfaceOrientation()) else {
             return
         }
         
         controllerView = .init(orientation: orientation, skin: skin, delegates: (self, self))
-        guard let controllerView else {
+        guard let controllerView, let screensView = controllerView.screensView else {
             return
         }
         
@@ -56,7 +56,7 @@ class ControllerTestEmulationController : UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate { _ in } completion: { _ in
-            guard let controllerView = self.controllerView, let skin = SkinManager.shared.cytrusSkin else {
+            guard let controllerView = self.controllerView, let skin = SkinManager.shared.mangoSkin else {
                 return
             }
             

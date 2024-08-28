@@ -40,10 +40,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window.tintColor = .systemGreen
         
-        do {
-            try cleanupForLatestRelease(with: window)
-        } catch {
-            print(#function, error)
+        let isTestingController = false
+        if isTestingController {
+            guard let skin = SkinManager.shared.mangoSkin else {
+                return
+            }
+            
+            window.rootViewController = ControllerTestEmulationController(skin: skin)
+            window.makeKeyAndVisible()
+        } else {
+            do {
+                try cleanupForLatestRelease(with: window)
+            } catch {
+                print(#function, error)
+            }
         }
         
         configureDefaultUserDefaults()

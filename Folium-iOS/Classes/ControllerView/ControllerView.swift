@@ -25,8 +25,10 @@ class PassthroughView : UIView {
     }
 }
 
+class ScreensView : UIView {}
+
 class ControllerView : PassthroughView {
-    var screensView: UIView? = nil
+    var screensView: ScreensView? = nil
     
     var orientation: Orientation
     var skin: Skin

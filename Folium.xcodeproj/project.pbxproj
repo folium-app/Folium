@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E60707982C7DC792009DCA23 /* Machine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60707972C7DC792009DCA23 /* Machine.swift */; };
+		E60707A22C7DE401009DCA23 /* CameraInterface.mm in Sources */ = {isa = PBXBuildFile; fileRef = E60707A12C7DE401009DCA23 /* CameraInterface.mm */; };
+		E60707A62C7DE413009DCA23 /* CameraFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = E60707A52C7DE413009DCA23 /* CameraFactory.mm */; };
 		E60F60D32C412517006902E2 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E60F60D22C412517006902E2 /* libzstd */; };
 		E60F60DE2C413092006902E2 /* CytrusObjC.mm in Sources */ = {isa = PBXBuildFile; fileRef = E60F60DD2C413092006902E2 /* CytrusObjC.mm */; };
 		E6101AB12C63FC0F00AEF0B5 /* Grape in Frameworks */ = {isa = PBXBuildFile; productRef = E6101AB02C63FC0F00AEF0B5 /* Grape */; };
@@ -563,6 +566,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E60707972C7DC792009DCA23 /* Machine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Machine.swift; sourceTree = "<group>"; };
+		E60707A02C7DE401009DCA23 /* CameraInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraInterface.h; sourceTree = "<group>"; };
+		E60707A12C7DE401009DCA23 /* CameraInterface.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraInterface.mm; sourceTree = "<group>"; };
+		E60707A42C7DE413009DCA23 /* CameraFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraFactory.h; sourceTree = "<group>"; };
+		E60707A52C7DE413009DCA23 /* CameraFactory.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraFactory.mm; sourceTree = "<group>"; };
 		E60F60DC2C413092006902E2 /* CytrusObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CytrusObjC.h; sourceTree = "<group>"; };
 		E60F60DD2C413092006902E2 /* CytrusObjC.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CytrusObjC.mm; sourceTree = "<group>"; };
 		E60F60DF2C413167006902E2 /* Cytrus-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cytrus-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1134,6 +1142,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E60707A32C7DE404009DCA23 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				E60707A02C7DE401009DCA23 /* CameraInterface.h */,
+				E60707A12C7DE401009DCA23 /* CameraInterface.mm */,
+				E60707A42C7DE413009DCA23 /* CameraFactory.h */,
+				E60707A52C7DE413009DCA23 /* CameraFactory.mm */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
 		E60F5EE82C4123DA006902E2 /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -1151,6 +1170,7 @@
 		E60F60DA2C412F86006902E2 /* CytrusObjC */ = {
 			isa = PBXGroup;
 			children = (
+				E60707A32C7DE404009DCA23 /* Camera */,
 				E68B97552C520278003D3BEE /* Configuration */,
 				E68B97482C51FDD3003D3BEE /* EmulationWindow */,
 				E68B975A2C520327003D3BEE /* InputManager */,
@@ -1286,6 +1306,7 @@
 			isa = PBXGroup;
 			children = (
 				E659A1E32C522AB60040D803 /* Skin */,
+				E60707972C7DC792009DCA23 /* Machine.swift */,
 				E659A1DA2C522AA60040D803 /* SkinManager.swift */,
 			);
 			path = SkinManager;
@@ -2835,6 +2856,7 @@
 				E6AC4D9A2C69E37D00FF5FA7 /* nwm_inf.cpp in Sources */,
 				E6AC4D9B2C69E37D00FF5FA7 /* zstd_compression.cpp in Sources */,
 				E6AC4D9C2C69E37D00FF5FA7 /* y2r.cpp in Sources */,
+				E60707A62C7DE413009DCA23 /* CameraFactory.mm in Sources */,
 				E6AC4D9D2C69E37D00FF5FA7 /* input_details.cpp in Sources */,
 				E6AC4D9E2C69E37D00FF5FA7 /* packet.cpp in Sources */,
 				E6AC4D9F2C69E37D00FF5FA7 /* frd.cpp in Sources */,
@@ -3042,6 +3064,7 @@
 				E6AC4E6A2C69E37D00FF5FA7 /* arithmetic128.cpp in Sources */,
 				E6AC4E6B2C69E37D00FF5FA7 /* hle_ipc.cpp in Sources */,
 				E6AC4E6C2C69E37D00FF5FA7 /* dlp_clnt.cpp in Sources */,
+				E60707A22C7DE401009DCA23 /* CameraInterface.mm in Sources */,
 				E6AC4E6D2C69E37D00FF5FA7 /* web_backend.cpp in Sources */,
 				E6AC4E6E2C69E37D00FF5FA7 /* am_u.cpp in Sources */,
 				E6AC4E6F2C69E37D00FF5FA7 /* secure_value_backend_artic.cpp in Sources */,
@@ -3118,6 +3141,7 @@
 				E667C0752C47C73E00DB0327 /* Nintendo3DSCell.swift in Sources */,
 				E667C0722C47C6C000DB0327 /* LibraryManager.swift in Sources */,
 				E659A1D72C522A960040D803 /* ControllerView.swift in Sources */,
+				E60707982C7DC792009DCA23 /* Machine.swift in Sources */,
 				E659A1D82C522A960040D803 /* ControllerThumbstick.swift in Sources */,
 				E66BBFB92C578E29007B0F0A /* PlayStation1Game.swift in Sources */,
 				E61A85572C79D25200AFC053 /* SuperNESCell.swift in Sources */,
@@ -3458,7 +3482,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3468,6 +3492,7 @@
 				INFOPLIST_KEY_GCSupportsControllerUserInteraction = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Folium uses your devices camera for certain functionality within its cores";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Folium uses your devices microphone for certain functionality within its cores";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -3505,7 +3530,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3515,6 +3540,7 @@
 				INFOPLIST_KEY_GCSupportsControllerUserInteraction = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Folium uses your devices camera for certain functionality within its cores";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Folium uses your devices microphone for certain functionality within its cores";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;

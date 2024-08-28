@@ -128,6 +128,14 @@ extension LibraryController {
         }
         
         switch item {
+        case let nintendoDSGame as NintendoDSGame:
+            guard let skin = SkinManager.shared.grapeSkin else {
+                return
+            }
+            
+            let nintendoDSEmulationController = NintendoDSEmulationController(game: nintendoDSGame, skin: skin)
+            nintendoDSEmulationController.modalPresentationStyle = .fullScreen
+            present(nintendoDSEmulationController, animated: true)
         case let nintendo3DSGame as Nintendo3DSGame:
             guard let skin = SkinManager.shared.cytrusSkin else {
                 return
@@ -176,36 +184,36 @@ extension LibraryController: UIDocumentPickerDelegate {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             
             try urls.forEach { url in
-                let romsDirectoryURL: URL =
-                switch url.pathExtension.lowercased() {
-                case "gb", "gbc":
-                    documentDirectory.appendingPathComponent("Kiwi", conformingTo: .folder)
-                        .appendingPathComponent("roms", conformingTo: .folder)
-                case "gba":
-                    documentDirectory.appendingPathComponent("Tomato", conformingTo: .folder)
-                        .appendingPathComponent("roms", conformingTo: .folder)
-                case "ds", "dsi", "nds":
-                    documentDirectory.appendingPathComponent("Grape", conformingTo: .folder)
-                        .appendingPathComponent("roms", conformingTo: .folder)
-                case "3ds", "app", "cci", "cxi":
-                    documentDirectory.appendingPathComponent("Cytrus", conformingTo: .folder)
-                        .appendingPathComponent("roms", conformingTo: .folder)
-                case "n64", "z64":
-                    documentDirectory.appendingPathComponent("Guava", conformingTo: .folder)
-                        .appendingPathComponent("roms", conformingTo: .folder)
-                case "cue":
-                    documentDirectory.appendingPathComponent("Lychee", conformingTo: .folder)
-                        .appendingPathComponent("roms", conformingTo: .folder)
-                case "sfc", "smc":
-                    documentDirectory.appendingPathComponent("Mango", conformingTo: .folder)
-                        .appendingPathComponent("roms", conformingTo: .folder)
-                default:
-                    documentDirectory
-                }
-                
                 if url.pathExtension.lowercased() == "cia" {
                     _ = Cytrus.shared.importGame(at: url)
                 } else {
+                    let romsDirectoryURL: URL =
+                    switch url.pathExtension.lowercased() {
+                    case "gb", "gbc":
+                        documentDirectory.appendingPathComponent("Kiwi", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    case "gba":
+                        documentDirectory.appendingPathComponent("Tomato", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    case "ds", "dsi", "nds":
+                        documentDirectory.appendingPathComponent("Grape", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    case "3ds", "app", "cci", "cxi":
+                        documentDirectory.appendingPathComponent("Cytrus", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    case "n64", "z64":
+                        documentDirectory.appendingPathComponent("Guava", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    case "cue":
+                        documentDirectory.appendingPathComponent("Lychee", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    case "sfc", "smc":
+                        documentDirectory.appendingPathComponent("Mango", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    default:
+                        documentDirectory
+                    }
+                    
                     try FileManager.default.moveItem(at: url, to: romsDirectoryURL.appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL))
                 }
             }

@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 25/7/2024.
 //
 
+import AVFoundation
 import Cytrus
 import Foundation
 import MetalKit
@@ -38,6 +39,10 @@ class Nintendo3DSEmulationController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        
+        AVCaptureDevice.requestAccess(for: .video) { success in
+            print(#function, "requestAccess", success)
+        }
         
         guard let orientation = skin.orientation(for: interfaceOrientation()) else {
             return
@@ -79,7 +84,7 @@ class Nintendo3DSEmulationController : UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.showsMenuAsPrimaryAction = true
         button.menu = .init(children: [
-            UIAction(title: "Open Settings", image: .init(systemName: "gearshape"), attributes: [.disabled], handler: { _ in
+            UIAction(title: "Open Settings", image: .init(systemName: "gearshape"), handler: { _ in
                 var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
                 configuration.headerMode = .supplementary
                 let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
@@ -119,6 +124,7 @@ class Nintendo3DSEmulationController : UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
         if Cytrus.shared.stopped() {
             Cytrus.shared.deallocateVulkanLibrary()
             Cytrus.shared.deallocateMetalLayers()
@@ -136,13 +142,19 @@ class Nintendo3DSEmulationController : UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate { _ in } completion: { _ in
-            guard let metalView = self.metalView, let controllerView = self.controllerView, let skin = SkinManager.shared.cytrusSkin else {
+            let skin = if let url = self.skin.url {
+                try? SkinManager.shared.skin(from: url)
+            } else {
+                SkinManager.shared.cytrusSkin
+            }
+            
+            guard let skin, let metalView = self.metalView, let controllerView = self.controllerView else {
                 return
             }
             
             self.skin = skin
             
-            guard let orientation = self.skin.orientation(for: self.interfaceOrientation()) else {
+            guard let orientation = skin.orientation(for: self.interfaceOrientation()) else {
                 return
             }
             

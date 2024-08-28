@@ -48,6 +48,14 @@ class SuperNESEmulationController : UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        .portrait
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        skin.orientations.supportedInterfaceOrientations
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -104,13 +112,19 @@ class SuperNESEmulationController : UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate { _ in } completion: { _ in
-            guard let imageView = self.imageView, let controllerView = self.controllerView, let skin = SkinManager.shared.mangoSkin else {
+            let skin = if let url = self.skin.url {
+                try? SkinManager.shared.skin(from: url)
+            } else {
+                SkinManager.shared.mangoSkin
+            }
+            
+            guard let skin, let imageView = self.imageView, let controllerView = self.controllerView else {
                 return
             }
             
             self.skin = skin
             
-            guard let orientation = self.skin.orientation(for: self.interfaceOrientation()) else {
+            guard let orientation = skin.orientation(for: self.interfaceOrientation()) else {
                 return
             }
             
