@@ -12,7 +12,7 @@ import Foundation
 import LayoutManager
 import UIKit
 
-extension AuthDataResult : @unchecked @retroactive Sendable {}
+extension AuthDataResult : @unchecked Sendable {}
 
 class AuthenticationController : UIViewController {
     fileprivate var currentNonce: String? = nil
@@ -51,7 +51,7 @@ class AuthenticationController : UIViewController {
 }
 
 // MARK: Delegates
-extension AuthenticationController : ASAuthorizationControllerPresentationContextProviding, @preconcurrency ASAuthorizationControllerDelegate {
+extension AuthenticationController : ASAuthorizationControllerPresentationContextProviding, ASAuthorizationControllerDelegate {
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         if let window = view.window {
             return window

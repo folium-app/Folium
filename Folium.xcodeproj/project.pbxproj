@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -2657,6 +2657,7 @@
 				};
 			};
 			buildConfigurationList = E690A6A32C33B09E00652203 /* Build configuration list for PBXProject "Folium" */;
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -2670,7 +2671,6 @@
 				E667C0762C47C7E900DB0327 /* XCRemoteSwiftPackageReference "OpenSSL" */,
 				E626CA322C58A65A00CA2B9F /* XCRemoteSwiftPackageReference "SwiftSDL2" */,
 			);
-			preferredProjectObjectVersion = 77;
 			productRefGroup = E690A6A92C33B09E00652203 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";

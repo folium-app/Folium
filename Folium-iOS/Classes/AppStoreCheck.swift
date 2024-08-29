@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import TargetConditionals
 
 struct AppStoreCheck {
     enum Environment : Int {

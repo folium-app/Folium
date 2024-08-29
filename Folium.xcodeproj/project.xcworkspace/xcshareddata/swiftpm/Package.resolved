@@ -24,7 +24,7 @@
       "location" : "https://github.com/firebase/firebase-ios-sdk",
       "state" : {
         "branch" : "main",
-        "revision" : "7469d83e626a24c60baeabf808d1667dcbb71d3b"
+        "revision" : "2f6ac4c2c61cd57c7ea727009e187b7e1163d613"
       }
     },
     {
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleAppMeasurement.git",
       "state" : {
-        "revision" : "ca30c987b732d130732fb60b071e0b655a85ada7",
-        "version" : "11.0.0"
+        "revision" : "07a2f57d147d2bf368a0d2dcb5579ff082d9e44f",
+        "version" : "11.1.0"
       }
     },
     {
@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleUtilities.git",
       "state" : {
-        "revision" : "66dd81c729364b0425d0c2b73e38a489f32b1717",
-        "version" : "8.0.1"
+        "revision" : "53156c7ec267db846e6b64c9f4c4e31ba4cf75eb",
+        "version" : "8.0.2"
       }
     },
     {
@@ -122,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",
       "state" : {
-        "revision" : "e17d61f26df0f0e06f58f6977ba05a097a720106",
-        "version" : "1.27.1"
+        "revision" : "564597ad2fe2513a94dd8f3ba27ea2ff4be3cb37",
+        "version" : "1.28.0"
       }
     },
     {
@@ -141,7 +141,7 @@
       "location" : "https://github.com/facebook/zstd",
       "state" : {
         "branch" : "dev",
-        "revision" : "6b16169ccf018fc310dd52353c66ba2759b7cffa"
+        "revision" : "20707e3718ee14250fb8a44b3bf023ea36bd88df"
       }
     }
   ],
