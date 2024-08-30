@@ -129,7 +129,7 @@ extension LibraryController {
         
         switch item {
         case let nintendoDSGame as NintendoDSGame:
-            guard let skin = SkinManager.shared.grapeSkin else {
+            guard let skin = grapeSkin else {
                 return
             }
             
@@ -137,7 +137,7 @@ extension LibraryController {
             nintendoDSEmulationController.modalPresentationStyle = .fullScreen
             present(nintendoDSEmulationController, animated: true)
         case let nintendo3DSGame as Nintendo3DSGame:
-            guard let skin = SkinManager.shared.cytrusSkin else {
+            guard let skin = cytrusSkin else {
                 return
             }
             
@@ -145,7 +145,7 @@ extension LibraryController {
             nintendo3DSEmulationController.modalPresentationStyle = .fullScreen
             present(nintendo3DSEmulationController, animated: true)
         case let superNESGame as SuperNESGame:
-            guard let skin = SkinManager.shared.mangoSkin else {
+            guard let skin = mangoSkin else {
                 return
             }
             

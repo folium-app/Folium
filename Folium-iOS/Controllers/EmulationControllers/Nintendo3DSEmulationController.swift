@@ -8,6 +8,7 @@
 import AVFoundation
 import Cytrus
 import Foundation
+import GameController
 import MetalKit
 import UIKit
 
@@ -113,6 +114,136 @@ class Nintendo3DSEmulationController : UIViewController {
         button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
         button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
         
+        Task {
+            await GCController.startWirelessControllerDiscovery()
+        }
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidConnect, object: nil, queue: .main) { notification in
+            guard let controller = notification.object as? GCController, let extendedGamepad = controller.extendedGamepad else {
+                return
+            }
+            
+            extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .a)
+                } else {
+                    self.touchEnded(with: .a)
+                }
+            }
+            
+            extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .b)
+                } else {
+                    self.touchEnded(with: .b)
+                }
+            }
+            
+            extendedGamepad.buttonX.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .x)
+                } else {
+                    self.touchEnded(with: .y)
+                }
+            }
+            
+            extendedGamepad.buttonY.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .y)
+                } else {
+                    self.touchEnded(with: .y)
+                }
+            }
+            
+            extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .dpadUp)
+                } else {
+                    self.touchEnded(with: .dpadUp)
+                }
+            }
+            
+            extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .dpadDown)
+                } else {
+                    self.touchEnded(with: .dpadDown)
+                }
+            }
+            
+            extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .dpadLeft)
+                } else {
+                    self.touchEnded(with: .dpadLeft)
+                }
+            }
+            
+            extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .dpadRight)
+                } else {
+                    self.touchEnded(with: .dpadRight)
+                }
+            }
+            
+            extendedGamepad.leftThumbstick.valueChangedHandler = { element, x, y in
+                self.touchMoved(with: .left, position: (x, y))
+            }
+            
+            extendedGamepad.rightThumbstick.valueChangedHandler = { element, x, y in
+                self.touchMoved(with: .right, position: (x, y))
+            }
+            
+            extendedGamepad.leftShoulder.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .l)
+                } else {
+                    self.touchEnded(with: .l)
+                }
+            }
+            
+            extendedGamepad.rightShoulder.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .r)
+                } else {
+                    self.touchEnded(with: .r)
+                }
+            }
+            
+            extendedGamepad.leftTrigger.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .zl)
+                } else {
+                    self.touchEnded(with: .zl)
+                }
+            }
+            
+            extendedGamepad.rightTrigger.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .zr)
+                } else {
+                    self.touchEnded(with: .zr)
+                }
+            }
+            
+            extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .minus)
+                } else {
+                    self.touchEnded(with: .minus)
+                }
+            }
+            
+            extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
+                if pressed {
+                    self.touchBegan(with: .plus)
+                } else {
+                    self.touchEnded(with: .plus)
+                }
+            }
+        }
+        
         NotificationCenter.default.addObserver(forName: .init("applicationStateDidChange"), object: nil, queue: .main) { notification in
             guard let applicationState = notification.object as? ApplicationState else {
                 return
@@ -145,7 +276,7 @@ class Nintendo3DSEmulationController : UIViewController {
             let skin = if let url = self.skin.url {
                 try? SkinManager.shared.skin(from: url)
             } else {
-                SkinManager.shared.cytrusSkin
+                cytrusSkin
             }
             
             guard let skin, let metalView = self.metalView, let controllerView = self.controllerView else {

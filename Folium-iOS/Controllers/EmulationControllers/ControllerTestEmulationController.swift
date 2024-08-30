@@ -56,15 +56,17 @@ class ControllerTestEmulationController : UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate { _ in } completion: { _ in
-            guard let controllerView = self.controllerView, let skin = SkinManager.shared.mangoSkin else {
+            let skin = if let url = self.skin.url {
+                try? SkinManager.shared.skin(from: url)
+            } else {
+                self.skin
+            }
+            
+            guard let controllerView = self.controllerView, let skin, let orientation = skin.orientation(for: self.interfaceOrientation()) else {
                 return
             }
             
             self.skin = skin
-            
-            guard let orientation = self.skin.orientation(for: self.interfaceOrientation()) else {
-                return
-            }
             
             controllerView.updateFrames(for: orientation)
         }

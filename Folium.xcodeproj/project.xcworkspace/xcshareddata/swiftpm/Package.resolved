@@ -1,4 +1,5 @@
 {
+  "originHash" : "4d023e448f067e57784bd9ae35bc9142f11b75634ae615f9bfdd0a609c5b7d8b",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -91,6 +92,15 @@
       }
     },
     {
+      "identity" : "libyuv",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ronnyf/libyuv",
+      "state" : {
+        "branch" : "release/webrtc",
+        "revision" : "83e460580a72f15d02381050028634b4736e2d5d"
+      }
+    },
+    {
       "identity" : "nanopb",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/nanopb.git",
@@ -145,5 +155,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

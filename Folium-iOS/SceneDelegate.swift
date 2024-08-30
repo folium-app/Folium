@@ -42,7 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let isTestingController = false
         if isTestingController {
-            guard let skin = SkinManager.shared.mangoSkin else {
+            guard let skin = mangoSkin else {
                 return
             }
             

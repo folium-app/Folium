@@ -62,6 +62,16 @@ class GameBase : AnyHashableSendable, @unchecked Sendable {
     }
 }
 
+enum Feature {
+    case gameController,
+         speakerOutput,
+         microphoneInput,
+         cameraInput,
+         saveStates,
+         loadStates,
+         fastForward
+}
+
 enum Core : String, Codable, CustomStringConvertible, Hashable, @unchecked Sendable {
     case cytrus = "Cytrus"
     case grape = "Grape"

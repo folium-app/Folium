@@ -518,6 +518,11 @@
 		E6C615542C47896100DE0CD6 /* libswscale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C614C92C4788E800DE0CD6 /* libswscale.xcframework */; };
 		E6D6C1E02C4FAB6F006B8F3E /* NintendoDSEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D6C1DF2C4FAB6F006B8F3E /* NintendoDSEmulationController.swift */; };
 		E6F31F632C6536E700DE5FA0 /* CytrusSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F31F622C6536E700DE5FA0 /* CytrusSettingsController.swift */; };
+		E6FA9F532C817CAB0034BBD1 /* CytrusSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FA9F522C817CAB0034BBD1 /* CytrusSkin.swift */; };
+		E6FA9F552C8180D10034BBD1 /* GrapeSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FA9F542C8180D10034BBD1 /* GrapeSkin.swift */; };
+		E6FA9F572C8181720034BBD1 /* MangoSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FA9F562C8181720034BBD1 /* MangoSkin.swift */; };
+		E6FA9F5C2C818D350034BBD1 /* libyuv in Frameworks */ = {isa = PBXBuildFile; productRef = E6FA9F5B2C818D350034BBD1 /* libyuv */; };
+		E6FA9F612C818EF80034BBD1 /* libyuv in Frameworks */ = {isa = PBXBuildFile; productRef = E6FA9F602C818EF80034BBD1 /* libyuv */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1059,6 +1064,9 @@
 		E6C614C92C4788E800DE0CD6 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswscale.xcframework; sourceTree = "<group>"; };
 		E6D6C1DF2C4FAB6F006B8F3E /* NintendoDSEmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NintendoDSEmulationController.swift; sourceTree = "<group>"; };
 		E6F31F622C6536E700DE5FA0 /* CytrusSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CytrusSettingsController.swift; sourceTree = "<group>"; };
+		E6FA9F522C817CAB0034BBD1 /* CytrusSkin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CytrusSkin.swift; sourceTree = "<group>"; };
+		E6FA9F542C8180D10034BBD1 /* GrapeSkin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrapeSkin.swift; sourceTree = "<group>"; };
+		E6FA9F562C8181720034BBD1 /* MangoSkin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangoSkin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1101,6 +1109,7 @@
 				E6C6154E2C47896100DE0CD6 /* libavformat.xcframework in Frameworks */,
 				E6C6152F2C47894700DE0CD6 /* libmbedtls.xcframework in Frameworks */,
 				E6C6152D2C47894700DE0CD6 /* libmbedcrypto.xcframework in Frameworks */,
+				E6FA9F5C2C818D350034BBD1 /* libyuv in Frameworks */,
 				E6C615332C47894700DE0CD6 /* libmcl.xcframework in Frameworks */,
 				E6C6150D2C47894600DE0CD6 /* boost_context.xcframework in Frameworks */,
 				E6C615232C47894700DE0CD6 /* libfaad.xcframework in Frameworks */,
@@ -1135,6 +1144,7 @@
 				E667BEC02C4793E200DB0327 /* libavformat.xcframework in Frameworks */,
 				E667BEC22C4793E200DB0327 /* libavutil.xcframework in Frameworks */,
 				E667C07C2C47C81500DB0327 /* CoreMotion.framework in Frameworks */,
+				E6FA9F612C818EF80034BBD1 /* libyuv in Frameworks */,
 				E63D9EC02C33BF3B0038257F /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1305,6 +1315,7 @@
 		E659A1DB2C522AA60040D803 /* SkinManager */ = {
 			isa = PBXGroup;
 			children = (
+				E6FA9F512C817C8F0034BBD1 /* DefaultSkins */,
 				E659A1E32C522AB60040D803 /* Skin */,
 				E60707972C7DC792009DCA23 /* Machine.swift */,
 				E659A1DA2C522AA60040D803 /* SkinManager.swift */,
@@ -2561,6 +2572,16 @@
 			path = Dependencies;
 			sourceTree = "<group>";
 		};
+		E6FA9F512C817C8F0034BBD1 /* DefaultSkins */ = {
+			isa = PBXGroup;
+			children = (
+				E6FA9F522C817CAB0034BBD1 /* CytrusSkin.swift */,
+				E6FA9F542C8180D10034BBD1 /* GrapeSkin.swift */,
+				E6FA9F562C8181720034BBD1 /* MangoSkin.swift */,
+			);
+			path = DefaultSkins;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2601,6 +2622,7 @@
 			packageProductDependencies = (
 				E60F60D22C412517006902E2 /* libzstd */,
 				E626CA352C58A67600CA2B9F /* SDL */,
+				E6FA9F5B2C818D350034BBD1 /* libyuv */,
 			);
 			productName = Cytrus;
 			productReference = E666166F2C410E130065B363 /* libCytrus.a */;
@@ -2628,6 +2650,7 @@
 				E626CA332C58A65A00CA2B9F /* SDL */,
 				E6101AB02C63FC0F00AEF0B5 /* Grape */,
 				E6106E712C79C5210045A2C4 /* Mango */,
+				E6FA9F602C818EF80034BBD1 /* libyuv */,
 			);
 			productName = Folium;
 			productReference = E690A6A82C33B09E00652203 /* Folium-iOS.app */;
@@ -2670,6 +2693,7 @@
 				E60F60D12C412517006902E2 /* XCRemoteSwiftPackageReference "zstd" */,
 				E667C0762C47C7E900DB0327 /* XCRemoteSwiftPackageReference "OpenSSL" */,
 				E626CA322C58A65A00CA2B9F /* XCRemoteSwiftPackageReference "SwiftSDL2" */,
+				E6FA9F582C818D350034BBD1 /* XCRemoteSwiftPackageReference "libyuv" */,
 			);
 			productRefGroup = E690A6A92C33B09E00652203 /* Products */;
 			projectDirPath = "";
@@ -3130,6 +3154,7 @@
 				E667C1062C47F6E500DB0327 /* Data.swift in Sources */,
 				E62345E12C33D2650061FE55 /* AuthenticationController.swift in Sources */,
 				E6D6C1E02C4FAB6F006B8F3E /* NintendoDSEmulationController.swift in Sources */,
+				E6FA9F552C8180D10034BBD1 /* GrapeSkin.swift in Sources */,
 				E690A6AC2C33B09E00652203 /* AppDelegate.swift in Sources */,
 				E67398882C48D7AB00E09E93 /* NintendoDSCell.swift in Sources */,
 				E61A85592C79D36E00AFC053 /* SuperNESEmulationController.swift in Sources */,
@@ -3141,9 +3166,11 @@
 				E667C0752C47C73E00DB0327 /* Nintendo3DSCell.swift in Sources */,
 				E667C0722C47C6C000DB0327 /* LibraryManager.swift in Sources */,
 				E659A1D72C522A960040D803 /* ControllerView.swift in Sources */,
+				E6FA9F572C8181720034BBD1 /* MangoSkin.swift in Sources */,
 				E60707982C7DC792009DCA23 /* Machine.swift in Sources */,
 				E659A1D82C522A960040D803 /* ControllerThumbstick.swift in Sources */,
 				E66BBFB92C578E29007B0F0A /* PlayStation1Game.swift in Sources */,
+				E6FA9F532C817CAB0034BBD1 /* CytrusSkin.swift in Sources */,
 				E61A85572C79D25200AFC053 /* SuperNESCell.swift in Sources */,
 				E641265A2C5B553900C060A4 /* CGFloat.swift in Sources */,
 				E61A85552C79D0D100AFC053 /* SuperNESGame.swift in Sources */,
@@ -3482,7 +3509,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3530,7 +3557,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3641,6 +3668,14 @@
 				minimumVersion = 3.1.6000;
 			};
 		};
+		E6FA9F582C818D350034BBD1 /* XCRemoteSwiftPackageReference "libyuv" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ronnyf/libyuv";
+			requirement = {
+				branch = release/webrtc;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3689,6 +3724,16 @@
 		E6A483C12C36A27700CFA6DA /* LayoutManager */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LayoutManager;
+		};
+		E6FA9F5B2C818D350034BBD1 /* libyuv */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6FA9F582C818D350034BBD1 /* XCRemoteSwiftPackageReference "libyuv" */;
+			productName = libyuv;
+		};
+		E6FA9F602C818EF80034BBD1 /* libyuv */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6FA9F582C818D350034BBD1 /* XCRemoteSwiftPackageReference "libyuv" */;
+			productName = libyuv;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
