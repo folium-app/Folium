@@ -33,36 +33,39 @@ import UIKit
             return
         }
         
+        var children: [UIMenuElement] = [
+            UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: [.destructive], handler: { _ in
+                guard let viewController = viewController as? LibraryController else {
+                    return
+                }
+                
+                viewController.present(viewController.alert(title: "Delete \(nintendo3DSGame.title)",
+                                                            message: "Are you sure you want to delete \(nintendo3DSGame.title)?",
+                                                            preferredStyle: .alert, actions: [
+                                                                .init(title: "Dismiss", style: .cancel),
+                                                                .init(title: "Delete", style: .destructive, handler: { _ in
+                                                                    do {
+                                                                        try FileManager.default.removeItem(at: nintendo3DSGame.fileDetails.url)
+                                                                        viewController.beginPopulatingGames(with: try LibraryManager.shared.games().get())
+                                                                    } catch {
+                                                                        print(#function, error, error.localizedDescription)
+                                                                    }
+                                                                })
+                                                            ]),
+                                       animated: true)
+            })
+        ]
+        
         if nintendo3DSGame.skins.count > 0 {
-            optionsButton.menu = .init(children: [
-                UIMenu(title: "Skins", children: nintendo3DSGame.skins.reduce(into: [UIAction](), { partialResult, element in
-                    partialResult.append(.init(title: element.title, handler: { _ in
-                        let nintendo3DSEmulationController = Nintendo3DSEmulationController(game: nintendo3DSGame, skin: element)
-                        nintendo3DSEmulationController.modalPresentationStyle = .fullScreen
-                        viewController.present(nintendo3DSEmulationController, animated: true)
-                    }))
-                })),
-                UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: [.destructive], handler: { _ in
-                    guard let viewController = viewController as? LibraryController else {
-                        return
-                    }
-                    
-                    viewController.present(viewController.alert(title: "Delete \(nintendo3DSGame.title)",
-                                                                message: "Are you sure you want to delete \(nintendo3DSGame.title)?",
-                                                                preferredStyle: .alert, actions: [
-                                                                    .init(title: "Dismiss", style: .cancel),
-                                                                    .init(title: "Delete", style: .destructive, handler: { _ in
-                                                                        do {
-                                                                            try FileManager.default.removeItem(at: nintendo3DSGame.fileDetails.url)
-                                                                            viewController.beginPopulatingGames(with: try LibraryManager.shared.games().get())
-                                                                        } catch {
-                                                                            print(#function, error, error.localizedDescription)
-                                                                        }
-                                                                    })
-                                                                ]),
-                                           animated: true)
-                })
-            ])
+            children.append(UIMenu(title: "Skins", children: nintendo3DSGame.skins.reduce(into: [UIAction](), { partialResult, element in
+                partialResult.append(.init(title: element.title, handler: { _ in
+                    let nintendo3DSEmulationController = Nintendo3DSEmulationController(game: nintendo3DSGame, skin: element)
+                    nintendo3DSEmulationController.modalPresentationStyle = .fullScreen
+                    viewController.present(nintendo3DSEmulationController, animated: true)
+                }))
+            })))
         }
+        
+        optionsButton.menu = .init(children: children)
     }
 }

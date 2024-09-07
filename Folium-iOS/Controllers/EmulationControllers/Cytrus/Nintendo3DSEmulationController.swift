@@ -251,6 +251,17 @@ class Nintendo3DSEmulationController : UIViewController {
             
             Cytrus.shared.pausePlay(applicationState == .foregrounded)
         }
+        
+        NotificationCenter.default.addObserver(forName: .init("openKeyboard"), object: nil, queue: .main) { notification in
+                guard let config = notification.object as? KeyboardConfig else {
+                    return
+                }
+                
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                alertController.perform(NSSelectorFromString("_setHeaderContentViewController:"), with: CytrusKeyboardController(keyboardConfig: config))
+                alertController.addAction(.init(title: "Cancel", style: .cancel))
+                self.present(alertController, animated: true)
+            }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

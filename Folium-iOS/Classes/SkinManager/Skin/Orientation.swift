@@ -10,6 +10,8 @@ import UIKit
 
 struct Orientation : Codable, Hashable {
     // TODO:
+    var backgroundImageName: String? = nil
+    
     let buttons: [Button]
     let screens: [Screen]
     let thumbsticks: [Thumbstick]

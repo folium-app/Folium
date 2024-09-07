@@ -29,6 +29,7 @@ class ScreensView : UIView {}
 
 class ControllerView : PassthroughView {
     var screensView: ScreensView? = nil
+    var imageView: UIImageView? = nil
     
     var orientation: Orientation
     var skin: Skin
@@ -51,6 +52,28 @@ class ControllerView : PassthroughView {
         screensView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         screensView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         screensView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        
+        imageView = if let backgroundImageName = orientation.backgroundImageName, let url = skin.url {
+            .init(image: .init(contentsOfFile: url
+                .appendingPathComponent("backgrounds", conformingTo: .folder)
+                .appendingPathComponent(backgroundImageName, conformingTo: .fileURL)
+                .path
+            ))
+        } else {
+            .init()
+        }
+        
+        guard let imageView else {
+            return
+        }
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(imageView)
+        
+        imageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         
         orientation.thumbsticks.forEach { thumbstick in
             let controllerThumbstick = ControllerThumbstick(thumbstick: thumbstick, skin: skin, delegate: delegates.thumbstick)
@@ -92,6 +115,19 @@ class ControllerView : PassthroughView {
         }.forEach { $0.removeFromSuperview() }
         
         self.orientation = orientation
+        
+        guard let imageView else {
+            return
+        }
+        
+        if let backgroundImageName = orientation.backgroundImageName, let url = skin.url {
+            imageView.image = .init(contentsOfFile: url
+                .appendingPathComponent("backgrounds", conformingTo: .folder)
+                .appendingPathComponent(backgroundImageName, conformingTo: .fileURL)
+                .path
+            )
+        }
+        
         orientation.thumbsticks.forEach { thumbstick in
             let controllerThumbstick = ControllerThumbstick(thumbstick: thumbstick, skin: skin, delegate: delegates.thumbstick)
             controllerThumbstick.frame = .init(x: thumbstick.x, y: thumbstick.y, width: thumbstick.width, height: thumbstick.height)

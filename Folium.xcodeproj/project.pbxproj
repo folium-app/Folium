@@ -34,7 +34,7 @@
 		E62345E62C33D2810061FE55 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62345E32C33D2810061FE55 /* UIViewController.swift */; };
 		E62345E92C33DF590061FE55 /* AuthenticatedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62345E82C33DF590061FE55 /* AuthenticatedUser.swift */; };
 		E62345EB2C33E48D0061FE55 /* DefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62345EA2C33E48D0061FE55 /* DefaultCell.swift */; };
-		E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E666166F2C410E130065B363 /* libCytrus.a */; };
+		E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E666166F2C410E130065B363 /* libCytrus.a */; platformFilter = ios; };
 		E626CA342C58A65A00CA2B9F /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E626CA332C58A65A00CA2B9F /* SDL */; };
 		E626CA362C58A67600CA2B9F /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E626CA352C58A67600CA2B9F /* SDL */; };
 		E62BC9F02C64B2300000CFB2 /* libZydis.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6496A6C2C63E851002594CD /* libZydis.xcframework */; };
@@ -489,6 +489,7 @@
 		E6BC47502C521BD100857918 /* Nintendo3DSEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BC474F2C521BD100857918 /* Nintendo3DSEmulationController.swift */; };
 		E6BE63B62C57614800A47428 /* Social.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BE63B52C57614800A47428 /* Social.swift */; };
 		E6BE63B82C5775D600A47428 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = E6BE63B72C5775D600A47428 /* PrivacyInfo.xcprivacy */; };
+		E6C0A5042C8B0081000141A2 /* GrapeSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A5032C8B0081000141A2 /* GrapeSettingsController.swift */; };
 		E6C6150D2C47894600DE0CD6 /* boost_context.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C614AE2C4788E800DE0CD6 /* boost_context.xcframework */; };
 		E6C6150F2C47894600DE0CD6 /* boost_iostreams.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C614AF2C4788E800DE0CD6 /* boost_iostreams.xcframework */; };
 		E6C615112C47894600DE0CD6 /* boost_program_options.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C614B02C4788E800DE0CD6 /* boost_program_options.xcframework */; };
@@ -516,6 +517,8 @@
 		E6C615502C47896100DE0CD6 /* libavutil.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C614B52C4788E800DE0CD6 /* libavutil.xcframework */; };
 		E6C615522C47896100DE0CD6 /* libswresample.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C614C82C4788E800DE0CD6 /* libswresample.xcframework */; };
 		E6C615542C47896100DE0CD6 /* libswscale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C614C92C4788E800DE0CD6 /* libswscale.xcframework */; };
+		E6D6AA722C8AE3140003919F /* CytrusKeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D6AA712C8AE3140003919F /* CytrusKeyboardController.swift */; };
+		E6D6AA752C8AE52D0003919F /* MinimalRoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D6AA742C8AE52D0003919F /* MinimalRoundedTextField.swift */; };
 		E6D6C1E02C4FAB6F006B8F3E /* NintendoDSEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D6C1DF2C4FAB6F006B8F3E /* NintendoDSEmulationController.swift */; };
 		E6F31F632C6536E700DE5FA0 /* CytrusSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F31F622C6536E700DE5FA0 /* CytrusSettingsController.swift */; };
 		E6FA9F532C817CAB0034BBD1 /* CytrusSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FA9F522C817CAB0034BBD1 /* CytrusSkin.swift */; };
@@ -1035,6 +1038,7 @@
 		E6BC474F2C521BD100857918 /* Nintendo3DSEmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nintendo3DSEmulationController.swift; sourceTree = "<group>"; };
 		E6BE63B52C57614800A47428 /* Social.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Social.swift; sourceTree = "<group>"; };
 		E6BE63B72C5775D600A47428 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		E6C0A5032C8B0081000141A2 /* GrapeSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrapeSettingsController.swift; sourceTree = "<group>"; };
 		E6C614AE2C4788E800DE0CD6 /* boost_context.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = boost_context.xcframework; sourceTree = "<group>"; };
 		E6C614AF2C4788E800DE0CD6 /* boost_iostreams.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = boost_iostreams.xcframework; sourceTree = "<group>"; };
 		E6C614B02C4788E800DE0CD6 /* boost_program_options.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = boost_program_options.xcframework; sourceTree = "<group>"; };
@@ -1062,6 +1066,8 @@
 		E6C614C72C4788E800DE0CD6 /* libSPIRV.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libSPIRV.xcframework; sourceTree = "<group>"; };
 		E6C614C82C4788E800DE0CD6 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswresample.xcframework; sourceTree = "<group>"; };
 		E6C614C92C4788E800DE0CD6 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libswscale.xcframework; sourceTree = "<group>"; };
+		E6D6AA712C8AE3140003919F /* CytrusKeyboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CytrusKeyboardController.swift; sourceTree = "<group>"; };
+		E6D6AA742C8AE52D0003919F /* MinimalRoundedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimalRoundedTextField.swift; sourceTree = "<group>"; };
 		E6D6C1DF2C4FAB6F006B8F3E /* NintendoDSEmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NintendoDSEmulationController.swift; sourceTree = "<group>"; };
 		E6F31F622C6536E700DE5FA0 /* CytrusSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CytrusSettingsController.swift; sourceTree = "<group>"; };
 		E6FA9F522C817CAB0034BBD1 /* CytrusSkin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CytrusSkin.swift; sourceTree = "<group>"; };
@@ -1208,9 +1214,9 @@
 		E61CD9932C4F986400C7775B /* EmulationControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E6D6AA702C8AE2FD0003919F /* Cytrus */,
+				E6C0A5052C8B0297000141A2 /* Grape */,
 				E61CD9942C4F987B00C7775B /* Nintendo64EmulationController.swift */,
-				E6D6C1DF2C4FAB6F006B8F3E /* NintendoDSEmulationController.swift */,
-				E6BC474F2C521BD100857918 /* Nintendo3DSEmulationController.swift */,
 				E66BBFB62C578DDB007B0F0A /* PlayStation1EmulationController.swift */,
 				E6496A6E2C63EA88002594CD /* ControllerTestEmulationController.swift */,
 				E61A85582C79D36E00AFC053 /* SuperNESEmulationController.swift */,
@@ -1265,6 +1271,7 @@
 		E62345E72C33DF230061FE55 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E6D6AA732C8AE5110003919F /* MinimalRoundedTextField */,
 				E659A1D62C522A960040D803 /* ControllerView */,
 				E61CD9502C4F889000C7775B /* LibraryCells */,
 				E667C06B2C47C6BA00DB0327 /* LibraryManager */,
@@ -1420,6 +1427,7 @@
 			isa = PBXGroup;
 			children = (
 				E6F31F622C6536E700DE5FA0 /* CytrusSettingsController.swift */,
+				E6C0A5032C8B0081000141A2 /* GrapeSettingsController.swift */,
 			);
 			path = SettingsControllers;
 			sourceTree = "<group>";
@@ -2527,6 +2535,14 @@
 			path = web_service;
 			sourceTree = "<group>";
 		};
+		E6C0A5052C8B0297000141A2 /* Grape */ = {
+			isa = PBXGroup;
+			children = (
+				E6D6C1DF2C4FAB6F006B8F3E /* NintendoDSEmulationController.swift */,
+			);
+			path = Grape;
+			sourceTree = "<group>";
+		};
 		E6C614CC2C4788E800DE0CD6 /* XCFrameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -2570,6 +2586,23 @@
 				E6C614CC2C4788E800DE0CD6 /* XCFrameworks */,
 			);
 			path = Dependencies;
+			sourceTree = "<group>";
+		};
+		E6D6AA702C8AE2FD0003919F /* Cytrus */ = {
+			isa = PBXGroup;
+			children = (
+				E6D6AA712C8AE3140003919F /* CytrusKeyboardController.swift */,
+				E6BC474F2C521BD100857918 /* Nintendo3DSEmulationController.swift */,
+			);
+			path = Cytrus;
+			sourceTree = "<group>";
+		};
+		E6D6AA732C8AE5110003919F /* MinimalRoundedTextField */ = {
+			isa = PBXGroup;
+			children = (
+				E6D6AA742C8AE52D0003919F /* MinimalRoundedTextField.swift */,
+			);
+			path = MinimalRoundedTextField;
 			sourceTree = "<group>";
 		};
 		E6FA9F512C817C8F0034BBD1 /* DefaultSkins */ = {
@@ -3138,12 +3171,14 @@
 			files = (
 				E66BBFBB2C579189007B0F0A /* PlayStation1Cell.swift in Sources */,
 				E667C1042C47EE1300DB0327 /* UIImage.swift in Sources */,
+				E6C0A5042C8B0081000141A2 /* GrapeSettingsController.swift in Sources */,
 				E61E33972C4915E6006F3759 /* Nintendo64Game.swift in Sources */,
 				E6BE63B62C57614800A47428 /* Social.swift in Sources */,
 				E659A1E42C522AB60040D803 /* Screen.swift in Sources */,
 				E659A1E62C522AB60040D803 /* Thumbstick.swift in Sources */,
 				E659A1E72C522AB60040D803 /* Button.swift in Sources */,
 				E659A1E82C522AB60040D803 /* Orientation.swift in Sources */,
+				E6D6AA722C8AE3140003919F /* CytrusKeyboardController.swift in Sources */,
 				E659A1E92C522AB60040D803 /* Skin.swift in Sources */,
 				E61E6EB32C3BDA0900ADA7A2 /* Bruno.swift in Sources */,
 				E62345EB2C33E48D0061FE55 /* DefaultCell.swift in Sources */,
@@ -3180,6 +3215,7 @@
 				E6BC47502C521BD100857918 /* Nintendo3DSEmulationController.swift in Sources */,
 				E62345E92C33DF590061FE55 /* AuthenticatedUser.swift in Sources */,
 				E690A6AE2C33B09E00652203 /* SceneDelegate.swift in Sources */,
+				E6D6AA752C8AE52D0003919F /* MinimalRoundedTextField.swift in Sources */,
 				E6496A6F2C63EA88002594CD /* ControllerTestEmulationController.swift in Sources */,
 				E66BBFB72C578DDB007B0F0A /* PlayStation1EmulationController.swift in Sources */,
 				E659A1DC2C522AA60040D803 /* SkinManager.swift in Sources */,
@@ -3228,6 +3264,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3241,7 +3278,7 @@
 				SWIFT_OBJC_INTEROP_MODE = objc;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 16.0;
+				TVOS_DEPLOYMENT_TARGET = 17.5;
 			};
 			name = Debug;
 		};
@@ -3261,6 +3298,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3274,7 +3312,7 @@
 				SWIFT_OBJC_INTEROP_MODE = objc;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 16.0;
+				TVOS_DEPLOYMENT_TARGET = 17.5;
 			};
 			name = Release;
 		};
@@ -3322,7 +3360,7 @@
 					"\"$(HOME)/VulkanSDK/1.3.290.0/macOS/include/vma\"",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 16.0;
+				TVOS_DEPLOYMENT_TARGET = 17.5;
 				USER_HEADER_SEARCH_PATHS = Cores/Cytrus/Core/include;
 			};
 			name = Debug;
@@ -3370,7 +3408,7 @@
 					"\"$(HOME)/VulkanSDK/1.3.290.0/macOS/include/vma\"",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 16.0;
+				TVOS_DEPLOYMENT_TARGET = 17.5;
 				USER_HEADER_SEARCH_PATHS = Cores/Cytrus/Core/include;
 			};
 			name = Release;
@@ -3427,8 +3465,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3436,7 +3475,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TVOS_DEPLOYMENT_TARGET = 16.6;
+				TVOS_DEPLOYMENT_TARGET = 17.5;
 			};
 			name = Debug;
 		};
@@ -3486,15 +3525,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
-				TVOS_DEPLOYMENT_TARGET = 16.6;
+				TVOS_DEPLOYMENT_TARGET = 17.5;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -3509,7 +3549,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3530,6 +3570,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
@@ -3544,6 +3585,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 17.5;
 			};
 			name = Debug;
 		};
@@ -3557,7 +3599,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3578,6 +3620,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
@@ -3591,6 +3634,7 @@
 				SWIFT_OBJC_INTEROP_MODE = objc;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 17.5;
 			};
 			name = Release;
 		};

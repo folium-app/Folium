@@ -201,6 +201,11 @@ extension SceneDelegate {
                 "flushCPUWrite" : false,
                 "priorityBoostStarvedThreads" : true,
                 "reduceDowncountSlice" : false
+            ],
+            "Grape" : [
+                "directBoot" : true,
+                "threaded2D" : true,
+                "threaded3D" : true
             ]
         ]
         

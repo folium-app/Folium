@@ -51,29 +51,47 @@ class LibraryController: UICollectionViewController {
             UIMenu(options: .displayInline, children: [
                 UIAction(title: "Import Games", image: .init(systemName: "plus"), handler: { _ in
                     self.openDocumentPickerController()
+                })
+            ]),
+            UIMenu(title: "Core Settings", options: .displayInline, children: [
+                UIAction(title: "Cytrus", handler: { _ in
+                    var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+                    configuration.headerMode = .supplementary
+                    let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
+                    
+                    let cytrusSettingsController = UINavigationController(rootViewController: CytrusSettingsController(collectionViewLayout: listCollectionViewLayout))
+                    cytrusSettingsController.modalPresentationStyle = .fullScreen
+                    self.present(cytrusSettingsController, animated: true)
                 }),
-                UIMenu(title: "Core Settings", image: .init(systemName: "gearshape"), children: [
-                    UIAction(title: "Cytrus", handler: { _ in
-                        var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-                        configuration.headerMode = .supplementary
-                        let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
-                        
-                        let cytrusSettingsController = UINavigationController(rootViewController: CytrusSettingsController(collectionViewLayout: listCollectionViewLayout))
-                        cytrusSettingsController.modalPresentationStyle = .fullScreen
-                        self.present(cytrusSettingsController, animated: true)
-                    })
-                ])
+                UIAction(title: "Grape", handler: { _ in
+                    var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+                    configuration.headerMode = .supplementary
+                    let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
+                    
+                    let grapeSettingsController = UINavigationController(rootViewController: GrapeSettingsController(collectionViewLayout: listCollectionViewLayout))
+                    grapeSettingsController.modalPresentationStyle = .fullScreen
+                    self.present(grapeSettingsController, animated: true)
+                }),
+                // UIAction(title: "Mango", attributes: [.disabled], handler: { _ in })
             ])
         ]
         if AppStoreCheck.shared.additionalFeaturesAreAllowed, Auth.auth().currentUser != nil {
-            children.append(contentsOf: [
-                UIAction(title: "View Account", image: .init(systemName: "person.text.rectangle"), handler: { _ in
-                    
-                }),
+            children.append(UIMenu(title: "Account Settings", options: .displayInline, children: [
+                // UIAction(title: "View Account", image: .init(systemName: "person.text.rectangle"), handler: { _ in
+                //
+                // }),
                 UIAction(title: "Sign Out", image: .init(systemName: "arrow.right"), attributes: [.destructive], handler: { _ in
-                    
+                    do {
+                        try Auth.auth().signOut()
+                        
+                        let authenticationController = AuthenticationController()
+                        authenticationController.modalPresentationStyle = .fullScreen
+                        self.present(authenticationController, animated: true)
+                    } catch {
+                        print(#function, error, error.localizedDescription)
+                    }
                 })
-            ])
+            ]))
         }
         button.menu = .init(children: children)
         button.showsMenuAsPrimaryAction = true
@@ -325,9 +343,9 @@ extension LibraryController {
         let gameBoyAdvanceCellRegistration = UICollectionView.CellRegistration<GameBoyCell, GameBoyAdvanceGame> { $0.set(text: $2.title, with: .white) }
         let nintendo3DSCellRegistration = UICollectionView.CellRegistration<Nintendo3DSCell, Nintendo3DSGame> { $0.set($2, with: self) }
         let nintendo64CellRegistration = UICollectionView.CellRegistration<Nintendo64Cell, Nintendo64Game> { $0.set(text: $2.title, with: .white) }
-        let nintendoDSCellRegistration = UICollectionView.CellRegistration<NintendoDSCell, NintendoDSGame> { $0.set(text: $2.title, image: $2.icon, with: .white) }
+        let nintendoDSCellRegistration = UICollectionView.CellRegistration<NintendoDSCell, NintendoDSGame> { $0.set($2, with: self) }
         let playStation1CellRegistration = UICollectionView.CellRegistration<PlayStation1Cell, PlayStation1Game> { $0.set(text: $2.title, with: .white) }
-        let superNESCellRegistration = UICollectionView.CellRegistration<SuperNESCell, SuperNESGame> { $0.set(text: $2.title, with: .white) }
+        let superNESCellRegistration = UICollectionView.CellRegistration<SuperNESCell, SuperNESGame> { $0.set($2, with: self) }
         
         let headerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) {
             var configuration = UIListContentConfiguration.extraProminentInsetGroupedHeader()

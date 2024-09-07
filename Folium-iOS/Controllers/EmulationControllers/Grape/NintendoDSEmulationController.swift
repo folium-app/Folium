@@ -151,6 +151,49 @@ class NintendoDSEmulationController : UIViewController {
         displayLink.preferredFrameRateRange = .init(minimum: 30, maximum: 60)
         displayLink.add(to: .main, forMode: .common)
         
+        var config = UIButton.Configuration.plain()
+        config.buttonSize = .small
+        config.cornerStyle = .capsule
+        config.image = .init(systemName: "gearshape.fill")?
+            .applyingSymbolConfiguration(.init(paletteColors: [.white]))
+        
+        let button = UIButton(configuration: config)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.showsMenuAsPrimaryAction = true
+        button.menu = .init(children: [
+            UIAction(title: "Open Settings", image: .init(systemName: "gearshape"), handler: { _ in
+                var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+                configuration.headerMode = .supplementary
+                let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
+                
+                let grapeSettingsController = UINavigationController(rootViewController: GrapeSettingsController(collectionViewLayout: listCollectionViewLayout))
+                if let sheetPresentationController = grapeSettingsController.sheetPresentationController {
+                    sheetPresentationController.detents = [.medium(), .large()]
+                }
+                self.present(grapeSettingsController, animated: true)
+            }),
+            UIAction(title: "Toggle Play/Pause", handler: { _ in
+                SDL_PauseAudioDevice(self.audioDeviceID, Grape.shared.togglePause() ? 1 : 0)
+            }),
+            UIAction(title: "Stop & Exit", attributes: [.destructive], handler: { _ in
+                let alertController = UIAlertController(title: "Stop & Exit", message: "Are you sure?", preferredStyle: .alert)
+                alertController.addAction(.init(title: "Dismiss", style: .cancel))
+                alertController.addAction(.init(title: "Stop & Exit", style: .destructive, handler: { _ in
+                    displayLink.remove(from: .main, forMode: .common)
+                    
+                    SDL_CloseAudioDevice(self.audioDeviceID)
+                    
+                    Grape.shared.stop()
+                    self.dismiss(animated: true)
+                }))
+                self.present(alertController, animated: true)
+            })
+        ])
+        view.addSubview(button)
+        
+        button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
+        button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
+        
         Task {
             await GCController.startWirelessControllerDiscovery()
         }
@@ -256,6 +299,14 @@ class NintendoDSEmulationController : UIViewController {
                 }
             }
         }
+        
+        NotificationCenter.default.addObserver(forName: .init("applicationStateDidChange"), object: nil, queue: .main) { notification in
+            guard let _ = notification.object as? ApplicationState else {
+                return
+            }
+            
+            SDL_PauseAudioDevice(self.audioDeviceID, Grape.shared.togglePause() ? 1 : 0)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -266,10 +317,10 @@ class NintendoDSEmulationController : UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if let bottomScreenImageView {
-            Grape.shared.updateScreenLayout(with: bottomScreenImageView.frame.size)
+            Grape.shared.updateScreenLayout(with: bottomScreenImageView.bounds.size)
         } else {
             if let topScreenImageView {
-                Grape.shared.updateScreenLayout(with: topScreenImageView.frame.size)
+                Grape.shared.updateScreenLayout(with: topScreenImageView.bounds.size)
             }
         }
     }
@@ -335,16 +386,6 @@ class NintendoDSEmulationController : UIViewController {
     }
     
     fileprivate func configureAudio() {
-#if !targetEnvironment(simulator)
-        audioStreamer = .init()
-        guard let audioStreamer else {
-            return
-        }
-        
-        audioStreamer.delegate = self
-        audioStreamer.startStreaming()
-#endif
-        
         SDL_SetMainReady()
         SDL_InitSubSystem(SDL_INIT_AUDIO)
         
