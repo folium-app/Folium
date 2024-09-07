@@ -39,6 +39,71 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         window.tintColor = .systemGreen
+
+        if !UserDefaults.standard.bool(forKey: "isCleanedUpFor1.8") {
+            let archiveDestination = NSTemporaryDirectory() + "directory.aar"
+            let archiveFilePath = FilePath(archiveDestination)
+
+
+            guard let writeFileStream = ArchiveByteStream.fileStream(
+                path: archiveFilePath,
+                mode: .writeOnly,
+                options: [ .create ],
+                permissions: FilePermissions(rawValue: 0o644)) else {
+                    return
+            }
+
+            defer {
+                try? writeFileStream.close()
+            }
+
+            guard let compressStream = ArchiveByteStream.compressionStream(
+                using: .lzfse,
+                writingTo: writeFileStream) else {
+                    return
+            }
+
+            defer {
+                try? compressStream.close()
+            }
+
+            guard let encodeStream = ArchiveStream.encodeStream(writingTo: compressStream) else {
+                return
+            }
+
+            defer {
+                try? encodeStream.close()
+            }
+
+            guard let keySet = ArchiveHeader.FieldKeySet("TYP,PAT,LNK,DEV,DAT,UID,GID,MOD,FLG,MTM,BTM,CTM") else {
+                return
+            }
+
+            let documentDirectory = try FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let source = FilePath(documentDirectory.path)
+
+            do {
+                try encodeStream.writeDirectoryContents(
+                    archiveFrom: source,
+                    keySet: keySet)
+            } catch {
+                fatalError("Write directory contents failed.")
+            }
+
+            do {
+                try FileManager.default.contentsOfDirectory(at: documentDirectory).forEach {
+                    try FileManager.default.removeItem(at: $0)
+                }
+
+                try FileManager.default.moveItem(atPath: archiveDestination, toPath: documentDirectory.appendingPathComponent("archive.aar", conformingTo: .fileURL).path)
+            } catch {
+                print(error.localizedDescription)
+            }
+
+            UserDefaults.standard.set(true, forKey: "isCleanedUpFor1.8")
+
+            exit(1)
+        }
         
         let isTestingController = false
         if isTestingController {
