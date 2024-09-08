@@ -140,4 +140,16 @@ class ControllerView : PassthroughView {
             addSubview(controllerButton)
         }
     }
+    
+    func hide() {
+        UIView.transition(with: self, duration: 0.2) {
+            self.alpha = 0
+        }
+    }
+    
+    func show() {
+        UIView.transition(with: self, duration: 0.2) {
+            self.alpha = 1
+        }
+    }
 }

@@ -40,84 +40,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window.tintColor = .systemGreen
 
-        if !UserDefaults.standard.bool(forKey: "isCleanedUpFor1.8") {
-            let archiveDestination = NSTemporaryDirectory() + "directory.aar"
-            let archiveFilePath = FilePath(archiveDestination)
-
-
-            guard let writeFileStream = ArchiveByteStream.fileStream(
-                path: archiveFilePath,
-                mode: .writeOnly,
-                options: [ .create ],
-                permissions: FilePermissions(rawValue: 0o644)) else {
-                    return
-            }
-
-            defer {
-                try? writeFileStream.close()
-            }
-
-            guard let compressStream = ArchiveByteStream.compressionStream(
-                using: .lzfse,
-                writingTo: writeFileStream) else {
-                    return
-            }
-
-            defer {
-                try? compressStream.close()
-            }
-
-            guard let encodeStream = ArchiveStream.encodeStream(writingTo: compressStream) else {
-                return
-            }
-
-            defer {
-                try? encodeStream.close()
-            }
-
-            guard let keySet = ArchiveHeader.FieldKeySet("TYP,PAT,LNK,DEV,DAT,UID,GID,MOD,FLG,MTM,BTM,CTM") else {
-                return
-            }
-
-            let documentDirectory = try FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            let source = FilePath(documentDirectory.path)
-
-            do {
-                try encodeStream.writeDirectoryContents(
-                    archiveFrom: source,
-                    keySet: keySet)
-            } catch {
-                fatalError("Write directory contents failed.")
-            }
-
-            do {
-                try FileManager.default.contentsOfDirectory(at: documentDirectory).forEach {
-                    try FileManager.default.removeItem(at: $0)
-                }
-
-                try FileManager.default.moveItem(atPath: archiveDestination, toPath: documentDirectory.appendingPathComponent("archive.aar", conformingTo: .fileURL).path)
-            } catch {
-                print(error.localizedDescription)
-            }
-
-            UserDefaults.standard.set(true, forKey: "isCleanedUpFor1.8")
-
-            exit(1)
-        }
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
         
-        let isTestingController = false
-        if isTestingController {
-            guard let skin = mangoSkin else {
-                return
-            }
+        if let version, let build {
+            let currentlyInstalledVersion = "\(version).\(build)"
             
-            window.rootViewController = ControllerTestEmulationController(skin: skin)
-            window.makeKeyAndVisible()
-        } else {
-            do {
-                try cleanupForLatestRelease(with: window)
-            } catch {
-                print(#function, error)
+            let currentlySavedVersion = UserDefaults.standard.string(forKey: "currentlySavedVersion")
+            if currentlySavedVersion == nil || currentlySavedVersion != currentlyInstalledVersion {
+                UserDefaults.standard.setValue(currentlyInstalledVersion, forKey: "currentlySavedVersion")
+                
+                window.rootViewController = ArchiveController()
+                window.makeKeyAndVisible()
+            } else {
+                try? configureMissingDirectories(for: LibraryManager.shared.cores.map { $0.rawValue })
+                configureAuthenticationStateListener()
             }
         }
         
@@ -165,7 +102,7 @@ extension SceneDelegate {
         _ = Auth.auth().addStateDidChangeListener { auth, user in
             if let rootViewController = window.rootViewController {
                 let viewController = if AppStoreCheck.shared.additionalFeaturesAreAllowed {
-                    if user == nil {
+                    if user == nil, !UserDefaults.standard.bool(forKey: "userSkippedAuthentication") {
                         AuthenticationController()
                     } else {
                         UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
@@ -178,7 +115,7 @@ extension SceneDelegate {
                 rootViewController.present(viewController, animated: true)
             } else {
                 window.rootViewController = if AppStoreCheck.shared.additionalFeaturesAreAllowed {
-                    if user == nil {
+                    if user == nil, !UserDefaults.standard.bool(forKey: "userSkippedAuthentication") {
                         AuthenticationController()
                     } else {
                         UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
@@ -194,40 +131,6 @@ extension SceneDelegate {
     
     fileprivate func configureMissingDirectories(for cores: [String]) throws {
         try DirectoryManager.shared.createMissingDirectoriesInDocumentsDirectory(for: cores)
-    }
-    
-    fileprivate func cleanupForLatestRelease(with window: UIWindow) throws {
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
-        
-        if let version, let build {
-            let currentlyInstalledVersion = "\(version).\(build)"
-            
-            let currentlySavedVersion = UserDefaults.standard.string(forKey: "currentlySavedVersion")
-            if currentlySavedVersion == nil || currentlySavedVersion != currentlyInstalledVersion {
-                if let bundleIdentifier = Bundle.main.bundleIdentifier {
-                    UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
-                }
-                
-                let cores = LibraryManager.shared.cores.reduce(into: [String](), { partialResult, element in
-                    partialResult.append(element.description)
-                })
-                
-                do {
-                    try configureMissingDirectories(for: cores)
-                } catch {
-                    print(#function, error, error.localizedDescription)
-                }
-                
-                configureAuthenticationStateListener()
-                
-                UserDefaults.standard.set("\(version).\(build)", forKey: "currentlySavedVersion")
-            } else {
-                configureAuthenticationStateListener()
-            }
-        } else {
-            configureAuthenticationStateListener()
-        }
     }
     
     fileprivate func configureDefaultUserDefaults() {

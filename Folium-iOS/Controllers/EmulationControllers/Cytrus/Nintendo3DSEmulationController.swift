@@ -123,6 +123,10 @@ class Nintendo3DSEmulationController : UIViewController {
                 return
             }
             
+            if let controllerView = self.controllerView {
+                controllerView.hide()
+            }
+            
             extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
                 if pressed {
                     self.touchBegan(with: .a)
@@ -241,6 +245,12 @@ class Nintendo3DSEmulationController : UIViewController {
                 } else {
                     self.touchEnded(with: .plus)
                 }
+            }
+        }
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidDisconnect, object: nil, queue: .main) { _ in
+            if let controllerView = self.controllerView {
+                controllerView.show()
             }
         }
         

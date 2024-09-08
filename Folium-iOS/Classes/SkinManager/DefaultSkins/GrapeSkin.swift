@@ -13,7 +13,18 @@ var grapeSkin: Skin? {
     let bounds = UIScreen.main.bounds
     let width = bounds.width
     let height = bounds.height
-    let safeAreaInsets = UIApplication.shared.windows[0].safeAreaInsets
+    
+    let window = if #available(iOS 16, *) {
+        UIApplication.shared.window
+    } else {
+        UIApplication.shared.windows[0]
+    }
+    
+    guard let window else {
+        return nil
+    }
+    
+    let safeAreaInsets = window.safeAreaInsets
     
     var machine = machine
 #if targetEnvironment(simulator)

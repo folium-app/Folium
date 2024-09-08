@@ -21,7 +21,7 @@ public struct LayoutManager {
             let topItem = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1 / columns), heightDimension: .estimated(300)))
             let bottomItem = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1 / (isLandscape ? bottomColumns : columns)), heightDimension: .estimated(300)))
             
-            let topGroup: NSCollectionLayoutGroup = if #available(iOS 17, *) {
+            let topGroup: NSCollectionLayoutGroup = if #available(iOS 16, *) {
                 .horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(300)),
                             repeatingSubitem: topItem, count: Int(columns))
             } else {
@@ -30,7 +30,7 @@ public struct LayoutManager {
             }
             topGroup.interItemSpacing = .fixed(10)
             
-            let bottomGroup: NSCollectionLayoutGroup = if #available(iOS 17, *) {
+            let bottomGroup: NSCollectionLayoutGroup = if #available(iOS 16, *) {
                 .horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(300)),
                             repeatingSubitem: bottomItem, count: Int(isLandscape ? bottomColumns : columns))
             } else {
