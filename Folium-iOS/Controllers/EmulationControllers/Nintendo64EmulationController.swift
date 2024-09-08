@@ -63,11 +63,11 @@ typealias GuavaAudioCallback = @convention(c)(UnsafeMutableRawPointer?, UnsafeMu
         SDL_InitSubSystem(SDL_INIT_AUDIO)
         
         let callback: GuavaAudioCallback = { userdata, stream, len in
-            guard let userdata else {
-                return
-            }
+            // guard let userdata else {
+            //     return
+            // }
             
-            let viewController = Unmanaged<Nintendo64EmulationController>.fromOpaque(userdata).takeUnretainedValue()
+            // let viewController = Unmanaged<Nintendo64EmulationController>.fromOpaque(userdata).takeUnretainedValue()
             // SDL_memcpy(stream, viewController.guava.audioBuffer(), Int(len))
         }
         

@@ -39,20 +39,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         window.tintColor = .systemGreen
+
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
         
-        let isTestingController = false
-        if isTestingController {
-            guard let skin = mangoSkin else {
-                return
-            }
+        if let version, let build {
+            let currentlyInstalledVersion = "\(version).\(build)"
             
-            window.rootViewController = ControllerTestEmulationController(skin: skin)
-            window.makeKeyAndVisible()
-        } else {
-            do {
-                try cleanupForLatestRelease(with: window)
-            } catch {
-                print(#function, error)
+            let currentlySavedVersion = UserDefaults.standard.string(forKey: "currentlySavedVersion")
+            if currentlySavedVersion == nil || currentlySavedVersion != currentlyInstalledVersion {
+                UserDefaults.standard.setValue(currentlyInstalledVersion, forKey: "currentlySavedVersion")
+                
+                window.rootViewController = ArchiveController()
+                window.makeKeyAndVisible()
+            } else {
+                try? configureMissingDirectories(for: LibraryManager.shared.cores.map { $0.rawValue })
+                configureAuthenticationStateListener()
             }
         }
         
@@ -100,7 +102,7 @@ extension SceneDelegate {
         _ = Auth.auth().addStateDidChangeListener { auth, user in
             if let rootViewController = window.rootViewController {
                 let viewController = if AppStoreCheck.shared.additionalFeaturesAreAllowed {
-                    if user == nil {
+                    if user == nil, !UserDefaults.standard.bool(forKey: "userSkippedAuthentication") {
                         AuthenticationController()
                     } else {
                         UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
@@ -113,7 +115,7 @@ extension SceneDelegate {
                 rootViewController.present(viewController, animated: true)
             } else {
                 window.rootViewController = if AppStoreCheck.shared.additionalFeaturesAreAllowed {
-                    if user == nil {
+                    if user == nil, !UserDefaults.standard.bool(forKey: "userSkippedAuthentication") {
                         AuthenticationController()
                     } else {
                         UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
@@ -129,40 +131,6 @@ extension SceneDelegate {
     
     fileprivate func configureMissingDirectories(for cores: [String]) throws {
         try DirectoryManager.shared.createMissingDirectoriesInDocumentsDirectory(for: cores)
-    }
-    
-    fileprivate func cleanupForLatestRelease(with window: UIWindow) throws {
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
-        
-        if let version, let build {
-            let currentlyInstalledVersion = "\(version).\(build)"
-            
-            let currentlySavedVersion = UserDefaults.standard.string(forKey: "currentlySavedVersion")
-            if currentlySavedVersion == nil || currentlySavedVersion != currentlyInstalledVersion {
-                if let bundleIdentifier = Bundle.main.bundleIdentifier {
-                    UserDefaults.standard.removePersistentDomain(forName: bundleIdentifier)
-                }
-                
-                let cores = LibraryManager.shared.cores.reduce(into: [String](), { partialResult, element in
-                    partialResult.append(element.description)
-                })
-                
-                do {
-                    try configureMissingDirectories(for: cores)
-                } catch {
-                    print(#function, error, error.localizedDescription)
-                }
-                
-                configureAuthenticationStateListener()
-                
-                UserDefaults.standard.set("\(version).\(build)", forKey: "currentlySavedVersion")
-            } else {
-                configureAuthenticationStateListener()
-            }
-        } else {
-            configureAuthenticationStateListener()
-        }
     }
     
     fileprivate func configureDefaultUserDefaults() {

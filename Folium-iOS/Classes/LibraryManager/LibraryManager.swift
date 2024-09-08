@@ -72,7 +72,7 @@ enum Feature {
          fastForward
 }
 
-enum Core : String, Codable, CustomStringConvertible, Hashable, @unchecked Sendable {
+enum Core : String, Codable, CaseIterable, CustomStringConvertible, Hashable, @unchecked Sendable {
     case cytrus = "Cytrus"
     case grape = "Grape"
     case guava = "Guava"
@@ -206,7 +206,7 @@ struct LibraryManager : @unchecked Sendable {
                 case let url as URL:
                     let attributes = try url.resourceValues(forKeys: [.isRegularFileKey])
                     if let isRegularFile = attributes.isRegularFile, isRegularFile {
-                        let extensions: [String] = ["gb", "gbc", "gba", "3ds", "ds", "nds", "dsi", "n64", "z64", "cue", "sfc", "smc"]
+                        let extensions: [String] = ["gb", "gbc", "gba", "3ds", "app", "ds", "nds", "dsi", "n64", "z64", "cue", "sfc", "smc"]
                         if extensions.contains(url.pathExtension.lowercased()) {
                             print("\(#function): success: \(url.lastPathComponent)")
                             

@@ -45,10 +45,12 @@
 		E63D9EC32C33BF560038257F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E63D9EC22C33BF560038257F /* FirebaseAuth */; };
 		E63E90642C6F3B9E00F318A0 /* Bundle.swift in Resources */ = {isa = PBXBuildFile; fileRef = E63E90632C6F3B9E00F318A0 /* Bundle.swift */; };
 		E641265A2C5B553900C060A4 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64126592C5B553900C060A4 /* CGFloat.swift */; };
-		E64126622C5B669400C060A4 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E64126602C5B669400C060A4 /* MoltenVK.xcframework */; };
-		E64126632C5B669D00C060A4 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E64126602C5B669400C060A4 /* MoltenVK.xcframework */; };
-		E64126642C5B669D00C060A4 /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E64126602C5B669400C060A4 /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6496A6F2C63EA88002594CD /* ControllerTestEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6496A6E2C63EA88002594CD /* ControllerTestEmulationController.swift */; };
+		E655B40C2C8CEC2900DE2AAD /* ArchiveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E655B40B2C8CEC2900DE2AAD /* ArchiveController.swift */; };
+		E655B40F2C8CED6F00DE2AAD /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = E655B40E2C8CED6F00DE2AAD /* ZIPFoundation */; };
+		E655B4112C8D5ED200DE2AAD /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = E655B4102C8D5ED200DE2AAD /* UIApplication.swift */; };
+		E655B4142C8D636300DE2AAD /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E655B4122C8D635A00DE2AAD /* MoltenVK.xcframework */; };
+		E655B4152C8D636300DE2AAD /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E655B4122C8D635A00DE2AAD /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E659A1D72C522A960040D803 /* ControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E659A1D52C522A960040D803 /* ControllerView.swift */; };
 		E659A1D82C522A960040D803 /* ControllerThumbstick.swift in Sources */ = {isa = PBXBuildFile; fileRef = E659A1D42C522A960040D803 /* ControllerThumbstick.swift */; };
 		E659A1D92C522A960040D803 /* ControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E659A1D32C522A960040D803 /* ControllerButton.swift */; };
@@ -535,7 +537,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E64126642C5B669D00C060A4 /* MoltenVK.xcframework in Embed Frameworks */,
+				E655B4152C8D636300DE2AAD /* MoltenVK.xcframework in Embed Frameworks */,
 				E667BEC32C4793E200DB0327 /* libavutil.xcframework in Embed Frameworks */,
 				E667BEC52C4793E200DB0327 /* libswresample.xcframework in Embed Frameworks */,
 				E667BEBF2C4793E200DB0327 /* libavfilter.xcframework in Embed Frameworks */,
@@ -608,9 +610,11 @@
 		E63D9EBD2C33BB170038257F /* Folium-tvOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Folium-tvOS.entitlements"; sourceTree = "<group>"; };
 		E63E90632C6F3B9E00F318A0 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		E64126592C5B553900C060A4 /* CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloat.swift; sourceTree = "<group>"; };
-		E64126602C5B669400C060A4 /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
 		E6496A6C2C63E851002594CD /* libZydis.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libZydis.xcframework; sourceTree = "<group>"; };
 		E6496A6E2C63EA88002594CD /* ControllerTestEmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerTestEmulationController.swift; sourceTree = "<group>"; };
+		E655B40B2C8CEC2900DE2AAD /* ArchiveController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveController.swift; sourceTree = "<group>"; };
+		E655B4102C8D5ED200DE2AAD /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		E655B4122C8D635A00DE2AAD /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
 		E659A1D32C522A960040D803 /* ControllerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerButton.swift; sourceTree = "<group>"; };
 		E659A1D42C522A960040D803 /* ControllerThumbstick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerThumbstick.swift; sourceTree = "<group>"; };
 		E659A1D52C522A960040D803 /* ControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerView.swift; sourceTree = "<group>"; };
@@ -1095,7 +1099,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E62BC9F02C64B2300000CFB2 /* libZydis.xcframework in Frameworks */,
-				E64126622C5B669400C060A4 /* MoltenVK.xcframework in Frameworks */,
 				E6C615542C47896100DE0CD6 /* libswscale.xcframework in Frameworks */,
 				E6C6153F2C47894800DE0CD6 /* libSPIRV.xcframework in Frameworks */,
 				E6C615522C47896100DE0CD6 /* libswresample.xcframework in Frameworks */,
@@ -1136,13 +1139,14 @@
 			files = (
 				E626CA342C58A65A00CA2B9F /* SDL in Frameworks */,
 				E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */,
+				E655B4142C8D636300DE2AAD /* MoltenVK.xcframework in Frameworks */,
+				E655B40F2C8CED6F00DE2AAD /* ZIPFoundation in Frameworks */,
 				E667C07A2C47C7F700DB0327 /* CoreHaptics.framework in Frameworks */,
 				E6A483BD2C36917800CFA6DA /* DirectoryManager in Frameworks */,
 				E667BEC62C4793E200DB0327 /* libswscale.xcframework in Frameworks */,
 				E6101AB12C63FC0F00AEF0B5 /* Grape in Frameworks */,
 				E667C0782C47C7EA00DB0327 /* OpenSSL in Frameworks */,
 				E667BEC42C4793E200DB0327 /* libswresample.xcframework in Frameworks */,
-				E64126632C5B669D00C060A4 /* MoltenVK.xcframework in Frameworks */,
 				E6106E722C79C5210045A2C4 /* Mango in Frameworks */,
 				E667BEBE2C4793E200DB0327 /* libavfilter.xcframework in Frameworks */,
 				E667BEBC2C4793E200DB0327 /* libavcodec.xcframework in Frameworks */,
@@ -1246,6 +1250,7 @@
 			children = (
 				E66C99BB2C64C35F002664BE /* SettingsControllers */,
 				E61CD9932C4F986400C7775B /* EmulationControllers */,
+				E655B40B2C8CEC2900DE2AAD /* ArchiveController.swift */,
 				E62345E02C33D2650061FE55 /* AuthenticationController.swift */,
 				E6A483B42C36766800CFA6DA /* LibraryController.swift */,
 			);
@@ -1261,6 +1266,7 @@
 				E67D13FE2C366117000C46BD /* CIImage.swift */,
 				E667C1052C47F6E500DB0327 /* Data.swift */,
 				E62345E22C33D2810061FE55 /* String.swift */,
+				E655B4102C8D5ED200DE2AAD /* UIApplication.swift */,
 				E667C1032C47EE1300DB0327 /* UIImage.swift */,
 				E6A483B62C36774500CFA6DA /* UINavigationItem.swift */,
 				E62345E32C33D2810061FE55 /* UIViewController.swift */,
@@ -2575,7 +2581,7 @@
 				E6C614C92C4788E800DE0CD6 /* libswscale.xcframework */,
 				E667BEB72C4793AC00DB0327 /* libteakra.xcframework */,
 				E6496A6C2C63E851002594CD /* libZydis.xcframework */,
-				E64126602C5B669400C060A4 /* MoltenVK.xcframework */,
+				E655B4122C8D635A00DE2AAD /* MoltenVK.xcframework */,
 			);
 			path = XCFrameworks;
 			sourceTree = "<group>";
@@ -2684,6 +2690,7 @@
 				E6101AB02C63FC0F00AEF0B5 /* Grape */,
 				E6106E712C79C5210045A2C4 /* Mango */,
 				E6FA9F602C818EF80034BBD1 /* libyuv */,
+				E655B40E2C8CED6F00DE2AAD /* ZIPFoundation */,
 			);
 			productName = Folium;
 			productReference = E690A6A82C33B09E00652203 /* Folium-iOS.app */;
@@ -2727,6 +2734,7 @@
 				E667C0762C47C7E900DB0327 /* XCRemoteSwiftPackageReference "OpenSSL" */,
 				E626CA322C58A65A00CA2B9F /* XCRemoteSwiftPackageReference "SwiftSDL2" */,
 				E6FA9F582C818D350034BBD1 /* XCRemoteSwiftPackageReference "libyuv" */,
+				E655B40D2C8CED6F00DE2AAD /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			productRefGroup = E690A6A92C33B09E00652203 /* Products */;
 			projectDirPath = "";
@@ -3177,6 +3185,7 @@
 				E659A1E42C522AB60040D803 /* Screen.swift in Sources */,
 				E659A1E62C522AB60040D803 /* Thumbstick.swift in Sources */,
 				E659A1E72C522AB60040D803 /* Button.swift in Sources */,
+				E655B4112C8D5ED200DE2AAD /* UIApplication.swift in Sources */,
 				E659A1E82C522AB60040D803 /* Orientation.swift in Sources */,
 				E6D6AA722C8AE3140003919F /* CytrusKeyboardController.swift in Sources */,
 				E659A1E92C522AB60040D803 /* Skin.swift in Sources */,
@@ -3202,6 +3211,7 @@
 				E667C0722C47C6C000DB0327 /* LibraryManager.swift in Sources */,
 				E659A1D72C522A960040D803 /* ControllerView.swift in Sources */,
 				E6FA9F572C8181720034BBD1 /* MangoSkin.swift in Sources */,
+				E655B40C2C8CEC2900DE2AAD /* ArchiveController.swift in Sources */,
 				E60707982C7DC792009DCA23 /* Machine.swift in Sources */,
 				E659A1D82C522A960040D803 /* ControllerThumbstick.swift in Sources */,
 				E66BBFB92C578E29007B0F0A /* PlayStation1Game.swift in Sources */,
@@ -3549,7 +3559,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3571,7 +3581,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.8;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
@@ -3599,7 +3609,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3621,7 +3631,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.8;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
@@ -3704,6 +3714,14 @@
 				kind = branch;
 			};
 		};
+		E655B40D2C8CED6F00DE2AAD /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.19;
+			};
+		};
 		E667C0762C47C7E900DB0327 /* XCRemoteSwiftPackageReference "OpenSSL" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krzyzanowskim/OpenSSL";
@@ -3755,6 +3773,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E63D9EBE2C33BF3B0038257F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		E655B40E2C8CED6F00DE2AAD /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E655B40D2C8CED6F00DE2AAD /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
 		};
 		E667C0772C47C7EA00DB0327 /* OpenSSL */ = {
 			isa = XCSwiftPackageProductDependency;

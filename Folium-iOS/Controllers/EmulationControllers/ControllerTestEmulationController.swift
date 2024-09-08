@@ -40,7 +40,7 @@ class ControllerTestEmulationController : UIViewController {
         }
         
         controllerView = .init(orientation: orientation, skin: skin, delegates: (self, self))
-        guard let controllerView, let screensView = controllerView.screensView else {
+        guard let controllerView else {
             return
         }
         

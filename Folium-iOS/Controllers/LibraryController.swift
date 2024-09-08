@@ -53,7 +53,7 @@ class LibraryController: UICollectionViewController {
                     self.openDocumentPickerController()
                 })
             ]),
-            UIMenu(title: "Core Settings", options: .displayInline, children: [
+            UIMenu(title: "Core Settings", options: .displayInline, preferredElementSize: .small, children: [
                 UIAction(title: "Cytrus", handler: { _ in
                     var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
                     configuration.headerMode = .supplementary
@@ -75,23 +75,30 @@ class LibraryController: UICollectionViewController {
                 // UIAction(title: "Mango", attributes: [.disabled], handler: { _ in })
             ])
         ]
-        if AppStoreCheck.shared.additionalFeaturesAreAllowed, Auth.auth().currentUser != nil {
-            children.append(UIMenu(title: "Account Settings", options: .displayInline, children: [
-                // UIAction(title: "View Account", image: .init(systemName: "person.text.rectangle"), handler: { _ in
-                //
-                // }),
-                UIAction(title: "Sign Out", image: .init(systemName: "arrow.right"), attributes: [.destructive], handler: { _ in
-                    do {
-                        try Auth.auth().signOut()
-                        
+        if AppStoreCheck.shared.additionalFeaturesAreAllowed {
+            if Auth.auth().currentUser == nil {
+                children.append(UIMenu(title: "Account Settings", options: .displayInline, children: [
+                    UIAction(title: "Sign In", image: .init(systemName: "arrow.right"), handler: { _ in
                         let authenticationController = AuthenticationController()
                         authenticationController.modalPresentationStyle = .fullScreen
                         self.present(authenticationController, animated: true)
-                    } catch {
-                        print(#function, error, error.localizedDescription)
-                    }
-                })
-            ]))
+                    })
+                ]))
+            } else {
+                children.append(UIMenu(title: "Account Settings", options: .displayInline, children: [
+                    UIAction(title: "Sign Out", image: .init(systemName: "arrow.right"), attributes: [.destructive], handler: { _ in
+                        do {
+                            try Auth.auth().signOut()
+                            
+                            let authenticationController = AuthenticationController()
+                            authenticationController.modalPresentationStyle = .fullScreen
+                            self.present(authenticationController, animated: true)
+                        } catch {
+                            print(#function, error, error.localizedDescription)
+                        }
+                    })
+                ]))
+            }
         }
         button.menu = .init(children: children)
         button.showsMenuAsPrimaryAction = true
@@ -213,7 +220,7 @@ extension LibraryController: UIDocumentPickerDelegate {
                     case "gba":
                         documentDirectory.appendingPathComponent("Tomato", conformingTo: .folder)
                             .appendingPathComponent("roms", conformingTo: .folder)
-                    case "ds", "dsi", "nds":
+                    case "ds", "nds":
                         documentDirectory.appendingPathComponent("Grape", conformingTo: .folder)
                             .appendingPathComponent("roms", conformingTo: .folder)
                     case "3ds", "app", "cci", "cxi":
@@ -222,7 +229,7 @@ extension LibraryController: UIDocumentPickerDelegate {
                     case "n64", "z64":
                         documentDirectory.appendingPathComponent("Guava", conformingTo: .folder)
                             .appendingPathComponent("roms", conformingTo: .folder)
-                    case "cue":
+                    case "bin", "cue":
                         documentDirectory.appendingPathComponent("Lychee", conformingTo: .folder)
                             .appendingPathComponent("roms", conformingTo: .folder)
                     case "sfc", "smc":
@@ -525,7 +532,7 @@ extension LibraryController {
         LibraryManager.shared.cores.forEach { core in
             snapshot.appendItems(games.filter {
                 $0.core == core.rawValue
-            }, toSection: core)
+            }.sorted(by: { $0.title < $1.title }), toSection: core)
         }
         
         Task { await dataSource.apply(snapshot) }
