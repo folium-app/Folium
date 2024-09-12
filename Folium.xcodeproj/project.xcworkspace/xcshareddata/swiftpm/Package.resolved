@@ -1,5 +1,5 @@
 {
-  "originHash" : "b14935db7a843fdad0218749c25eba20ec7ab79c8228e12861df36c0525df40e",
+  "originHash" : "b00d01a6de5d5c9e561a1ac0fb79da5d0a45b58c175f35361edf51e07eaa34bf",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -25,7 +25,7 @@
       "location" : "https://github.com/firebase/firebase-ios-sdk",
       "state" : {
         "branch" : "main",
-        "revision" : "2f6ac4c2c61cd57c7ea727009e187b7e1163d613"
+        "revision" : "16dd4eed59bc6828d5319a1e75d3aa239430a6a6"
       }
     },
     {
@@ -132,8 +132,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",
       "state" : {
-        "revision" : "564597ad2fe2513a94dd8f3ba27ea2ff4be3cb37",
-        "version" : "1.28.0"
+        "revision" : "edb6ed4919f7756157fe02f2552b7e3850a538e5",
+        "version" : "1.28.1"
       }
     },
     {
@@ -143,15 +143,6 @@
       "state" : {
         "revision" : "30a2886bd68e43fc19ba29b63ffe230ac0e4db7a",
         "version" : "1.4.1"
-      }
-    },
-    {
-      "identity" : "zipfoundation",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/weichsel/ZIPFoundation",
-      "state" : {
-        "revision" : "02b6abe5f6eef7e3cbd5f247c5cc24e246efcfe0",
-        "version" : "0.9.19"
       }
     },
     {

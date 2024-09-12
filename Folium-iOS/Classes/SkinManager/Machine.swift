@@ -87,25 +87,24 @@ enum Machine : String, Codable, CaseIterable, Hashable {
     case iPadPro5Gen_9 = "iPad13,10"
     case iPadPro5Gen_10 = "iPad13,11"
 
-    case iPadPro6Gen_1 = "iPad" // TODO: iPad Pro (11-inch) (4th generation)
-    case iPadPro6Gen_2 = "iPad" // TODO: iPad Pro (11-inch) (4th generation)
+    // case iPadPro6Gen_1 = "iPad" // TODO: iPad Pro (11-inch) (4th generation)
+    // case iPadPro6Gen_2 = "iPad" // TODO: iPad Pro (11-inch) (4th generation)
 
-    case iPadPro6Gen_3 = "iPad" // TODO: iPad Pro (11-inch) (4th generation)
-    case iPadPro6Gen_4 = "iPad" // TODO: iPad Pro (11-inch) (4th generation)
+    case iPadPro6Gen_1 = "iPad14,3" // TODO: iPad Pro (11-inch) (4th generation)
+    case iPadPro6Gen_2 = "iPad14,4" // TODO: iPad Pro (11-inch) (4th generation)
+    
+    case iPadPro6Gen_3 = "iPad14,5" // TODO: iPad Pro (12.9-inch) (6th generation)
+    case iPadPro6Gen_4 = "iPad14,6" // TODO: iPad Pro (12.9-inch) (6th generation)
 
-    case iPadPro6Gen_1 = "iPad" // TODO: iPad Pro (12.9-inch) (6th generation)
-    case iPadPro6Gen_2 = "iPad" // TODO: iPad Pro (12.9-inch) (6th generation)
-
-    case iPadPro6Gen_3 = "iPad" // TODO: iPad Pro (12.9-inch) (6th generation)
-    case iPadPro6Gen_4 = "iPad" // TODO: iPad Pro (12.9-inch) (6th generation)
+    // case iPadPro6Gen_1 = "iPad" // TODO: iPad Pro (12.9-inch) (6th generation)
+    // case iPadPro6Gen_2 = "iPad" // TODO: iPad Pro (12.9-inch) (6th generation)
 
     case iPadPro7Gen_1 = "iPad16,3" // 11-in (M4)
     case iPadPro7Gen_2 = "iPad16,4" // 11-in (M4)
 
-    case iPadPro7Gen_1 = "iPad16,5" // 13-in (M4)
-    case iPadPro7Gen_2 = "iPad16,6" // 13-in (M4)
-
-
+    case iPadPro7Gen_3 = "iPad16,5" // 13-in (M4)
+    case iPadPro7Gen_4 = "iPad16,6" // 13-in (M4)
+    
     case iPhone8_1 = "iPhone10,1"
     case iPhone8_2 = "iPhone10,4"
 
@@ -205,14 +204,10 @@ enum Machine : String, Codable, CaseIterable, Hashable {
         iPadPro6Gen_2,
         iPadPro6Gen_3,
         iPadPro6Gen_4,
-        iPadPro6Gen_1,
-        iPadPro6Gen_2,
-        iPadPro6Gen_3,
-        iPadPro6Gen_4,
         iPadPro7Gen_1,
         iPadPro7Gen_2,
-        iPadPro7Gen_1,
-        iPadPro7Gen_2
+        iPadPro7Gen_3,
+        iPadPro7Gen_4
     ]
 
     static let iPhone: [Machine] = [

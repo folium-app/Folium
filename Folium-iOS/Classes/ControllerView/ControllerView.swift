@@ -143,13 +143,17 @@ class ControllerView : PassthroughView {
     
     func hide() {
         UIView.transition(with: self, duration: 0.2) {
-            self.alpha = 0
+            self.subviews.filter {
+                $0.isKind(of: ControllerButton.classForCoder()) || $0.isKind(of: ControllerThumbstick.classForCoder())
+            }.forEach { $0.alpha = 0 }
         }
     }
     
     func show() {
         UIView.transition(with: self, duration: 0.2) {
-            self.alpha = 1
+            self.subviews.filter {
+                $0.isKind(of: ControllerButton.classForCoder()) || $0.isKind(of: ControllerThumbstick.classForCoder())
+            }.forEach { $0.alpha = 1 }
         }
     }
 }

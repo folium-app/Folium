@@ -10,3 +10,6 @@
 [submodule "Mango"]
 	path = Cores/Mango
 	url = https://github.com/folium-app/Mango
+[submodule "Tomato"]
+	path = Cores/Tomato
+	url = https://github.com/folium-app/Tomato

@@ -36,7 +36,7 @@ var mangoSkin: Skin? {
     }
     
     switch machine {
-    case .iPhoneSE2, .iPhoneSE3, .iPhone12Mini, .iPhone13Mini:
+    case .iPhoneSE2Gen_1, .iPhoneSE3Gen_1, .iPhone12_1, .iPhone13_1:
         let lrzlzrButtonHeight = Double(45 * (3 / 2))
         
         let portrait: Orientation = .init(buttons: [
@@ -66,13 +66,7 @@ var mangoSkin: Skin? {
                      orientations: .init(portrait: portrait,
                                          supportedDevices: Machine.iPhone_mini),
                      title: "Default Skin")
-    case .iPhone8, .iPhone8Plus, .iPhoneX, .iPhoneXGSM,
-            .iPhoneXR, .iPhoneXS, .iPhoneXSMax, .iPhoneXSMaxGlobal,
-            .iPhone11, .iPhone11Pro, .iPhone11ProMax, .iPhone12,
-            .iPhone12Pro, .iPhone12ProMax, .iPhone13, .iPhone13Pro,
-            .iPhone13ProMax, .iPhone14, .iPhone14Plus, .iPhone14Pro,
-            .iPhone14ProMax, .iPhone15, .iPhone15Plus, .iPhone15Pro,
-            .iPhone15ProMax:
+    case .iPhone8_1, .iPhone8_2, .iPhone8_3, .iPhone8_4, .iPhoneX_1, .iPhoneX_2, .iPhoneXR_1, .iPhoneXS_1, .iPhoneXS_2, .iPhoneXS_3, .iPhone11_1, .iPhone11_2, .iPhone11_3, .iPhone12_2, .iPhone12_3, .iPhone12_4, .iPhone13_2, .iPhone13_3, .iPhone13_4, .iPhone14_1, .iPhone14_2, .iPhone14_3, .iPhone14_4, .iPhone15_1, .iPhone15_2, .iPhone15_3, .iPhone15_4:
         let portrait: Orientation = .init(buttons: [
             .init(x: width - (50 + 10 + safeAreaInsets.right), y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .a),
             .init(x: width - (100 + 10 + safeAreaInsets.right), y: height - (50 + safeAreaInsets.bottom), width: 50, height: 50, type: .b),
@@ -100,13 +94,7 @@ var mangoSkin: Skin? {
                      orientations: .init(portrait: portrait,
                                          supportedDevices: Machine.iPhone),
                      title: "Default Skin")
-    case .iPadPro12_9_1stGen, .iPadPro12_9_2ndGen, .iPadPro12_9_3rdGen, .iPadPro12_9_4thGen,
-            .iPadPro12_9_5thGen, .iPadPro12_9_6thGen, .iPadPro12_9_7thGen, .iPadPro11_1stGen,
-            .iPadPro11_2ndGen, .iPadPro11_3rdGen, .iPadPro11_4thGen, .iPadPro11_5thGen,
-            .iPadPro11_6thGen, .iPadPro11_7thGen, .iPad10thGen, .iPad9thGen,
-            .iPad8thGen, .iPad7thGen, .iPad6thGen, .iPad5thGen,
-            .iPadMini5thGen, .iPadMini6thGen, .iPadAir3rdGen, .iPadAir4thGen,
-            .iPadAir5thGen, .iPadAir6thGen, .iPadAir7thGen:
+    case .iPad10Gen_1, .iPad10Gen_2, .iPad9Gen_1, .iPad9Gen_2, .iPad8Gen_1, .iPad8Gen_2, .iPad7Gen_1, .iPad7Gen_2, .iPad6Gen_1, .iPad6Gen_2, .iPad5Gen_1, .iPad5Gen_2, .iPadAir6Gen_1, .iPadAir6Gen_2, .iPadAir6Gen_3, .iPadAir6Gen_4, .iPadAir5Gen_1, .iPadAir5Gen_2, .iPadAir4Gen_1, .iPadAir4Gen_2, .iPadMini6Gen_1, .iPadMini6Gen_2, .iPadMini5Gen_1, .iPadMini5Gen_2, .iPadPro_1, .iPadPro_2, .iPadPro_3, .iPadPro_4, .iPadPro2Gen_1, .iPadPro2Gen_2, .iPadPro2Gen_3, .iPadPro2Gen_4, .iPadPro3Gen_1, .iPadPro3Gen_2, .iPadPro3Gen_3, .iPadPro3Gen_4, .iPadPro3Gen_5, .iPadPro3Gen_6, .iPadPro3Gen_7, .iPadPro3Gen_8, .iPadPro4Gen_1, .iPadPro4Gen_2, .iPadPro5Gen_1, .iPadPro5Gen_2, .iPadPro5Gen_3, .iPadPro5Gen_4, .iPadPro5Gen_5, .iPadPro5Gen_6, .iPadPro5Gen_7, .iPadPro5Gen_8, .iPadPro5Gen_9, .iPadPro5Gen_10, .iPadPro6Gen_1, .iPadPro6Gen_2, .iPadPro6Gen_3, .iPadPro6Gen_4, .iPadPro7Gen_1, .iPadPro7Gen_2, .iPadPro7Gen_3, .iPadPro7Gen_4:
         let portrait: Orientation = .init(buttons: [
             .init(x: width - (50 + 10 + safeAreaInsets.right), y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .a),
             .init(x: width - (100 + 10 + safeAreaInsets.right), y: height - (50 + safeAreaInsets.bottom), width: 50, height: 50, type: .b),

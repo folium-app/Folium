@@ -5,10 +5,12 @@
 //  Created by Jarrod Norwell on 4/7/2024.
 //
 
+import AppleArchive
 import Cytrus
 import Firebase
 import FirebaseAuth
 import Foundation
+import System
 import UIKit
 
 class LibraryController: UICollectionViewController {
@@ -109,6 +111,91 @@ class LibraryController: UICollectionViewController {
         beginConfiguringCollectionView()
         
         populateGameLibrary()
+        
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        if UserDefaults.standard.bool(forKey: "shouldShowArchived") {
+            let alertController = UIAlertController(title: "Archived", message: "Archive has been performed, previously available games and system files can now be found within the Files app inside of the archive.aar archive\n\nArchive ensures a smooth transition between updates by resetting each cores directory structure", preferredStyle: .alert)
+            alertController.addAction(.init(title: "Dismiss", style: .cancel, handler: { _ in
+                self.extractArchivedDocumentsDirectoryIfPossible()
+            }))
+            alertController.addAction(.init(title: "Open Files", style: .default, handler: { _ in
+                if let sharedUrl = URL(string: "shareddocuments://\(documentsDirectory.path)") {
+                    if UIApplication.shared.canOpenURL(sharedUrl) {
+                        UIApplication.shared.open(sharedUrl, options: [:])
+                    }
+                }
+            }))
+            present(alertController, animated: true)
+            
+            
+            UserDefaults.standard.set(false, forKey: "shouldShowArchived")
+        }
+        
+        extractArchivedDocumentsDirectoryIfPossible()
+    }
+    
+    func extractArchivedDocumentsDirectoryIfPossible() {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        if FileManager.default.fileExists(atPath: documentsDirectory.appending(component: "archive.aar").path) {
+            let alertController = UIAlertController(title: "Extract",
+                                                    message: "Do you want to extract the previous archive.aar returning Folium to its previous state?\n\nFolium may appear frozen during this operation, please wait until it is finished and your games are displayed",
+                                                    preferredStyle: .alert)
+            alertController.addAction(.init(title: "Dismiss", style: .cancel))
+            alertController.addAction(.init(title: "Extract", style: .default, handler: { _ in
+                do {
+                    let archiveFilePath = FilePath(documentsDirectory.appending(component: "archive.aar").path)
+
+
+                    guard let readFileStream = ArchiveByteStream.fileStream(
+                            path: archiveFilePath,
+                            mode: .readOnly,
+                            options: [ ],
+                            permissions: FilePermissions(rawValue: 0o644)) else {
+                        return
+                    }
+                    
+                    defer {
+                        try? readFileStream.close()
+                    }
+                    
+                    guard let decompressStream = ArchiveByteStream.decompressionStream(readingFrom: readFileStream) else {
+                        return
+                    }
+                    
+                    defer {
+                        try? decompressStream.close()
+                    }
+                    
+                    guard let decodeStream = ArchiveStream.decodeStream(readingFrom: decompressStream) else {
+                        print("unable to create decode stream")
+                        return
+                    }
+                    
+                    defer {
+                        try? decodeStream.close()
+                    }
+                    
+                    let decompressDestination = FilePath(documentsDirectory.path)
+                    
+                    guard let extractStream = ArchiveStream.extractStream(extractingTo: decompressDestination,
+                                                                          flags: [ .ignoreOperationNotPermitted ]) else {
+                        return
+                    }
+                    
+                    defer {
+                        try? extractStream.close()
+                    }
+                    
+                    _ = try ArchiveStream.process(readingFrom: decodeStream,
+                                                      writingTo: extractStream)
+                    
+                    try FileManager.default.removeItem(atPath: archiveFilePath.string)
+                    
+                    self.populateGameLibrary()
+                } catch {}
+            }))
+            present(alertController, animated: true)
+        }
     }
     
     @objc func refreshGameLibrary(_ refreshControl: UIRefreshControl) {

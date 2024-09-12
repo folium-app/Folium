@@ -227,7 +227,7 @@ class NintendoDSEmulationController : UIViewController {
                 if pressed {
                     self.touchBegan(with: .x)
                 } else {
-                    self.touchEnded(with: .y)
+                    self.touchEnded(with: .x)
                 }
             }
             

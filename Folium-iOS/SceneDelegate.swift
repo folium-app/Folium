@@ -40,21 +40,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window.tintColor = .systemGreen
 
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? NSString
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
         
         if let version, let build {
             let currentlyInstalledVersion = "\(version).\(build)"
-            
             let currentlySavedVersion = UserDefaults.standard.string(forKey: "currentlySavedVersion")
-            if currentlySavedVersion == nil || currentlySavedVersion != currentlyInstalledVersion {
-                UserDefaults.standard.setValue(currentlyInstalledVersion, forKey: "currentlySavedVersion")
+            
+            if version.doubleValue >= 1.10 {
+                if currentlySavedVersion == nil || currentlySavedVersion != currentlyInstalledVersion {
+                    UserDefaults.standard.setValue(currentlyInstalledVersion, forKey: "currentlySavedVersion")
+                }
                 
-                window.rootViewController = ArchiveController()
-                window.makeKeyAndVisible()
-            } else {
                 try? configureMissingDirectories(for: LibraryManager.shared.cores.map { $0.rawValue })
                 configureAuthenticationStateListener()
+            } else {
+                fallbackToArchiveFeature(window, currentlySavedVersion, currentlyInstalledVersion)
             }
         }
         
@@ -129,7 +130,7 @@ extension SceneDelegate {
         }
     }
     
-    fileprivate func configureMissingDirectories(for cores: [String]) throws {
+    func configureMissingDirectories(for cores: [String]) throws {
         try DirectoryManager.shared.createMissingDirectoriesInDocumentsDirectory(for: cores)
     }
     
@@ -183,6 +184,25 @@ extension SceneDelegate {
                     UserDefaults.standard.set(value, forKey: "\(core.lowercased()).\(key)")
                 }
             }
+        }
+    }
+    
+    
+    fileprivate func fallbackToArchiveFeature(_ window: UIWindow, _ currentlySavedVersion: String?, _ currentlyInstalledVersion: String?) {
+        if currentlySavedVersion == nil || currentlySavedVersion != currentlyInstalledVersion {
+            UserDefaults.standard.setValue(currentlyInstalledVersion, forKey: "currentlySavedVersion")
+            
+            if !FileManager.default.fileExists(atPath: FileManager.default.urls(for: .documentDirectory,
+                                                                                in: .userDomainMask)[0].appending(component: "archive.aar").path) {
+                window.rootViewController = ArchiveController()
+                window.makeKeyAndVisible()
+            } else {
+                try? configureMissingDirectories(for: LibraryManager.shared.cores.map { $0.rawValue })
+                configureAuthenticationStateListener()
+            }
+        } else {
+            try? configureMissingDirectories(for: LibraryManager.shared.cores.map { $0.rawValue })
+            configureAuthenticationStateListener()
         }
     }
 }

@@ -6,8 +6,10 @@
 //  Copyright © 2024 Jarrod Norwell. All rights reserved.
 //
 
-import Foundation
 import AppleArchive
+import FirebaseAuth
+import Foundation
+import LayoutManager
 import System
 import UIKit
 
@@ -104,18 +106,26 @@ class ArchiveController : UIViewController {
                 try FileManager.default.removeItem(at: $0)
             }
             
+            if let window = view.window, let windowScene = window.windowScene, let delegate = windowScene.delegate as? SceneDelegate {
+                try delegate.configureMissingDirectories(for: LibraryManager.shared.cores.map { $0.rawValue })
+            }
+            
             try FileManager.default.moveItem(atPath: archiveDestination, toPath: documentsDirectory.appending(component: "archive.aar").path)
         } catch {}
         
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        let viewController = if AppStoreCheck.shared.additionalFeaturesAreAllowed {
+            if Auth.auth().currentUser == nil, !UserDefaults.standard.bool(forKey: "userSkippedAuthentication") {
+                AuthenticationController()
+            } else {
+                UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
+            }
+        } else {
+            UINavigationController(rootViewController: LibraryController(collectionViewLayout: LayoutManager.shared.library))
+        }
         
-        let alertController = UIAlertController(title: "Archived",
-                                                message: "Folium has finished archiving the documents directory for v\(version ?? "1.8"), please reopen the app to configure the new documents directory",
-                                                preferredStyle: .alert)
-        alertController.addAction(.init(title: "Exit", style: .destructive, handler: { _ in
-            exit(0)
-        }))
+        UserDefaults.standard.set(true, forKey: "shouldShowArchived")
         
-        present(alertController, animated: true)
+        viewController.modalPresentationStyle = .fullScreen
+        present(viewController, animated: true)
     }
 }
