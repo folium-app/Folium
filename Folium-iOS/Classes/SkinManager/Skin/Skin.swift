@@ -39,4 +39,8 @@ struct Skin : Codable, Hashable {
             orientations.portrait
         }
     }
+    
+    func skinSupportsCurrentDevice() -> Bool {
+        orientations.supportedDevices.contains(where: { $0.rawValue == machine })
+    }
 }

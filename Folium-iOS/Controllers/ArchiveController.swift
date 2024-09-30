@@ -110,7 +110,13 @@ class ArchiveController : UIViewController {
                 try delegate.configureMissingDirectories(for: LibraryManager.shared.cores.map { $0.rawValue })
             }
             
-            try FileManager.default.moveItem(atPath: archiveDestination, toPath: documentsDirectory.appending(component: "archive.aar").path)
+            let aarURL = if #available(iOS 16, *) {
+                documentsDirectory.appending(component: "archive.aar")
+            } else {
+                documentsDirectory.appendingPathComponent("archive.aar")
+            }
+            
+            try FileManager.default.moveItem(atPath: archiveDestination, toPath: aarURL.path)
         } catch {}
         
         let viewController = if AppStoreCheck.shared.additionalFeaturesAreAllowed {

@@ -55,7 +55,11 @@ public struct DirectoryManager {
         
         try directories.forEach {
             if cores.contains($0) {
-                let coreDirectory = documentsDirectory.appending(component: $0)
+                let coreDirectory = if #available(iOS 16, *) {
+                    documentsDirectory.appending(component: $0)
+                } else {
+                    documentsDirectory.appendingPathComponent($0)
+                }
                 
                 if !FileManager.default.fileExists(atPath: coreDirectory.path) {
                     try FileManager.default.createDirectory(at: coreDirectory, withIntermediateDirectories: false)

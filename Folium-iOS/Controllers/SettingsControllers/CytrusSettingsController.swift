@@ -25,6 +25,24 @@ class BoolSetting : AnyHashableSendable, @unchecked Sendable {
     }
 }
 
+class InputSetting : AnyHashableSendable, @unchecked Sendable {
+    var key, title: String
+    var details: String?
+    var min, max, value: Double
+    
+    var delegate: SettingDelegate? = nil
+    
+    init(key: String, title: String, details: String? = nil, min: Double, max: Double, value: Double, delegate: SettingDelegate? = nil) {
+        self.key = key
+        self.title = title
+        self.details = details
+        self.min = min
+        self.max = max
+        self.value = value
+        self.delegate = delegate
+    }
+}
+
 class StepperSetting : AnyHashableSendable, @unchecked Sendable {
     var key, title: String
     var details: String?
@@ -108,6 +126,18 @@ class CytrusSettingsController : UICollectionViewController {
                     .customView(configuration: .init(customView: toggle, placement: .trailing()))
                 ]
             }
+        }
+        
+        let inputCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, InputSetting> { cell, indexPath, itemIdentifier in
+            var contentConfiguration = UIListContentConfiguration.valueCell()
+            contentConfiguration.text = itemIdentifier.title
+            contentConfiguration.secondaryText = "\(Int(itemIdentifier.value))"
+            contentConfiguration.secondaryTextProperties.color = .secondaryLabel
+            cell.contentConfiguration = contentConfiguration
+            
+            cell.accessories = [
+                .disclosureIndicator()
+            ]
         }
         
         let stepperCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, StepperSetting> { cell, indexPath, itemIdentifier in
@@ -229,6 +259,8 @@ class CytrusSettingsController : UICollectionViewController {
             switch itemIdentifier {
             case let boolSetting as BoolSetting:
                 collectionView.dequeueConfiguredReusableCell(using: boolCellRegistration, for: indexPath, item: boolSetting)
+            case let inputSetting as InputSetting:
+                collectionView.dequeueConfiguredReusableCell(using: inputCellRegistration, for: indexPath, item: inputSetting)
             case let stepperSetting as StepperSetting:
                 collectionView.dequeueConfiguredReusableCell(using: stepperCellRegistration, for: indexPath, item: stepperSetting)
             case let selectionSetting as SelectionSetting:
@@ -246,21 +278,27 @@ class CytrusSettingsController : UICollectionViewController {
         snapshot.appendSections([
             "Core",
             "Renderer",
-            "Audio",
-            "Tweaks"
+            "Audio"
         ])
         
         var coreItems = [
-            StepperSetting(key: "cytrus.cpuClockPercentage",
+            InputSetting(key: "cytrus.cpuClockPercentage",
+                         title: "CPU Clock Percentage",
+                         details: "Change the Clock Frequency of the emulated 3DS CPU\n\nUnderclocking can increase the performance of the game at the risk of freezing\n\nOverclocking may fix lag that happens on console, but also comes with the risk of freezing",
+                         min: 5,
+                         max: 200,
+                         value: UserDefaults.standard.double(forKey: "cytrus.cpuClockPercentage"),
+                         delegate: self),
+            /*StepperSetting(key: "cytrus.cpuClockPercentage",
                            title: "CPU Clock Percentage",
                            details: "Change the Clock Frequency of the emulated 3DS CPU\n\nUnderclocking can increase the performance of the game at the risk of freezing\n\nOverclocking may fix lag that happens on console, but also comes with the risk of freezing",
                            min: 5,
                            max: 200,
                            value: UserDefaults.standard.double(forKey: "cytrus.cpuClockPercentage"),
-                           delegate: self),
+                           delegate: self),*/
             BoolSetting(key: "cytrus.new3DS",
                         title: "New 3DS",
-                        details: "The system model that Mandarine will try to emulate",
+                        details: "The system model that Cytrus will try to emulate",
                         value: UserDefaults.standard.bool(forKey: "cytrus.new3DS"),
                         delegate: self),
             BoolSetting(key: "cytrus.lleApplets",
@@ -270,7 +308,7 @@ class CytrusSettingsController : UICollectionViewController {
                         delegate: self),
             SelectionSetting(key: "cytrus.regionValue",
                              title: "Console Region",
-                             details: "The system region that Mandarine will use during emulation",
+                             details: "The system region that Cytrus will use during emulation",
                              values: [
                                 "Automatic" : -1,
                                 "Japan" : 0,
@@ -417,10 +455,6 @@ class CytrusSettingsController : UICollectionViewController {
                         title: "Audio Stretching",
                         details: "Stretches audio to reduce stuttering. When enabled, increases audio latency and slightly reduces performance",
                         value: UserDefaults.standard.bool(forKey: "cytrus.audioStretching")),
-            BoolSetting(key: "cytrus.realtimeAudio",
-                        title: "Realtime Audio",
-                        details: "Scales audio playback speed to account for drops in emulation framerate",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.realtimeAudio")),
             SelectionSetting(key: "cytrus.outputType",
                              title: "Output Type",
                              values: [
@@ -443,34 +477,6 @@ class CytrusSettingsController : UICollectionViewController {
                              delegate: self)
         ], toSection: "Audio")
         
-        snapshot.appendItems([
-            BoolSetting(key: "cytrus.hardwareVertexShaders",
-                        title: "Force Hardware Vertex Shaders",
-                        details: "Ignores software vertex shaders from PICA core",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.hardwareVertexShaders"),
-                        delegate: self),
-            BoolSetting(key: "cytrus.surfaceTextureCopy",
-                        title: "Disable Surface Texture Copy",
-                        details: "Ignores texture copies if src_surface_id is null",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.surfaceTextureCopy"),
-                        delegate: self),
-            BoolSetting(key: "cytrus.flushCPUWrite",
-                        title: "Disable Flush CPU Write",
-                        details: "Ignores CPU write if there is a region to invalidate from rasterizer cache",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.flushCPUWrite"),
-                        delegate: self),
-            BoolSetting(key: "cytrus.priorityBoostStarvedThreads",
-                        title: "Priority Boost Starved Threads",
-                        details: "Boost low priority starved threads during kernel rescheduling",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.priorityBoostStarvedThreads"),
-                        delegate: self),
-            BoolSetting(key: "cytrus.reduceDowncountSlice",
-                        title: "Reduce Downcount Slice",
-                        details: "Downcount will be limited to a smaller time slice",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.reduceDowncountSlice"),
-                        delegate: self)
-        ], toSection: "Tweaks")
-        
         Task {
             await dataSource.apply(snapshot)
         }
@@ -478,6 +484,29 @@ class CytrusSettingsController : UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
+        switch dataSource.itemIdentifier(for: indexPath) {
+        case let inputSetting as InputSetting:
+            let alertController = UIAlertController(title: inputSetting.title, message: inputSetting.details?
+                .appending("\n\nMin: \(Int(inputSetting.min)), Max: \(Int(inputSetting.max))"),
+                                                    preferredStyle: .alert)
+            alertController.addTextField {
+                $0.keyboardType = .numberPad
+            }
+            alertController.addAction(.init(title: "Cancel", style: .cancel))
+            alertController.addAction(.init(title: "Save", style: .default, handler: { _ in
+                guard let textFields = alertController.textFields, let textField = textFields.first, let value = textField.text as? NSString else {
+                    return
+                }
+                
+                UserDefaults.standard.set(value.doubleValue, forKey: inputSetting.key)
+                if let delegate = inputSetting.delegate {
+                    delegate.didChangeSetting(at: indexPath)
+                }
+            }))
+            present(alertController, animated: true)
+        default:
+            break
+        }
     }
 }
 
@@ -495,6 +524,8 @@ extension CytrusSettingsController : SettingDelegate {
         switch item {
         case let boolSetting as BoolSetting:
             boolSetting.value = UserDefaults.standard.bool(forKey: boolSetting.key)
+        case let inputSetting as InputSetting:
+            inputSetting.value = UserDefaults.standard.double(forKey: inputSetting.key)
         case let stepperSetting as StepperSetting:
             stepperSetting.value = UserDefaults.standard.double(forKey: stepperSetting.key)
         case let selectionSetting as SelectionSetting:

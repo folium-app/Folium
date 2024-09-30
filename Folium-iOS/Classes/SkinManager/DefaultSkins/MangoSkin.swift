@@ -66,7 +66,7 @@ var mangoSkin: Skin? {
                      orientations: .init(portrait: portrait,
                                          supportedDevices: Machine.iPhone_mini),
                      title: "Default Skin")
-    case .iPhone8_1, .iPhone8_2, .iPhone8_3, .iPhone8_4, .iPhoneX_1, .iPhoneX_2, .iPhoneXR_1, .iPhoneXS_1, .iPhoneXS_2, .iPhoneXS_3, .iPhone11_1, .iPhone11_2, .iPhone11_3, .iPhone12_2, .iPhone12_3, .iPhone12_4, .iPhone13_2, .iPhone13_3, .iPhone13_4, .iPhone14_1, .iPhone14_2, .iPhone14_3, .iPhone14_4, .iPhone15_1, .iPhone15_2, .iPhone15_3, .iPhone15_4:
+    case .iPhone8_1, .iPhone8_2, .iPhone8_3, .iPhone8_4, .iPhoneX_1, .iPhoneX_2, .iPhoneXR_1, .iPhoneXS_1, .iPhoneXS_2, .iPhoneXS_3, .iPhone11_1, .iPhone11_2, .iPhone11_3, .iPhone12_2, .iPhone12_3, .iPhone12_4, .iPhone13_2, .iPhone13_3, .iPhone13_4, .iPhone14_1, .iPhone14_2, .iPhone14_3, .iPhone14_4, .iPhone15_1, .iPhone15_2, .iPhone15_3, .iPhone15_4, .iPhone16_1, .iPhone16_2, .iPhone16_3, .iPhone16_4:
         let portrait: Orientation = .init(buttons: [
             .init(x: width - (50 + 10 + safeAreaInsets.right), y: height - (100 + safeAreaInsets.bottom), width: 50, height: 50, type: .a),
             .init(x: width - (100 + 10 + safeAreaInsets.right), y: height - (50 + safeAreaInsets.bottom), width: 50, height: 50, type: .b),

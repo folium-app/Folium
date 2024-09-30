@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "LayoutManager",
     platforms: [
-        .iOS(.v16),
-        .tvOS(.v16)
+        .iOS(.v15),
+        .tvOS(.v15)
     ],
     products: [
         .library(name: "LayoutManager", targets: [

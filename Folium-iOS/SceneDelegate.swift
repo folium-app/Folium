@@ -161,15 +161,8 @@ extension SceneDelegate {
                 "audioMuted" : false,
                 "audioEmulation" : 0,
                 "audioStretching" : true,
-                "realtimeAudio" : false,
                 "outputType" : 0,
-                "inputType" : 0,
-                
-                "hardwareVertexShaders" : false,
-                "surfaceTextureCopy" : false,
-                "flushCPUWrite" : false,
-                "priorityBoostStarvedThreads" : true,
-                "reduceDowncountSlice" : false
+                "inputType" : 0
             ],
             "Grape" : [
                 "directBoot" : true,
@@ -192,8 +185,14 @@ extension SceneDelegate {
         if currentlySavedVersion == nil || currentlySavedVersion != currentlyInstalledVersion {
             UserDefaults.standard.setValue(currentlyInstalledVersion, forKey: "currentlySavedVersion")
             
-            if !FileManager.default.fileExists(atPath: FileManager.default.urls(for: .documentDirectory,
-                                                                                in: .userDomainMask)[0].appending(component: "archive.aar").path) {
+            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let aarURL = if #available(iOS 16, *) {
+                documentsDirectory.appending(component: "archive.aar")
+            } else {
+                documentsDirectory.appendingPathComponent("archive.aar")
+            }
+            
+            if !FileManager.default.fileExists(atPath: aarURL.path) {
                 window.rootViewController = ArchiveController()
                 window.makeKeyAndVisible()
             } else {

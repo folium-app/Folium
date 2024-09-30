@@ -30,8 +30,8 @@ enum Machine : String, Codable, CaseIterable, Hashable {
     case iPadAir6Gen_1 = "iPad14,10" // 13-in (M2)
     case iPadAir6Gen_2 = "iPad14,11" // 13-in (M2)
 
-    case iPadAir6Gen_3 = "iPad14,18" // 11-in (M2)
-    case iPadAir6Gen_4 = "iPad14,19" // 11-in (M2)
+    case iPadAir6Gen_3 = "iPad14,8" // 11-in (M2)
+    case iPadAir6Gen_4 = "iPad14,9" // 11-in (M2)
 
     case iPadAir5Gen_1 = "iPad13,16"
     case iPadAir5Gen_2 = "iPad13,17"
@@ -105,6 +105,7 @@ enum Machine : String, Codable, CaseIterable, Hashable {
     case iPadPro7Gen_3 = "iPad16,5" // 13-in (M4)
     case iPadPro7Gen_4 = "iPad16,6" // 13-in (M4)
     
+    
     case iPhone8_1 = "iPhone10,1"
     case iPhone8_2 = "iPhone10,4"
 
@@ -146,6 +147,11 @@ enum Machine : String, Codable, CaseIterable, Hashable {
     case iPhone15_2 = "iPhone15,5" // Plus
     case iPhone15_3 = "iPhone16,1" // Pro
     case iPhone15_4 = "iPhone16,2" // Pro Max
+    
+    case iPhone16_1 = "iPhone17,3"
+    case iPhone16_2 = "iPhone17,4" // Plus
+    case iPhone16_3 = "iPhone17,1" // Pro
+    case iPhone16_4 = "iPhone17,2" // Pro Max
 
     static let iPad: [Machine] = [
         iPad10Gen_1,
@@ -237,7 +243,11 @@ enum Machine : String, Codable, CaseIterable, Hashable {
         iPhone15_1,
         iPhone15_2,
         iPhone15_3,
-        iPhone15_4
+        iPhone15_4,
+        iPhone16_1,
+        iPhone16_2,
+        iPhone16_3,
+        iPhone16_4
     ]
 
     static let iPhone_mini: [Machine] = [

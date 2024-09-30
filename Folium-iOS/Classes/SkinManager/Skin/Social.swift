@@ -9,10 +9,13 @@ import Foundation
 
 struct Social : Codable, Hashable {
     enum `Type` : String, Codable, Hashable {
-        case twitter = "Twitter"
+        case discord = "discord"
+        case reddit = "reddit"
+        case twitter = "twitter"
+        case youtube = "youtube"
         
         enum CodingKeys : String, CodingKey {
-            case twitter = "X"
+            case twitter = "x" // gross
         }
     }
     

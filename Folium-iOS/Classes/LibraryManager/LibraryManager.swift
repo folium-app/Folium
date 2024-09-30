@@ -169,7 +169,11 @@ struct LibraryManager : @unchecked Sendable {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         var games: [GameBase] = []
         try cores.forEach { core in
-            let romsDirectory = documentsDirectory.appending(path: core.rawValue).appending(path: "roms")
+            var romsDirectory = if #available(iOS 16, *) {
+                documentsDirectory.appending(component: core.rawValue).appending(component: "roms")
+            } else {
+                documentsDirectory.appendingPathComponent(core.rawValue).appendingPathComponent("roms")
+            }
             
             if let enumerator = FileManager.default.enumerator(at: romsDirectory,
                                                                includingPropertiesForKeys: [.isRegularFileKey],
@@ -205,6 +209,14 @@ struct LibraryManager : @unchecked Sendable {
                                                                                      url: url),
                                                                   skins: skinManager.skins(for: .mango),
                                                                   title: try SuperNESGame.titleFromHeader(for: url)))
+                            case "gb", "gbc":
+                                partialResult.append(GameBoyGame(core: "Tomato",
+                                                                 fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                                                    name: url.lastPathComponent,
+                                                                                    nameWithoutExtension: nameWithoutExtension,
+                                                                                    url: url),
+                                                                 skins: skinManager.skins(for: .tomato),
+                                                                 title: try GameBoyGame.titleFromHeader(for: url)))
                             default:
                                 break
                             }

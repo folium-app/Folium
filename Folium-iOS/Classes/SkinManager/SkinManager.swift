@@ -35,7 +35,9 @@ class SkinManager {
                         var skin = try JSONDecoder().decode(Skin.self, from: data)
                         skin.url = url.deletingLastPathComponent()
                         
-                        skins.append(skin)
+                        if skin.skinSupportsCurrentDevice() {
+                            skins.append(skin)
+                        }
                     }
                 }
             default:

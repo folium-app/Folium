@@ -55,7 +55,7 @@ class LibraryController: UICollectionViewController {
                     self.openDocumentPickerController()
                 })
             ]),
-            UIMenu(title: "Core Settings", options: .displayInline, preferredElementSize: .small, children: [
+            UIMenu(title: "Core Settings", options: .displayInline, children: [
                 UIAction(title: "Cytrus", handler: { _ in
                     var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
                     configuration.headerMode = .supplementary
@@ -136,14 +136,20 @@ class LibraryController: UICollectionViewController {
     
     func extractArchivedDocumentsDirectoryIfPossible() {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        if FileManager.default.fileExists(atPath: documentsDirectory.appending(component: "archive.aar").path) {
+        let aarURL = if #available(iOS 16, *) {
+            documentsDirectory.appending(component: "archive.aar")
+        } else {
+            documentsDirectory.appendingPathComponent("archive.aar")
+        }
+        
+        if FileManager.default.fileExists(atPath: aarURL.path) {
             let alertController = UIAlertController(title: "Extract",
                                                     message: "Do you want to extract the previous archive.aar returning Folium to its previous state?\n\nFolium may appear frozen during this operation, please wait until it is finished and your games are displayed",
                                                     preferredStyle: .alert)
             alertController.addAction(.init(title: "Dismiss", style: .cancel))
             alertController.addAction(.init(title: "Extract", style: .default, handler: { _ in
                 do {
-                    let archiveFilePath = FilePath(documentsDirectory.appending(component: "archive.aar").path)
+                    let archiveFilePath = FilePath(aarURL.path)
 
 
                     guard let readFileStream = ArchiveByteStream.fileStream(
@@ -264,6 +270,14 @@ extension LibraryController {
             let superNESEmulationController = SuperNESEmulationController(game: superNESGame, skin: skin)
             superNESEmulationController.modalPresentationStyle = .fullScreen
             present(superNESEmulationController, animated: true)
+        case let gameBoyGame as GameBoyGame:
+            guard let skin = mangoSkin else {
+                return
+            }
+            
+            let gameBoyEmulationController = GameBoyEmulationController(game: gameBoyGame, skin: skin)
+            gameBoyEmulationController.modalPresentationStyle = .fullScreen
+            present(gameBoyEmulationController, animated: true)
         default:
             break
         }
@@ -301,12 +315,6 @@ extension LibraryController: UIDocumentPickerDelegate {
                 } else {
                     let romsDirectoryURL: URL =
                     switch url.pathExtension.lowercased() {
-                    case "gb", "gbc":
-                        documentDirectory.appendingPathComponent("Kiwi", conformingTo: .folder)
-                            .appendingPathComponent("roms", conformingTo: .folder)
-                    case "gba":
-                        documentDirectory.appendingPathComponent("Tomato", conformingTo: .folder)
-                            .appendingPathComponent("roms", conformingTo: .folder)
                     case "ds", "nds":
                         documentDirectory.appendingPathComponent("Grape", conformingTo: .folder)
                             .appendingPathComponent("roms", conformingTo: .folder)
@@ -321,6 +329,9 @@ extension LibraryController: UIDocumentPickerDelegate {
                             .appendingPathComponent("roms", conformingTo: .folder)
                     case "sfc", "smc":
                         documentDirectory.appendingPathComponent("Mango", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    case "gb", "gbc":
+                        documentDirectory.appendingPathComponent("Tomato", conformingTo: .folder)
                             .appendingPathComponent("roms", conformingTo: .folder)
                     default:
                         documentDirectory
