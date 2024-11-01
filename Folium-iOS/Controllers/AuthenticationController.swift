@@ -255,14 +255,17 @@ extension AuthenticationController {
         textLabel.trailingAnchor.constraint(equalTo: bottomContainerView.contentView.trailingAnchor, constant: -20).isActive = true
         
         let collectionViewLayout = UICollectionViewCompositionalLayout { _, _ in
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(0.5))
+            let count = UIDevice.current.userInterfaceIdiom == .pad ? 4 : 2
+            let ratio: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? (1 / 4) : (1 / 2)
+            
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(ratio), heightDimension: .fractionalWidth(ratio))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             
             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(300))
             let group: NSCollectionLayoutGroup = if #available(iOS 16, *) {
-                .horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
+                .horizontal(layoutSize: groupSize, repeatingSubitem: item, count: count)
             } else {
-                .horizontal(layoutSize: groupSize, subitem: item, count: 2)
+                .horizontal(layoutSize: groupSize, subitem: item, count: count)
             }
             group.interItemSpacing = .fixed(10)
             

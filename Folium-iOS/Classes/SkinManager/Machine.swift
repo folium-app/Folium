@@ -38,6 +38,9 @@ enum Machine : String, Codable, CaseIterable, Hashable {
     
     case iPadAir4Gen_1 = "iPad13,1"
     case iPadAir4Gen_2 = "iPad13,2"
+    
+    case iPadMini7Gen_1 = "iPad16,1" // A17 Pro
+    case iPadMini7Gen_2 = "iPad16,2" // A17 Pro
 
     case iPadMini6Gen_1 = "iPad14,1"
     case iPadMini6Gen_2 = "iPad14,2"
@@ -174,6 +177,8 @@ enum Machine : String, Codable, CaseIterable, Hashable {
         iPadAir5Gen_2,
         iPadAir4Gen_1,
         iPadAir4Gen_2,
+        iPadMini7Gen_1,
+        iPadMini7Gen_2,
         iPadMini6Gen_1,
         iPadMini6Gen_2,
         iPadMini5Gen_1,

@@ -5,7 +5,9 @@
 //  Created by Jarrod Norwell on 17/7/2024.
 //
 
+import Cytrus
 import Foundation
+import SwiftUI
 import UIKit
 
 @MainActor class Nintendo3DSCell : DefaultCell {
@@ -34,6 +36,11 @@ import UIKit
         }
         
         var children: [UIMenuElement] = [
+            UIAction(title: "Cheats", image: .init(systemName: "hammer"), handler: { _ in
+                let cheatsController = UINavigationController(rootViewController: CheatsController(titleIdentifier: nintendo3DSGame.titleIdentifier))
+                cheatsController.modalPresentationStyle = .fullScreen
+                viewController.present(cheatsController, animated: true)
+            }),
             UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: [.destructive], handler: { _ in
                 guard let viewController = viewController as? LibraryController else {
                     return

@@ -6,6 +6,7 @@
 //
 
 import CoreGraphics
+import Foundation
 
 extension CGImage {
     static func cgImage(_ buffer: UnsafeMutablePointer<UInt32>, _ width: Int, _ height: Int) -> CGImage? {
@@ -182,5 +183,19 @@ extension CGImage {
 
         // Create and return a UIImage from the CGImage
         return cgImage
+    }
+    
+    
+    static func gambatteImage(from videoBuffer: [UInt32]) -> CGImage? {
+        var videoBuffer = videoBuffer
+        let data = Data(bytesNoCopy: &videoBuffer, count: 4 * videoBuffer.count, deallocator: .none) as CFData
+        
+        let provider = CGDataProvider(data: data)
+        guard let provider else {
+            return nil
+        }
+        
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipFirst.rawValue).union([.byteOrder32Little])
+        return CGImage(width: 160, height: 144, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: 4 * 160, space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: bitmapInfo, provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
     }
 }

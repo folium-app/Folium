@@ -34,6 +34,10 @@
 		E62345E62C33D2810061FE55 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62345E32C33D2810061FE55 /* UIViewController.swift */; };
 		E62345E92C33DF590061FE55 /* AuthenticatedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62345E82C33DF590061FE55 /* AuthenticatedUser.swift */; };
 		E62345EB2C33E48D0061FE55 /* DefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62345EA2C33E48D0061FE55 /* DefaultCell.swift */; };
+		E62403352CC357EC005CA972 /* CheatsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E62403342CC357EC005CA972 /* CheatsManager.mm */; };
+		E624033B2CC6219F005CA972 /* CheatsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E624033A2CC6219F005CA972 /* CheatsController.swift */; };
+		E624033E2CC94B9C005CA972 /* MultiplayerManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E624033D2CC94B9C005CA972 /* MultiplayerManager.mm */; };
+		E62403412CC95729005CA972 /* CytrusRoomsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62403402CC95729005CA972 /* CytrusRoomsController.swift */; };
 		E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E666166F2C410E130065B363 /* libCytrus.a */; platformFilter = ios; };
 		E626CA342C58A65A00CA2B9F /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E626CA332C58A65A00CA2B9F /* SDL */; };
 		E626CA362C58A67600CA2B9F /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E626CA352C58A67600CA2B9F /* SDL */; };
@@ -46,6 +50,10 @@
 		E63E90642C6F3B9E00F318A0 /* Bundle.swift in Resources */ = {isa = PBXBuildFile; fileRef = E63E90632C6F3B9E00F318A0 /* Bundle.swift */; };
 		E641265A2C5B553900C060A4 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64126592C5B553900C060A4 /* CGFloat.swift */; };
 		E6496A6F2C63EA88002594CD /* ControllerTestEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6496A6E2C63EA88002594CD /* ControllerTestEmulationController.swift */; };
+		E64A2A3E2CD091D500F0EDEA /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E64A2A3C2CD091D500F0EDEA /* MoltenVK.xcframework */; };
+		E64A2A3F2CD091DC00F0EDEA /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E64A2A3C2CD091D500F0EDEA /* MoltenVK.xcframework */; };
+		E64A2A402CD091DC00F0EDEA /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E64A2A3C2CD091D500F0EDEA /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E65169DE2CC2444F00588B21 /* FUIAlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65169DD2CC2444F00588B21 /* FUIAlertKit */; };
 		E655B40C2C8CEC2900DE2AAD /* ArchiveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E655B40B2C8CEC2900DE2AAD /* ArchiveController.swift */; };
 		E655B4112C8D5ED200DE2AAD /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = E655B4102C8D5ED200DE2AAD /* UIApplication.swift */; };
 		E659A1D72C522A960040D803 /* ControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E659A1D52C522A960040D803 /* ControllerView.swift */; };
@@ -177,6 +185,7 @@
 		E690A6AE2C33B09E00652203 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E690A6AD2C33B09E00652203 /* SceneDelegate.swift */; };
 		E690A6B52C33B09F00652203 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E690A6B42C33B09F00652203 /* Assets.xcassets */; };
 		E690A6B82C33B09F00652203 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E690A6B72C33B09F00652203 /* Base */; };
+		E69635A42CD06F1E00E33D27 /* FoliumSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69635A32CD06F1E00E33D27 /* FoliumSettingsController.swift */; };
 		E6A483B52C36766800CFA6DA /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A483B42C36766800CFA6DA /* LibraryController.swift */; };
 		E6A483B72C36774500CFA6DA /* UINavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A483B62C36774500CFA6DA /* UINavigationItem.swift */; };
 		E6A483BD2C36917800CFA6DA /* DirectoryManager in Frameworks */ = {isa = PBXBuildFile; productRef = E6A483BC2C36917800CFA6DA /* DirectoryManager */; };
@@ -569,9 +578,6 @@
 		E6E6B35A2CA693490033AA92 /* nwm_sap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6E6B1542CA693490033AA92 /* nwm_sap.cpp */; };
 		E6E6B35B2CA693490033AA92 /* motion_emu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6E6B1A92CA693490033AA92 /* motion_emu.cpp */; };
 		E6E6B35D2CA698860033AA92 /* scm_rev.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6E6B35C2CA698860033AA92 /* scm_rev.cpp */; };
-		E6E6B35F2CA69A500033AA92 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6E6B35E2CA69A500033AA92 /* MoltenVK.xcframework */; };
-		E6E6B3602CA69A670033AA92 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6E6B35E2CA69A500033AA92 /* MoltenVK.xcframework */; };
-		E6E6B3612CA69A670033AA92 /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6E6B35E2CA69A500033AA92 /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6F31F632C6536E700DE5FA0 /* CytrusSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F31F622C6536E700DE5FA0 /* CytrusSettingsController.swift */; };
 		E6FA9F532C817CAB0034BBD1 /* CytrusSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FA9F522C817CAB0034BBD1 /* CytrusSkin.swift */; };
 		E6FA9F552C8180D10034BBD1 /* GrapeSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FA9F542C8180D10034BBD1 /* GrapeSkin.swift */; };
@@ -597,7 +603,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E6E6B3612CA69A670033AA92 /* MoltenVK.xcframework in Embed Frameworks */,
+				E64A2A402CD091DC00F0EDEA /* MoltenVK.xcframework in Embed Frameworks */,
 				E667BEC32C4793E200DB0327 /* libavutil.xcframework in Embed Frameworks */,
 				E667BEC52C4793E200DB0327 /* libswresample.xcframework in Embed Frameworks */,
 				E667BEBF2C4793E200DB0327 /* libavfilter.xcframework in Embed Frameworks */,
@@ -672,6 +678,12 @@
 		E62345E32C33D2810061FE55 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		E62345E82C33DF590061FE55 /* AuthenticatedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedUser.swift; sourceTree = "<group>"; };
 		E62345EA2C33E48D0061FE55 /* DefaultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCell.swift; sourceTree = "<group>"; };
+		E62403332CC357EC005CA972 /* CheatsManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CheatsManager.h; sourceTree = "<group>"; };
+		E62403342CC357EC005CA972 /* CheatsManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CheatsManager.mm; sourceTree = "<group>"; };
+		E624033A2CC6219F005CA972 /* CheatsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheatsController.swift; sourceTree = "<group>"; };
+		E624033C2CC94B9C005CA972 /* MultiplayerManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultiplayerManager.h; sourceTree = "<group>"; };
+		E624033D2CC94B9C005CA972 /* MultiplayerManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MultiplayerManager.mm; sourceTree = "<group>"; };
+		E62403402CC95729005CA972 /* CytrusRoomsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CytrusRoomsController.swift; sourceTree = "<group>"; };
 		E63D9EAC2C33BADC0038257F /* Folium-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Folium-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E63D9EAE2C33BADC0038257F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E63D9EB52C33BADD0038257F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -681,6 +693,8 @@
 		E64126592C5B553900C060A4 /* CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloat.swift; sourceTree = "<group>"; };
 		E6496A6C2C63E851002594CD /* libZydis.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libZydis.xcframework; sourceTree = "<group>"; };
 		E6496A6E2C63EA88002594CD /* ControllerTestEmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerTestEmulationController.swift; sourceTree = "<group>"; };
+		E64A2A3C2CD091D500F0EDEA /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
+		E65169DC2CC23CF400588B21 /* FUIAlertKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FUIAlertKit; sourceTree = "<group>"; };
 		E655B40B2C8CEC2900DE2AAD /* ArchiveController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveController.swift; sourceTree = "<group>"; };
 		E655B4102C8D5ED200DE2AAD /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		E659A1D32C522A960040D803 /* ControllerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerButton.swift; sourceTree = "<group>"; };
@@ -885,6 +899,7 @@
 		E690A6B72C33B09F00652203 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E690A6B92C33B09F00652203 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E690A6BF2C33B17A00652203 /* Folium.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Folium.entitlements; sourceTree = "<group>"; };
+		E69635A32CD06F1E00E33D27 /* FoliumSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoliumSettingsController.swift; sourceTree = "<group>"; };
 		E6A483B42C36766800CFA6DA /* LibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryController.swift; sourceTree = "<group>"; };
 		E6A483B62C36774500CFA6DA /* UINavigationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationItem.swift; sourceTree = "<group>"; };
 		E6A483BB2C368FA900CFA6DA /* DirectoryManager */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DirectoryManager; sourceTree = "<group>"; };
@@ -1277,7 +1292,6 @@
 		E6E6B1FC2CA693490033AA92 /* verify_user_jwt.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = verify_user_jwt.cpp; sourceTree = "<group>"; };
 		E6E6B1FD2CA693490033AA92 /* web_backend.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = web_backend.cpp; sourceTree = "<group>"; };
 		E6E6B35C2CA698860033AA92 /* scm_rev.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = scm_rev.cpp; sourceTree = "<group>"; };
-		E6E6B35E2CA69A500033AA92 /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
 		E6F31F622C6536E700DE5FA0 /* CytrusSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CytrusSettingsController.swift; sourceTree = "<group>"; };
 		E6FA9F522C817CAB0034BBD1 /* CytrusSkin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CytrusSkin.swift; sourceTree = "<group>"; };
 		E6FA9F542C8180D10034BBD1 /* GrapeSkin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrapeSkin.swift; sourceTree = "<group>"; };
@@ -1303,7 +1317,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6E6B35F2CA69A500033AA92 /* MoltenVK.xcframework in Frameworks */,
+				E64A2A3E2CD091D500F0EDEA /* MoltenVK.xcframework in Frameworks */,
 				E62BC9F02C64B2300000CFB2 /* libZydis.xcframework in Frameworks */,
 				E6C615542C47896100DE0CD6 /* libswscale.xcframework in Frameworks */,
 				E6C6153F2C47894800DE0CD6 /* libSPIRV.xcframework in Frameworks */,
@@ -1352,11 +1366,11 @@
 			files = (
 				E626CA342C58A65A00CA2B9F /* SDL in Frameworks */,
 				E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */,
-				E6E6B3602CA69A670033AA92 /* MoltenVK.xcframework in Frameworks */,
 				E667C07A2C47C7F700DB0327 /* CoreHaptics.framework in Frameworks */,
 				E6A483BD2C36917800CFA6DA /* DirectoryManager in Frameworks */,
 				E667BEC62C4793E200DB0327 /* libswscale.xcframework in Frameworks */,
 				E6101AB12C63FC0F00AEF0B5 /* Grape in Frameworks */,
+				E65169DE2CC2444F00588B21 /* FUIAlertKit in Frameworks */,
 				E667C0782C47C7EA00DB0327 /* OpenSSL in Frameworks */,
 				E667BEC42C4793E200DB0327 /* libswresample.xcframework in Frameworks */,
 				E6731F482C92FB7E006B4B3C /* libTomato.a in Frameworks */,
@@ -1369,6 +1383,7 @@
 				E667C07C2C47C81500DB0327 /* CoreMotion.framework in Frameworks */,
 				E6FA9F612C818EF80034BBD1 /* libyuv in Frameworks */,
 				E63D9EC02C33BF3B0038257F /* FirebaseAuth in Frameworks */,
+				E64A2A3F2CD091DC00F0EDEA /* MoltenVK.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1403,6 +1418,7 @@
 		E60F60DA2C412F86006902E2 /* CytrusObjC */ = {
 			isa = PBXGroup;
 			children = (
+				E62403322CC35772005CA972 /* CheatsManager */,
 				E60707A32C7DE404009DCA23 /* Camera */,
 				E68B97552C520278003D3BEE /* Configuration */,
 				E68B97482C51FDD3003D3BEE /* EmulationWindow */,
@@ -1410,6 +1426,8 @@
 				E60F60DF2C413167006902E2 /* Cytrus-Bridging-Header.h */,
 				E60F60DC2C413092006902E2 /* CytrusObjC.h */,
 				E60F60DD2C413092006902E2 /* CytrusObjC.mm */,
+				E624033C2CC94B9C005CA972 /* MultiplayerManager.h */,
+				E624033D2CC94B9C005CA972 /* MultiplayerManager.mm */,
 			);
 			path = CytrusObjC;
 			sourceTree = "<group>";
@@ -1462,6 +1480,8 @@
 		E62345DF2C33D25B0061FE55 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E624033F2CC95716005CA972 /* MultiplayerControllers */,
+				E62403392CC6218D005CA972 /* CheatsController */,
 				E66C99BB2C64C35F002664BE /* SettingsControllers */,
 				E61CD9932C4F986400C7775B /* EmulationControllers */,
 				E655B40B2C8CEC2900DE2AAD /* ArchiveController.swift */,
@@ -1501,6 +1521,31 @@
 				E61CD94D2C4F7E3F00C7775B /* AppStoreCheck.swift */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		E62403322CC35772005CA972 /* CheatsManager */ = {
+			isa = PBXGroup;
+			children = (
+				E62403332CC357EC005CA972 /* CheatsManager.h */,
+				E62403342CC357EC005CA972 /* CheatsManager.mm */,
+			);
+			path = CheatsManager;
+			sourceTree = "<group>";
+		};
+		E62403392CC6218D005CA972 /* CheatsController */ = {
+			isa = PBXGroup;
+			children = (
+				E624033A2CC6219F005CA972 /* CheatsController.swift */,
+			);
+			path = CheatsController;
+			sourceTree = "<group>";
+		};
+		E624033F2CC95716005CA972 /* MultiplayerControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E62403402CC95729005CA972 /* CytrusRoomsController.swift */,
+			);
+			path = MultiplayerControllers;
 			sourceTree = "<group>";
 		};
 		E63D9EAD2C33BADC0038257F /* Folium-tvOS */ = {
@@ -1647,6 +1692,7 @@
 			isa = PBXGroup;
 			children = (
 				E6F31F622C6536E700DE5FA0 /* CytrusSettingsController.swift */,
+				E69635A32CD06F1E00E33D27 /* FoliumSettingsController.swift */,
 				E6C0A5032C8B0081000141A2 /* GrapeSettingsController.swift */,
 			);
 			path = SettingsControllers;
@@ -2028,6 +2074,7 @@
 			isa = PBXGroup;
 			children = (
 				E6A483BB2C368FA900CFA6DA /* DirectoryManager */,
+				E65169DC2CC23CF400588B21 /* FUIAlertKit */,
 				E6A483C02C36A0FD00CFA6DA /* LayoutManager */,
 				E67D44142C37972800D76E54 /* Cores */,
 				E6C614CD2C4788E800DE0CD6 /* Dependencies */,
@@ -2107,7 +2154,7 @@
 				E6C614C92C4788E800DE0CD6 /* libswscale.xcframework */,
 				E667BEB72C4793AC00DB0327 /* libteakra.xcframework */,
 				E6496A6C2C63E851002594CD /* libZydis.xcframework */,
-				E6E6B35E2CA69A500033AA92 /* MoltenVK.xcframework */,
+				E64A2A3C2CD091D500F0EDEA /* MoltenVK.xcframework */,
 			);
 			path = XCFrameworks;
 			sourceTree = "<group>";
@@ -3307,6 +3354,7 @@
 				E6101AB02C63FC0F00AEF0B5 /* Grape */,
 				E6106E712C79C5210045A2C4 /* Mango */,
 				E6FA9F602C818EF80034BBD1 /* libyuv */,
+				E65169DD2CC2444F00588B21 /* FUIAlertKit */,
 			);
 			productName = Folium;
 			productReference = E690A6A82C33B09E00652203 /* Folium-iOS.app */;
@@ -3557,6 +3605,7 @@
 				E6E6B2862CA693490033AA92 /* web_backend.cpp in Sources */,
 				E6E6B2872CA693490033AA92 /* qtm_c.cpp in Sources */,
 				E6E6B2882CA693490033AA92 /* sdl_impl.cpp in Sources */,
+				E624033E2CC94B9C005CA972 /* MultiplayerManager.mm in Sources */,
 				E6E6B2892CA693490033AA92 /* vk_master_semaphore.cpp in Sources */,
 				E6E6B28A2CA693490033AA92 /* nfc.cpp in Sources */,
 				E6E6B28B2CA693490033AA92 /* apt_s.cpp in Sources */,
@@ -3755,6 +3804,7 @@
 				E6E6B34B2CA693490033AA92 /* patch.cpp in Sources */,
 				E6E6B34C2CA693490033AA92 /* soc_u.cpp in Sources */,
 				E6E6B34D2CA693490033AA92 /* y2r_u.cpp in Sources */,
+				E62403352CC357EC005CA972 /* CheatsManager.mm in Sources */,
 				E6E6B34E2CA693490033AA92 /* ndm_u.cpp in Sources */,
 				E6E6B34F2CA693490033AA92 /* applet_manager.cpp in Sources */,
 				E6E6B3502CA693490033AA92 /* nim_aoc.cpp in Sources */,
@@ -3877,6 +3927,7 @@
 				E67398882C48D7AB00E09E93 /* NintendoDSCell.swift in Sources */,
 				E61A85592C79D36E00AFC053 /* SuperNESEmulationController.swift in Sources */,
 				E61E33992C4916E8006F3759 /* Nintendo64Cell.swift in Sources */,
+				E69635A42CD06F1E00E33D27 /* FoliumSettingsController.swift in Sources */,
 				E61CD9952C4F987B00C7775B /* Nintendo64EmulationController.swift in Sources */,
 				E667C0702C47C6C000DB0327 /* Nintendo3DSGame.swift in Sources */,
 				E67398862C48D65800E09E93 /* NintendoDSGame.swift in Sources */,
@@ -3906,7 +3957,9 @@
 				E659A1DC2C522AA60040D803 /* SkinManager.swift in Sources */,
 				E6F31F632C6536E700DE5FA0 /* CytrusSettingsController.swift in Sources */,
 				E6A483B52C36766800CFA6DA /* LibraryController.swift in Sources */,
+				E624033B2CC6219F005CA972 /* CheatsController.swift in Sources */,
 				E61E6EB52C3BDA2C00ADA7A2 /* CGImage.swift in Sources */,
+				E62403412CC95729005CA972 /* CytrusRoomsController.swift in Sources */,
 				E67D13FF2C366117000C46BD /* CIImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4310,7 +4363,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -4332,7 +4385,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.11;
+				MARKETING_VERSION = 1.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
@@ -4360,7 +4413,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -4382,7 +4435,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.11;
+				MARKETING_VERSION = 1.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
@@ -4525,6 +4578,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E63D9EBE2C33BF3B0038257F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		E65169DD2CC2444F00588B21 /* FUIAlertKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FUIAlertKit;
 		};
 		E667C0772C47C7EA00DB0327 /* OpenSSL */ = {
 			isa = XCSwiftPackageProductDependency;

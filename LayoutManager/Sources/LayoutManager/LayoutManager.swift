@@ -13,8 +13,8 @@ public struct LayoutManager {
         
         return .init(sectionProvider: { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) in
             let isiPad = UIDevice.current.userInterfaceIdiom == .pad
-            let columns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? isiPad ? 5 : 2 : isiPad ? 7 : 4
-            let bottomColumns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? isiPad ? 6 : 3 : isiPad ? 8 : 4
+            let columns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? isiPad ? 4 : 2 : isiPad ? 6 : 4
+            let bottomColumns: CGFloat = layoutEnvironment.container.effectiveContentSize.width < UIScreen.main.bounds.height ? isiPad ? 5 : 3 : isiPad ? 7 : 4
             
             let isLandscape: Bool = layoutEnvironment.container.effectiveContentSize.width > UIScreen.main.bounds.height
             

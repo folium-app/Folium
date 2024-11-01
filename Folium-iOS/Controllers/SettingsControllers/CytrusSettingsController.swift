@@ -9,6 +9,8 @@ import Cytrus
 import Foundation
 import UIKit
 
+class BlankSetting : AnyHashableSendable, @unchecked Sendable {}
+
 class BoolSetting : AnyHashableSendable, @unchecked Sendable {
     var key, title: String
     var details: String?
@@ -25,7 +27,7 @@ class BoolSetting : AnyHashableSendable, @unchecked Sendable {
     }
 }
 
-class InputSetting : AnyHashableSendable, @unchecked Sendable {
+class InputNumberSetting : AnyHashableSendable, @unchecked Sendable {
     var key, title: String
     var details: String?
     var min, max, value: Double
@@ -39,6 +41,26 @@ class InputSetting : AnyHashableSendable, @unchecked Sendable {
         self.min = min
         self.max = max
         self.value = value
+        self.delegate = delegate
+    }
+}
+
+class InputStringSetting : AnyHashableSendable, @unchecked Sendable {
+    var key, title: String
+    var details: String?
+    var placeholder, value: String?
+    let action: () -> Void
+    
+    var delegate: SettingDelegate? = nil
+    
+    init(key: String, title: String, details: String? = nil, placeholder: String? = nil, value: String? = nil,
+         action: @escaping () -> Void, delegate: SettingDelegate? = nil) {
+        self.key = key
+        self.title = title
+        self.details = details
+        self.placeholder = placeholder
+        self.value = value
+        self.action = action
         self.delegate = delegate
     }
 }
@@ -89,7 +111,7 @@ class CytrusSettingsController : UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.setLeftBarButton(.init(systemItem: .cancel, primaryAction: .init(handler: { _ in
+        navigationItem.setLeftBarButton(.init(systemItem: .close, primaryAction: .init(handler: { _ in
             self.dismiss(animated: true)
         })), animated: true)
         prefersLargeTitles(true)
@@ -128,7 +150,7 @@ class CytrusSettingsController : UICollectionViewController {
             }
         }
         
-        let inputCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, InputSetting> { cell, indexPath, itemIdentifier in
+        let inputCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, InputNumberSetting> { cell, indexPath, itemIdentifier in
             var contentConfiguration = UIListContentConfiguration.valueCell()
             contentConfiguration.text = itemIdentifier.title
             contentConfiguration.secondaryText = "\(Int(itemIdentifier.value))"
@@ -249,6 +271,10 @@ class CytrusSettingsController : UICollectionViewController {
             }
         }
         
+        let blankSettingsCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, AnyHashableSendable> { cell, indexPath, itemIdentifier in
+            cell.contentConfiguration = UIListContentConfiguration.cell()
+        }
+        
         let headerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) { supplementaryView, elementKind, indexPath in
             var contentConfiguration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
             contentConfiguration.text = self.snapshot.sectionIdentifiers[indexPath.section]
@@ -257,9 +283,11 @@ class CytrusSettingsController : UICollectionViewController {
         
         dataSource = .init(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             switch itemIdentifier {
+            case let blankSetting as BlankSetting:
+                collectionView.dequeueConfiguredReusableCell(using: blankSettingsCellRegistration, for: indexPath, item: blankSetting)
             case let boolSetting as BoolSetting:
                 collectionView.dequeueConfiguredReusableCell(using: boolCellRegistration, for: indexPath, item: boolSetting)
-            case let inputSetting as InputSetting:
+            case let inputSetting as InputNumberSetting:
                 collectionView.dequeueConfiguredReusableCell(using: inputCellRegistration, for: indexPath, item: inputSetting)
             case let stepperSetting as StepperSetting:
                 collectionView.dequeueConfiguredReusableCell(using: stepperCellRegistration, for: indexPath, item: stepperSetting)
@@ -282,20 +310,13 @@ class CytrusSettingsController : UICollectionViewController {
         ])
         
         var coreItems = [
-            InputSetting(key: "cytrus.cpuClockPercentage",
-                         title: "CPU Clock Percentage",
-                         details: "Change the Clock Frequency of the emulated 3DS CPU\n\nUnderclocking can increase the performance of the game at the risk of freezing\n\nOverclocking may fix lag that happens on console, but also comes with the risk of freezing",
-                         min: 5,
-                         max: 200,
-                         value: UserDefaults.standard.double(forKey: "cytrus.cpuClockPercentage"),
-                         delegate: self),
-            /*StepperSetting(key: "cytrus.cpuClockPercentage",
-                           title: "CPU Clock Percentage",
-                           details: "Change the Clock Frequency of the emulated 3DS CPU\n\nUnderclocking can increase the performance of the game at the risk of freezing\n\nOverclocking may fix lag that happens on console, but also comes with the risk of freezing",
-                           min: 5,
-                           max: 200,
-                           value: UserDefaults.standard.double(forKey: "cytrus.cpuClockPercentage"),
-                           delegate: self),*/
+            InputNumberSetting(key: "cytrus.cpuClockPercentage",
+                               title: "CPU Clock Percentage",
+                               details: "Change the Clock Frequency of the emulated 3DS CPU\n\nUnderclocking can increase the performance of the game at the risk of freezing\n\nOverclocking may fix lag that happens on console, but also comes with the risk of freezing",
+                               min: 5,
+                               max: 200,
+                               value: UserDefaults.standard.double(forKey: "cytrus.cpuClockPercentage"),
+                               delegate: self),
             BoolSetting(key: "cytrus.new3DS",
                         title: "New 3DS",
                         details: "The system model that Cytrus will try to emulate",
@@ -334,6 +355,63 @@ class CytrusSettingsController : UICollectionViewController {
         snapshot.appendItems(coreItems, toSection: "Core")
         
         snapshot.appendItems([
+            BoolSetting(key: "cytrus.customLayout",
+                        title: "Custom Layout",
+                        details: "Enabled the below custom layout values",
+                        value: UserDefaults.standard.bool(forKey: "cytrus.customLayout"),
+                        delegate: self),
+            InputNumberSetting(key: "cytrus.customTopLeft",
+                               title: "Custom Top Left",
+                               min: 0,
+                               max: 9999,
+                               value: UserDefaults.standard.double(forKey: "cytrus.customTopLeft"),
+                               delegate: self),
+            InputNumberSetting(key: "cytrus.customTopTop",
+                               title: "Custom Top Top",
+                               min: 0,
+                               max: 9999,
+                               value: UserDefaults.standard.double(forKey: "cytrus.customTopTop"),
+                               delegate: self),
+            InputNumberSetting(key: "cytrus.customTopRight",
+                               title: "Custom Top Right",
+                               min: 0,
+                               max: 9999,
+                               value: UserDefaults.standard.double(forKey: "cytrus.customTopRight"),
+                               delegate: self),
+            InputNumberSetting(key: "cytrus.customTopBottom",
+                               title: "Custom Top Bottom",
+                               min: 0,
+                               max: 9999,
+                               value: UserDefaults.standard.double(forKey: "cytrus.customTopBottom"),
+                               delegate: self),
+            
+            InputNumberSetting(key: "cytrus.customBottomLeft",
+                               title: "Custom Bottom Left",
+                               min: 0,
+                               max: 9999,
+                               value: UserDefaults.standard.double(forKey: "cytrus.customBottomLeft"),
+                               delegate: self),
+            InputNumberSetting(key: "cytrus.customBottomTop",
+                               title: "Custom Bottom Top",
+                               min: 0,
+                               max: 9999,
+                               value: UserDefaults.standard.double(forKey: "cytrus.customBottomTop"),
+                               delegate: self),
+            InputNumberSetting(key: "cytrus.customBottomRight",
+                               title: "Custom Bottom Right",
+                               min: 0,
+                               max: 9999,
+                               value: UserDefaults.standard.double(forKey: "cytrus.customBottomRight"),
+                               delegate: self),
+            InputNumberSetting(key: "cytrus.customBottomBottom",
+                               title: "Custom Bottom Bottom",
+                               min: 0,
+                               max: 9999,
+                               value: UserDefaults.standard.double(forKey: "cytrus.customBottomBottom"),
+                               delegate: self),
+            
+            BlankSetting(),
+            
             BoolSetting(key: "cytrus.spirvShaderGeneration",
                         title: "SPIRV Shader Generation",
                         details: "Emits the fragment shader used to emulate PICA using SPIR-V instead of GLSL",
@@ -484,8 +562,9 @@ class CytrusSettingsController : UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
+        
         switch dataSource.itemIdentifier(for: indexPath) {
-        case let inputSetting as InputSetting:
+        case let inputSetting as InputNumberSetting:
             let alertController = UIAlertController(title: inputSetting.title, message: inputSetting.details?
                 .appending("\n\nMin: \(Int(inputSetting.min)), Max: \(Int(inputSetting.max))"),
                                                     preferredStyle: .alert)
@@ -524,7 +603,7 @@ extension CytrusSettingsController : SettingDelegate {
         switch item {
         case let boolSetting as BoolSetting:
             boolSetting.value = UserDefaults.standard.bool(forKey: boolSetting.key)
-        case let inputSetting as InputSetting:
+        case let inputSetting as InputNumberSetting:
             inputSetting.value = UserDefaults.standard.double(forKey: inputSetting.key)
         case let stepperSetting as StepperSetting:
             stepperSetting.value = UserDefaults.standard.double(forKey: stepperSetting.key)

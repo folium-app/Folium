@@ -139,10 +139,8 @@ enum Core : String, Codable, CaseIterable, CustomStringConvertible, Hashable, @u
     
     var isBeta: Bool {
         switch self {
-        case .cytrus:
-            false
         default:
-            true
+            false
         }
     }
     
@@ -152,13 +150,15 @@ enum Core : String, Codable, CaseIterable, CustomStringConvertible, Hashable, @u
 }
 
 struct LibraryManager : @unchecked Sendable {
-    static let shared = LibraryManager()
+    static var shared = LibraryManager()
     
     var cores: [Core] {
         [.cytrus, .grape, .mango/* .guava, .kiwi, .lychee, .tomato*/] // 3DS, NDS, SNES, N64, GB/GBC, PS1, GBA
     }
     
-    func games() throws -> Result<[GameBase], Error> {
+    var coresWithGames: [Core] = []
+    
+    mutating func games() throws -> Result<[GameBase], Error> {
         let skinManager = SkinManager.shared
         do {
             try skinManager.getSkins()
@@ -168,8 +168,41 @@ struct LibraryManager : @unchecked Sendable {
         
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         var games: [GameBase] = []
+        
+        try Cytrus.shared.installed().forEach { url in
+            if !coresWithGames.contains(.cytrus) {
+                coresWithGames.append(.cytrus)
+            }
+            
+            let nameWithoutExtension = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
+            games.append(Nintendo3DSGame(icon: try Nintendo3DSGame.iconFromHeader(for: url), core: "Cytrus",
+                                         fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                            name: url.lastPathComponent,
+                                                            nameWithoutExtension: nameWithoutExtension,
+                                                            url: url),
+                                         skins: skinManager.skins(for: .cytrus),
+                                         title: try Nintendo3DSGame.titleFromHeader(for: url),
+                                         titleIdentifier: try Nintendo3DSGame.titleIdentifierFromHeader(for: url)))
+        }
+        
+        try Cytrus.shared.system().forEach { url in
+            if !coresWithGames.contains(.cytrus) {
+                coresWithGames.append(.cytrus)
+            }
+            
+            let nameWithoutExtension = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
+            games.append(Nintendo3DSGame(icon: try Nintendo3DSGame.iconFromHeader(for: url), core: "Cytrus",
+                                         fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                            name: url.lastPathComponent,
+                                                            nameWithoutExtension: nameWithoutExtension,
+                                                            url: url),
+                                         skins: skinManager.skins(for: .cytrus),
+                                         title: try Nintendo3DSGame.titleFromHeader(for: url),
+                                         titleIdentifier: try Nintendo3DSGame.titleIdentifierFromHeader(for: url)))
+        }
+        
         try cores.forEach { core in
-            var romsDirectory = if #available(iOS 16, *) {
+            let romsDirectory = if #available(iOS 16, *) {
                 documentsDirectory.appending(component: core.rawValue).appending(component: "roms")
             } else {
                 documentsDirectory.appendingPathComponent(core.rawValue).appendingPathComponent("roms")
@@ -186,14 +219,23 @@ struct LibraryManager : @unchecked Sendable {
                             let nameWithoutExtension = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
                             switch url.pathExtension.lowercased() {
                             case "3ds", "cci", "cxi":
+                                if !coresWithGames.contains(.cytrus) {
+                                    coresWithGames.append(.cytrus)
+                                }
+                                
                                 partialResult.append(Nintendo3DSGame(icon: try Nintendo3DSGame.iconFromHeader(for: url), core: "Cytrus",
                                                                      fileDetails: .init(extension: url.pathExtension.lowercased(),
                                                                                         name: url.lastPathComponent,
                                                                                         nameWithoutExtension: nameWithoutExtension,
                                                                                         url: url),
                                                                      skins: skinManager.skins(for: .cytrus),
-                                                                     title: try Nintendo3DSGame.titleFromHeader(for: url)))
+                                                                     title: try Nintendo3DSGame.titleFromHeader(for: url),
+                                                                     titleIdentifier: try Nintendo3DSGame.titleIdentifierFromHeader(for: url)))
                             case "ds", "nds":
+                                if !coresWithGames.contains(.grape) {
+                                    coresWithGames.append(.grape)
+                                }
+                                
                                 partialResult.append(NintendoDSGame(icon: try NintendoDSGame.iconFromHeader(for: url), core: "Grape",
                                                                     fileDetails: .init(extension: url.pathExtension.lowercased(),
                                                                                        name: url.lastPathComponent,
@@ -202,6 +244,10 @@ struct LibraryManager : @unchecked Sendable {
                                                                     skins: skinManager.skins(for: .grape),
                                                                     title: try NintendoDSGame.titleFromHeader(for: url)))
                             case "sfc", "smc":
+                                if !coresWithGames.contains(.mango) {
+                                    coresWithGames.append(.mango)
+                                }
+                                
                                 partialResult.append(SuperNESGame(core: "Mango",
                                                                   fileDetails: .init(extension: url.pathExtension.lowercased(),
                                                                                      name: url.lastPathComponent,
@@ -210,6 +256,10 @@ struct LibraryManager : @unchecked Sendable {
                                                                   skins: skinManager.skins(for: .mango),
                                                                   title: try SuperNESGame.titleFromHeader(for: url)))
                             case "gb", "gbc":
+                                if !coresWithGames.contains(.tomato) {
+                                    coresWithGames.append(.tomato)
+                                }
+                                
                                 partialResult.append(GameBoyGame(core: "Tomato",
                                                                  fileDetails: .init(extension: url.pathExtension.lowercased(),
                                                                                     name: url.lastPathComponent,

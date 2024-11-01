@@ -29,9 +29,18 @@ class ControllerThumbstick : UIView {
         self.delegate = delegate
         super.init(frame: .zero)
         
-        stickImageView = .init(image: .init(systemName: "circle.fill")?
-            .applyingSymbolConfiguration(.init(paletteColors: [skin.core == .cytrus ? .white : .label])))
+        stickImageView = .init()
         stickImageView.translatesAutoresizingMaskIntoConstraints = false
+        if let backgroundImageName = thumbstick.backgroundImageName, let url = skin.url {
+            stickImageView.image = .init(contentsOfFile: url
+                .appendingPathComponent("thumbsticks", conformingTo: .folder)
+                .appendingPathComponent(backgroundImageName, conformingTo: .fileURL)
+                .path
+            )
+        } else {
+            stickImageView.image = .init(systemName: "circle.fill")?
+                .applyingSymbolConfiguration(.init(paletteColors: [skin.core == .cytrus ? .white : .label]))
+        }
         addSubview(stickImageView)
         
         centerXConstraint = stickImageView.centerXAnchor.constraint(equalTo: centerXAnchor)

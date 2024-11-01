@@ -55,7 +55,6 @@ struct Button : Codable, Hashable {
     let type: `Type`
     
     var backgroundImageName: String? = nil
-    var buttonClassName: String? = nil
     var transparent: Bool? = false
     var vibrateOnTap: Bool? = true
     

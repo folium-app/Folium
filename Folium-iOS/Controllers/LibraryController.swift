@@ -36,35 +36,44 @@ class LibraryController: UICollectionViewController {
             }
             
             weeTitle = "\(prefix), \(firstName)"
-            guard let weeTitle else {
+            guard let _ = weeTitle else {
                 return
             }
             
             navigationItem.perform(NSSelectorFromString("_setWeeTitle:"), with: weeTitle)
         }
         
-        var configuration = UIButton.Configuration.plain()
-        configuration.buttonSize = .medium
-        configuration.cornerStyle = .capsule
-        configuration.image = .init(systemName: "gearshape.fill")
-        
-        let button = UIButton(configuration: configuration)
         var children: [UIMenuElement] = [
-            UIMenu(options: .displayInline, children: [
-                UIAction(title: "Import Games", image: .init(systemName: "plus"), handler: { _ in
-                    self.openDocumentPickerController()
-                })
-            ]),
-            UIMenu(title: "Core Settings", options: .displayInline, children: [
-                UIAction(title: "Cytrus", handler: { _ in
-                    var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-                    configuration.headerMode = .supplementary
-                    let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
-                    
-                    let cytrusSettingsController = UINavigationController(rootViewController: CytrusSettingsController(collectionViewLayout: listCollectionViewLayout))
-                    cytrusSettingsController.modalPresentationStyle = .fullScreen
-                    self.present(cytrusSettingsController, animated: true)
-                }),
+            UIAction(title: "App Settings", image: .init(systemName: "leaf"), handler: { _ in
+                var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+                configuration.headerMode = .supplementary
+                let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
+                
+                let foliumSettingsController = UINavigationController(rootViewController: FoliumSettingsController(collectionViewLayout: listCollectionViewLayout))
+                foliumSettingsController.modalPresentationStyle = .fullScreen
+                self.present(foliumSettingsController, animated: true)
+            }),
+            UIMenu(title: "Core Settings", children: [
+                UIMenu(title: "Cytrus", children: [
+                    UIAction(title: "Browse Rooms", image: .init(systemName: "magnifyingglass"), handler: { _ in
+                        var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+                        configuration.headerMode = .supplementary
+                        let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
+                        
+                        let roomsController = UINavigationController(rootViewController: CytrusRoomsController(collectionViewLayout: listCollectionViewLayout))
+                        roomsController.modalPresentationStyle = .fullScreen
+                        self.present(roomsController, animated: true)
+                    }),
+                    UIAction(title: "Settings", image: .init(systemName: "gearshape"), handler: { _ in
+                        var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+                        configuration.headerMode = .supplementary
+                        let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
+                        
+                        let cytrusSettingsController = UINavigationController(rootViewController: CytrusSettingsController(collectionViewLayout: listCollectionViewLayout))
+                        cytrusSettingsController.modalPresentationStyle = .fullScreen
+                        self.present(cytrusSettingsController, animated: true)
+                    }),
+                ]),
                 UIAction(title: "Grape", handler: { _ in
                     var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
                     configuration.headerMode = .supplementary
@@ -73,10 +82,10 @@ class LibraryController: UICollectionViewController {
                     let grapeSettingsController = UINavigationController(rootViewController: GrapeSettingsController(collectionViewLayout: listCollectionViewLayout))
                     grapeSettingsController.modalPresentationStyle = .fullScreen
                     self.present(grapeSettingsController, animated: true)
-                }),
-                // UIAction(title: "Mango", attributes: [.disabled], handler: { _ in })
+                })
             ])
         ]
+        
         if AppStoreCheck.shared.additionalFeaturesAreAllowed {
             if Auth.auth().currentUser == nil {
                 children.append(UIMenu(title: "Account Settings", options: .displayInline, children: [
@@ -102,10 +111,13 @@ class LibraryController: UICollectionViewController {
                 ]))
             }
         }
-        button.menu = .init(children: children)
-        button.showsMenuAsPrimaryAction = true
         
-        navigationItem.perform(NSSelectorFromString("_setLargeTitleAccessoryView:"), with: button)
+        navigationItem.setRightBarButtonItems([
+            .init(image: .init(systemName: "gearshape"), menu: .init(children: children)),
+            .init(title: "Import", primaryAction: .init(handler: { _ in
+                self.openDocumentPickerController()
+            }))
+        ], animated: true)
         
         beginAddingSubviews()
         beginConfiguringCollectionView()
@@ -567,7 +579,7 @@ extension LibraryController {
         let headerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) {
             var configuration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
             configuration.text = self.dataSource?.sectionIdentifier(for: $2.section)?.rawValue ?? ""
-            configuration.secondaryText = self.dataSource?.sectionIdentifier(for: $2.section)?.console ?? ""
+            // configuration.secondaryText = self.dataSource?.sectionIdentifier(for: $2.section)?.console ?? ""
             $0.contentConfiguration = configuration
             
             if let dataSource = self.dataSource, let core = dataSource.sectionIdentifier(for: $2.section) {
@@ -621,18 +633,29 @@ extension LibraryController {
     }
     
     func beginPopulatingGames(with games: [GameBase]) {
-        snapshot = .init()
-        guard let dataSource, var snapshot else {
-            return
+        if games.isEmpty {
+            let alertController = UIAlertController(title: "Import Games",
+                                                    message: "No games could be found, do you want to import some?",
+                                                    preferredStyle: .alert)
+            alertController.addAction(.init(title: "Cancel", style: .cancel))
+            alertController.addAction(.init(title: "Import", style: .default, handler: { _ in
+                self.openDocumentPickerController()
+            }))
+            present(alertController, animated: true)
+        } else {
+            snapshot = .init()
+            guard let dataSource, var snapshot else {
+                return
+            }
+            
+            snapshot.appendSections(LibraryManager.shared.coresWithGames)
+            LibraryManager.shared.coresWithGames.forEach { core in
+                snapshot.appendItems(games.filter {
+                    $0.core == core.rawValue
+                }.sorted(by: { $0.title < $1.title }), toSection: core)
+            }
+            
+            Task { await dataSource.apply(snapshot) }
         }
-        
-        snapshot.appendSections(LibraryManager.shared.cores)
-        LibraryManager.shared.cores.forEach { core in
-            snapshot.appendItems(games.filter {
-                $0.core == core.rawValue
-            }.sorted(by: { $0.title < $1.title }), toSection: core)
-        }
-        
-        Task { await dataSource.apply(snapshot) }
     }
 }

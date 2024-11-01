@@ -11,6 +11,8 @@ import Foundation
 import UIKit
 
 class CytrusKeyboardController : UIViewController, UITextFieldDelegate {
+    var bottomConstraint: NSLayoutConstraint!
+    
     var keyboardConfig: KeyboardConfig
     init(keyboardConfig: KeyboardConfig) {
         self.keyboardConfig = keyboardConfig
@@ -101,11 +103,33 @@ class CytrusKeyboardController : UIViewController, UITextFieldDelegate {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 20
         view.addSubview(stackView)
+        
+        bottomConstraint = stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+        
         view.addConstraints([
-            stackView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 20),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20)
+            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            bottomConstraint
         ])
+        
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { notification in
+            self.bottomConstraint.constant = -20
+            
+            UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+            }
+        }
+        
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
+            guard let userInfo = notification.userInfo, let frame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return
+            }
+            
+            self.bottomConstraint.constant = -frame.height
+            
+            UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+            }
+        }
     }
 }

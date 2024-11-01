@@ -7,7 +7,9 @@
 
 import AppleArchive
 import Accelerate
+import Cytrus
 import DirectoryManager
+import FUIAlertKit
 import Firebase
 import FirebaseAuth
 import LayoutManager
@@ -142,6 +144,15 @@ extension SceneDelegate {
                 "lleApplets" : false,
                 "regionValue" : -1,
                 
+                "customLayout" : false,
+                "customTopLeft" : 0,
+                "customTopTop" : 0,
+                "customTopRight" : 400,
+                "customTopBottom" : 240,
+                "customBottomLeft" : 40,
+                "customBottomTop" : 240,
+                "customBottomRight" : 360,
+                "customBottomBottom" : 480,
                 "spirvShaderGeneration" : true,
                 "useAsyncShaderCompilation" : false,
                 "useAsyncPresentation" : true,
@@ -162,7 +173,9 @@ extension SceneDelegate {
                 "audioEmulation" : 0,
                 "audioStretching" : true,
                 "outputType" : 0,
-                "inputType" : 0
+                "inputType" : 0,
+                
+                "webAPIURL" : "http://88.198.47.46:5000"
             ],
             "Grape" : [
                 "directBoot" : true,

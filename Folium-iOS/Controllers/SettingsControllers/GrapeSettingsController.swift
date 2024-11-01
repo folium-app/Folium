@@ -16,7 +16,7 @@ class GrapeSettingsController : UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.setLeftBarButton(.init(systemItem: .cancel, primaryAction: .init(handler: { _ in
+        navigationItem.setLeftBarButton(.init(systemItem: .close, primaryAction: .init(handler: { _ in
             self.dismiss(animated: true)
         })), animated: true)
         prefersLargeTitles(true)

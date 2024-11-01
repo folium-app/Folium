@@ -85,6 +85,11 @@ class Nintendo3DSEmulationController : UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.showsMenuAsPrimaryAction = true
         button.menu = .init(children: [
+            UIAction(title: "Open Cheats", image: .init(systemName: "hammer"), handler: { _ in
+                let cheatsController = UINavigationController(rootViewController: CheatsController(titleIdentifier: self.game.titleIdentifier))
+                cheatsController.modalPresentationStyle = .fullScreen
+                self.present(cheatsController, animated: true)
+            }),
             UIAction(title: "Open Settings", image: .init(systemName: "gearshape"), handler: { _ in
                 var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
                 configuration.headerMode = .supplementary
@@ -263,14 +268,18 @@ class Nintendo3DSEmulationController : UIViewController {
         }
         
         NotificationCenter.default.addObserver(forName: .init("openKeyboard"), object: nil, queue: .main) { notification in
-                guard let config = notification.object as? KeyboardConfig else {
-                    return
-                }
+            guard let config = notification.object as? KeyboardConfig else {
+                return
+            }
+            
+            let keyboardController = CytrusKeyboardController(keyboardConfig: config)
+            keyboardController.modalPresentationStyle = .pageSheet
+            self.present(keyboardController, animated: true)
                 
-                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                alertController.perform(NSSelectorFromString("_setHeaderContentViewController:"), with: CytrusKeyboardController(keyboardConfig: config))
-                alertController.addAction(.init(title: "Cancel", style: .cancel))
-                self.present(alertController, animated: true)
+                // let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                // alertController.perform(NSSelectorFromString("_setHeaderContentViewController:"), with: CytrusKeyboardController(keyboardConfig: config))
+                // alertController.addAction(.init(title: "Cancel", style: .cancel))
+                // self.present(alertController, animated: true)
             }
     }
     
