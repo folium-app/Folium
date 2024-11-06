@@ -341,6 +341,22 @@ class CytrusSettingsController : UICollectionViewController {
                                 "Taiwan" : 6
                              ],
                              selectedValue: UserDefaults.standard.value(forKey: "cytrus.regionValue"),
+                             delegate: self),
+            
+            BlankSetting(),
+            
+            SelectionSetting(key: "cytrus.logLevel",
+                             title: "Log Level",
+                             details: "Select the level of the information to be logged",
+                             values: [
+                                "Trace" : 0,
+                                "Debug" : 1,
+                                "Info" : 2,
+                                "Warning" : 3,
+                                "Error" : 4,
+                                "Critical" : 5
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.logLevel"),
                              delegate: self)
         ]
         

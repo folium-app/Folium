@@ -272,15 +272,46 @@ class Nintendo3DSEmulationController : UIViewController {
                 return
             }
             
-            let keyboardController = CytrusKeyboardController(keyboardConfig: config)
-            keyboardController.modalPresentationStyle = .pageSheet
-            self.present(keyboardController, animated: true)
-                
-                // let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                // alertController.perform(NSSelectorFromString("_setHeaderContentViewController:"), with: CytrusKeyboardController(keyboardConfig: config))
-                // alertController.addAction(.init(title: "Cancel", style: .cancel))
-                // self.present(alertController, animated: true)
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
+            
+            let cancelAction: UIAlertAction = .init(title: "Cancel", style: .cancel) { _ in
+                NotificationCenter.default.post(name: .init("closeKeyboard"), object: nil, userInfo: [
+                    "buttonPressed" : 0,
+                    "keyboardText" : ""
+                ])
             }
+            
+            let okayButton: UIAlertAction = .init(title: "Okay", style: .default) { _ in
+                guard let textFields = alertController.textFields, let textField = textFields.first else {
+                    return
+                }
+                
+                NotificationCenter.default.post(name: .init("closeKeyboard"), object: nil, userInfo: [
+                    "buttonPressed" : 0,
+                    "keyboardText" : textField.text ?? ""
+                ])
+            }
+            
+            
+            
+            switch config.buttonConfig {
+            case .single:
+                alertController.addAction(okayButton)
+            case .dual:
+                alertController.addAction(cancelAction)
+                alertController.addAction(okayButton)
+            case .triple:
+                break
+            case .none:
+                break
+            @unknown default:
+                break
+            }
+            
+            
+            alertController.addTextField()
+            self.present(alertController, animated: true)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -319,7 +350,7 @@ class Nintendo3DSEmulationController : UIViewController {
                 return
             }
             
-            controllerView.updateFrames(for: orientation)
+            controllerView.updateFrames(for: orientation, controllerConnected: GCController.controllers().count > 0)
             
             metalView.frame = if !orientation.screens.isEmpty, let screen = orientation.screens.first {
                 .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height)

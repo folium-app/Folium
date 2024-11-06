@@ -50,9 +50,6 @@
 		E63E90642C6F3B9E00F318A0 /* Bundle.swift in Resources */ = {isa = PBXBuildFile; fileRef = E63E90632C6F3B9E00F318A0 /* Bundle.swift */; };
 		E641265A2C5B553900C060A4 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64126592C5B553900C060A4 /* CGFloat.swift */; };
 		E6496A6F2C63EA88002594CD /* ControllerTestEmulationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6496A6E2C63EA88002594CD /* ControllerTestEmulationController.swift */; };
-		E64A2A3E2CD091D500F0EDEA /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E64A2A3C2CD091D500F0EDEA /* MoltenVK.xcframework */; };
-		E64A2A3F2CD091DC00F0EDEA /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E64A2A3C2CD091D500F0EDEA /* MoltenVK.xcframework */; };
-		E64A2A402CD091DC00F0EDEA /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E64A2A3C2CD091D500F0EDEA /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E65169DE2CC2444F00588B21 /* FUIAlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65169DD2CC2444F00588B21 /* FUIAlertKit */; };
 		E655B40C2C8CEC2900DE2AAD /* ArchiveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E655B40B2C8CEC2900DE2AAD /* ArchiveController.swift */; };
 		E655B4112C8D5ED200DE2AAD /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = E655B4102C8D5ED200DE2AAD /* UIApplication.swift */; };
@@ -176,6 +173,9 @@
 		E67398862C48D65800E09E93 /* NintendoDSGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67398852C48D65800E09E93 /* NintendoDSGame.swift */; };
 		E67398882C48D7AB00E09E93 /* NintendoDSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67398872C48D7AB00E09E93 /* NintendoDSCell.swift */; };
 		E67D13FF2C366117000C46BD /* CIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E67D13FE2C366117000C46BD /* CIImage.swift */; };
+		E6841F022CD8E1D100152D3F /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6841F002CD8E1D100152D3F /* MoltenVK.xcframework */; };
+		E6841F032CD8E1D300152D3F /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6841F002CD8E1D100152D3F /* MoltenVK.xcframework */; };
+		E6841F042CD8E1D300152D3F /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6841F002CD8E1D100152D3F /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E68B974B2C51FE13003D3BEE /* GraphicsContext_Apple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E68B974A2C51FE13003D3BEE /* GraphicsContext_Apple.cpp */; };
 		E68B974F2C51FE55003D3BEE /* EmulationWindow_Apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = E68B974E2C51FE55003D3BEE /* EmulationWindow_Apple.mm */; };
 		E68B97542C51FECE003D3BEE /* EmulationWindow_Vulkan.mm in Sources */ = {isa = PBXBuildFile; fileRef = E68B97522C51FECE003D3BEE /* EmulationWindow_Vulkan.mm */; };
@@ -603,7 +603,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E64A2A402CD091DC00F0EDEA /* MoltenVK.xcframework in Embed Frameworks */,
+				E6841F042CD8E1D300152D3F /* MoltenVK.xcframework in Embed Frameworks */,
 				E667BEC32C4793E200DB0327 /* libavutil.xcframework in Embed Frameworks */,
 				E667BEC52C4793E200DB0327 /* libswresample.xcframework in Embed Frameworks */,
 				E667BEBF2C4793E200DB0327 /* libavfilter.xcframework in Embed Frameworks */,
@@ -693,7 +693,6 @@
 		E64126592C5B553900C060A4 /* CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloat.swift; sourceTree = "<group>"; };
 		E6496A6C2C63E851002594CD /* libZydis.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libZydis.xcframework; sourceTree = "<group>"; };
 		E6496A6E2C63EA88002594CD /* ControllerTestEmulationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerTestEmulationController.swift; sourceTree = "<group>"; };
-		E64A2A3C2CD091D500F0EDEA /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
 		E65169DC2CC23CF400588B21 /* FUIAlertKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FUIAlertKit; sourceTree = "<group>"; };
 		E655B40B2C8CEC2900DE2AAD /* ArchiveController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveController.swift; sourceTree = "<group>"; };
 		E655B4102C8D5ED200DE2AAD /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
@@ -881,6 +880,7 @@
 		E67D13FE2C366117000C46BD /* CIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CIImage.swift; sourceTree = "<group>"; };
 		E67D44182C37A75100D76E54 /* CoreAudioTypes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioTypes.framework; path = System/Library/Frameworks/CoreAudioTypes.framework; sourceTree = SDKROOT; };
 		E67D441A2C37A76400D76E54 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		E6841F002CD8E1D100152D3F /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
 		E68B97492C51FE13003D3BEE /* GraphicsContext_Apple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GraphicsContext_Apple.h; sourceTree = "<group>"; };
 		E68B974A2C51FE13003D3BEE /* GraphicsContext_Apple.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsContext_Apple.cpp; sourceTree = "<group>"; };
 		E68B974D2C51FE55003D3BEE /* EmulationWindow_Apple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmulationWindow_Apple.h; sourceTree = "<group>"; };
@@ -1317,7 +1317,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E64A2A3E2CD091D500F0EDEA /* MoltenVK.xcframework in Frameworks */,
+				E6841F022CD8E1D100152D3F /* MoltenVK.xcframework in Frameworks */,
 				E62BC9F02C64B2300000CFB2 /* libZydis.xcframework in Frameworks */,
 				E6C615542C47896100DE0CD6 /* libswscale.xcframework in Frameworks */,
 				E6C6153F2C47894800DE0CD6 /* libSPIRV.xcframework in Frameworks */,
@@ -1383,7 +1383,7 @@
 				E667C07C2C47C81500DB0327 /* CoreMotion.framework in Frameworks */,
 				E6FA9F612C818EF80034BBD1 /* libyuv in Frameworks */,
 				E63D9EC02C33BF3B0038257F /* FirebaseAuth in Frameworks */,
-				E64A2A3F2CD091DC00F0EDEA /* MoltenVK.xcframework in Frameworks */,
+				E6841F032CD8E1D300152D3F /* MoltenVK.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2154,7 +2154,7 @@
 				E6C614C92C4788E800DE0CD6 /* libswscale.xcframework */,
 				E667BEB72C4793AC00DB0327 /* libteakra.xcframework */,
 				E6496A6C2C63E851002594CD /* libZydis.xcframework */,
-				E64A2A3C2CD091D500F0EDEA /* MoltenVK.xcframework */,
+				E6841F002CD8E1D100152D3F /* MoltenVK.xcframework */,
 			);
 			path = XCFrameworks;
 			sourceTree = "<group>";
@@ -4363,7 +4363,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -4413,7 +4413,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;

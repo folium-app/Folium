@@ -13,7 +13,7 @@ struct Thumbstick : Codable, Hashable {
         case right = "right"
     }
     
-    let backgroundImageName: String? = nil
+    var backgroundImageName: String? = nil
     let x, y: Double
     let width, height: Double
     let type: `Type`

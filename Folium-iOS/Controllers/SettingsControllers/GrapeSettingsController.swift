@@ -204,6 +204,10 @@ class GrapeSettingsController : UICollectionViewController {
             BoolSetting(key: "grape.threaded3D",
                         title: "Threaded 3D",
                         value: UserDefaults.standard.bool(forKey: "grape.threaded3D"),
+                        delegate: self),
+            BoolSetting(key: "grape.dsiMode",
+                        title: "DSi Mode",
+                        value: UserDefaults.standard.bool(forKey: "grape.dsiMode"),
                         delegate: self)
         ], toSection: "Core")
         

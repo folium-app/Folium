@@ -344,11 +344,13 @@ class NintendoDSEmulationController : UIViewController {
                 grapeSkin
             }
             
-            guard let skin, let orientation = skin.orientation(for: self.interfaceOrientation()) else {
+            guard let skin, let orientation = skin.orientation(for: self.interfaceOrientation()), let controllerView = self.controllerView else {
                 return
             }
             
             self.skin = skin
+            
+            controllerView.updateFrames(for: orientation, controllerConnected: GCController.controllers().count > 0)
             
             orientation.screens.enumerated().forEach { index, screen in
                 switch index {

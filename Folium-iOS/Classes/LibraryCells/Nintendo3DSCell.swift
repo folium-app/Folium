@@ -24,12 +24,16 @@ import UIKit
     func set(_ nintendo3DSGame: Nintendo3DSGame, with viewController: UIViewController) {
         set(text: nintendo3DSGame.title, image: nintendo3DSGame.icon, with: .white)
         
-        guard let blurredImageView, let imageView, let image = nintendo3DSGame.icon.decodeRGB565(width: 48, height: 48) else {
+        guard let blurredImageView, let imageView else {
             return
         }
         
-        blurredImageView.image = image
-        imageView.image = image.blurMasked(radius: 2)
+        if let icon = nintendo3DSGame.icon, let image = icon.decodeRGB565(width: 48, height: 48) {
+            blurredImageView.image = image
+            imageView.image = image.blurMasked(radius: 2)
+        } else {
+            
+        }
         
         guard let optionsButton else {
             return
@@ -65,7 +69,7 @@ import UIKit
         
         if nintendo3DSGame.skins.count > 0 {
             children.append(UIMenu(title: "Skins", children: nintendo3DSGame.skins.reduce(into: [UIAction](), { partialResult, element in
-                partialResult.append(.init(title: element.title, handler: { _ in
+                partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
                     let nintendo3DSEmulationController = Nintendo3DSEmulationController(game: nintendo3DSGame, skin: element)
                     nintendo3DSEmulationController.modalPresentationStyle = .fullScreen
                     viewController.present(nintendo3DSEmulationController, animated: true)

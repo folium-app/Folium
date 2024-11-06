@@ -169,9 +169,14 @@ struct LibraryManager : @unchecked Sendable {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         var games: [GameBase] = []
         
-        try Cytrus.shared.installed().forEach { url in
+        for url in Cytrus.shared.installed() {
             if !coresWithGames.contains(.cytrus) {
                 coresWithGames.append(.cytrus)
+            }
+            
+            let title = try Nintendo3DSGame.titleFromHeader(for: url)
+            if title.isEmpty {
+                break
             }
             
             let nameWithoutExtension = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
@@ -181,13 +186,18 @@ struct LibraryManager : @unchecked Sendable {
                                                             nameWithoutExtension: nameWithoutExtension,
                                                             url: url),
                                          skins: skinManager.skins(for: .cytrus),
-                                         title: try Nintendo3DSGame.titleFromHeader(for: url),
+                                         title: title,
                                          titleIdentifier: try Nintendo3DSGame.titleIdentifierFromHeader(for: url)))
         }
         
-        try Cytrus.shared.system().forEach { url in
+        for url in Cytrus.shared.system() {
             if !coresWithGames.contains(.cytrus) {
                 coresWithGames.append(.cytrus)
+            }
+            
+            let title = try Nintendo3DSGame.titleFromHeader(for: url)
+            if title.isEmpty {
+                break
             }
             
             let nameWithoutExtension = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
@@ -197,7 +207,7 @@ struct LibraryManager : @unchecked Sendable {
                                                             nameWithoutExtension: nameWithoutExtension,
                                                             url: url),
                                          skins: skinManager.skins(for: .cytrus),
-                                         title: try Nintendo3DSGame.titleFromHeader(for: url),
+                                         title: title,
                                          titleIdentifier: try Nintendo3DSGame.titleIdentifierFromHeader(for: url)))
         }
         
@@ -219,6 +229,11 @@ struct LibraryManager : @unchecked Sendable {
                             let nameWithoutExtension = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
                             switch url.pathExtension.lowercased() {
                             case "3ds", "cci", "cxi":
+                                let title = try Nintendo3DSGame.titleFromHeader(for: url)
+                                if title.isEmpty {
+                                    break
+                                }
+                                
                                 if !coresWithGames.contains(.cytrus) {
                                     coresWithGames.append(.cytrus)
                                 }
@@ -229,7 +244,7 @@ struct LibraryManager : @unchecked Sendable {
                                                                                         nameWithoutExtension: nameWithoutExtension,
                                                                                         url: url),
                                                                      skins: skinManager.skins(for: .cytrus),
-                                                                     title: try Nintendo3DSGame.titleFromHeader(for: url),
+                                                                     title: title,
                                                                      titleIdentifier: try Nintendo3DSGame.titleIdentifierFromHeader(for: url)))
                             case "ds", "nds":
                                 if !coresWithGames.contains(.grape) {

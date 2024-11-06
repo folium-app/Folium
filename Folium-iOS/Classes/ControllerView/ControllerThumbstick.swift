@@ -31,6 +31,11 @@ class ControllerThumbstick : UIView {
         
         stickImageView = .init()
         stickImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        if let debugging = skin.debugging, debugging {
+            stickImageView.backgroundColor = .systemRed.withAlphaComponent(1 / 3)
+        }
+        
         if let backgroundImageName = thumbstick.backgroundImageName, let url = skin.url {
             stickImageView.image = .init(contentsOfFile: url
                 .appendingPathComponent("thumbsticks", conformingTo: .folder)

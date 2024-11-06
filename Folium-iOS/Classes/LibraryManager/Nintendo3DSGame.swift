@@ -10,16 +10,16 @@ import Foundation
 
 // MARK: Class for the Nintendo 3DS core, Cytrus
 class Nintendo3DSGame : GameBase, @unchecked Sendable {
-    let icon: Data
+    let icon: Data?
     let titleIdentifier: UInt64
     
-    init(icon: Data, core: String, fileDetails: GameBase.FileDetails, skins: [Skin], title: String, titleIdentifier: UInt64) {
+    init(icon: Data? = nil, core: String, fileDetails: GameBase.FileDetails, skins: [Skin], title: String, titleIdentifier: UInt64) {
         self.icon = icon
         self.titleIdentifier = titleIdentifier
         super.init(core: core, fileDetails: fileDetails, skins: skins, title: title)
     }
     
-    static func iconFromHeader(for url: URL) throws -> Data {
+    static func iconFromHeader(for url: URL) throws -> Data? {
         Cytrus.shared.informationForGame(at: url).icon
     }
     

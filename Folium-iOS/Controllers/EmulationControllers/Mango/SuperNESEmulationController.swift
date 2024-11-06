@@ -250,7 +250,7 @@ class SuperNESEmulationController : UIViewController {
                 return
             }
             
-            controllerView.updateFrames(for: orientation)
+            controllerView.updateFrames(for: orientation, controllerConnected: GCController.controllers().count > 0)
             
             imageView.frame = if !orientation.screens.isEmpty, let screen = orientation.screens.first {
                 .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height)

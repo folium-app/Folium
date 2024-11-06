@@ -109,7 +109,7 @@ class ControllerView : PassthroughView {
     //    }
     //}
     
-    func updateFrames(for orientation: Orientation) {
+    func updateFrames(for orientation: Orientation, controllerConnected: Bool = false) {
         subviews.filter {
             $0.isKind(of: ControllerButton.classForCoder()) || $0.isKind(of: ControllerThumbstick.classForCoder())
         }.forEach { $0.removeFromSuperview() }
@@ -139,6 +139,8 @@ class ControllerView : PassthroughView {
             controllerButton.frame = .init(x: button.x, y: button.y, width: button.width, height: button.height)
             addSubview(controllerButton)
         }
+        
+        controllerConnected ? hide() : show()
     }
     
     func hide() {

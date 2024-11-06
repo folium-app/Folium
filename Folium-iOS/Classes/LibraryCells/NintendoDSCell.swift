@@ -60,7 +60,7 @@ import UIKit
         
         if nintendoDSGame.skins.count > 0 {
             children.append(UIMenu(title: "Skins", children: nintendoDSGame.skins.reduce(into: [UIAction](), { partialResult, element in
-                partialResult.append(.init(title: element.title, handler: { _ in
+                partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
                     let nintendoDSEmulationController = NintendoDSEmulationController(game: nintendoDSGame, skin: element)
                     nintendoDSEmulationController.modalPresentationStyle = .fullScreen
                     viewController.present(nintendoDSEmulationController, animated: true)

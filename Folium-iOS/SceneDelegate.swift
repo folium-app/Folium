@@ -175,12 +175,14 @@ extension SceneDelegate {
                 "outputType" : 0,
                 "inputType" : 0,
                 
+                "logLevel" : 2,
                 "webAPIURL" : "http://88.198.47.46:5000"
             ],
             "Grape" : [
                 "directBoot" : true,
                 "threaded2D" : true,
-                "threaded3D" : true
+                "threaded3D" : true,
+                "dsiMode" : false
             ]
         ]
         

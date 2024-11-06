@@ -52,7 +52,7 @@ import UIKit
         
         if superNESGame.skins.count > 0 {
             children.append(UIMenu(title: "Skins", children: superNESGame.skins.reduce(into: [UIAction](), { partialResult, element in
-                partialResult.append(.init(title: element.title, handler: { _ in
+                partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
                     let superNESEmulationController = SuperNESEmulationController(game: superNESGame, skin: element)
                     superNESEmulationController.modalPresentationStyle = .fullScreen
                     viewController.present(superNESEmulationController, animated: true)

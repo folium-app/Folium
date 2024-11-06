@@ -13,7 +13,7 @@ struct Orientation : Codable, Hashable {
     var backgroundImageName: String? = nil
     
     let buttons: [Button]
-    let screens: [Screen]
+    var screens: [Screen]
     let thumbsticks: [Thumbstick]
 }
 
