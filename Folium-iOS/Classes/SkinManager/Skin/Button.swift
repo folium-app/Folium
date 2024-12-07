@@ -50,6 +50,7 @@ struct Button : Codable, Hashable {
         }
     }
     
+    var alpha: Double? = 1
     let x, y: Double
     let width, height: Double
     let type: `Type`

@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FUIAlertKit
 
 extension UIApplication {
     var window: UIWindow? {
@@ -16,5 +17,13 @@ extension UIApplication {
             .first(where: { $0 is UIWindowScene })
             .flatMap({ $0 as? UIWindowScene })?.windows
             .first(where: \.isKeyWindow)
+    }
+    
+    var alertWindow: UIWindow? {
+        return self.connectedScenes
+            .filter { $0.activationState == .foregroundActive }
+            .first(where: { $0 is UIWindowScene })
+            .flatMap({ $0 as? UIWindowScene })?.windows
+            .first(where: { $0.isKind(of: FUIAlertKitWindow.classForCoder()) })
     }
 }

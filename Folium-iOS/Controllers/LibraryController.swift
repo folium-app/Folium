@@ -9,14 +9,19 @@ import AppleArchive
 import Cytrus
 import Firebase
 import FirebaseAuth
+import FirebaseFirestore
 import Foundation
 import System
 import UIKit
+import WidgetKit
+import CoreMotion
 
 class LibraryController: UICollectionViewController {
     fileprivate var dataSource: UICollectionViewDiffableDataSource<Core, GameBase>? = nil
     fileprivate var snapshot: NSDiffableDataSourceSnapshot<Core, GameBase>? = nil
     fileprivate var searchSnapshot: NSDiffableDataSourceSnapshot<Core, GameBase>? = nil
+    
+    let pedometer = CMPedometer()
     
     var contentOffsetY: CGFloat? = nil
     var weeTitle: String? = nil
@@ -24,6 +29,48 @@ class LibraryController: UICollectionViewController {
         super.viewDidLoad()
         prefersLargeTitles(true)
         title = "Library"
+        
+        let user = Auth.auth().currentUser
+        let userDefaults = UserDefaults(suiteName: "group.com.antique.Folium")
+        Task {
+            if AppStoreCheck.shared.additionalFeaturesAreAllowed, let user {
+                let document = Firestore.firestore().collection("users").document(user.uid)
+                let doc = try await document.getDocument()
+                if doc.exists {
+                    if let userDefaults {
+                        userDefaults.set(try JSONEncoder().encode(try await document.getDocument(as: User.self)), forKey: "user")
+                    }
+                } else {
+                    if let displayName = user.displayName,
+                       let firstName = displayName.components(separatedBy: " ").first, let lastName = displayName.components(separatedBy: " ").last {
+                        let user = User(games: [], name: "\(firstName) \(lastName)")
+                        try document.setData(from: user)
+                        
+                        if let userDefaults {
+                            userDefaults.set(try JSONEncoder().encode(user), forKey: "user")
+                        }
+                    }
+                }
+                
+                WidgetCenter.shared.reloadAllTimelines()
+            }
+        }
+        
+        // TODO: this does not work 100%
+        if let hourBefore = Calendar.current.date(byAdding: .hour, value: -8, to: .now) {
+            pedometer.queryPedometerData(from: hourBefore, to: .now) { data, error in
+                if let error {
+                    print("error = \(error.localizedDescription)")
+                } else {
+                    if let data {
+                        print("steps = \(data.numberOfSteps)")
+                        Cytrus.shared.stepsPerHour = data.numberOfSteps.uint16Value
+                    }
+                }
+            }
+        }
+        
+        
         if AppStoreCheck.shared.additionalFeaturesAreAllowed, let currentUser = Auth.auth().currentUser, let displayName = currentUser.displayName,
            let firstName = displayName.components(separatedBy: " ").first {
             let prefix = switch Calendar.current.component(.hour, from: .now) {
@@ -282,6 +329,14 @@ extension LibraryController {
             let superNESEmulationController = SuperNESEmulationController(game: superNESGame, skin: skin)
             superNESEmulationController.modalPresentationStyle = .fullScreen
             present(superNESEmulationController, animated: true)
+        case let playStation1Game as PlayStation1Game:
+            guard let skin = lycheeSkin else {
+                return
+            }
+            
+            let playStation1EmulationController = PlayStation1EmulationController(game: playStation1Game, skin: skin)
+            playStation1EmulationController.modalPresentationStyle = .fullScreen
+            present(playStation1EmulationController, animated: true)
         case let gameBoyGame as GameBoyGame:
             guard let skin = mangoSkin else {
                 return

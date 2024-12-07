@@ -549,6 +549,9 @@ class CytrusSettingsController : UICollectionViewController {
                         title: "Audio Stretching",
                         details: "Stretches audio to reduce stuttering. When enabled, increases audio latency and slightly reduces performance",
                         value: UserDefaults.standard.bool(forKey: "cytrus.audioStretching")),
+            BoolSetting(key: "cytrus.realtimeAudio",
+                        title: "Realtime Audio",
+                        value: UserDefaults.standard.bool(forKey: "cytrus.realtimeAudio")),
             SelectionSetting(key: "cytrus.outputType",
                              title: "Output Type",
                              values: [

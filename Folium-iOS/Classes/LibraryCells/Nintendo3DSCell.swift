@@ -45,6 +45,9 @@ import UIKit
                 cheatsController.modalPresentationStyle = .fullScreen
                 viewController.present(cheatsController, animated: true)
             }),
+            UIAction(title: "Copy SHA256", subtitle: "Used for Widgets, etc", image: .init(systemName: "clipboard"), handler: { _ in
+                UIPasteboard.general.string = nintendo3DSGame.fileDetails.sha256
+            }),
             UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: [.destructive], handler: { _ in
                 guard let viewController = viewController as? LibraryController else {
                     return

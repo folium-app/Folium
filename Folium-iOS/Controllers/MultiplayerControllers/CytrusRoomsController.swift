@@ -14,6 +14,8 @@ class CytrusRoomsController : UICollectionViewController {
     var dataSource: UICollectionViewDiffableDataSource<String, NetworkRoom>! = nil
     var snapshot: NSDiffableDataSourceSnapshot<String, NetworkRoom>! = nil
     
+    let multiplayer = Cytrus.shared.multiplayer
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         prefersLargeTitles(true)
@@ -23,9 +25,9 @@ class CytrusRoomsController : UICollectionViewController {
         navigationItem.setLeftBarButton(.init(systemItem: .close, primaryAction: .init(handler: { _ in
             self.dismiss(animated: true)
         })), animated: true)
-        if MultiplayerManager.shared().roomState() == .joined {
+        if multiplayer.state == .joined {
             navigationItem.setRightBarButton(.init(title: "Leave", primaryAction: .init(attributes: [.destructive], handler: { _ in
-                MultiplayerManager.shared().disconnectFromRoom()
+                self.multiplayer.disconnect()
                 self.navigationItem.rightBarButtonItem = nil
             })), animated: true)
         }
@@ -118,7 +120,7 @@ class CytrusRoomsController : UICollectionViewController {
             let alertController = UIAlertController(title: "STATE", message: nil, preferredStyle: .alert)
             alertController.addAction(.init(title: "Dismiss", style: .cancel))
             alertController.addAction(.init(title: "Leave", style: .destructive, handler: { _ in
-                MultiplayerManager.shared().disconnectFromRoom()
+                self.multiplayer.disconnect()
                 
                 Task {
                     self.navigationItem.rightBarButtonItem = nil
@@ -132,7 +134,7 @@ class CytrusRoomsController : UICollectionViewController {
             }))
             self.present(alertController, animated: true)
             
-            MultiplayerManager.shared().connect(to: room, withUsername: username, andPassword: password) { error in
+            self.multiplayer.connect(to: room, with: username, and: password) { error in
                 Task {
                     switch error {
                     case .lostConnection:
@@ -179,11 +181,11 @@ class CytrusRoomsController : UICollectionViewController {
                         alertController.message = ""
                     }
                 }
-            } withStateChange: { state in
+            } state: { state in
                 Task {
                     if state == .joined {
                         self.navigationItem.setRightBarButton(.init(title: "Leave", primaryAction: .init(attributes: [.destructive], handler: { _ in
-                            MultiplayerManager.shared().disconnectFromRoom()
+                            self.multiplayer.disconnect()
                             self.navigationItem.rightBarButtonItem = nil
                             
                             Task {

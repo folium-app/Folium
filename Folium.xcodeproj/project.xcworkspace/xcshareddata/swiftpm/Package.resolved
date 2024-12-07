@@ -1,5 +1,5 @@
 {
-  "originHash" : "b00d01a6de5d5c9e561a1ac0fb79da5d0a45b58c175f35361edf51e07eaa34bf",
+  "originHash" : "b63ea4ef4da6e59f63c0eeffa2ddc48fd7fe737e4b1af69fb90c17b3401b1046",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/app-check.git",
       "state" : {
-        "revision" : "21fe1af9be463a359aaf8d96789ef73fc3760d09",
-        "version" : "11.0.1"
+        "revision" : "61b85103a1aeed8218f17c794687781505fbbef5",
+        "version" : "11.2.0"
       }
     },
     {
@@ -25,7 +25,7 @@
       "location" : "https://github.com/firebase/firebase-ios-sdk",
       "state" : {
         "branch" : "main",
-        "revision" : "16dd4eed59bc6828d5319a1e75d3aa239430a6a6"
+        "revision" : "2e02253fd1ce99145bcbf1bb367ccf61bd0ca46b"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleAppMeasurement.git",
       "state" : {
-        "revision" : "07a2f57d147d2bf368a0d2dcb5579ff082d9e44f",
-        "version" : "11.1.0"
+        "revision" : "4f234bcbdae841d7015258fbbf8e7743a39b8200",
+        "version" : "11.4.0"
       }
     },
     {
@@ -69,8 +69,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/gtm-session-fetcher.git",
       "state" : {
-        "revision" : "a2ab612cb980066ee56d90d60d8462992c07f24b",
-        "version" : "3.5.0"
+        "revision" : "5cfe5f090c982de9c58605d2a82a4fc77b774fbd",
+        "version" : "4.1.0"
       }
     },
     {
@@ -114,8 +114,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/OpenSSL",
       "state" : {
-        "revision" : "7405324f9b1a64a79e5fa3660d2eda901d1337f2",
-        "version" : "3.3.1000"
+        "revision" : "8729614a93e6b20307db3c3359aed81f030facaa",
+        "version" : "3.3.2000"
       }
     },
     {
@@ -132,8 +132,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",
       "state" : {
-        "revision" : "edb6ed4919f7756157fe02f2552b7e3850a538e5",
-        "version" : "1.28.1"
+        "revision" : "ebc7251dd5b37f627c93698e4374084d98409633",
+        "version" : "1.28.2"
       }
     },
     {
@@ -141,8 +141,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ctreffs/SwiftSDL2",
       "state" : {
-        "revision" : "30a2886bd68e43fc19ba29b63ffe230ac0e4db7a",
-        "version" : "1.4.1"
+        "branch" : "master",
+        "revision" : "df30583c88c8bb7bccaf8875f0ec4a39cb149fba"
+      }
+    },
+    {
+      "identity" : "uikit-blur-view",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/juliensagot/uikit-blur-view",
+      "state" : {
+        "branch" : "main",
+        "revision" : "c9618dee5fb9406005a18ec61a6291e87be1e40e"
       }
     },
     {
@@ -151,7 +160,7 @@
       "location" : "https://github.com/facebook/zstd",
       "state" : {
         "branch" : "dev",
-        "revision" : "20707e3718ee14250fb8a44b3bf023ea36bd88df"
+        "revision" : "82d470564d01c42ee62d651e644c5ea6953561e2"
       }
     }
   ],

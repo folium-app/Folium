@@ -11,6 +11,7 @@ import UIKit
 struct Orientation : Codable, Hashable {
     // TODO:
     var backgroundImageName: String? = nil
+    var sharedAlpha: Double? = 1
     
     let buttons: [Button]
     var screens: [Screen]

@@ -12,16 +12,14 @@ import GameController
 import MetalKit
 import UIKit
 
-class Nintendo3DSEmulationController : UIViewController {
+class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
     var controllerView: ControllerView? = nil
     var metalView: MTKView? = nil
     
-    var game: Nintendo3DSGame
     var skin: Skin
     init(game: Nintendo3DSGame, skin: Skin) {
-        self.game = game
         self.skin = skin
-        super.init(nibName: nil, bundle: nil)
+        super.init(game: game)
         Cytrus.shared.allocateVulkanLibrary()
     }
     
@@ -41,9 +39,7 @@ class Nintendo3DSEmulationController : UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         
-        AVCaptureDevice.requestAccess(for: .video) { success in
-            print(#function, "requestAccess", success)
-        }
+        AVCaptureDevice.requestAccess(for: .video) { _ in }
         
         guard let orientation = skin.orientation(for: interfaceOrientation()) else {
             return
@@ -86,7 +82,11 @@ class Nintendo3DSEmulationController : UIViewController {
         button.showsMenuAsPrimaryAction = true
         button.menu = .init(children: [
             UIAction(title: "Open Cheats", image: .init(systemName: "hammer"), handler: { _ in
-                let cheatsController = UINavigationController(rootViewController: CheatsController(titleIdentifier: self.game.titleIdentifier))
+                guard let game = self.game as? Nintendo3DSGame else {
+                    return
+                }
+                
+                let cheatsController = UINavigationController(rootViewController: CheatsController(titleIdentifier: game.titleIdentifier))
                 cheatsController.modalPresentationStyle = .fullScreen
                 self.present(cheatsController, animated: true)
             }),

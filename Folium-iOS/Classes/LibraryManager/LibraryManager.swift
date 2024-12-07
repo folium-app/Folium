@@ -96,6 +96,17 @@ enum Core : String, Codable, CaseIterable, CustomStringConvertible, Hashable, @u
                 .x : isNew3DS ? (.white, .systemBlue) : (.black, .white),
                 .y : isNew3DS ? (.white, .systemGreen) : (.black, .white)
             ]
+        case .lychee:
+            return [
+                .dpadUp : (.black, .white),
+                .dpadDown : (.black, .white),
+                .dpadLeft : (.black, .white),
+                .dpadRight : (.black, .white),
+                .a : (.systemOrange, .white),
+                .b : (.systemBlue, .white),
+                .x : (.systemGreen, .white),
+                .y : (.systemPink, .white)
+            ]
         case .mango:
             return [
                 .dpadUp : (.black, .white),
@@ -153,7 +164,7 @@ struct LibraryManager : @unchecked Sendable {
     static var shared = LibraryManager()
     
     var cores: [Core] {
-        [.cytrus, .grape, .mango/* .guava, .kiwi, .lychee, .tomato*/] // 3DS, NDS, SNES, N64, GB/GBC, PS1, GBA
+        [.cytrus, .grape, .lychee, .mango/* .guava, .kiwi, .lychee, .tomato*/] // 3DS, NDS, SNES, N64, GB/GBC, PS1, GBA
     }
     
     var coresWithGames: [Core] = []
@@ -228,6 +239,23 @@ struct LibraryManager : @unchecked Sendable {
                         if let isRegularFile = attributes.isRegularFile, isRegularFile {
                             let nameWithoutExtension = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
                             switch url.pathExtension.lowercased() {
+                            case "cue":
+                                let title = try PlayStation1Game.titleFromHeader(for: url)
+                                if title.isEmpty {
+                                    break
+                                }
+                                
+                                if !coresWithGames.contains(.lychee) {
+                                    coresWithGames.append(.lychee)
+                                }
+                                
+                                partialResult.append(PlayStation1Game(core: "Lychee",
+                                                                      fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                                                         name: url.lastPathComponent,
+                                                                                         nameWithoutExtension: nameWithoutExtension,
+                                                                                         url: url),
+                                                                      skins: skinManager.skins(for: .lychee),
+                                                                      title: title))
                             case "3ds", "cci", "cxi":
                                 let title = try Nintendo3DSGame.titleFromHeader(for: url)
                                 if title.isEmpty {

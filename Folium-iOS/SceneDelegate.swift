@@ -7,6 +7,7 @@
 
 import AppleArchive
 import Accelerate
+import CoreMotion
 import Cytrus
 import DirectoryManager
 import FUIAlertKit
@@ -62,6 +63,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         configureDefaultUserDefaults()
+        
+        print(DirectoryManager.shared.scanDirectoryForMissingFiles(for: Core.grape.rawValue))
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
