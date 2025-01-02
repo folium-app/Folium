@@ -155,7 +155,7 @@ extension CGImage {
         return imageRef
     }
     
-    static func rgb32CGImage(_ buffer: UnsafeMutablePointer<UInt32>, _ width: Int, _ height: Int) -> CGImage? {
+    static func rgb32CGImage(_ buffer: UnsafeMutablePointer<UInt32>, _ width: Int = 1024, _ height: Int = 512) -> CGImage? {
         let colorSpaceRef = CGColorSpaceCreateDeviceRGB()
         
         let bitsPerComponent = 8
@@ -166,6 +166,40 @@ extension CGImage {
         
         // Bitmap info for RGB32 with no alpha, skipping the last 8 bits (often unused alpha or padding)
         let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue).union(.byteOrder32Little)
+        
+        guard let providerRef = CGDataProvider(dataInfo: nil, data: buffer, size: totalBytes, releaseData: { _, _, _ in }) else {
+            return nil
+        }
+        
+        // Create the CGImage with RGB32 data
+        let imageRef = CGImage(
+            width: width,
+            height: height,
+            bitsPerComponent: bitsPerComponent,
+            bitsPerPixel: bitsPerPixel,
+            bytesPerRow: bytesPerRow,
+            space: colorSpaceRef,
+            bitmapInfo: bitmapInfo,
+            provider: providerRef,
+            decode: nil,
+            shouldInterpolate: false,
+            intent: .defaultIntent
+        )
+        
+        return imageRef
+    }
+    
+    static func bgr32CGImage(_ buffer: UnsafeMutablePointer<UInt32>, _ width: Int = 1024, _ height: Int = 512) -> CGImage? {
+        let colorSpaceRef = CGColorSpaceCreateDeviceRGB()
+        
+        let bitsPerComponent = 8
+        let bytesPerPixel = 4 // 32 bits per pixel (RGB32)
+        let bitsPerPixel = bytesPerPixel * bitsPerComponent
+        let bytesPerRow = bytesPerPixel * width
+        let totalBytes = height * bytesPerRow
+        
+        // Bitmap info for RGB32 with no alpha, skipping the last 8 bits (often unused alpha or padding)
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue).union(.byteOrderDefault)
         
         guard let providerRef = CGDataProvider(dataInfo: nil, data: buffer, size: totalBytes, releaseData: { _, _, _ in }) else {
             return nil

@@ -15,7 +15,8 @@ import WidgetKit
 
 struct User : Codable {
     struct Game : Codable {
-        let icon: Data?
+        var console: String = ""
+        var icon: Data? = nil
         let sha256: String
         var lastPlayed, playTime: TimeInterval
     }
@@ -23,13 +24,14 @@ struct User : Codable {
     var games: [Game]
     let name: String
     
-    mutating func updateGame(sha256: String, with lastPlayed: TimeInterval = 0,
+    mutating func updateGame(console: String, sha256: String, with lastPlayed: TimeInterval = 0,
                              and playTime: TimeInterval = 0, icon: Data? = nil) {
         if let index = games.firstIndex(where: { $0.sha256 == sha256 }) {
+            games[index].icon = icon
             games[index].lastPlayed = lastPlayed
             games[index].playTime += playTime
         } else {
-            games.append(.init(icon: icon, sha256: sha256, lastPlayed: lastPlayed, playTime: playTime))
+            games.append(.init(console: console, icon: icon, sha256: sha256, lastPlayed: lastPlayed, playTime: playTime))
         }
     }
 }
@@ -56,16 +58,21 @@ class LastPlayedPlayTimeController : UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if let timer {
-            timer.invalidate()
-        }
+        if let timer { timer.invalidate() }
         
-        var icon: Data? = nil
-        switch game {
-        case let nintendo3DSGame as Nintendo3DSGame:
-            icon = nintendo3DSGame.icon
+        let icon: Data? = switch game {
+        case let nintendoDSGame as NintendoDSGame:
+            if let cgImage = CGImage.cgImage(nintendoDSGame.icon, 32, 32) {
+                UIImage(cgImage: cgImage).pngData()
+            } else {
+                nil
+            }
+        case let nintendo3DSGame as Nintendo3DSGame: nintendo3DSGame.icon
+        case let playStation1Game as PlayStation1Game: playStation1Game.iconData
+        case let playStation2Game as PlayStation2Game: playStation2Game.iconData
+        case let superNESGame as SuperNESGame: superNESGame.iconData
         default:
-            break
+            nil
         }
         
         let user = Auth.auth().currentUser
@@ -77,7 +84,7 @@ class LastPlayedPlayTimeController : UIViewController {
                 if let sha256 {
                     let document = Firestore.firestore().collection("users").document(user.uid)
                     var user = try await document.getDocument(as: User.self)
-                    user.updateGame(sha256: sha256, with: Date.now.timeIntervalSince1970, and: self.time, icon: icon)
+                    user.updateGame(console: game.core, sha256: sha256, with: Date.now.timeIntervalSince1970, and: self.time, icon: icon)
                     
                     try document.setData(from: user, merge: true)
                     

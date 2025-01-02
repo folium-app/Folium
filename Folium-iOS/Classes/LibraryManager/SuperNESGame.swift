@@ -11,29 +11,37 @@ import Mango
 
 // MARK: Class for the Game Boy Advance core, Tomato
 class SuperNESGame : GameBase, @unchecked Sendable {
-    static func titleFromHeader(for url: URL) throws -> String {
-        Mango.shared.titleForCartridge(at: url)
+    var icon: URL?
+    var iconData: Data? = nil
+    
+    init(icon: URL? = nil, core: String, fileDetails: GameBase.FileDetails, skins: [Skin], title: String) {
+        self.icon = icon
+        super.init(core: core, fileDetails: fileDetails, skins: skins, title: title)
+    }
+    
+    static func iconFromHeader(for url: URL) throws -> URL? {
+        let region = Mango.shared.regionForCartridge(at: url)
+        let title = try titleFromHeader(for: url, true)
         
-        /*
-        let title = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
+        print(region, title)
         
-        let file = try FileHandle(forReadingFrom: url)
-        try file.seek(toOffset: 0xFFC0)
-        if var data = try file.read(upToCount: 0x15) {
-            var pointer: UnsafeMutablePointer<UInt8> = .allocate(capacity: 0x15)
-            data.withUnsafeMutableBytes {
-                guard let bytes = $0.bindMemory(to: UInt8.self).baseAddress else {
-                    return
-                }
-
-                pointer = bytes
-            }
-            
-            try file.close()
-            return String(cString: pointer).capitalized
+        if region.isEmpty || region == "" {
+            return nil
         } else {
-            return title
+            if let imageURL = URL(string: "https://raw.githubusercontent.com/libretro/libretro-thumbnails/refs/heads/master/Nintendo - Super Nintendo Entertainment System/Named_Boxarts/\(title) (\(region)).png") {
+                return imageURL
+            } else {
+                return nil
+            }
         }
-         */
+    }
+    
+    static func titleFromHeader(for url: URL, _ fromFileName: Bool = false) throws -> String {
+        return if fromFileName {
+            url.lastPathComponent
+                .replacingOccurrences(of: ".\(url.pathExtension)", with: "")
+        } else {
+            Mango.shared.titleForCartridge(at: url)
+        }
     }
 }

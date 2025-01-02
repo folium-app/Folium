@@ -134,121 +134,121 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
             
             extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .a)
+                    self.touchBegan(with: .b, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .a)
+                    self.touchEnded(with: .b, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .b)
+                    self.touchBegan(with: .a, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .b)
+                    self.touchEnded(with: .a, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.buttonX.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .x)
+                    self.touchBegan(with: .y, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .x)
+                    self.touchEnded(with: .y, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.buttonY.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .y)
+                    self.touchBegan(with: .x, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .y)
+                    self.touchEnded(with: .x, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadUp)
+                    self.touchBegan(with: .dpadUp, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadUp)
+                    self.touchEnded(with: .dpadUp, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadDown)
+                    self.touchBegan(with: .dpadDown, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadDown)
+                    self.touchEnded(with: .dpadDown, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadLeft)
+                    self.touchBegan(with: .dpadLeft, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadLeft)
+                    self.touchEnded(with: .dpadLeft, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadRight)
+                    self.touchBegan(with: .dpadRight, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadRight)
+                    self.touchEnded(with: .dpadRight, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.leftThumbstick.valueChangedHandler = { element, x, y in
-                self.touchMoved(with: .left, position: (x, y))
+                self.touchMoved(with: .left, position: (x, y), playerIndex: .index1)
             }
             
             extendedGamepad.rightThumbstick.valueChangedHandler = { element, x, y in
-                self.touchMoved(with: .right, position: (x, y))
+                self.touchMoved(with: .right, position: (x, y), playerIndex: .index1)
             }
             
             extendedGamepad.leftShoulder.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .l)
+                    self.touchBegan(with: .l, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .l)
+                    self.touchEnded(with: .l, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.rightShoulder.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .r)
+                    self.touchBegan(with: .r, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .r)
+                    self.touchEnded(with: .r, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.leftTrigger.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .zl)
+                    self.touchBegan(with: .zl, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .zl)
+                    self.touchEnded(with: .zl, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.rightTrigger.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .zr)
+                    self.touchBegan(with: .zr, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .zr)
+                    self.touchEnded(with: .zr, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .minus)
+                    self.touchBegan(with: .minus, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .minus)
+                    self.touchEnded(with: .minus, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .plus)
+                    self.touchBegan(with: .plus, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .plus)
+                    self.touchEnded(with: .plus, playerIndex: .index1)
                 }
             }
         }
@@ -350,7 +350,7 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
                 return
             }
             
-            controllerView.updateFrames(for: orientation, controllerConnected: GCController.controllers().count > 0)
+            controllerView.updateFrames(for: orientation, controllerDisconnected: GCController.controllers().isEmpty)
             
             metalView.frame = if !orientation.screens.isEmpty, let screen = orientation.screens.first {
                 .init(x: screen.x, y: screen.y, width: screen.width, height: screen.height)
@@ -395,7 +395,7 @@ extension Nintendo3DSEmulationController {
 
 // MARK: Button Delegate
 extension Nintendo3DSEmulationController : ControllerButtonDelegate {
-    func touchBegan(with type: Button.`Type`) {
+    func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
         case .a:
             Cytrus.shared.virtualControllerButtonDown(.A)
@@ -437,7 +437,7 @@ extension Nintendo3DSEmulationController : ControllerButtonDelegate {
         }
     }
     
-    func touchEnded(with type: Button.`Type`) {
+    func touchEnded(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
         case .a:
             Cytrus.shared.virtualControllerButtonUp(.A)
@@ -479,20 +479,20 @@ extension Nintendo3DSEmulationController : ControllerButtonDelegate {
         }
     }
     
-    func touchMoved(with type: Button.`Type`) {}
+    func touchMoved(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {}
 }
 
 // MARK: Thumbstick Delegate
 extension Nintendo3DSEmulationController : ControllerThumbstickDelegate {
-    func touchBegan(with type: Thumbstick.`Type`, position: (x: Float, y: Float)) {
+    func touchBegan(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {
         Cytrus.shared.thumbstickMoved(type == .left ? .circlePad : .cStick, position.x, position.y)
     }
     
-    func touchEnded(with type: Thumbstick.`Type`, position: (x: Float, y: Float)) {
+    func touchEnded(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {
         Cytrus.shared.thumbstickMoved(type == .left ? .circlePad : .cStick, position.x, position.y)
     }
     
-    func touchMoved(with type: Thumbstick.`Type`, position: (x: Float, y: Float)) {
+    func touchMoved(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {
         Cytrus.shared.thumbstickMoved(type == .left ? .circlePad : .cStick, position.x, position.y)
     }
 }

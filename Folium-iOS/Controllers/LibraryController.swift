@@ -133,6 +133,18 @@ class LibraryController: UICollectionViewController {
             ])
         ]
         
+        children.append(UIMenu(options: .displayInline, children: [
+            UIAction(title: "Missing Files", image: .init(systemName: "doc"), handler: { _ in
+                var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+                configuration.headerMode = .supplementary
+                let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
+                
+                let missingFilesController = UINavigationController(rootViewController: MissingFilesController(collectionViewLayout: listCollectionViewLayout))
+                missingFilesController.modalPresentationStyle = .fullScreen
+                self.present(missingFilesController, animated: true)
+            })
+        ]))
+        
         if AppStoreCheck.shared.additionalFeaturesAreAllowed {
             if Auth.auth().currentUser == nil {
                 children.append(UIMenu(title: "Account Settings", options: .displayInline, children: [
@@ -310,7 +322,7 @@ extension LibraryController {
                 return
             }
             
-            let nintendoDSEmulationController = NintendoDSEmulationController(game: nintendoDSGame, skin: skin)
+            let nintendoDSEmulationController = GrapeDefaultController(game: nintendoDSGame, skin: skin)
             nintendoDSEmulationController.modalPresentationStyle = .fullScreen
             present(nintendoDSEmulationController, animated: true)
         case let nintendo3DSGame as Nintendo3DSGame:
@@ -326,7 +338,7 @@ extension LibraryController {
                 return
             }
             
-            let superNESEmulationController = SuperNESEmulationController(game: superNESGame, skin: skin)
+            let superNESEmulationController = MangoDefaultController(game: superNESGame, skin: skin)
             superNESEmulationController.modalPresentationStyle = .fullScreen
             present(superNESEmulationController, animated: true)
         case let playStation1Game as PlayStation1Game:
@@ -334,9 +346,17 @@ extension LibraryController {
                 return
             }
             
-            let playStation1EmulationController = PlayStation1EmulationController(game: playStation1Game, skin: skin)
-            playStation1EmulationController.modalPresentationStyle = .fullScreen
-            present(playStation1EmulationController, animated: true)
+            let lycheeSkinController = LycheeDefaultController(game: playStation1Game, skin: skin)
+            lycheeSkinController.modalPresentationStyle = .fullScreen
+            present(lycheeSkinController, animated: true)
+        case let playStation2Game as PlayStation2Game:
+            guard let skin = lycheeSkin else {
+                return
+            }
+            
+            let cherrySkinController = CherryDefaultController(game: playStation2Game, skin: skin)
+            cherrySkinController.modalPresentationStyle = .fullScreen
+            present(cherrySkinController, animated: true)
         case let gameBoyGame as GameBoyGame:
             guard let skin = mangoSkin else {
                 return
@@ -382,6 +402,9 @@ extension LibraryController: UIDocumentPickerDelegate {
                 } else {
                     let romsDirectoryURL: URL =
                     switch url.pathExtension.lowercased() {
+                    case "iso":
+                        documentDirectory.appendingPathComponent("Cherry", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
                     case "ds", "nds":
                         documentDirectory.appendingPathComponent("Grape", conformingTo: .folder)
                             .appendingPathComponent("roms", conformingTo: .folder)
@@ -628,17 +651,20 @@ extension LibraryController {
         let nintendo3DSCellRegistration = UICollectionView.CellRegistration<Nintendo3DSCell, Nintendo3DSGame> { $0.set($2, with: self) }
         let nintendo64CellRegistration = UICollectionView.CellRegistration<Nintendo64Cell, Nintendo64Game> { $0.set(text: $2.title, with: .white) }
         let nintendoDSCellRegistration = UICollectionView.CellRegistration<NintendoDSCell, NintendoDSGame> { $0.set($2, with: self) }
-        let playStation1CellRegistration = UICollectionView.CellRegistration<PlayStation1Cell, PlayStation1Game> { $0.set(text: $2.title, with: .white) }
+        let playStation1CellRegistration = UICollectionView.CellRegistration<PlayStation1Cell, PlayStation1Game> { $0.set($2, with: self) }
+        let playStation2CellRegistration = UICollectionView.CellRegistration<PlayStation2Cell, PlayStation2Game> { $0.set($2, with: self) }
         let superNESCellRegistration = UICollectionView.CellRegistration<SuperNESCell, SuperNESGame> { $0.set($2, with: self) }
         
         let headerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) {
             var configuration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
             configuration.text = self.dataSource?.sectionIdentifier(for: $2.section)?.rawValue ?? ""
-            // configuration.secondaryText = self.dataSource?.sectionIdentifier(for: $2.section)?.console ?? ""
+            if UserDefaults.standard.bool(forKey: "folium.showConsoleNames") {
+                configuration.secondaryText = self.dataSource?.sectionIdentifier(for: $2.section)?.console ?? ""
+            }
             $0.contentConfiguration = configuration
             
             if let dataSource = self.dataSource, let core = dataSource.sectionIdentifier(for: $2.section) {
-                if core.isBeta {
+                if core.isBeta && UserDefaults.standard.bool(forKey: "folium.showBetaConsoles") {
                     var configuration = UIButton.Configuration.tinted()
                     configuration.baseBackgroundColor = .systemOrange
                     configuration.baseForegroundColor = .systemOrange
@@ -671,6 +697,8 @@ extension LibraryController {
                 $0.dequeueConfiguredReusableCell(using: nintendoDSCellRegistration, for: $1, item: nintendoDSGame)
             case let playStation1Game as PlayStation1Game:
                 $0.dequeueConfiguredReusableCell(using: playStation1CellRegistration, for: $1, item: playStation1Game)
+            case let playStation2Game as PlayStation2Game:
+                $0.dequeueConfiguredReusableCell(using: playStation2CellRegistration, for: $1, item: playStation2Game)
             case let superNESGame as SuperNESGame:
                 $0.dequeueConfiguredReusableCell(using: superNESCellRegistration, for: $1, item: superNESGame)
             default:
@@ -703,7 +731,7 @@ extension LibraryController {
                 return
             }
             
-            snapshot.appendSections(LibraryManager.shared.coresWithGames)
+            snapshot.appendSections(LibraryManager.shared.coresWithGames.sorted(by: { $0.rawValue < $1.rawValue }))
             LibraryManager.shared.coresWithGames.forEach { core in
                 snapshot.appendItems(games.filter {
                     $0.core == core.rawValue

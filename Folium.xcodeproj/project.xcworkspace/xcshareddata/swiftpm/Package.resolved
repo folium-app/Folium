@@ -1,5 +1,5 @@
 {
-  "originHash" : "b63ea4ef4da6e59f63c0eeffa2ddc48fd7fe737e4b1af69fb90c17b3401b1046",
+  "originHash" : "b8a3473d4f4818f1dbeb40e9a00741049f85b81e9a394dbbc1c91ba4ac0ba258",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -25,7 +25,7 @@
       "location" : "https://github.com/firebase/firebase-ios-sdk",
       "state" : {
         "branch" : "main",
-        "revision" : "2e02253fd1ce99145bcbf1bb367ccf61bd0ca46b"
+        "revision" : "f53dfc347d52257f4da3727937a9236b9ddde1c4"
       }
     },
     {
@@ -160,7 +160,7 @@
       "location" : "https://github.com/facebook/zstd",
       "state" : {
         "branch" : "dev",
-        "revision" : "82d470564d01c42ee62d651e644c5ea6953561e2"
+        "revision" : "cf5e53f618c87c7be88c6f5537c1fb70a45f2c09"
       }
     }
   ],

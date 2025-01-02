@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-public struct MissingFile : Codable {
-    public enum Importance : Int, Codable {
+public struct MissingFile : Codable, Hashable, @unchecked Sendable {
+    public enum Importance : Int, Codable, Hashable, @unchecked Sendable {
         case optional, required
         
         public var color: UIColor {
@@ -20,8 +20,18 @@ public struct MissingFile : Codable {
                 .systemRed
             }
         }
+        
+        public var string: String {
+            switch self {
+            case .optional:
+                "Optional"
+            case .required:
+                "Required"
+            }
+        }
     }
     
+    public var details: String? = nil
     public let core, `extension`: String
     public let importance: Importance
     public let isSystemFile: Bool

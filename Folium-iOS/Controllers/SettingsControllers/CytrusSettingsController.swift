@@ -150,7 +150,7 @@ class CytrusSettingsController : UICollectionViewController {
             }
         }
         
-        let inputCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, InputNumberSetting> { cell, indexPath, itemIdentifier in
+        let inputNumberCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, InputNumberSetting> { cell, indexPath, itemIdentifier in
             var contentConfiguration = UIListContentConfiguration.valueCell()
             contentConfiguration.text = itemIdentifier.title
             contentConfiguration.secondaryText = "\(Int(itemIdentifier.value))"
@@ -160,6 +160,29 @@ class CytrusSettingsController : UICollectionViewController {
             cell.accessories = [
                 .disclosureIndicator()
             ]
+        }
+        
+        let inputStringCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, InputStringSetting> { cell, indexPath, itemIdentifier in
+            var contentConfiguration = UIListContentConfiguration.valueCell()
+            contentConfiguration.text = itemIdentifier.title
+            contentConfiguration.secondaryText = itemIdentifier.value
+            contentConfiguration.secondaryTextProperties.color = .secondaryLabel
+            cell.contentConfiguration = contentConfiguration
+            
+            cell.accessories = if let details = itemIdentifier.details {
+                [
+                    .detail(options: .init(tintColor: .systemBlue), actionHandler: {
+                        let alertController = UIAlertController(title: "\(itemIdentifier.title) Details", message: details, preferredStyle: .alert)
+                        alertController.addAction(.init(title: "Dismiss", style: .cancel))
+                        self.present(alertController, animated: true)
+                    }),
+                    .disclosureIndicator()
+                ]
+            } else {
+                [
+                    .disclosureIndicator()
+                ]
+            }
         }
         
         let stepperCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, StepperSetting> { cell, indexPath, itemIdentifier in
@@ -287,8 +310,10 @@ class CytrusSettingsController : UICollectionViewController {
                 collectionView.dequeueConfiguredReusableCell(using: blankSettingsCellRegistration, for: indexPath, item: blankSetting)
             case let boolSetting as BoolSetting:
                 collectionView.dequeueConfiguredReusableCell(using: boolCellRegistration, for: indexPath, item: boolSetting)
-            case let inputSetting as InputNumberSetting:
-                collectionView.dequeueConfiguredReusableCell(using: inputCellRegistration, for: indexPath, item: inputSetting)
+            case let inputNumberSetting as InputNumberSetting:
+                collectionView.dequeueConfiguredReusableCell(using: inputNumberCellRegistration, for: indexPath, item: inputNumberSetting)
+            case let inputStringSetting as InputStringSetting:
+                collectionView.dequeueConfiguredReusableCell(using: inputStringCellRegistration, for: indexPath, item: inputStringSetting)
             case let stepperSetting as StepperSetting:
                 collectionView.dequeueConfiguredReusableCell(using: stepperCellRegistration, for: indexPath, item: stepperSetting)
             case let selectionSetting as SelectionSetting:
@@ -306,7 +331,8 @@ class CytrusSettingsController : UICollectionViewController {
         snapshot.appendSections([
             "Core",
             "Renderer",
-            "Audio"
+            "Audio",
+            "Networking"
         ])
         
         var coreItems = [
@@ -574,6 +600,18 @@ class CytrusSettingsController : UICollectionViewController {
                              delegate: self)
         ], toSection: "Audio")
         
+        snapshot.appendItems([
+            InputStringSetting(key: "cytrus.webAPIURL",
+                               title: "Web API URL",
+                               details: "Enter the Web API URL that Cytrus will use when searching for rooms",
+                               placeholder: "http(s)://address:port",
+                               value: UserDefaults.standard.string(forKey: "cytrus.webAPIURL"),
+                               action: {
+                                   MultiplayerManager.shared().updateWebAPIURL()
+                               },
+                               delegate: self)
+        ], toSection: "Networking")
+        
         Task {
             await dataSource.apply(snapshot)
         }
@@ -602,6 +640,27 @@ class CytrusSettingsController : UICollectionViewController {
                 }
             }))
             present(alertController, animated: true)
+        case let inputSetting as InputStringSetting:
+            let alertController = UIAlertController(title: inputSetting.title,
+                                                    message: inputSetting.details,
+                                                    preferredStyle: .alert)
+            alertController.addTextField {
+                $0.placeholder = inputSetting.placeholder
+            }
+            
+            alertController.addAction(.init(title: "Cancel", style: .cancel))
+            alertController.addAction(.init(title: "Save", style: .default, handler: { _ in
+                guard let textFields = alertController.textFields, let textField = textFields.first, let value = textField.text else {
+                    return
+                }
+                
+                UserDefaults.standard.set(value, forKey: inputSetting.key)
+                if let delegate = inputSetting.delegate {
+                    inputSetting.action()
+                    delegate.didChangeSetting(at: indexPath)
+                }
+            }))
+            present(alertController, animated: true)
         default:
             break
         }
@@ -622,8 +681,10 @@ extension CytrusSettingsController : SettingDelegate {
         switch item {
         case let boolSetting as BoolSetting:
             boolSetting.value = UserDefaults.standard.bool(forKey: boolSetting.key)
-        case let inputSetting as InputNumberSetting:
-            inputSetting.value = UserDefaults.standard.double(forKey: inputSetting.key)
+        case let inputNumberSetting as InputNumberSetting:
+            inputNumberSetting.value = UserDefaults.standard.double(forKey: inputNumberSetting.key)
+        case let inputStringSetting as InputStringSetting:
+            inputStringSetting.value = UserDefaults.standard.string(forKey: inputStringSetting.key)
         case let stepperSetting as StepperSetting:
             stepperSetting.value = UserDefaults.standard.double(forKey: stepperSetting.key)
         case let selectionSetting as SelectionSetting:

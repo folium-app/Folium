@@ -16,6 +16,7 @@ import FirebaseAuth
 import LayoutManager
 import System
 import UIKit
+import WidgetKit
 
 enum ApplicationState : Int {
     case backgrounded = 0
@@ -64,7 +65,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         configureDefaultUserDefaults()
         
-        print(DirectoryManager.shared.scanDirectoryForMissingFiles(for: Core.grape.rawValue))
+        if let userDefaults = UserDefaults(suiteName: "group.com.antique.Folium") {
+            userDefaults.set(AppStoreCheck.shared.additionalFeaturesAreAllowed, forKey: "additionalFeaturesAreAllowed")
+            WidgetCenter.shared.reloadAllTimelines()
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -180,6 +184,11 @@ extension SceneDelegate {
                 
                 "logLevel" : 2,
                 "webAPIURL" : "http://88.198.47.46:5000"
+            ],
+            "Folium" : [
+                "showBetaConsoles" : false,
+                "showConsoleNames" : false,
+                "showGameTitles" : true
             ],
             "Grape" : [
                 "directBoot" : true,

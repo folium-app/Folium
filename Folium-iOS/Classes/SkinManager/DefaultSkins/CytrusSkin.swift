@@ -158,8 +158,6 @@ var cytrusSkin: Skin? {
                   type: .right)
         ])
         
-        let landscape = portrait
-        
         return .init(author: .init(name: "Antique",
                                    socials: [
                                     .init(type: .twitter,
@@ -167,8 +165,8 @@ var cytrusSkin: Skin? {
                                    ]),
                      core: .cytrus,
                      orientations: .init(portrait: portrait,
-                                         landscapeLeft: landscape,
-                                         landscapeRight: landscape,
+                                         landscapeLeft: portrait,
+                                         landscapeRight: portrait,
                                          supportedDevices: Machine.iPhone_mini),
                      title: "Default Skin")
         
@@ -298,8 +296,6 @@ var cytrusSkin: Skin? {
                   type: .right)
         ])
         
-        let landscape = portrait
-        
         return .init(author: .init(name: "Antique",
                                    socials: [
                                     .init(type: .twitter,
@@ -307,8 +303,8 @@ var cytrusSkin: Skin? {
                                    ]),
                      core: .cytrus,
                      orientations: .init(portrait: portrait,
-                                         landscapeLeft: landscape,
-                                         landscapeRight: landscape,
+                                         landscapeLeft: portrait,
+                                         landscapeRight: portrait,
                                          supportedDevices: Machine.iPhone),
                      title: "Default Skin")
         
@@ -468,8 +464,6 @@ var cytrusSkin: Skin? {
                   type: .right)
         ])
         
-        let landscape = portrait
-        
         return .init(author: .init(name: "Antique",
                                    socials: [
                                     .init(type: .twitter,
@@ -477,8 +471,8 @@ var cytrusSkin: Skin? {
                                    ]),
                      core: .cytrus,
                      orientations: .init(portrait: portrait,
-                                         landscapeLeft: landscape,
-                                         landscapeRight: landscape,
+                                         landscapeLeft: portrait,
+                                         landscapeRight: portrait,
                                          supportedDevices: Machine.iPad),
                      title: "Default Skin")
     }

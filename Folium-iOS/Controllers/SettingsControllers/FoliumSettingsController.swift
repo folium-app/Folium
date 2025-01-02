@@ -6,7 +6,6 @@
 //  Copyright © 2024 Jarrod Norwell. All rights reserved.
 //
 
-import Cytrus
 import Foundation
 import UIKit
 
@@ -22,25 +21,35 @@ class FoliumSettingsController : UICollectionViewController {
         prefersLargeTitles(true)
         title = "Settings"
         
-        let inputCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, InputStringSetting> { cell, indexPath, itemIdentifier in
-            var contentConfiguration = UIListContentConfiguration.valueCell()
+        let boolCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, BoolSetting> { cell, indexPath, itemIdentifier in
+            var contentConfiguration = UIListContentConfiguration.cell()
             contentConfiguration.text = itemIdentifier.title
-            contentConfiguration.secondaryText = itemIdentifier.value
-            contentConfiguration.secondaryTextProperties.color = .secondaryLabel
             cell.contentConfiguration = contentConfiguration
+            
+            let toggle = UISwitch(frame: .zero, primaryAction: .init(handler: { action in
+                guard let toggle = action.sender as? UISwitch else {
+                    return
+                }
+                
+                UserDefaults.standard.set(toggle.isOn, forKey: itemIdentifier.key)
+                if let delegate = itemIdentifier.delegate {
+                    delegate.didChangeSetting(at: indexPath)
+                }
+            }))
+            toggle.isOn = itemIdentifier.value
             
             cell.accessories = if let details = itemIdentifier.details {
                 [
+                    .customView(configuration: .init(customView: toggle, placement: .trailing())),
                     .detail(options: .init(tintColor: .systemBlue), actionHandler: {
                         let alertController = UIAlertController(title: "\(itemIdentifier.title) Details", message: details, preferredStyle: .alert)
                         alertController.addAction(.init(title: "Dismiss", style: .cancel))
                         self.present(alertController, animated: true)
-                    }),
-                    .disclosureIndicator()
+                    })
                 ]
             } else {
                 [
-                    .disclosureIndicator()
+                    .customView(configuration: .init(customView: toggle, placement: .trailing()))
                 ]
             }
         }
@@ -53,8 +62,8 @@ class FoliumSettingsController : UICollectionViewController {
         
         dataSource = .init(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             switch itemIdentifier {
-            case let inputSetting as InputStringSetting:
-                collectionView.dequeueConfiguredReusableCell(using: inputCellRegistration, for: indexPath, item: inputSetting)
+            case let boolSetting as BoolSetting:
+                collectionView.dequeueConfiguredReusableCell(using: boolCellRegistration, for: indexPath, item: boolSetting)
             default:
                 nil
             }
@@ -66,55 +75,29 @@ class FoliumSettingsController : UICollectionViewController {
         
         snapshot = .init()
         snapshot.appendSections([
-            "Cytrus"
+            "Library"
         ])
         
-        let cytrusItems = [
-            InputStringSetting(key: "cytrus.webAPIURL",
-                               title: "Web API URL",
-                               details: "Enter the Web API URL that Cytrus will use when searching for rooms",
-                               placeholder: "http(s)://address:port",
-                               value: UserDefaults.standard.string(forKey: "cytrus.webAPIURL"),
-                               action: {
-                                   MultiplayerManager.shared().updateWebAPIURL()
-                               },
-                               delegate: self)
-        ]
-        
-        snapshot.appendItems(cytrusItems, toSection: "Cytrus")
+        snapshot.appendItems([
+            BoolSetting(key: "folium.showBetaConsoles",
+                        title: "Show Beta Consoles",
+                        details: "Determines whether or not to show consoles that are in a beta state",
+                        value: UserDefaults.standard.bool(forKey: "folium.showBetaConsoles"),
+                        delegate: self),
+            BoolSetting(key: "folium.showConsoleNames",
+                        title: "Show Console Names",
+                        details: "Determines whether or not to show the name of the console under the core name",
+                        value: UserDefaults.standard.bool(forKey: "folium.showConsoleNames"),
+                        delegate: self),
+            BoolSetting(key: "folium.showGameTitles",
+                        title: "Show Game Titles",
+                        details: "Determines whether or not to show game titles. Games without artwork always have titles shown",
+                        value: UserDefaults.standard.bool(forKey: "folium.showGameTitles"),
+                        delegate: self)
+        ], toSection: "Library")
         
         Task {
             await dataSource.apply(snapshot)
-        }
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
-        
-        switch dataSource.itemIdentifier(for: indexPath) {
-        case let inputSetting as InputStringSetting:
-            let alertController = UIAlertController(title: inputSetting.title,
-                                                    message: inputSetting.details,
-                                                    preferredStyle: .alert)
-            alertController.addTextField {
-                $0.placeholder = inputSetting.placeholder
-            }
-            
-            alertController.addAction(.init(title: "Cancel", style: .cancel))
-            alertController.addAction(.init(title: "Save", style: .default, handler: { _ in
-                guard let textFields = alertController.textFields, let textField = textFields.first, let value = textField.text else {
-                    return
-                }
-                
-                UserDefaults.standard.set(value, forKey: inputSetting.key)
-                if let delegate = inputSetting.delegate {
-                    inputSetting.action()
-                    delegate.didChangeSetting(at: indexPath)
-                }
-            }))
-            present(alertController, animated: true)
-        default:
-            break
         }
     }
 }
@@ -129,8 +112,8 @@ extension FoliumSettingsController : SettingDelegate {
         let item = snapshot.itemIdentifiers(inSection: sectionIdentifier)[indexPath.item]
         
         switch item {
-        case let inputSetting as InputStringSetting:
-            inputSetting.value = UserDefaults.standard.string(forKey: inputSetting.key)
+        case let boolSetting as BoolSetting:
+            boolSetting.value = UserDefaults.standard.bool(forKey: boolSetting.key)
         default:
             break
         }

@@ -8,6 +8,19 @@ public struct DirectoryManager {
     
     fileprivate var directories: [String : [String : [String : MissingFile]]] {
         [
+            "Cherry" : [ // PS2
+                "memcards" : [:],
+                "roms" : [:],
+                "sysdata" : [
+                    "bios.bin" : .init(
+                        core: "Cherry",
+                        extension: "bin",
+                        importance: .required,
+                        isSystemFile: true,
+                        name: "bios.bin",
+                        nameWithoutExtension: "bios")
+                ]
+            ],
             "Cytrus" : [ // 3DS
                 "cache" : [:],
                 "cheats" : [:],
@@ -24,17 +37,49 @@ public struct DirectoryManager {
                 "skins" : [:],
                 "states" : [:],
                 "sysdata" : [
-                    "aes_keys.txt" : .init(core: "Cytrus", extension: "txt", importance: .optional, isSystemFile: true, name: "aes_keys.txt", nameWithoutExtension: "aes_keys")
+                    "aes_keys.txt" : .init(
+                        details: "Games that are not decrypted when being dumped will require this file",
+                        core: "Cytrus",
+                        extension: "txt",
+                        importance: .optional,
+                        isSystemFile: true,
+                        name: "aes_keys.txt",
+                        nameWithoutExtension: "aes_keys")
                 ]
             ],
             "Grape" : [ // NDS/NDSi
                 "config" : [:],
                 "roms" : [:],
                 "sysdata" : [
-                    "bios7.bin" : .init(core: "Grape", extension: "bin", importance: .required, isSystemFile: true, name: "bios7.bin", nameWithoutExtension: "bios7"),
-                    "bios9.bin" : .init(core: "Grape", extension: "bin", importance: .required, isSystemFile: true, name: "bios9.bin", nameWithoutExtension: "bios9"),
-                    "firmware.bin" : .init(core: "Grape", extension: "bin", importance: .required, isSystemFile: true, name: "firmware.bin", nameWithoutExtension: "firmware"),
-                    "gba_bios.bin" : .init(core: "Grape", extension: "bin", importance: .optional, isSystemFile: true, name: "gba_bios.bin", nameWithoutExtension: "gba_bios")
+                    "bios7.bin" : .init(
+                        core: "Grape",
+                        extension: "bin",
+                        importance: .required,
+                        isSystemFile: true,
+                        name: "bios7.bin",
+                        nameWithoutExtension: "bios7"),
+                    "bios9.bin" : .init(
+                        core: "Grape",
+                        extension: "bin",
+                        importance: .required,
+                        isSystemFile: true,
+                        name: "bios9.bin",
+                        nameWithoutExtension: "bios9"),
+                    "firmware.bin" : .init(
+                        core: "Grape",
+                        extension: "bin",
+                        importance: .required,
+                        isSystemFile: true,
+                        name: "firmware.bin",
+                        nameWithoutExtension: "firmware"),
+                    "gba_bios.bin" : .init(
+                        details: "Game Boy Advance games will require this file",
+                        core: "Grape",
+                        extension: "bin",
+                        importance: .optional,
+                        isSystemFile: true,
+                        name: "gba_bios.bin",
+                        nameWithoutExtension: "gba_bios")
                 ]
             ],
             "Guava" : [ // N64
@@ -45,9 +90,16 @@ public struct DirectoryManager {
                 "roms" : [:]
             ],
             "Lychee" : [ // PS1
+                "memcards" : [:],
                 "roms" : [:],
                 "sysdata" : [
-                    "bios.bin" : .init(core: "Lychee", extension: "bin", importance: .required, isSystemFile: true, name: "bios.bin", nameWithoutExtension: "bios")
+                    "bios.bin" : .init(
+                        core: "Lychee",
+                        extension: "bin",
+                        importance: .required,
+                        isSystemFile: true,
+                        name: "bios.bin",
+                        nameWithoutExtension: "bios")
                 ]
             ],
             "Mango" : [ // SNES

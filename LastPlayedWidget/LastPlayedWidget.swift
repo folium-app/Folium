@@ -11,9 +11,10 @@ import SwiftUI
 
 struct User : Codable {
     struct Game : Codable {
+        let console: String
         let icon: Data?
         let sha256: String
-        var lastPlayed, playTime: TimeInterval
+        var lastPlayed: TimeInterval = 0, playTime: TimeInterval = 0
     }
     
     var games: [Game]
@@ -27,7 +28,7 @@ struct Provider: AppIntentTimelineProvider {
             data = image.pngData()
         }
         
-        return SimpleEntry(isPlaceHolder: true, game: .init( icon: data, sha256: "", lastPlayed: Date.now.timeIntervalSince1970,
+        return SimpleEntry(isPlaceHolder: true, game: .init(console: "", icon: data, sha256: "", lastPlayed: Date.now.timeIntervalSince1970,
                                 playTime: Date.now.timeIntervalSince1970), date: Date(), configuration: ConfigurationAppIntent())
     }
 
@@ -37,7 +38,7 @@ struct Provider: AppIntentTimelineProvider {
             data = image.pngData()
         }
         
-        return SimpleEntry(isPlaceHolder: true, game: .init(icon: data, sha256: "", lastPlayed: Date.now.timeIntervalSince1970,
+        return SimpleEntry(isPlaceHolder: true, game: .init(console: "", icon: data, sha256: "", lastPlayed: Date.now.timeIntervalSince1970,
                                 playTime: Date.now.timeIntervalSince1970), date: Date(), configuration: configuration)
     }
     
@@ -48,7 +49,7 @@ struct Provider: AppIntentTimelineProvider {
             do {
                 let user = try JSONDecoder().decode(User.self, from: data)
                 user.games.forEach { game in
-                    entries.append(.init(game: game, date: Date.now, configuration: configuration))
+                    entries.append(.init(console: game.console, game: game, date: Date.now, configuration: configuration))
                 }
             } catch {
                 print(error.localizedDescription)
@@ -64,6 +65,7 @@ struct Provider: AppIntentTimelineProvider {
 }
 
 struct SimpleEntry: TimelineEntry {
+    var console: String = ""
     var isPlaceHolder: Bool = false
     let game: User.Game
     let date: Date
@@ -96,7 +98,12 @@ struct LastPlayedWidgetEntryView : View {
             if entry.isPlaceHolder {
                 .init(data: data) ?? .init()
             } else {
-                data.decodeRGB565(width: 48, height: 48) ?? .init()
+                switch entry.console {
+                case "Grape", "Mango", "Lychee":
+                    .init(data: data) ?? .init()
+                default:
+                    data.decodeRGB565(width: 48, height: 48) ?? .init()
+                }
             }
         } else {
             .init()
@@ -104,29 +111,39 @@ struct LastPlayedWidgetEntryView : View {
     }
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Image(uiImage: image)
-                .clipShape(.rect(cornerRadius: 10))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(.fill.quaternary, lineWidth: 5)
-                }
-            Spacer()
+        if let userDefaults = UserDefaults(suiteName: "group.com.antique.Folium"), userDefaults.bool(forKey: "additionalFeaturesAreAllowed") {
             VStack(alignment: .leading) {
-                Text("Last played \(relativeTimeFromTimeInterval())")
-                   .foregroundStyle(.primary)
-                   .bold()
-                /*
-                 Text(dateFromTimeInterval())
-                    .foregroundStyle(.primary)
-                    .bold()
-                Text(timeFromTimeInterval())
-                    .foregroundStyle(.primary)
-                    .bold()
-                 */
+                Image(uiImage: image)
+                    .resizable()
+                    .frame(width: 64, height: 64)
+                    .clipShape(.rect(cornerRadius: 10))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.fill.quaternary, lineWidth: 5)
+                    }
+                Spacer()
+                VStack(alignment: .leading) {
+                    Text("Last played \(relativeTimeFromTimeInterval())")
+                       .foregroundStyle(.primary)
+                       .bold()
+                    /*
+                     Text(dateFromTimeInterval())
+                        .foregroundStyle(.primary)
+                        .bold()
+                    Text(timeFromTimeInterval())
+                        .foregroundStyle(.primary)
+                        .bold()
+                     */
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        } else {
+            VStack(alignment: .leading) {
+                HStack(alignment: .center) {
+                    Text("N/A")
+                }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
         
         /*
         ZStack {

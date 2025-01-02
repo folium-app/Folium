@@ -26,4 +26,22 @@ extension UIApplication {
             .flatMap({ $0 as? UIWindowScene })?.windows
             .first(where: { $0.isKind(of: FUIAlertKitWindow.classForCoder()) })
     }
+    
+    var viewController: UIViewController? {
+        let base = window?.rootViewController
+        return top(base)
+    }
+    
+    func top(_ base: UIViewController?) -> UIViewController? {
+        if let nav = base as? UINavigationController {
+            return top(nav.visibleViewController)
+            
+        } else if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
+            return top(selected)
+            
+        } else if let presented = base?.presentedViewController {
+            return top(presented)
+        }
+        return base
+    }
 }

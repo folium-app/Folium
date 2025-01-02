@@ -14,6 +14,6 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     static var description: IntentDescription { "This is an example widget." }
 
     // An example configurable parameter.
-    //@Parameter(title: "SHA256", default: "")
-    //var sha256: String
+    // @Parameter(title: "SHA256", default: "")
+    // var sha256: String
 }

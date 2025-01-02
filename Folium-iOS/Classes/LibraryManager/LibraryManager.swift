@@ -73,6 +73,7 @@ enum Feature {
 }
 
 enum Core : String, Codable, CaseIterable, CustomStringConvertible, Hashable, @unchecked Sendable {
+    case cherry = "Cherry"
     case cytrus = "Cytrus"
     case grape = "Grape"
     case guava = "Guava"
@@ -80,6 +81,27 @@ enum Core : String, Codable, CaseIterable, CustomStringConvertible, Hashable, @u
     case lychee = "Lychee"
     case mango = "Mango"
     case tomato = "Tomato"
+    
+    var color: [Button.`Type` : UIColor] {
+        switch self {
+        case .cytrus, .grape, .mango:
+            [
+                .a : .systemRed,
+                .b : .systemYellow,
+                .x : .systemBlue,
+                .y : .systemGreen
+            ]
+        case .cherry, .lychee:
+            [
+                .a : .systemOrange,
+                .b : .systemBlue,
+                .x : .systemGreen,
+                .y : .systemPink
+            ]
+        default:
+            [:]
+        }
+    }
     
     var colors: [Button.`Type` : (UIColor, UIColor)] {
         switch self {
@@ -98,25 +120,10 @@ enum Core : String, Codable, CaseIterable, CustomStringConvertible, Hashable, @u
             ]
         case .lychee:
             return [
-                .dpadUp : (.black, .white),
-                .dpadDown : (.black, .white),
-                .dpadLeft : (.black, .white),
-                .dpadRight : (.black, .white),
                 .a : (.systemOrange, .white),
                 .b : (.systemBlue, .white),
                 .x : (.systemGreen, .white),
                 .y : (.systemPink, .white)
-            ]
-        case .mango:
-            return [
-                .dpadUp : (.black, .white),
-                .dpadDown : (.black, .white),
-                .dpadLeft : (.black, .white),
-                .dpadRight : (.black, .white),
-                .a : (.white, .systemRed),
-                .b : (.white, .systemYellow),
-                .x : (.white, .systemBlue),
-                .y : (.white, .systemGreen)
             ]
         default:
             return [
@@ -127,6 +134,8 @@ enum Core : String, Codable, CaseIterable, CustomStringConvertible, Hashable, @u
     
     var console: String {
         switch self {
+        case .cherry:
+            "PlayStation 2"
         case .cytrus:
             "Nintendo 3DS, New Nintendo 3DS"
         case .grape:
@@ -150,6 +159,8 @@ enum Core : String, Codable, CaseIterable, CustomStringConvertible, Hashable, @u
     
     var isBeta: Bool {
         switch self {
+        case .cherry, .lychee, .mango:
+            true
         default:
             false
         }
@@ -164,7 +175,7 @@ struct LibraryManager : @unchecked Sendable {
     static var shared = LibraryManager()
     
     var cores: [Core] {
-        [.cytrus, .grape, .lychee, .mango/* .guava, .kiwi, .lychee, .tomato*/] // 3DS, NDS, SNES, N64, GB/GBC, PS1, GBA
+        [.cytrus, .grape, .lychee, .mango] // 3DS, NDS, SNES, N64, GB/GBC, PS1, GBA
     }
     
     var coresWithGames: [Core] = []
@@ -249,12 +260,31 @@ struct LibraryManager : @unchecked Sendable {
                                     coresWithGames.append(.lychee)
                                 }
                                 
-                                partialResult.append(PlayStation1Game(core: "Lychee",
+                                partialResult.append(PlayStation1Game(icon: try PlayStation1Game.iconFromHeader(for: url),
+                                                                      core: "Lychee",
                                                                       fileDetails: .init(extension: url.pathExtension.lowercased(),
                                                                                          name: url.lastPathComponent,
                                                                                          nameWithoutExtension: nameWithoutExtension,
                                                                                          url: url),
                                                                       skins: skinManager.skins(for: .lychee),
+                                                                      title: title))
+                            case "iso":
+                                let title = try PlayStation2Game.titleFromHeader(for: url)
+                                if title.isEmpty {
+                                    break
+                                }
+                                
+                                if !coresWithGames.contains(.cherry) {
+                                    coresWithGames.append(.cherry)
+                                }
+                                
+                                partialResult.append(PlayStation2Game(icon: try PlayStation2Game.iconFromHeader(for: url),
+                                                                      core: "Cherry",
+                                                                      fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                                                         name: url.lastPathComponent,
+                                                                                         nameWithoutExtension: nameWithoutExtension,
+                                                                                         url: url),
+                                                                      skins: skinManager.skins(for: .cherry),
                                                                       title: title))
                             case "3ds", "cci", "cxi":
                                 let title = try Nintendo3DSGame.titleFromHeader(for: url)
@@ -266,7 +296,8 @@ struct LibraryManager : @unchecked Sendable {
                                     coresWithGames.append(.cytrus)
                                 }
                                 
-                                partialResult.append(Nintendo3DSGame(icon: try Nintendo3DSGame.iconFromHeader(for: url), core: "Cytrus",
+                                partialResult.append(Nintendo3DSGame(icon: try Nintendo3DSGame.iconFromHeader(for: url),
+                                                                     core: "Cytrus",
                                                                      fileDetails: .init(extension: url.pathExtension.lowercased(),
                                                                                         name: url.lastPathComponent,
                                                                                         nameWithoutExtension: nameWithoutExtension,
@@ -279,7 +310,8 @@ struct LibraryManager : @unchecked Sendable {
                                     coresWithGames.append(.grape)
                                 }
                                 
-                                partialResult.append(NintendoDSGame(icon: try NintendoDSGame.iconFromHeader(for: url), core: "Grape",
+                                partialResult.append(NintendoDSGame(icon: try NintendoDSGame.iconFromHeader(for: url),
+                                                                    core: "Grape",
                                                                     fileDetails: .init(extension: url.pathExtension.lowercased(),
                                                                                        name: url.lastPathComponent,
                                                                                        nameWithoutExtension: nameWithoutExtension,
@@ -291,7 +323,8 @@ struct LibraryManager : @unchecked Sendable {
                                     coresWithGames.append(.mango)
                                 }
                                 
-                                partialResult.append(SuperNESGame(core: "Mango",
+                                partialResult.append(SuperNESGame(icon: try SuperNESGame.iconFromHeader(for: url),
+                                                                  core: "Mango",
                                                                   fileDetails: .init(extension: url.pathExtension.lowercased(),
                                                                                      name: url.lastPathComponent,
                                                                                      nameWithoutExtension: nameWithoutExtension,
@@ -319,6 +352,10 @@ struct LibraryManager : @unchecked Sendable {
                     }
                 })
             }
+        }
+        
+        if !UserDefaults.standard.bool(forKey: "folium.showBetaConsoles") {
+            coresWithGames.removeAll(where: { $0.isBeta == true })
         }
         
         return .success(games)

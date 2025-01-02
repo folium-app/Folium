@@ -76,14 +76,37 @@ class ControllerView : PassthroughView {
         imageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         
         orientation.thumbsticks.forEach { thumbstick in
-            let controllerThumbstick = ControllerThumbstick(thumbstick: thumbstick, skin: skin, delegate: delegates.thumbstick)
+            let controllerThumbstick = if let thumbstickClassName = thumbstick.thumbstickClassName,
+                                          let thumbstickClass = ThumbstickClass(rawValue: thumbstickClassName) {
+                switch thumbstickClass {
+                case .blurredThumbstick:
+                    BlurredThumbstick(thumbstick: thumbstick, skin: skin, delegate: delegates.thumbstick)
+                case .defaultThumbstick:
+                    DefaultThumbstick(thumbstick: thumbstick, skin: skin, delegate: delegates.thumbstick)
+                }
+            } else {
+                DefaultThumbstick(thumbstick: thumbstick, skin: skin, delegate: delegates.thumbstick)
+            }
+            
             controllerThumbstick.frame = .init(x: thumbstick.x, y: thumbstick.y, width: thumbstick.width, height: thumbstick.height)
             controllerThumbstick.alpha = orientation.sharedAlpha ?? thumbstick.alpha ?? 1
             addSubview(controllerThumbstick)
         }
         
         orientation.buttons.forEach { button in
-            let controllerButton = ControllerButton(button: button, skin: skin, delegate: delegates.button)
+            let controllerButton = if let buttonClassName = button.buttonClassName, let buttonClass = ButtonClass(rawValue: buttonClassName) {
+                switch buttonClass {
+                case .blurredButton:
+                    BlurredButton(button: button, skin: skin, delegate: delegates.button)
+                case .borderedButton:
+                    BorderedButton(button: button, skin: skin, delegate: delegates.button)
+                case .defaultButton:
+                    DefaultButton(button: button, skin: skin, delegate: delegates.button)
+                }
+            } else {
+                DefaultButton(button: button, skin: skin, delegate: delegates.button)
+            }
+            
             controllerButton.frame = .init(x: button.x, y: button.y, width: button.width, height: button.height)
             controllerButton.alpha = orientation.sharedAlpha ?? button.alpha ?? 1
             addSubview(controllerButton)
@@ -94,24 +117,26 @@ class ControllerView : PassthroughView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    // TODO: letting to off the button does not
+    /*override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
         touches.forEach { touch in
             guard let currentlyTouchedSubviews = subviews.filter({ $0.isKind(of: ControllerButton.classForCoder() )}) as? [ControllerButton] else {
                 return
             }
     
-            currentlyTouchedSubviews.forEach { button in
+            for button in currentlyTouchedSubviews {
                 if button.frame.contains(touch.location(in: self)) {
                     button.touchDown()
-                } else {
-                    button.touchUpInside()
+                    break
                 }
+     
+                button.touchUpInside()
             }
         }
-    }
+    }*/
     
-    func updateFrames(for orientation: Orientation, controllerConnected: Bool = false) {
+    func updateFrames(for orientation: Orientation, controllerDisconnected: Bool = true) {
         subviews.filter {
             $0.isKind(of: ControllerButton.classForCoder()) || $0.isKind(of: ControllerThumbstick.classForCoder())
         }.forEach { $0.removeFromSuperview() }
@@ -131,18 +156,43 @@ class ControllerView : PassthroughView {
         }
         
         orientation.thumbsticks.forEach { thumbstick in
-            let controllerThumbstick = ControllerThumbstick(thumbstick: thumbstick, skin: skin, delegate: delegates.thumbstick)
+            let controllerThumbstick = if let thumbstickClassName = thumbstick.thumbstickClassName,
+                                          let thumbstickClass = ThumbstickClass(rawValue: thumbstickClassName) {
+                switch thumbstickClass {
+                case .blurredThumbstick:
+                    BlurredThumbstick(thumbstick: thumbstick, skin: skin, delegate: delegates.thumbstick)
+                case .defaultThumbstick:
+                    DefaultThumbstick(thumbstick: thumbstick, skin: skin, delegate: delegates.thumbstick)
+                }
+            } else {
+                DefaultThumbstick(thumbstick: thumbstick, skin: skin, delegate: delegates.thumbstick)
+            }
+            
             controllerThumbstick.frame = .init(x: thumbstick.x, y: thumbstick.y, width: thumbstick.width, height: thumbstick.height)
+            controllerThumbstick.alpha = orientation.sharedAlpha ?? thumbstick.alpha ?? 1
             addSubview(controllerThumbstick)
         }
         
         orientation.buttons.forEach { button in
-            let controllerButton = ControllerButton(button: button, skin: skin, delegate: delegates.button)
+            let controllerButton = if let buttonClassName = button.buttonClassName, let buttonClass = ButtonClass(rawValue: buttonClassName) {
+                switch buttonClass {
+                case .blurredButton:
+                    BlurredButton(button: button, skin: skin, delegate: delegates.button)
+                case .borderedButton:
+                    BorderedButton(button: button, skin: skin, delegate: delegates.button)
+                case .defaultButton:
+                    DefaultButton(button: button, skin: skin, delegate: delegates.button)
+                }
+            } else {
+                DefaultButton(button: button, skin: skin, delegate: delegates.button)
+            }
+            
             controllerButton.frame = .init(x: button.x, y: button.y, width: button.width, height: button.height)
+            controllerButton.alpha = orientation.sharedAlpha ?? button.alpha ?? 1
             addSubview(controllerButton)
         }
         
-        controllerConnected ? hide() : show()
+        controllerDisconnected ? show() : hide()
     }
     
     func hide() {
@@ -159,5 +209,9 @@ class ControllerView : PassthroughView {
                 $0.isKind(of: ControllerButton.classForCoder()) || $0.isKind(of: ControllerThumbstick.classForCoder())
             }.forEach { $0.alpha = 1 }
         }
+    }
+    
+    func button(for buttonType: Button.`Type`) -> ControllerButton? {
+        subviews.first(where: { $0.isKind(of: ControllerButton.classForCoder()) && ($0 as? ControllerButton)?.button.type == buttonType }) as? ControllerButton
     }
 }

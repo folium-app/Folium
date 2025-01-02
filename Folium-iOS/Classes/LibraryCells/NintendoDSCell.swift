@@ -20,7 +20,7 @@ import UIKit
     }
     
     func set(_ nintendoDSGame: NintendoDSGame, with viewController: UIViewController) {
-        set(text: nintendoDSGame.title, with: .white)
+        set(text: nintendoDSGame.title, image: Data(bytes: nintendoDSGame.icon, count: 32 * 32 * MemoryLayout<UInt32>.size), with: .white)
         
         guard let blurredImageView, let imageView, let cgImage = CGImage.cgImage(nintendoDSGame.icon, 32, 32) else {
             return
@@ -61,7 +61,7 @@ import UIKit
         if nintendoDSGame.skins.count > 0 {
             children.append(UIMenu(title: "Skins", children: nintendoDSGame.skins.reduce(into: [UIAction](), { partialResult, element in
                 partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
-                    let nintendoDSEmulationController = NintendoDSEmulationController(game: nintendoDSGame, skin: element)
+                    let nintendoDSEmulationController = GrapeSkinController(game: nintendoDSGame, skin: element)
                     nintendoDSEmulationController.modalPresentationStyle = .fullScreen
                     viewController.present(nintendoDSEmulationController, animated: true)
                 }))

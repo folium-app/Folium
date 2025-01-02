@@ -66,4 +66,67 @@ extension UIImage {
         
         return .init(cgImage: cgImage)
     }
+    
+    
+    static func lycheeBGRtoRGBImage(from buffer: [UInt32], with width: Int = 1024, and height: Int = 512) -> UIImage? {
+        let bitsPerComponent = 8
+        let bytesPerPixel = 4 // 32 bits per pixel (RGB32)
+        let bitsPerPixel = bytesPerPixel * bitsPerComponent
+        let bytesPerRow = bytesPerPixel * width
+        let totalBytes = height * bytesPerRow
+        
+        let buffer = Data(bytes: buffer, count: totalBytes)
+        
+        // Create a CGDataProvider from the Data object.
+        guard let provider = CGDataProvider(data: buffer as CFData) else {
+            return nil
+        }
+        
+        // Define the color space. BGR555 is typically treated as RGB.
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        
+        // Create a bitmap CGImage.
+        guard let cgImage = CGImage(
+            width: width,
+            height: height,
+            bitsPerComponent: bitsPerComponent,
+            bitsPerPixel: bitsPerPixel,
+            bytesPerRow: bytesPerRow,
+            space: colorSpace,
+            bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue),
+            provider: provider,
+            decode: nil,
+            shouldInterpolate: true,
+            intent: .defaultIntent
+        ) else {
+            return nil
+        }
+        
+        return .init(cgImage: cgImage)
+    }
+    
+    static func expand5to8(_ color: UInt8) -> UInt8 {
+        return (color << 3) | (color >> 2)
+    }
+    
+    static func BGR555toRGB888(_ color: UInt16) -> UInt32 {
+        let blue = UInt8(color & 0x1F)
+        let green = UInt8((color >> 5) & 0x1F)
+        let red = UInt8((color >> 10) & 0x1F)
+        
+        let expandedBlue = expand5to8(blue)
+        let expandedGreen = expand5to8(green)
+        let expandedRed = expand5to8(red)
+        
+        return (UInt32(expandedRed) << 16) | (UInt32(expandedGreen) << 8) | UInt32(expandedBlue)
+    }
+    
+    static func BGRtoRGB(_ buffer: UnsafeMutablePointer<UInt16>, _ count: Int) -> [UInt32] {
+        var data = [UInt32](repeating: 0, count: count)
+        for idx in 0 ..< count {
+            data[idx] = BGR555toRGB888(buffer[idx])
+        }
+        
+        return data
+    }
 }

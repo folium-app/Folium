@@ -56,8 +56,44 @@ struct Button : Codable, Hashable {
     let type: `Type`
     
     var backgroundImageName: String? = nil
+    var buttonClassName: String? = "defaultButton"
     var transparent: Bool? = false
     var vibrateOnTap: Bool? = true
+    
+    struct BorderedStyle : Codable, Hashable {
+        let borderColor: String // hex
+        let borderWidth: CGFloat
+    }
+    
+    struct DefaultStyle : Codable, Hashable {
+        let backgroundImageName: String
+    }
+    
+    var borderedStyle: BorderedStyle? = nil
+    var defaultStyle: DefaultStyle? = nil
+    
+    func letter(for core: Core) -> String? {
+        switch type {
+        case .a:
+            core.isNintendo ? "A" : nil
+        case .b:
+            core.isNintendo ? "B" : nil
+        case .x:
+            core.isNintendo ? "X" : nil
+        case .y:
+            core.isNintendo ? "Y" : nil
+        case .l:
+            core.isNintendo ? "L" : nil
+        case .r:
+            core.isNintendo ? "R" : nil
+        case .zl:
+            core.isNintendo ? "ZL" : nil
+        case .zr:
+            core.isNintendo ? "ZR" : nil
+        default:
+            nil
+        }
+    }
     
     func image(for core: Core) -> UIImage? {
         switch type {

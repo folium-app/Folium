@@ -17,5 +17,6 @@ struct Thumbstick : Codable, Hashable {
     var backgroundImageName: String? = nil
     let x, y: Double
     let width, height: Double
+    var thumbstickClassName: String? = "defaultThumbstick"
     let type: `Type`
 }

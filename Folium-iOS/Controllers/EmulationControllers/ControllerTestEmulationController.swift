@@ -7,6 +7,7 @@
 
 import Cytrus
 import Foundation
+import GameController
 import MetalKit
 import UIKit
 
@@ -75,14 +76,14 @@ class ControllerTestEmulationController : UIViewController {
 
 // MARK: Button Delegate
 extension ControllerTestEmulationController : ControllerButtonDelegate {
-    func touchBegan(with type: Button.`Type`) {}
-    func touchEnded(with type: Button.`Type`) {}
-    func touchMoved(with type: Button.`Type`) {}
+    func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {}
+    func touchEnded(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {}
+    func touchMoved(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {}
 }
 
 // MARK: Thumbstick Delegate
 extension ControllerTestEmulationController : ControllerThumbstickDelegate {
-    func touchBegan(with type: Thumbstick.`Type`, position: (x: Float, y: Float)) {}
-    func touchEnded(with type: Thumbstick.`Type`, position: (x: Float, y: Float)) {}
-    func touchMoved(with type: Thumbstick.`Type`, position: (x: Float, y: Float)) {}
+    func touchBegan(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {}
+    func touchEnded(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {}
+    func touchMoved(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {}
 }

@@ -140,6 +140,32 @@ import UIKit
     }
     
     func set(text string: String, image data: Data? = nil, with color: UIColor? = nil) {
+        guard let textLabel else { return }
+        
+        if let _ = color {
+            textLabel.backgroundColor = .clear
+        }
+        
+        let color = color ?? .tertiarySystemBackground
+        if data == nil {
+            textLabel.attributedText = .init(string: string, attributes: [
+                .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize),
+                .foregroundColor: color
+            ])
+        } else {
+            if UserDefaults.standard.bool(forKey: "folium.showGameTitles") {
+                textLabel.attributedText = .init(string: string, attributes: [
+                    .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize),
+                    .foregroundColor: color
+                ])
+            }
+        }
+        
+        
+        /*
+        print(string, data)
+        let userDefaults = UserDefaults.standard
+        
         guard let textLabel else {
             return
         }
@@ -150,9 +176,21 @@ import UIKit
         
         let color = color ?? .tertiarySystemBackground
         
-        textLabel.attributedText = .init(string: string, attributes: [
-            .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize),
-            .foregroundColor: color
-        ])
+        if data == nil {
+            textLabel.attributedText = .init(string: string, attributes: [
+                .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize),
+                .foregroundColor: color
+            ])
+        } else {
+            if userDefaults.bool(forKey: "folium.showGameTitles") {
+                textLabel.attributedText = .init(string: string, attributes: [
+                    .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize),
+                    .foregroundColor: color
+                ])
+            } else {
+                textLabel.attributedText = nil
+            }
+        }
+         */
     }
 }

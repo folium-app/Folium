@@ -13,6 +13,7 @@
 		E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E666166F2C410E130065B363 /* libCytrus.a */; platformFilter = ios; };
 		E626CA342C58A65A00CA2B9F /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E626CA332C58A65A00CA2B9F /* SDL */; };
 		E626CA362C58A67600CA2B9F /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E626CA352C58A67600CA2B9F /* SDL */; };
+		E64C33722D17F5EA00C06A35 /* Cherry in Frameworks */ = {isa = PBXBuildFile; productRef = E64C33712D17F5EA00C06A35 /* Cherry */; };
 		E65169DE2CC2444F00588B21 /* FUIAlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65169DD2CC2444F00588B21 /* FUIAlertKit */; };
 		E657D49B2CFD8A0D00B4AEA9 /* sdl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E657D48E2CFD8A0D00B4AEA9 /* sdl.cpp */; };
 		E657D49C2CFD8A0D00B4AEA9 /* sdl_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E657D48F2CFD8A0D00B4AEA9 /* sdl_impl.cpp */; };
@@ -899,6 +900,7 @@
 		E657D6BF2CFD8A0E00B4AEA9 /* telemetry_session.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = telemetry_session.cpp; sourceTree = "<group>"; };
 		E657D7B02CFD8EDE00B4AEA9 /* scm_rev.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = scm_rev.cpp; sourceTree = "<group>"; };
 		E6625B6E2C37AD2C0025588C /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		E66320C22D113947008537F4 /* Guava */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Guava; sourceTree = "<group>"; };
 		E666166F2C410E130065B363 /* libCytrus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCytrus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E667C0792C47C7F700DB0327 /* CoreHaptics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreHaptics.framework; path = System/Library/Frameworks/CoreHaptics.framework; sourceTree = SDKROOT; };
 		E667C07B2C47C81500DB0327 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -1098,6 +1100,7 @@
 		E6ACCCA32CE5EC3900C27006 /* Grape */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Grape; sourceTree = "<group>"; };
 		E6ACCCA42CE5EC3900C27006 /* Mango */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Mango; sourceTree = "<group>"; };
 		E6AF6BC82CFEC9760033D3FC /* Lychee */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Lychee; sourceTree = "<group>"; };
+		E6D0CF712D17EFCC00F1D246 /* Cherry */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Cherry; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -1248,6 +1251,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E64C33722D17F5EA00C06A35 /* Cherry in Frameworks */,
 				E626CA342C58A65A00CA2B9F /* SDL in Frameworks */,
 				E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */,
 				E667C07A2C47C7F700DB0327 /* CoreHaptics.framework in Frameworks */,
@@ -2894,6 +2898,8 @@
 		E6ACCCA52CE5EC3900C27006 /* Cores */ = {
 			isa = PBXGroup;
 			children = (
+				E6D0CF712D17EFCC00F1D246 /* Cherry */,
+				E66320C22D113947008537F4 /* Guava */,
 				E6AF6BC82CFEC9760033D3FC /* Lychee */,
 				E6ACCBFC2CE5EC3900C27006 /* Cytrus */,
 				E6ACCCA12CE5EC3900C27006 /* Tomato */,
@@ -3007,6 +3013,7 @@
 				E67655952CE3D07E00222E44 /* FirebaseFirestore */,
 				E67655972CE3D07E00222E44 /* FirebaseFirestoreCombine-Community */,
 				E657D7B32CFEC4F100B4AEA9 /* Lychee */,
+				E64C33712D17F5EA00C06A35 /* Cherry */,
 			);
 			productName = Folium;
 			productReference = E690A6A82C33B09E00652203 /* Folium-iOS.app */;
@@ -3637,7 +3644,7 @@
 					Cores/Cytrus/Dependencies/microprofile,
 					Cores/Cytrus/Dependencies/nlohmann,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3685,7 +3692,7 @@
 					Cores/Cytrus/Dependencies/microprofile,
 					Cores/Cytrus/Dependencies/nlohmann,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3715,7 +3722,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3749,7 +3756,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3783,7 +3790,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = LastPlayedWidget/LastPlayedWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastPlayedWidget/Info.plist;
@@ -3795,7 +3802,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.14;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.LastPlayedWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3816,7 +3823,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = LastPlayedWidget/LastPlayedWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastPlayedWidget/Info.plist;
@@ -3828,7 +3835,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.14;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.LastPlayedWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3978,7 +3985,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -3995,7 +4002,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4029,7 +4036,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -4046,7 +4053,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4076,19 +4083,19 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = PlayTimeWidget/PlayTimeWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTimeWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PlayTimeWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 Jarrod Norwell. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.14;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.PlayTimeWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -4109,19 +4116,19 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = PlayTimeWidget/PlayTimeWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTimeWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PlayTimeWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 Jarrod Norwell. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.14;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.PlayTimeWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -4260,6 +4267,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E626CA322C58A65A00CA2B9F /* XCRemoteSwiftPackageReference "SwiftSDL2" */;
 			productName = SDL;
+		};
+		E64C33712D17F5EA00C06A35 /* Cherry */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Cherry;
 		};
 		E65169DD2CC2444F00588B21 /* FUIAlertKit */ = {
 			isa = XCSwiftPackageProductDependency;
