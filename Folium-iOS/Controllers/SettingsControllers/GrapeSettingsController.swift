@@ -8,11 +8,26 @@
 
 import Foundation
 import Grape
+import SettingsKit
 import UIKit
 
+enum GrapeSettingsHeaders : Int, CaseIterable {
+    case core
+    
+    var header: SettingHeader {
+        switch self {
+        case .core: .init(text: "Core")
+        }
+    }
+    
+    static var allHeaders: [SettingHeader] { allCases.map { $0.header } }
+}
+
 class GrapeSettingsController : UICollectionViewController {
-    var dataSource: UICollectionViewDiffableDataSource<String, AnyHashableSendable>! = nil
-    var snapshot: NSDiffableDataSourceSnapshot<String, AnyHashableSendable>! = nil
+    var dataSource: UICollectionViewDiffableDataSource<GrapeSettingsHeaders, AHS>! = nil
+    var snapshot: NSDiffableDataSourceSnapshot<GrapeSettingsHeaders, AHS>! = nil
+    
+    let settingsKit = SettingsKit.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -166,7 +181,9 @@ class GrapeSettingsController : UICollectionViewController {
         
         let headerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) { supplementaryView, elementKind, indexPath in
             var contentConfiguration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
-            contentConfiguration.text = self.snapshot.sectionIdentifiers[indexPath.section]
+            contentConfiguration.text = self.snapshot.sectionIdentifiers[indexPath.section].header.text
+            contentConfiguration.secondaryText = self.snapshot.sectionIdentifiers[indexPath.section].header.secondaryText
+            contentConfiguration.secondaryTextProperties.color = .secondaryLabel
             supplementaryView.contentConfiguration = contentConfiguration
         }
         
@@ -188,28 +205,26 @@ class GrapeSettingsController : UICollectionViewController {
         }
         
         snapshot = .init()
-        snapshot.appendSections([
-            "Core"
-        ])
+        snapshot.appendSections(GrapeSettingsHeaders.allCases)
         
         snapshot.appendItems([
-            BoolSetting(key: "grape.directBoot",
-                        title: "Direct Boot",
-                        value: UserDefaults.standard.bool(forKey: "grape.directBoot"),
-                        delegate: self),
-            BoolSetting(key: "grape.threaded2D",
-                        title: "Threaded 2D",
-                        value: UserDefaults.standard.bool(forKey: "grape.threaded2D"),
-                        delegate: self),
-            BoolSetting(key: "grape.threaded3D",
-                        title: "Threaded 3D",
-                        value: UserDefaults.standard.bool(forKey: "grape.threaded3D"),
-                        delegate: self),
-            BoolSetting(key: "grape.dsiMode",
-                        title: "DSi Mode",
-                        value: UserDefaults.standard.bool(forKey: "grape.dsiMode"),
-                        delegate: self)
-        ], toSection: "Core")
+            settingsKit.bool(key: "grape.directBoot",
+                             title: "Direct Boot",
+                             value: UserDefaults.standard.bool(forKey: "grape.directBoot"),
+                             delegate: self),
+            settingsKit.bool(key: "grape.threaded2D",
+                             title: "Threaded 2D",
+                             value: UserDefaults.standard.bool(forKey: "grape.threaded2D"),
+                             delegate: self),
+            settingsKit.bool(key: "grape.threaded3D",
+                             title: "Threaded 3D",
+                             value: UserDefaults.standard.bool(forKey: "grape.threaded3D"),
+                             delegate: self),
+            settingsKit.bool(key: "grape.dsiMode",
+                             title: "DSi Mode",
+                             value: UserDefaults.standard.bool(forKey: "grape.dsiMode"),
+                             delegate: self)
+        ], toSection: GrapeSettingsHeaders.core)
         
         Task {
             await dataSource.apply(snapshot)

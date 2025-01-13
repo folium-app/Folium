@@ -7,11 +7,26 @@
 //
 
 import Foundation
+import SettingsKit
 import UIKit
 
+enum FoliumSettingsHeaders : Int, CaseIterable {
+    case library
+    
+    var header: SettingHeader {
+        switch self {
+        case .library: .init(text: "Library")
+        }
+    }
+    
+    static var allHeaders: [SettingHeader] { allCases.map { $0.header } }
+}
+
 class FoliumSettingsController : UICollectionViewController {
-    var dataSource: UICollectionViewDiffableDataSource<String, AnyHashableSendable>! = nil
-    var snapshot: NSDiffableDataSourceSnapshot<String, AnyHashableSendable>! = nil
+    var dataSource: UICollectionViewDiffableDataSource<FoliumSettingsHeaders, AHS>! = nil
+    var snapshot: NSDiffableDataSourceSnapshot<FoliumSettingsHeaders, AHS>! = nil
+    
+    let settingsKit = SettingsKit.shared
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +71,9 @@ class FoliumSettingsController : UICollectionViewController {
         
         let headerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) { supplementaryView, elementKind, indexPath in
             var contentConfiguration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
-            contentConfiguration.text = self.snapshot.sectionIdentifiers[indexPath.section]
+            contentConfiguration.text = self.snapshot.sectionIdentifiers[indexPath.section].header.text
+            contentConfiguration.secondaryText = self.snapshot.sectionIdentifiers[indexPath.section].header.secondaryText
+            contentConfiguration.secondaryTextProperties.color = .secondaryLabel
             supplementaryView.contentConfiguration = contentConfiguration
         }
         
@@ -74,27 +91,25 @@ class FoliumSettingsController : UICollectionViewController {
         }
         
         snapshot = .init()
-        snapshot.appendSections([
-            "Library"
-        ])
+        snapshot.appendSections(FoliumSettingsHeaders.allCases)
         
         snapshot.appendItems([
-            BoolSetting(key: "folium.showBetaConsoles",
-                        title: "Show Beta Consoles",
-                        details: "Determines whether or not to show consoles that are in a beta state",
-                        value: UserDefaults.standard.bool(forKey: "folium.showBetaConsoles"),
-                        delegate: self),
-            BoolSetting(key: "folium.showConsoleNames",
-                        title: "Show Console Names",
-                        details: "Determines whether or not to show the name of the console under the core name",
-                        value: UserDefaults.standard.bool(forKey: "folium.showConsoleNames"),
-                        delegate: self),
-            BoolSetting(key: "folium.showGameTitles",
-                        title: "Show Game Titles",
-                        details: "Determines whether or not to show game titles. Games without artwork always have titles shown",
-                        value: UserDefaults.standard.bool(forKey: "folium.showGameTitles"),
-                        delegate: self)
-        ], toSection: "Library")
+            settingsKit.bool(key: "folium.showBetaConsoles",
+                             title: "Show Beta Consoles",
+                             details: "Determines whether or not to show consoles that are in a beta state",
+                             value: UserDefaults.standard.bool(forKey: "folium.showBetaConsoles"),
+                             delegate: self),
+            settingsKit.bool(key: "folium.showConsoleNames",
+                             title: "Show Console Names",
+                             details: "Determines whether or not to show the name of the console under the core name",
+                             value: UserDefaults.standard.bool(forKey: "folium.showConsoleNames"),
+                             delegate: self),
+            settingsKit.bool(key: "folium.showGameTitles",
+                             title: "Show Game Titles",
+                             details: "Determines whether or not to show game titles. Games without artwork always have titles shown",
+                             value: UserDefaults.standard.bool(forKey: "folium.showGameTitles"),
+                             delegate: self)
+        ], toSection: FoliumSettingsHeaders.library)
         
         Task {
             await dataSource.apply(snapshot)

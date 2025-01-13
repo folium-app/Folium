@@ -7,113 +7,8 @@
 
 import Cytrus
 import Foundation
+import SettingsKit
 import UIKit
-
-class BlankSetting : AnyHashableSendable, @unchecked Sendable {}
-
-class BoolSetting : AnyHashableSendable, @unchecked Sendable {
-    var key, title: String
-    var details: String?
-    var value: Bool
-    
-    var delegate: SettingDelegate? = nil
-    
-    init(key: String, title: String, details: String? = nil, value: Bool, delegate: SettingDelegate? = nil) {
-        self.key = key
-        self.title = title
-        self.details = details
-        self.value = value
-        self.delegate = delegate
-    }
-}
-
-class InputNumberSetting : AnyHashableSendable, @unchecked Sendable {
-    var key, title: String
-    var details: String?
-    var min, max, value: Double
-    
-    var delegate: SettingDelegate? = nil
-    
-    init(key: String, title: String, details: String? = nil, min: Double, max: Double, value: Double, delegate: SettingDelegate? = nil) {
-        self.key = key
-        self.title = title
-        self.details = details
-        self.min = min
-        self.max = max
-        self.value = value
-        self.delegate = delegate
-    }
-}
-
-class InputStringSetting : AnyHashableSendable, @unchecked Sendable {
-    var key, title: String
-    var details: String?
-    var placeholder, value: String?
-    let action: () -> Void
-    
-    var delegate: SettingDelegate? = nil
-    
-    init(key: String, title: String, details: String? = nil, placeholder: String? = nil, value: String? = nil,
-         action: @escaping () -> Void, delegate: SettingDelegate? = nil) {
-        self.key = key
-        self.title = title
-        self.details = details
-        self.placeholder = placeholder
-        self.value = value
-        self.action = action
-        self.delegate = delegate
-    }
-}
-
-class StepperSetting : AnyHashableSendable, @unchecked Sendable {
-    var key, title: String
-    var details: String?
-    var min, max, value: Double
-    
-    var delegate: SettingDelegate? = nil
-    
-    init(key: String, title: String, details: String? = nil, min: Double, max: Double, value: Double, delegate: SettingDelegate? = nil) {
-        self.key = key
-        self.title = title
-        self.details = details
-        self.min = min
-        self.max = max
-        self.value = value
-        self.delegate = delegate
-    }
-}
-
-class SelectionSetting : AnyHashableSendable, @unchecked Sendable {
-    var key, title: String
-    var details: String?
-    var values: [String : Any]
-    var selectedValue: Any? = nil
-    
-    var delegate: SettingDelegate? = nil
-    
-    init(key: String, title: String, details: String? = nil, values: [String : Any], selectedValue: Any? = nil, delegate: SettingDelegate? = nil) {
-        self.key = key
-        self.title = title
-        self.details = details
-        self.values = values
-        self.selectedValue = selectedValue
-        self.delegate = delegate
-    }
-}
-
-protocol SettingDelegate {
-    func didChangeSetting(at indexPath: IndexPath)
-}
-
-class SettingHeader : AnyHashableSendable, @unchecked Sendable {
-    let text: String
-    var secondaryText: String? = nil
-    
-    init(text: String, secondaryText: String? = nil) {
-        self.text = text
-        self.secondaryText = secondaryText
-    }
-}
 
 enum CytrusSettingsHeaders : Int, CaseIterable {
     case core, debugging, layoutCustom, layoutDefault, rendering, audio, networking
@@ -130,14 +25,14 @@ enum CytrusSettingsHeaders : Int, CaseIterable {
         }
     }
     
-    static var allHeaders: [SettingHeader] {
-        allCases.map { $0.header }
-    }
+    static var allHeaders: [SettingHeader] { allCases.map { $0.header } }
 }
 
 class CytrusSettingsController : UICollectionViewController {
-    var dataSource: UICollectionViewDiffableDataSource<CytrusSettingsHeaders, AnyHashableSendable>! = nil
-    var snapshot: NSDiffableDataSourceSnapshot<CytrusSettingsHeaders, AnyHashableSendable>! = nil
+    var dataSource: UICollectionViewDiffableDataSource<CytrusSettingsHeaders, AHS>! = nil
+    var snapshot: NSDiffableDataSourceSnapshot<CytrusSettingsHeaders, AHS>! = nil
+    
+    let settingsKit = SettingsKit.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -324,7 +219,7 @@ class CytrusSettingsController : UICollectionViewController {
             }
         }
         
-        let blankSettingsCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, AnyHashableSendable> { cell, indexPath, itemIdentifier in
+        let blankSettingsCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, BlankSetting> { cell, indexPath, itemIdentifier in
             cell.contentConfiguration = UIListContentConfiguration.cell()
         }
         
@@ -363,58 +258,58 @@ class CytrusSettingsController : UICollectionViewController {
         snapshot.appendSections(CytrusSettingsHeaders.allCases)
         
         snapshot.appendItems([
-            InputNumberSetting(key: "cytrus.cpuClockPercentage",
-                               title: "CPU Clock Percentage",
-                               details: "Change the Clock Frequency of the emulated 3DS CPU\n\nUnderclocking can increase the performance of the game at the risk of freezing\n\nOverclocking may fix lag that happens on console, but also comes with the risk of freezing",
-                               min: 5,
-                               max: 200,
-                               value: UserDefaults.standard.double(forKey: "cytrus.cpuClockPercentage"),
-                               delegate: self),
-            BoolSetting(key: "cytrus.new3DS",
-                        title: "New 3DS",
-                        details: "The system model that Cytrus will try to emulate",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.new3DS"),
-                        delegate: self),
-            BoolSetting(key: "cytrus.lleApplets",
-                        title: "LLE Applets",
-                        details: "Whether to use LLE system applets, if installed",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.lleApplets"),
-                        delegate: self),
-            SelectionSetting(key: "cytrus.regionValue",
-                             title: "Console Region",
-                             details: "The system region that Cytrus will use during emulation",
-                             values: [
-                                "Automatic" : -1,
-                                "Japan" : 0,
-                                "USA" : 1,
-                                "Europe" : 2,
-                                "Australia" : 3,
-                                "China" : 4,
-                                "Korea" : 5,
-                                "Taiwan" : 6
-                             ],
-                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.regionValue"),
-                             delegate: self)
+            settingsKit.inputNumber(key: "cytrus.cpuClockPercentage",
+                                    title: "CPU Clock Percentage",
+                                    details: "Change the Clock Frequency of the emulated 3DS CPU\n\nUnderclocking can increase the performance of the game at the risk of freezing\n\nOverclocking may fix lag that happens on console, but also comes with the risk of freezing",
+                                    min: 5,
+                                    max: 200,
+                                    value: UserDefaults.standard.double(forKey: "cytrus.cpuClockPercentage"),
+                                    delegate: self),
+            settingsKit.bool(key: "cytrus.new3DS",
+                             title: "New 3DS",
+                             details: "The system model that Cytrus will try to emulate",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.new3DS"),
+                             delegate: self),
+            settingsKit.bool(key: "cytrus.lleApplets",
+                             title: "LLE Applets",
+                             details: "Whether to use LLE system applets, if installed",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.lleApplets"),
+                             delegate: self),
+            settingsKit.selection(key: "cytrus.regionValue",
+                                  title: "Console Region",
+                                  details: "The system region that Cytrus will use during emulation",
+                                  values: [
+                                    "Automatic" : -1,
+                                    "Japan" : 0,
+                                    "USA" : 1,
+                                    "Europe" : 2,
+                                    "Australia" : 3,
+                                    "China" : 4,
+                                    "Korea" : 5,
+                                    "Taiwan" : 6
+                                  ],
+                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.regionValue"),
+                                  delegate: self)
         ], toSection: CytrusSettingsHeaders.core)
         
-        var debuggingItems: [AnyHashableSendable] = [
-            SelectionSetting(key: "cytrus.logLevel",
-                             title: "Log Level",
-                             details: "Select the level of the information to be logged",
-                             values: [
-                                "Trace" : 0,
-                                "Debug" : 1,
-                                "Info" : 2,
-                                "Warning" : 3,
-                                "Error" : 4,
-                                "Critical" : 5
-                             ],
-                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.logLevel"),
-                             delegate: self)
+        var debuggingItems: [AHS] = [
+            settingsKit.selection(key: "cytrus.logLevel",
+                                  title: "Log Level",
+                                  details: "Select the level of the information to be logged",
+                                  values: [
+                                    "Trace" : 0,
+                                    "Debug" : 1,
+                                    "Info" : 2,
+                                    "Warning" : 3,
+                                    "Error" : 4,
+                                    "Critical" : 5
+                                  ],
+                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.logLevel"),
+                                  delegate: self)
         ]
         
         if AppStoreCheck.shared.debugging {
-            debuggingItems.insert(BoolSetting(key: "cytrus.cpuJIT",
+            debuggingItems.insert(settingsKit.bool(key: "cytrus.cpuJIT",
                                          title: "CPU JIT",
                                          value: UserDefaults.standard.bool(forKey: "cytrus.cpuJIT"),
                                          delegate: self), at: 0)
@@ -423,236 +318,235 @@ class CytrusSettingsController : UICollectionViewController {
         snapshot.appendItems(debuggingItems, toSection: CytrusSettingsHeaders.debugging)
         
         snapshot.appendItems([
-            BoolSetting(key: "cytrus.customLayout",
-                        title: "Custom Layout",
-                        details: "Enabled the below custom layout values",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.customLayout"),
-                        delegate: self),
-            InputNumberSetting(key: "cytrus.customTopLeft",
-                               title: "Custom Top Left",
-                               min: 0,
-                               max: 9999,
-                               value: UserDefaults.standard.double(forKey: "cytrus.customTopLeft"),
-                               delegate: self),
-            InputNumberSetting(key: "cytrus.customTopTop",
-                               title: "Custom Top Top",
-                               min: 0,
-                               max: 9999,
-                               value: UserDefaults.standard.double(forKey: "cytrus.customTopTop"),
-                               delegate: self),
-            InputNumberSetting(key: "cytrus.customTopRight",
-                               title: "Custom Top Right",
-                               min: 0,
-                               max: 9999,
-                               value: UserDefaults.standard.double(forKey: "cytrus.customTopRight"),
-                               delegate: self),
-            InputNumberSetting(key: "cytrus.customTopBottom",
-                               title: "Custom Top Bottom",
-                               min: 0,
-                               max: 9999,
-                               value: UserDefaults.standard.double(forKey: "cytrus.customTopBottom"),
-                               delegate: self),
-            
-            InputNumberSetting(key: "cytrus.customBottomLeft",
-                               title: "Custom Bottom Left",
-                               min: 0,
-                               max: 9999,
-                               value: UserDefaults.standard.double(forKey: "cytrus.customBottomLeft"),
-                               delegate: self),
-            InputNumberSetting(key: "cytrus.customBottomTop",
-                               title: "Custom Bottom Top",
-                               min: 0,
-                               max: 9999,
-                               value: UserDefaults.standard.double(forKey: "cytrus.customBottomTop"),
-                               delegate: self),
-            InputNumberSetting(key: "cytrus.customBottomRight",
-                               title: "Custom Bottom Right",
-                               min: 0,
-                               max: 9999,
-                               value: UserDefaults.standard.double(forKey: "cytrus.customBottomRight"),
-                               delegate: self),
-            InputNumberSetting(key: "cytrus.customBottomBottom",
-                               title: "Custom Bottom Bottom",
-                               min: 0,
-                               max: 9999,
-                               value: UserDefaults.standard.double(forKey: "cytrus.customBottomBottom"),
-                               delegate: self)
+            settingsKit.bool(key: "cytrus.customLayout",
+                             title: "Custom Layout",
+                             details: "Enabled the below custom layout values",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.customLayout"),
+                             delegate: self),
+            settingsKit.inputNumber(key: "cytrus.customTopLeft",
+                                    title: "Custom Top Left",
+                                    min: 0,
+                                    max: 9999,
+                                    value: UserDefaults.standard.double(forKey: "cytrus.customTopLeft"),
+                                    delegate: self),
+            settingsKit.inputNumber(key: "cytrus.customTopTop",
+                                    title: "Custom Top Top",
+                                    min: 0,
+                                    max: 9999,
+                                    value: UserDefaults.standard.double(forKey: "cytrus.customTopTop"),
+                                    delegate: self),
+            settingsKit.inputNumber(key: "cytrus.customTopRight",
+                                    title: "Custom Top Right",
+                                    min: 0,
+                                    max: 9999,
+                                    value: UserDefaults.standard.double(forKey: "cytrus.customTopRight"),
+                                    delegate: self),
+            settingsKit.inputNumber(key: "cytrus.customTopBottom",
+                                    title: "Custom Top Bottom",
+                                    min: 0,
+                                    max: 9999,
+                                    value: UserDefaults.standard.double(forKey: "cytrus.customTopBottom"),
+                                    delegate: self),
+            settingsKit.inputNumber(key: "cytrus.customBottomLeft",
+                                    title: "Custom Bottom Left",
+                                    min: 0,
+                                    max: 9999,
+                                    value: UserDefaults.standard.double(forKey: "cytrus.customBottomLeft"),
+                                    delegate: self),
+            settingsKit.inputNumber(key: "cytrus.customBottomTop",
+                                    title: "Custom Bottom Top",
+                                    min: 0,
+                                    max: 9999,
+                                    value: UserDefaults.standard.double(forKey: "cytrus.customBottomTop"),
+                                    delegate: self),
+            settingsKit.inputNumber(key: "cytrus.customBottomRight",
+                                    title: "Custom Bottom Right",
+                                    min: 0,
+                                    max: 9999,
+                                    value: UserDefaults.standard.double(forKey: "cytrus.customBottomRight"),
+                                    delegate: self),
+            settingsKit.inputNumber(key: "cytrus.customBottomBottom",
+                                    title: "Custom Bottom Bottom",
+                                    min: 0,
+                                    max: 9999,
+                                    value: UserDefaults.standard.double(forKey: "cytrus.customBottomBottom"),
+                                    delegate: self)
         ], toSection: CytrusSettingsHeaders.layoutCustom)
         
         snapshot.appendItems([
-            SelectionSetting(key: "cytrus.layoutOption",
-                             title: "Layout Option",
-                             values: [
-                                "Default" : 0,
-                                "Single Screen" : 1,
-                                "Large Screen" : 2,
-                                "Side Screen" : 3,
-                                "Hybrid Screen" : 5,
-                                "Mobile Portrait" : 6,
-                                "Mobile Landscape" : 7
-                             ],
-                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.layoutOption"),
-                             delegate: self)
+            settingsKit.selection(key: "cytrus.layoutOption",
+                                  title: "Layout Option",
+                                  values: [
+                                    "Default" : 0,
+                                    "Single Screen" : 1,
+                                    "Large Screen" : 2,
+                                    "Side Screen" : 3,
+                                    "Hybrid Screen" : 5,
+                                    "Mobile Portrait" : 6,
+                                    "Mobile Landscape" : 7
+                                  ],
+                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.layoutOption"),
+                                  delegate: self)
         ], toSection: CytrusSettingsHeaders.layoutDefault)
         
         snapshot.appendItems([
-            BoolSetting(key: "cytrus.spirvShaderGeneration",
-                        title: "SPIRV Shader Generation",
-                        details: "Emits the fragment shader used to emulate PICA using SPIR-V instead of GLSL",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.spirvShaderGeneration"),
-                        delegate: self),
-            BoolSetting(key: "cytrus.useAsyncShaderCompilation",
-                        title: "Asynchronous Shader Compilation",
-                        details: "Compiles shaders in the background to reduce stuttering during gameplay. When enabled expect temporary graphical glitches",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.useAsyncShaderCompilation"),
-                        delegate: self),
-            BoolSetting(key: "cytrus.useAsyncPresentation",
-                        title: "Asynchronous Presentation",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.useAsyncPresentation"),
-                        delegate: self),
-            BoolSetting(key: "cytrus.useHardwareShaders",
-                        title: "Hardware Shaders",
-                        details: "Uses hardware to emulate 3DS shaders. When enabled, game performance will be significantly improved",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.useHardwareShaders"),
-                        delegate: self),
-            BoolSetting(key: "cytrus.useDiskShaderCache",
-                        title: "Disk Shader Cache",
-                        details: "Reduce stuttering by storing and loading generated shaders to disk. It cannot be used without Enabling Hardware Shader",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.useDiskShaderCache"),
-                        delegate: self),
-            BoolSetting(key: "cytrus.useShadersAccurateMul",
-                        title: "Accurate Shader Multiplication",
-                        details: "Uses more accurate multiplication in hardware shaders, which may fix some graphical bugs. When enabled, performance will be reduced",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.useShadersAccurateMul"),
-                        delegate: self),
-            BoolSetting(key: "cytrus.useNewVSync",
-                        title: "New Vertical Sync",
-                        details: "Synchronizes the game frame rate to the refresh rate of your device",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.useNewVSync"),
-                        delegate: self),
-            BoolSetting(key: "cytrus.useShaderJIT",
-                        title: "Shader JIT",
-                        details: "Whether to use the Just-In-Time (JIT) compiler for shader emulation",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.useShaderJIT"),
-                        delegate: self),
-            StepperSetting(key: "cytrus.resolutionFactor",
-                           title: "Resolution Factor",
-                           details: "Factor for the 3DS resolution",
-                           min: 0,
-                           max: 10,
-                           value: UserDefaults.standard.double(forKey: "cytrus.resolutionFactor"),
-                           delegate: self),
-            SelectionSetting(key: "cytrus.textureFilter",
-                             title: "Texture Filter",
-                             details: "Enhances the visuals of games by applying a filter to textures. The supported filters are Anime4K Ultrafast, Bicubic, ScaleForce, and xBRZ freescale",
-                             values: [
-                                "None" : 0,
-                                "Anime4K" : 1,
-                                "Bicubic" : 2,
-                                "ScaleForce" : 3,
-                                "xBRZ" : 4,
-                                "MMPX" : 5
-                             ],
-                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.textureFilter"),
+            settingsKit.bool(key: "cytrus.spirvShaderGeneration",
+                             title: "SPIRV Shader Generation",
+                             details: "Emits the fragment shader used to emulate PICA using SPIR-V instead of GLSL",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.spirvShaderGeneration"),
                              delegate: self),
-            SelectionSetting(key: "cytrus.textureSampling",
-                             title: "Texture Sampling",
-                             values: [
-                                "Game Controlled" : 0,
-                                "Nearest Neighbor" : 1,
-                                "Linear" : 2
-                             ],
-                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.textureSampling"),
+            settingsKit.bool(key: "cytrus.useAsyncShaderCompilation",
+                             title: "Asynchronous Shader Compilation",
+                             details: "Compiles shaders in the background to reduce stuttering during gameplay. When enabled expect temporary graphical glitches",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.useAsyncShaderCompilation"),
                              delegate: self),
-            SelectionSetting(key: "cytrus.render3D",
-                             title: "Render 3D",
-                             details: "Whether and how Stereoscopic 3D should be rendered",
-                             values: [
-                                "Off" : 0,
-                                "Side by Side" : 1,
-                                "Anaglyph" : 2,
-                                "Interlaced" : 3,
-                                "ReverseInterlaced" : 4,
-                                "CardboardVR" : 5
-                             ],
-                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.render3D"),
+            settingsKit.bool(key: "cytrus.useAsyncPresentation",
+                             title: "Asynchronous Presentation",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.useAsyncPresentation"),
                              delegate: self),
-            StepperSetting(key: "cytrus.factor3D",
-                           title: "3D Factor",
-                           details: "Specifies the value of the 3D slider. This should be set to higher than 0% when Stereoscopic 3D is enabled",
-                           min: 0,
-                           max: 100,
-                           value: UserDefaults.standard.double(forKey: "cytrus.factor3D"),
-                           delegate: self),
-            SelectionSetting(key: "cytrus.monoRender",
-                             title: "Mono Render",
-                             details: "Change Default Eye to Render When in Monoscopic Mode",
-                             values: [
-                                "Left Eye" : 0,
-                                "Right Eye" : 1
-                             ],
-                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.monoRender"),
+            settingsKit.bool(key: "cytrus.useHardwareShaders",
+                             title: "Hardware Shaders",
+                             details: "Uses hardware to emulate 3DS shaders. When enabled, game performance will be significantly improved",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.useHardwareShaders"),
                              delegate: self),
-            BoolSetting(key: "cytrus.preloadTextures",
-                        title: "Preload Textures",
-                        details: "Loads all custom textures into memory. This feature can use a lot of memory",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.preloadTextures"),
-                        delegate: self)
+            settingsKit.bool(key: "cytrus.useDiskShaderCache",
+                             title: "Disk Shader Cache",
+                             details: "Reduce stuttering by storing and loading generated shaders to disk. It cannot be used without Enabling Hardware Shader",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.useDiskShaderCache"),
+                             delegate: self),
+            settingsKit.bool(key: "cytrus.useShadersAccurateMul",
+                             title: "Accurate Shader Multiplication",
+                             details: "Uses more accurate multiplication in hardware shaders, which may fix some graphical bugs. When enabled, performance will be reduced",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.useShadersAccurateMul"),
+                             delegate: self),
+            settingsKit.bool(key: "cytrus.useNewVSync",
+                             title: "New Vertical Sync",
+                             details: "Synchronizes the game frame rate to the refresh rate of your device",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.useNewVSync"),
+                             delegate: self),
+            settingsKit.bool(key: "cytrus.useShaderJIT",
+                             title: "Shader JIT",
+                             details: "Whether to use the Just-In-Time (JIT) compiler for shader emulation",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.useShaderJIT"),
+                             delegate: self),
+            settingsKit.stepper(key: "cytrus.resolutionFactor",
+                                title: "Resolution Factor",
+                                details: "Factor for the 3DS resolution",
+                                min: 0,
+                                max: 10,
+                                value: UserDefaults.standard.double(forKey: "cytrus.resolutionFactor"),
+                                delegate: self),
+            settingsKit.selection(key: "cytrus.textureFilter",
+                                  title: "Texture Filter",
+                                  details: "Enhances the visuals of games by applying a filter to textures. The supported filters are Anime4K Ultrafast, Bicubic, ScaleForce, and xBRZ freescale",
+                                  values: [
+                                    "None" : 0,
+                                    "Anime4K" : 1,
+                                    "Bicubic" : 2,
+                                    "ScaleForce" : 3,
+                                    "xBRZ" : 4,
+                                    "MMPX" : 5
+                                  ],
+                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.textureFilter"),
+                                  delegate: self),
+            settingsKit.selection(key: "cytrus.textureSampling",
+                                  title: "Texture Sampling",
+                                  values: [
+                                    "Game Controlled" : 0,
+                                    "Nearest Neighbor" : 1,
+                                    "Linear" : 2
+                                  ],
+                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.textureSampling"),
+                                  delegate: self),
+            settingsKit.selection(key: "cytrus.render3D",
+                                  title: "Render 3D",
+                                  details: "Whether and how Stereoscopic 3D should be rendered",
+                                  values: [
+                                    "Off" : 0,
+                                    "Side by Side" : 1,
+                                    "Anaglyph" : 2,
+                                    "Interlaced" : 3,
+                                    "ReverseInterlaced" : 4,
+                                    "CardboardVR" : 5
+                                  ],
+                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.render3D"),
+                                  delegate: self),
+            settingsKit.stepper(key: "cytrus.factor3D",
+                                title: "3D Factor",
+                                details: "Specifies the value of the 3D slider. This should be set to higher than 0% when Stereoscopic 3D is enabled",
+                                min: 0,
+                                max: 100,
+                                value: UserDefaults.standard.double(forKey: "cytrus.factor3D"),
+                                delegate: self),
+            settingsKit.selection(key: "cytrus.monoRender",
+                                  title: "Mono Render",
+                                  details: "Change Default Eye to Render When in Monoscopic Mode",
+                                  values: [
+                                    "Left Eye" : 0,
+                                    "Right Eye" : 1
+                                  ],
+                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.monoRender"),
+                                  delegate: self),
+            settingsKit.bool(key: "cytrus.preloadTextures",
+                             title: "Preload Textures",
+                             details: "Loads all custom textures into memory. This feature can use a lot of memory",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.preloadTextures"),
+                             delegate: self)
         ], toSection: CytrusSettingsHeaders.rendering)
         
         snapshot.appendItems([
-            BoolSetting(key: "cytrus.audioMuted",
-                        title: "Audio Muted",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.audioMuted")),
-            SelectionSetting(key: "cytrus.audioEmulation",
-                             title: "Audio Emulation",
-                             values: [
-                                "HLE" : 0,
-                                "LLE" : 1,
-                                "LLE (Multithreaded)" : 2
-                             ],
-                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.audioEmulation"),
-                             delegate: self),
-            BoolSetting(key: "cytrus.audioStretching",
-                        title: "Audio Stretching",
-                        details: "Stretches audio to reduce stuttering. When enabled, increases audio latency and slightly reduces performance",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.audioStretching")),
-            BoolSetting(key: "cytrus.realtimeAudio",
-                        title: "Realtime Audio",
-                        value: UserDefaults.standard.bool(forKey: "cytrus.realtimeAudio")),
-            SelectionSetting(key: "cytrus.outputType",
-                             title: "Output Type",
-                             values: [
-                                "Automatic" : 0,
-                                "None" : 1,
-                                "CoreAudio" : 2,
-                                "OpenAL" : 3,
-                                "SDL2" : 4
-                             ],
-                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.outputType"),
-                             delegate: self),
-            SelectionSetting(key: "cytrus.inputType",
-                             title: "Input Type",
-                             values: [
-                                "Automatic" : 0,
-                                "None" : 1,
-                                "Static" : 2,
-                                "OpenAL" : 3
-                             ],
-                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.inputType"),
-                             delegate: self)
+            settingsKit.bool(key: "cytrus.audioMuted",
+                             title: "Audio Muted",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.audioMuted")),
+            settingsKit.selection(key: "cytrus.audioEmulation",
+                                  title: "Audio Emulation",
+                                  values: [
+                                    "HLE" : 0,
+                                    "LLE" : 1,
+                                    "LLE (Multithreaded)" : 2
+                                  ],
+                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.audioEmulation"),
+                                  delegate: self),
+            settingsKit.bool(key: "cytrus.audioStretching",
+                             title: "Audio Stretching",
+                             details: "Stretches audio to reduce stuttering. When enabled, increases audio latency and slightly reduces performance",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.audioStretching")),
+            settingsKit.bool(key: "cytrus.realtimeAudio",
+                             title: "Realtime Audio",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.realtimeAudio")),
+            settingsKit.selection(key: "cytrus.outputType",
+                                  title: "Output Type",
+                                  values: [
+                                    "Automatic" : 0,
+                                    "None" : 1,
+                                    "CoreAudio" : 2,
+                                    "OpenAL" : 3,
+                                    "SDL2" : 4
+                                  ],
+                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.outputType"),
+                                  delegate: self),
+            settingsKit.selection(key: "cytrus.inputType",
+                                  title: "Input Type",
+                                  values: [
+                                    "Automatic" : 0,
+                                    "None" : 1,
+                                    "Static" : 2,
+                                    "OpenAL" : 3
+                                  ],
+                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.inputType"),
+                                  delegate: self)
         ], toSection: CytrusSettingsHeaders.audio)
         
         snapshot.appendItems([
-            InputStringSetting(key: "cytrus.webAPIURL",
-                               title: "Web API URL",
-                               details: "Enter the Web API URL that Cytrus will use when searching for rooms",
-                               placeholder: "http(s)://address:port",
-                               value: UserDefaults.standard.string(forKey: "cytrus.webAPIURL"),
-                               action: {
-                                   MultiplayerManager.shared().updateWebAPIURL()
-                               },
-                               delegate: self)
+            settingsKit.inputString(key: "cytrus.webAPIURL",
+                                    title: "Web API URL",
+                                    details: "Enter the Web API URL that Cytrus will use when searching for rooms",
+                                    placeholder: "http(s)://address:port",
+                                    value: UserDefaults.standard.string(forKey: "cytrus.webAPIURL"),
+                                    action: {
+                                        MultiplayerManager.shared().updateWebAPIURL()
+                                    },
+                                    delegate: self)
         ], toSection: CytrusSettingsHeaders.networking)
         
         Task {

@@ -470,6 +470,7 @@
 		E6ACCE522CE5EC3900C27006 /* channel4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ACCC7F2CE5EC3900C27006 /* channel4.cpp */; };
 		E6ACCE532CE5EC3900C27006 /* i0.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ACCBFE2CE5EC3900C27006 /* i0.cpp */; };
 		E6ACCE542CE5EC3900C27006 /* cartridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ACCC772CE5EC3900C27006 /* cartridge.cpp */; };
+		E6AF131D2D357824002E6EDD /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6AF131C2D357824002E6EDD /* SettingsKit */; };
 		E6FA9F5C2C818D350034BBD1 /* libyuv in Frameworks */ = {isa = PBXBuildFile; productRef = E6FA9F5B2C818D350034BBD1 /* libyuv */; };
 		E6FA9F612C818EF80034BBD1 /* libyuv in Frameworks */ = {isa = PBXBuildFile; productRef = E6FA9F602C818EF80034BBD1 /* libyuv */; };
 /* End PBXBuildFile section */
@@ -1254,6 +1255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E64C33722D17F5EA00C06A35 /* Cherry in Frameworks */,
+				E6AF131D2D357824002E6EDD /* SettingsKit in Frameworks */,
 				E626CA342C58A65A00CA2B9F /* SDL in Frameworks */,
 				E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */,
 				E667C07A2C47C7F700DB0327 /* CoreHaptics.framework in Frameworks */,
@@ -3017,6 +3019,7 @@
 				E67655972CE3D07E00222E44 /* FirebaseFirestoreCombine-Community */,
 				E657D7B32CFEC4F100B4AEA9 /* Lychee */,
 				E64C33712D17F5EA00C06A35 /* Cherry */,
+				E6AF131C2D357824002E6EDD /* SettingsKit */,
 			);
 			productName = Folium;
 			productReference = E690A6A82C33B09E00652203 /* Folium-iOS.app */;
@@ -3999,7 +4002,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -4026,7 +4029,7 @@
 					"$(PROJECT_DIR)/Dependencies/XCFrameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.14;
+				MARKETING_VERSION = 1.15;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
@@ -4054,7 +4057,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -4081,7 +4084,7 @@
 					"$(PROJECT_DIR)/Dependencies/XCFrameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.14;
+				MARKETING_VERSION = 1.15;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
@@ -4329,6 +4332,10 @@
 		E6A483C12C36A27700CFA6DA /* LayoutManager */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LayoutManager;
+		};
+		E6AF131C2D357824002E6EDD /* SettingsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SettingsKit;
 		};
 		E6FA9F5B2C818D350034BBD1 /* libyuv */ = {
 			isa = XCSwiftPackageProductDependency;
