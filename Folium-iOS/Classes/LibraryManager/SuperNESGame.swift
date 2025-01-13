@@ -23,8 +23,6 @@ class SuperNESGame : GameBase, @unchecked Sendable {
         let region = Mango.shared.regionForCartridge(at: url)
         let title = try titleFromHeader(for: url, true)
         
-        print(region, title)
-        
         if region.isEmpty || region == "" {
             return nil
         } else {

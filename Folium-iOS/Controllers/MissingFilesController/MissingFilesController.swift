@@ -40,13 +40,18 @@ class MissingFilesController : UICollectionViewController {
                     })
                 ]
             } else {
-                []
+                [
+                    .label(text: itemIdentifier.importance.string, options: .init(tintColor: itemIdentifier.importance.color))
+                ]
             }
         }
         
         let headerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) {
             var configuration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
             configuration.text = self.dataSource?.itemIdentifier(for: $2)?.core
+            if UserDefaults.standard.bool(forKey: "folium.showConsoleNames") {
+                configuration.secondaryText = self.dataSource?.sectionIdentifier(for: $2.section)?.console ?? ""
+            }
             $0.contentConfiguration = configuration
         }
         
@@ -64,10 +69,11 @@ class MissingFilesController : UICollectionViewController {
         
         snapshot = .init()
         guard var snapshot else { return }
-        snapshot.appendSections(Core.allCases)
+        snapshot.appendSections(LibraryManager.shared.cores)
         Task {
-            Core.allCases.forEach { core in
-                snapshot.appendItems(DirectoryManager.shared.scanDirectoryForMissingFiles(for: core.rawValue), toSection: core)
+            LibraryManager.shared.cores.forEach { core in
+                snapshot.appendItems(DirectoryManager.shared.scanDirectoryForMissingFiles(for: core.rawValue)
+                    .sorted(by: { $0.name < $1.name }), toSection: core)
                 
                 if snapshot.itemIdentifiers(inSection: core).isEmpty {
                     snapshot.deleteSections([core])

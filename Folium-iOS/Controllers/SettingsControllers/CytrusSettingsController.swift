@@ -105,9 +105,39 @@ protocol SettingDelegate {
     func didChangeSetting(at indexPath: IndexPath)
 }
 
+class SettingHeader : AnyHashableSendable, @unchecked Sendable {
+    let text: String
+    var secondaryText: String? = nil
+    
+    init(text: String, secondaryText: String? = nil) {
+        self.text = text
+        self.secondaryText = secondaryText
+    }
+}
+
+enum CytrusSettingsHeaders : Int, CaseIterable {
+    case core, debugging, layoutCustom, layoutDefault, rendering, audio, networking
+    
+    var header: SettingHeader {
+        switch self {
+        case .core: .init(text: "Core")
+        case .debugging: .init(text: "Debugging")
+        case .layoutCustom: .init(text: "Layout (Custom)")
+        case .layoutDefault: .init(text: "Layout (Default)", secondaryText: "Disable Custom Layout")
+        case .rendering: .init(text: "Rendering")
+        case .audio: .init(text: "Audio")
+        case .networking: .init(text: "Networking")
+        }
+    }
+    
+    static var allHeaders: [SettingHeader] {
+        allCases.map { $0.header }
+    }
+}
+
 class CytrusSettingsController : UICollectionViewController {
-    var dataSource: UICollectionViewDiffableDataSource<String, AnyHashableSendable>! = nil
-    var snapshot: NSDiffableDataSourceSnapshot<String, AnyHashableSendable>! = nil
+    var dataSource: UICollectionViewDiffableDataSource<CytrusSettingsHeaders, AnyHashableSendable>! = nil
+    var snapshot: NSDiffableDataSourceSnapshot<CytrusSettingsHeaders, AnyHashableSendable>! = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -300,7 +330,9 @@ class CytrusSettingsController : UICollectionViewController {
         
         let headerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionHeader) { supplementaryView, elementKind, indexPath in
             var contentConfiguration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
-            contentConfiguration.text = self.snapshot.sectionIdentifiers[indexPath.section]
+            contentConfiguration.text = self.snapshot.sectionIdentifiers[indexPath.section].header.text
+            contentConfiguration.secondaryText = self.snapshot.sectionIdentifiers[indexPath.section].header.secondaryText
+            contentConfiguration.secondaryTextProperties.color = .secondaryLabel
             supplementaryView.contentConfiguration = contentConfiguration
         }
         
@@ -328,14 +360,9 @@ class CytrusSettingsController : UICollectionViewController {
         }
         
         snapshot = .init()
-        snapshot.appendSections([
-            "Core",
-            "Renderer",
-            "Audio",
-            "Networking"
-        ])
+        snapshot.appendSections(CytrusSettingsHeaders.allCases)
         
-        var coreItems = [
+        snapshot.appendItems([
             InputNumberSetting(key: "cytrus.cpuClockPercentage",
                                title: "CPU Clock Percentage",
                                details: "Change the Clock Frequency of the emulated 3DS CPU\n\nUnderclocking can increase the performance of the game at the risk of freezing\n\nOverclocking may fix lag that happens on console, but also comes with the risk of freezing",
@@ -367,10 +394,10 @@ class CytrusSettingsController : UICollectionViewController {
                                 "Taiwan" : 6
                              ],
                              selectedValue: UserDefaults.standard.value(forKey: "cytrus.regionValue"),
-                             delegate: self),
-            
-            BlankSetting(),
-            
+                             delegate: self)
+        ], toSection: CytrusSettingsHeaders.core)
+        
+        var debuggingItems: [AnyHashableSendable] = [
             SelectionSetting(key: "cytrus.logLevel",
                              title: "Log Level",
                              details: "Select the level of the information to be logged",
@@ -387,14 +414,13 @@ class CytrusSettingsController : UICollectionViewController {
         ]
         
         if AppStoreCheck.shared.debugging {
-            coreItems.insert(BoolSetting(key: "cytrus.cpuJIT",
+            debuggingItems.insert(BoolSetting(key: "cytrus.cpuJIT",
                                          title: "CPU JIT",
                                          value: UserDefaults.standard.bool(forKey: "cytrus.cpuJIT"),
-                                         delegate: self),
-                             at: 0)
+                                         delegate: self), at: 0)
         }
         
-        snapshot.appendItems(coreItems, toSection: "Core")
+        snapshot.appendItems(debuggingItems, toSection: CytrusSettingsHeaders.debugging)
         
         snapshot.appendItems([
             BoolSetting(key: "cytrus.customLayout",
@@ -450,10 +476,26 @@ class CytrusSettingsController : UICollectionViewController {
                                min: 0,
                                max: 9999,
                                value: UserDefaults.standard.double(forKey: "cytrus.customBottomBottom"),
-                               delegate: self),
-            
-            BlankSetting(),
-            
+                               delegate: self)
+        ], toSection: CytrusSettingsHeaders.layoutCustom)
+        
+        snapshot.appendItems([
+            SelectionSetting(key: "cytrus.layoutOption",
+                             title: "Layout Option",
+                             values: [
+                                "Default" : 0,
+                                "Single Screen" : 1,
+                                "Large Screen" : 2,
+                                "Side Screen" : 3,
+                                "Hybrid Screen" : 5,
+                                "Mobile Portrait" : 6,
+                                "Mobile Landscape" : 7
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: "cytrus.layoutOption"),
+                             delegate: self)
+        ], toSection: CytrusSettingsHeaders.layoutDefault)
+        
+        snapshot.appendItems([
             BoolSetting(key: "cytrus.spirvShaderGeneration",
                         title: "SPIRV Shader Generation",
                         details: "Emits the fragment shader used to emulate PICA using SPIR-V instead of GLSL",
@@ -552,11 +594,11 @@ class CytrusSettingsController : UICollectionViewController {
                              selectedValue: UserDefaults.standard.value(forKey: "cytrus.monoRender"),
                              delegate: self),
             BoolSetting(key: "cytrus.preloadTextures",
-                        title: "Preload textures",
+                        title: "Preload Textures",
                         details: "Loads all custom textures into memory. This feature can use a lot of memory",
                         value: UserDefaults.standard.bool(forKey: "cytrus.preloadTextures"),
                         delegate: self)
-        ], toSection: "Renderer")
+        ], toSection: CytrusSettingsHeaders.rendering)
         
         snapshot.appendItems([
             BoolSetting(key: "cytrus.audioMuted",
@@ -583,8 +625,9 @@ class CytrusSettingsController : UICollectionViewController {
                              values: [
                                 "Automatic" : 0,
                                 "None" : 1,
-                                "OpenAL" : 2,
-                                "SDL2" : 3
+                                "CoreAudio" : 2,
+                                "OpenAL" : 3,
+                                "SDL2" : 4
                              ],
                              selectedValue: UserDefaults.standard.value(forKey: "cytrus.outputType"),
                              delegate: self),
@@ -598,7 +641,7 @@ class CytrusSettingsController : UICollectionViewController {
                              ],
                              selectedValue: UserDefaults.standard.value(forKey: "cytrus.inputType"),
                              delegate: self)
-        ], toSection: "Audio")
+        ], toSection: CytrusSettingsHeaders.audio)
         
         snapshot.appendItems([
             InputStringSetting(key: "cytrus.webAPIURL",
@@ -610,7 +653,7 @@ class CytrusSettingsController : UICollectionViewController {
                                    MultiplayerManager.shared().updateWebAPIURL()
                                },
                                delegate: self)
-        ], toSection: "Networking")
+        ], toSection: CytrusSettingsHeaders.networking)
         
         Task {
             await dataSource.apply(snapshot)

@@ -13,6 +13,7 @@
 		E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E666166F2C410E130065B363 /* libCytrus.a */; platformFilter = ios; };
 		E626CA342C58A65A00CA2B9F /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E626CA332C58A65A00CA2B9F /* SDL */; };
 		E626CA362C58A67600CA2B9F /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E626CA352C58A67600CA2B9F /* SDL */; };
+		E62C640C2D35580A00749D5A /* coreaudio_sink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E62C640B2D35580A00749D5A /* coreaudio_sink.cpp */; };
 		E64C33722D17F5EA00C06A35 /* Cherry in Frameworks */ = {isa = PBXBuildFile; productRef = E64C33712D17F5EA00C06A35 /* Cherry */; };
 		E65169DE2CC2444F00588B21 /* FUIAlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65169DD2CC2444F00588B21 /* FUIAlertKit */; };
 		E657D49B2CFD8A0D00B4AEA9 /* sdl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E657D48E2CFD8A0D00B4AEA9 /* sdl.cpp */; };
@@ -541,6 +542,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E62C640B2D35580A00749D5A /* coreaudio_sink.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = coreaudio_sink.cpp; sourceTree = "<group>"; };
 		E657D48E2CFD8A0D00B4AEA9 /* sdl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sdl.cpp; sourceTree = "<group>"; };
 		E657D48F2CFD8A0D00B4AEA9 /* sdl_impl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sdl_impl.cpp; sourceTree = "<group>"; };
 		E657D4912CFD8A0D00B4AEA9 /* client.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = client.cpp; sourceTree = "<group>"; };
@@ -1381,6 +1383,7 @@
 				E657D4BF2CFD8A0D00B4AEA9 /* hle */,
 				E657D4C12CFD8A0D00B4AEA9 /* lle */,
 				E657D4C22CFD8A0D00B4AEA9 /* codec.cpp */,
+				E62C640B2D35580A00749D5A /* coreaudio_sink.cpp */,
 				E657D4C32CFD8A0D00B4AEA9 /* dsp_interface.cpp */,
 				E657D4C42CFD8A0D00B4AEA9 /* input_details.cpp */,
 				E657D4C52CFD8A0D00B4AEA9 /* interpolate.cpp */,
@@ -3290,6 +3293,7 @@
 				E657D7282CFD8A0E00B4AEA9 /* bcfnt.cpp in Sources */,
 				E657D7292CFD8A0E00B4AEA9 /* applet_manager.cpp in Sources */,
 				E657D72A2CFD8A0E00B4AEA9 /* apt.cpp in Sources */,
+				E62C640C2D35580A00749D5A /* coreaudio_sink.cpp in Sources */,
 				E657D72B2CFD8A0E00B4AEA9 /* apt_a.cpp in Sources */,
 				E657D72C2CFD8A0E00B4AEA9 /* apt_s.cpp in Sources */,
 				E657D72D2CFD8A0E00B4AEA9 /* apt_u.cpp in Sources */,
@@ -3634,6 +3638,7 @@
 					HAVE_OPENAL,
 					HAVE_SDL2,
 					CITRA_ARCH_arm64,
+					HAVE_COREAUDIO,
 				);
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
 				HEADER_SEARCH_PATHS = (
@@ -3645,6 +3650,10 @@
 					Cores/Cytrus/Dependencies/nlohmann,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Dependencies/XCFrameworks",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3682,6 +3691,7 @@
 					HAVE_OPENAL,
 					HAVE_SDL2,
 					CITRA_ARCH_arm64,
+					HAVE_COREAUDIO,
 				);
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
 				HEADER_SEARCH_PATHS = (
@@ -3693,6 +3703,10 @@
 					Cores/Cytrus/Dependencies/nlohmann,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Dependencies/XCFrameworks",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3790,7 +3804,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = LastPlayedWidget/LastPlayedWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastPlayedWidget/Info.plist;
@@ -3823,7 +3837,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = LastPlayedWidget/LastPlayedWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastPlayedWidget/Info.plist;
@@ -3985,7 +3999,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -4006,6 +4020,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Dependencies/XCFrameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.14;
@@ -4036,7 +4054,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -4057,6 +4075,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Dependencies/XCFrameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.14;
@@ -4083,7 +4105,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = PlayTimeWidget/PlayTimeWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTimeWidget/Info.plist;
@@ -4116,7 +4138,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = PlayTimeWidget/PlayTimeWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTimeWidget/Info.plist;

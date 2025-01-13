@@ -50,7 +50,6 @@ class GrapeDefaultController : SkinController {
         
         let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
         visualEffectView.translatesAutoresizingMaskIntoConstraints = false
-        visualEffectView.isUserInteractionEnabled = true
         if let controllerView {
             view.insertSubview(visualEffectView, belowSubview: controllerView)
         }
@@ -62,7 +61,9 @@ class GrapeDefaultController : SkinController {
         topImageView.layer.cornerCurve = .continuous
         topImageView.layer.cornerRadius = 10
         topImageView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        visualEffectView.contentView.addSubview(topImageView)
+        if let controllerView {
+            view.insertSubview(topImageView, belowSubview: controllerView)
+        }
         
         bottomImageView = .init()
         guard let bottomImageView else { return }
@@ -72,7 +73,9 @@ class GrapeDefaultController : SkinController {
         bottomImageView.layer.cornerCurve = .continuous
         bottomImageView.layer.cornerRadius = 10
         bottomImageView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        visualEffectView.contentView.addSubview(bottomImageView)
+        if let controllerView {
+            view.insertSubview(bottomImageView, belowSubview: controllerView)
+        }
         
         portraitConstraints.append(contentsOf: UIDevice.current.userInterfaceIdiom == .pad ? [
             topBlurredImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -458,7 +461,7 @@ class GrapeDefaultController : SkinController {
 extension GrapeDefaultController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        guard let bottomImageView, let touch = touches.first, touch.view == bottomImageView else {
+        guard let bottomImageView, let touch = touches.first else {
             return
         }
         
@@ -472,7 +475,7 @@ extension GrapeDefaultController {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
-        guard let bottomImageView, let touch = touches.first, touch.view == bottomImageView else {
+        guard let bottomImageView, let touch = touches.first else {
             return
         }
         

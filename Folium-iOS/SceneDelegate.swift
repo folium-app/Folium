@@ -151,6 +151,8 @@ extension SceneDelegate {
                 "lleApplets" : false,
                 "regionValue" : -1,
                 
+                "layoutOption" : 6,
+                
                 "customLayout" : false,
                 "customTopLeft" : 0,
                 "customTopTop" : 0,

@@ -56,7 +56,7 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
         }
         
         controllerView = .init(orientation: orientation, skin: skin, delegates: (self, self))
-        guard let controllerView, let screensView = controllerView.screensView else {
+        guard let controllerView else {
             return
         }
         
@@ -67,8 +67,8 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
         controllerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         controllerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         controllerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        view.insertSubview(metalView, belowSubview: controllerView)
         
-        screensView.addSubview(metalView)
         Cytrus.shared.allocateMetalLayer(for: metalView.layer as! CAMetalLayer, with: metalView.bounds.size)
         
         var config = UIButton.Configuration.plain()
@@ -314,20 +314,20 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if !Cytrus.shared.running() {
+            Thread.setThreadPriority(1.0)
+            Thread.detachNewThread(boot)
+        }
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
         if Cytrus.shared.stopped() {
             Cytrus.shared.deallocateVulkanLibrary()
             Cytrus.shared.deallocateMetalLayers()
-        }
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        if !Cytrus.shared.running() {
-            Thread.setThreadPriority(1.0)
-            Thread.detachNewThread(boot)
         }
     }
     

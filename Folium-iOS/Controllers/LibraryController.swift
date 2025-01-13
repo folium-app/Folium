@@ -415,8 +415,13 @@ extension LibraryController: UIDocumentPickerDelegate {
                         documentDirectory.appendingPathComponent("Guava", conformingTo: .folder)
                             .appendingPathComponent("roms", conformingTo: .folder)
                     case "bin", "cue":
-                        documentDirectory.appendingPathComponent("Lychee", conformingTo: .folder)
-                            .appendingPathComponent("roms", conformingTo: .folder)
+                        if url.lastPathComponent.lowercased() == "bios.bin" {
+                            documentDirectory.appendingPathComponent("Lychee", conformingTo: .folder)
+                                .appendingPathComponent("sysdata", conformingTo: .folder)
+                        } else {
+                            documentDirectory.appendingPathComponent("Lychee", conformingTo: .folder)
+                                .appendingPathComponent("roms", conformingTo: .folder)
+                        }
                     case "sfc", "smc":
                         documentDirectory.appendingPathComponent("Mango", conformingTo: .folder)
                             .appendingPathComponent("roms", conformingTo: .folder)
@@ -486,6 +491,8 @@ extension LibraryController: UISearchControllerDelegate, UISearchResultsUpdating
 extension LibraryController {
     @objc fileprivate func openDocumentPickerController() {
         let documentPickerController = UIDocumentPickerViewController(forOpeningContentTypes: [
+            .archive,
+            
             .init("com.antique.Folium-iOS.app")!,
             .init("com.antique.Folium-iOS.cci")!,
             .init("com.antique.Folium-iOS.cia")!,
@@ -495,6 +502,7 @@ extension LibraryController {
             .init("com.antique.Folium-iOS.smc")!,
             .init("com.antique.Folium-iOS.ds")!,
             .init("com.antique.Folium-iOS.nds")!,
+            .init("com.antique.Folium-iOS.ps1")!,
             
             .init("com.retroarch.mtl")!,
             .init("com.retroarch.obj")!,
@@ -617,7 +625,9 @@ extension LibraryController {
             .init("com.rileytestut.delta.game.nes")!,
             .init("com.rileytestut.delta.game.n64")!,
             .init("com.rileytestut.delta.game.ds")!,
-            .init("com.rileytestut.delta.game.genesis")!
+            .init("com.rileytestut.delta.game.genesis")!,
+            
+            .init("com.Spookysoft.gamma.game.ps1")! // sheesh
         ], asCopy: true)
         documentPickerController.delegate = self
         documentPickerController.allowsMultipleSelection = true

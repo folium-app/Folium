@@ -25,10 +25,7 @@ class PassthroughView : UIView {
     }
 }
 
-class ScreensView : UIView {}
-
 class ControllerView : PassthroughView {
-    var screensView: ScreensView? = nil
     var imageView: UIImageView? = nil
     
     var orientation: Orientation
@@ -39,19 +36,6 @@ class ControllerView : PassthroughView {
         self.skin = skin
         self.delegates = delegates
         super.init(frame: .zero)
-        
-        screensView = .init()
-        guard let screensView else {
-            return
-        }
-        
-        screensView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(screensView)
-        
-        screensView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        screensView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        screensView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        screensView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         
         imageView = if let backgroundImageName = orientation.backgroundImageName, let url = skin.url {
             .init(image: .init(contentsOfFile: url
