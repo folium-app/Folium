@@ -13,3 +13,18 @@
 [submodule "Tomato"]
 	path = Cores/Tomato
 	url = https://github.com/folium-app/Tomato
+[submodule "Packages/DirectoryManager"]
+	path = Packages/DirectoryManager
+	url = https://github.com/folium-app/DirectoryManager
+[submodule "Packages/LayoutManager"]
+	path = Packages/LayoutManager
+	url = https://github.com/folium-app/LayoutManager
+[submodule "Packages/SettingsKit"]
+	path = Packages/SettingsKit
+	url = https://github.com/folium-app/SettingsKit
+[submodule "Cores/Lychee"]
+	path = Cores/Lychee
+	url = https://github.com/folium-app/Lychee
+[submodule "Cores/Cherry"]
+	path = Cores/Cherry
+	url = https://github.com/folium-app/Cherry

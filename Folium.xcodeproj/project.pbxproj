@@ -903,7 +903,6 @@
 		E657D6BF2CFD8A0E00B4AEA9 /* telemetry_session.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = telemetry_session.cpp; sourceTree = "<group>"; };
 		E657D7B02CFD8EDE00B4AEA9 /* scm_rev.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = scm_rev.cpp; sourceTree = "<group>"; };
 		E6625B6E2C37AD2C0025588C /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
-		E66320C22D113947008537F4 /* Guava */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Guava; sourceTree = "<group>"; };
 		E666166F2C410E130065B363 /* libCytrus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCytrus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E667C0792C47C7F700DB0327 /* CoreHaptics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreHaptics.framework; path = System/Library/Frameworks/CoreHaptics.framework; sourceTree = SDKROOT; };
 		E667C07B2C47C81500DB0327 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -1099,7 +1098,6 @@
 		E6ACCC9E2CE5EC3900C27006 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E6ACCC9F2CE5EC3900C27006 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E6ACCCA02CE5EC3900C27006 /* Tomato.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tomato.swift; sourceTree = "<group>"; };
-		E6ACCCA22CE5EC3900C27006 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		E6ACCCA32CE5EC3900C27006 /* Grape */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Grape; sourceTree = "<group>"; };
 		E6ACCCA42CE5EC3900C27006 /* Mango */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Mango; sourceTree = "<group>"; };
 		E6AF6BC82CFEC9760033D3FC /* Lychee */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Lychee; sourceTree = "<group>"; };
@@ -2904,11 +2902,9 @@
 			isa = PBXGroup;
 			children = (
 				E6D0CF712D17EFCC00F1D246 /* Cherry */,
-				E66320C22D113947008537F4 /* Guava */,
 				E6AF6BC82CFEC9760033D3FC /* Lychee */,
 				E6ACCBFC2CE5EC3900C27006 /* Cytrus */,
 				E6ACCCA12CE5EC3900C27006 /* Tomato */,
-				E6ACCCA22CE5EC3900C27006 /* .gitignore */,
 				E6ACCCA32CE5EC3900C27006 /* Grape */,
 				E6ACCCA42CE5EC3900C27006 /* Mango */,
 			);
