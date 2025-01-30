@@ -1039,7 +1039,6 @@
 		E6ACCBF52CE5EC3900C27006 /* xbyak_util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xbyak_util.h; sourceTree = "<group>"; };
 		E6ACCBF82CE5EC3900C27006 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		E6ACCBF92CE5EC3900C27006 /* Cytrus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cytrus.swift; sourceTree = "<group>"; };
-		E6ACCBFA2CE5EC3900C27006 /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		E6ACCBFB2CE5EC3900C27006 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E6ACCBFD2CE5EC3900C27006 /* chainresampler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = chainresampler.cpp; sourceTree = "<group>"; };
 		E6ACCBFE2CE5EC3900C27006 /* i0.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = i0.cpp; sourceTree = "<group>"; };
@@ -2732,7 +2731,6 @@
 				E6ACCBF72CE5EC3900C27006 /* Dependencies */,
 				E6ACCBF82CE5EC3900C27006 /* .gitignore */,
 				E6ACCBF92CE5EC3900C27006 /* Cytrus.swift */,
-				E6ACCBFA2CE5EC3900C27006 /* LICENSE.md */,
 				E6ACCBFB2CE5EC3900C27006 /* README.md */,
 			);
 			path = Cytrus;
@@ -3648,12 +3646,13 @@
 					Cores/Cytrus/Dependencies/microprofile,
 					Cores/Cytrus/Dependencies/nlohmann,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Dependencies/XCFrameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3701,12 +3700,13 @@
 					Cores/Cytrus/Dependencies/microprofile,
 					Cores/Cytrus/Dependencies/nlohmann,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Dependencies/XCFrameworks",
 				);
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3735,7 +3735,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3769,7 +3769,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3803,7 +3803,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = LastPlayedWidget/LastPlayedWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastPlayedWidget/Info.plist;
@@ -3815,7 +3815,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.14;
+				MARKETING_VERSION = 1.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.LastPlayedWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3836,7 +3836,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = LastPlayedWidget/LastPlayedWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastPlayedWidget/Info.plist;
@@ -3848,7 +3848,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.14;
+				MARKETING_VERSION = 1.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.LastPlayedWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3998,7 +3998,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -4006,7 +4006,7 @@
 				INFOPLIST_FILE = "Folium-iOS/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Folium;
 				INFOPLIST_KEY_GCSupportsControllerUserInteraction = YES;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Folium uses your devices camera for certain functionality within its cores";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Folium uses your devices microphone for certain functionality within its cores";
@@ -4025,7 +4025,7 @@
 					"$(PROJECT_DIR)/Dependencies/XCFrameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.15;
+				MARKETING_VERSION = 1.14;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
@@ -4053,7 +4053,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -4061,7 +4061,7 @@
 				INFOPLIST_FILE = "Folium-iOS/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Folium;
 				INFOPLIST_KEY_GCSupportsControllerUserInteraction = YES;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Folium uses your devices camera for certain functionality within its cores";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Folium uses your devices microphone for certain functionality within its cores";
@@ -4080,7 +4080,7 @@
 					"$(PROJECT_DIR)/Dependencies/XCFrameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.15;
+				MARKETING_VERSION = 1.14;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
@@ -4104,7 +4104,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = PlayTimeWidget/PlayTimeWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTimeWidget/Info.plist;
@@ -4116,7 +4116,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.14;
+				MARKETING_VERSION = 1.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.PlayTimeWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -4137,7 +4137,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = PlayTimeWidget/PlayTimeWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTimeWidget/Info.plist;
@@ -4149,7 +4149,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.14;
+				MARKETING_VERSION = 1.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.PlayTimeWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

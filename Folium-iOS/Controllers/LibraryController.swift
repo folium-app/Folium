@@ -7,6 +7,7 @@
 
 import AppleArchive
 import Cytrus
+import DirectoryManager
 import Firebase
 import FirebaseAuth
 import FirebaseFirestore
