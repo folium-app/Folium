@@ -72,15 +72,18 @@ enum Feature {
          fastForward
 }
 
-enum Core : String, Codable, CaseIterable, CustomStringConvertible, Hashable, @unchecked Sendable {
-    case cherry = "Cherry"
-    case cytrus = "Cytrus"
-    case grape = "Grape"
-    case guava = "Guava"
-    case kiwi = "Kiwi"
-    case lychee = "Lychee"
-    case mango = "Mango"
-    case tomato = "Tomato"
+enum Core : String, Codable, Comparable, CaseIterable, CustomStringConvertible, Hashable, @unchecked Sendable {
+    static func < (lhs: Core, rhs: Core) -> Bool { lhs.rawValue < rhs.rawValue }
+    
+    case cherry = "Cherry" // PS2
+    case cytrus = "Cytrus" // 3DS
+    case grape = "Grape" // NDS
+    case guava = "Guava" // N64
+    case kiwi = "Kiwi" // GB/GBC
+    case lychee = "Lychee" // PS1
+    case mango = "Mango" // SNES
+    case peach = "Peach" // NES
+    case tomato = "Tomato" // GBA
     
     var color: [Button.`Type` : UIColor] {
         switch self {
@@ -134,48 +137,37 @@ enum Core : String, Codable, CaseIterable, CustomStringConvertible, Hashable, @u
     
     var console: String {
         switch self {
-        case .cherry:
-            "PlayStation 2"
-        case .cytrus:
-            "Nintendo 3DS, New Nintendo 3DS"
-        case .grape:
-            "Nintendo DS, Nintendo DSi"
-        case .guava:
-            "Nintendo 64"
-        case .kiwi:
-            "Game Boy, Game Boy Color"
-        case .lychee:
-            "PlayStation 1"
-        case .mango:
-            "Super Nintendo Entertainment System"
-        case .tomato:
-            "Game Boy Advance"
+        case .cherry: "PlayStation 2"
+        case .cytrus: "Nintendo 3DS, New Nintendo 3DS"
+        case .grape: "Nintendo DS, Nintendo DSi"
+        case .guava: "Nintendo 64"
+        case .kiwi: "Game Boy, Game Boy Color"
+        case .lychee: "PlayStation 1"
+        case .mango: "Super Nintendo Entertainment System"
+        case .peach: "Nintendo Entertainment System"
+        case .tomato: "Game Boy Advance"
         }
     }
     
-    var description: String {
-        rawValue
-    }
+    var description: String { rawValue }
     
     var isBeta: Bool {
         switch self {
-        case .cherry, .lychee, .mango:
+        case .cherry, .lychee, .mango, .tomato:
             true
         default:
             false
         }
     }
     
-    var isNintendo: Bool {
-        [.cytrus, .grape, .guava, .kiwi, .mango, .tomato].contains(self)
-    }
+    var isNintendo: Bool { [.cytrus, .grape, .guava, .kiwi, .mango, .peach, .tomato].contains(self) }
 }
 
 struct LibraryManager : @unchecked Sendable {
     static var shared = LibraryManager()
     
     var cores: [Core] {
-        [.cytrus, .grape, .lychee, .mango] // 3DS, NDS, SNES, N64, GB/GBC, PS1, GBA
+        [.cytrus, .grape, .lychee, .mango, .peach, .tomato] // 3DS, NDS, PS1, SNES, NES, GBA
     }
     
     var coresWithGames: [Core] = []
@@ -331,18 +323,32 @@ struct LibraryManager : @unchecked Sendable {
                                                                                      url: url),
                                                                   skins: skinManager.skins(for: .mango),
                                                                   title: try SuperNESGame.titleFromHeader(for: url)))
-                            case "gb", "gbc":
+                            case "nes":
+                                if !coresWithGames.contains(.peach) {
+                                    coresWithGames.append(.peach)
+                                }
+                                
+                                partialResult.append(NintendoEntertainmentSystemGame(core: "Peach",
+                                                                                     fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                                                                        name: url.lastPathComponent,
+                                                                                                        nameWithoutExtension: nameWithoutExtension,
+                                                                                                        url: url),
+                                                                                     skins: skinManager.skins(for: .peach),
+                                                                                     title: try NintendoEntertainmentSystemGame.titleFromHeader(for: url)))
+                                
+                            case "gba":
                                 if !coresWithGames.contains(.tomato) {
                                     coresWithGames.append(.tomato)
                                 }
                                 
-                                partialResult.append(GameBoyGame(core: "Tomato",
-                                                                 fileDetails: .init(extension: url.pathExtension.lowercased(),
-                                                                                    name: url.lastPathComponent,
-                                                                                    nameWithoutExtension: nameWithoutExtension,
-                                                                                    url: url),
-                                                                 skins: skinManager.skins(for: .tomato),
-                                                                 title: try GameBoyGame.titleFromHeader(for: url)))
+                                partialResult.append(GameBoyAdvanceGame(icon: try GameBoyAdvanceGame.iconFromHeader(for: url),
+                                                                        core: "Tomato",
+                                                                        fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                                                           name: url.lastPathComponent,
+                                                                                           nameWithoutExtension: nameWithoutExtension,
+                                                                                           url: url),
+                                                                        skins: skinManager.skins(for: .tomato),
+                                                                        title: try GameBoyAdvanceGame.titleFromHeader(for: url)))
                             default:
                                 break
                             }

@@ -69,7 +69,16 @@ extension AuthenticationController : ASAuthorizationControllerPresentationContex
         
         let appleCredential = OAuthProvider.appleCredential(withIDToken: identityTokenString, rawNonce: currentNonce, fullName: credential.fullName)
         
-        let task = Task { try await Auth.auth().signIn(with: appleCredential) }
+        let task = Task {
+            let result = try await Auth.auth().signIn(with: appleCredential)
+            
+            guard let displayName = result.user.displayName else { return }
+            let components = displayName.components(separatedBy: " ")
+            guard let firstName = components.first, let lastName = components.last else { return }
+            
+            try Firestore.firestore().collection("users").document(result.user.uid).setData(from: User(games: [], name: "\(firstName) \(lastName)"))
+        }
+        
         Task {
             switch await task.result {
             case .failure(let error):

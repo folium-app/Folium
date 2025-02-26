@@ -486,18 +486,18 @@ extension GrapeDefaultController {
 extension GrapeDefaultController : UIContextMenuInteractionDelegate {
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
         .init(actionProvider: { _ in
-            .init(children: [
-                UIAction(title: "Stop & Exit", attributes: [.destructive], handler: { _ in
-                    let alertController = UIAlertController(title: "Stop & Exit", message: "Are you sure?", preferredStyle: .alert)
-                    alertController.addAction(.init(title: "Dismiss", style: .cancel))
-                    alertController.addAction(.init(title: "Stop & Exit", style: .destructive, handler: { _ in
-                        Grape.shared.stop()
-                        
-                        self.dismiss(animated: true)
-                    }))
-                    self.present(alertController, animated: true)
-                })
-            ])
+                .init(children: [
+                    UIAction(title: "Stop & Exit", attributes: [.destructive], handler: { _ in
+                        let alertController = UIAlertController(title: "Stop & Exit", message: "Are you sure?", preferredStyle: .alert)
+                        alertController.addAction(.init(title: "Dismiss", style: .cancel))
+                        alertController.addAction(.init(title: "Stop & Exit", style: .destructive, handler: { _ in
+                            Grape.shared.stop()
+                            
+                            self.dismiss(animated: true)
+                        }))
+                        self.present(alertController, animated: true)
+                    })
+                ])
         })
     }
 }

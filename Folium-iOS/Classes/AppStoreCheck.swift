@@ -46,16 +46,22 @@ struct AppStoreCheck {
 #endif
     }
     
+    var jit: Bool {
+        var flags: Int32 = 0
+        _ = csops(getpid(), 0, &flags, MemoryLayout<Int32>.size)
+        return flags & 0x10000000 != 0
+    }
+    
     var debugging: Bool {
         var info = kinfo_proc()
         var size = MemoryLayout.stride(ofValue: info)
         var mib : [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid()]
         let junk = sysctl(&mib, UInt32(mib.count), &info, &size, nil, 0)
         assert(junk == 0, "sysctl failed")
-        return (info.kp_proc.p_flag & P_TRACED) != 0 || CommandLine.arguments.contains("altstore")
+        return (info.kp_proc.p_flag & P_TRACED) != 0 || jit
     }
     
     var additionalFeaturesAreAllowed: Bool {
-        [.appStore, .testFlight].contains(currentAppEnvironment)
+        [.appStore, .testFlight].contains(currentAppEnvironment) || debugging
     }
 }

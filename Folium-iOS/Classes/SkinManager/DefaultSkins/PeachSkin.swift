@@ -1,9 +1,9 @@
 //
-//  Cytrus.swift
+//  PeachSkin.swift
 //  Folium-iOS
 //
-//  Created by Jarrod Norwell on 30/8/2024.
-//  Copyright © 2024 Jarrod Norwell. All rights reserved.
+//  Created by Jarrod Norwell on 22/2/2025.
+//  Copyright © 2025 Jarrod Norwell. All rights reserved.
 //
 
 import Foundation
@@ -22,11 +22,9 @@ import UIKit
  
  iPad
  - portrait
- - landscape left
- - landscape right
  */
 
-var cytrusSkin: Skin? {
+var peachSkin: Skin? {
     let bounds = UIScreen.main.bounds
     let width = bounds.width
     let height = bounds.height
@@ -72,18 +70,6 @@ var cytrusSkin: Skin? {
                   height: 45,
                   type: .b,
                   buttonClassName: "blurredButton"),
-            .init(x: width - (90 + 10 + safeAreaInsets.right),
-                  y: height - (135 + safeAreaInsets.bottom),
-                  width: 45,
-                  height: 45,
-                  type: .x,
-                  buttonClassName: "blurredButton"),
-            .init(x: width - (135 + 10 + safeAreaInsets.right),
-                  y: height - (90 + safeAreaInsets.bottom),
-                  width: 45,
-                  height: 45,
-                  type: .y,
-                  buttonClassName: "blurredButton"),
             .init(x: 45 + 10 + safeAreaInsets.left,
                   y: height - (135 + safeAreaInsets.bottom),
                   width: 45,
@@ -108,12 +94,6 @@ var cytrusSkin: Skin? {
                   height: 45,
                   type: .dpadRight,
                   buttonClassName: "blurredButton"),
-            .init(x: width / 2 - 12.5,
-                  y: height - (25 + safeAreaInsets.bottom),
-                  width: 25,
-                  height: 25,
-                  type: .settings, // TODO: this is actually home
-                  buttonClassName: "blurredButton"),
             .init(x: width / 2 - 55,
                   y: height - (25 + safeAreaInsets.bottom),
                   width: 25,
@@ -132,60 +112,31 @@ var cytrusSkin: Skin? {
                   height: 45,
                   type: .l,
                   buttonClassName: "blurredButton"),
-            .init(x: 10 + buttonWidth + 20 + safeAreaInsets.left,
-                  y: height - (190 + safeAreaInsets.bottom),
-                  width: buttonWidth,
-                  height: 45,
-                  type: .zl,
-                  buttonClassName: "blurredButton"),
             .init(x: width - (10 + buttonWidth + safeAreaInsets.right),
                   y: height - (190 + safeAreaInsets.bottom),
                   width: buttonWidth,
                   height: 45,
                   type: .r,
                   buttonClassName: "blurredButton"),
-            .init(x: width - (10 + (buttonWidth * 2) + 20 + safeAreaInsets.right),
-                  y: height - (190 + safeAreaInsets.bottom),
-                  width: buttonWidth,
-                  height: 45,
-                  type: .zr,
-                  buttonClassName: "blurredButton"),
-            .init(x: 0,
-                  y: 0,
-                  width: 0,
-                  height: 0,
+            .init(x: width / 2 - 15,
+                  y: height - (30 + safeAreaInsets.bottom),
+                  width: 30,
+                  height: 30,
                   type: .settings,
                   buttonClassName: "blurredButton")
-        ], screens: [
-            .init(x: safeAreaInsets.left,
-                  y: safeAreaInsets.top,
-                  width: width - (safeAreaInsets.left + safeAreaInsets.right),
-                  height: height - (safeAreaInsets.top + safeAreaInsets.bottom))
-        ], thumbsticks: [
-            .init(x: 10 + safeAreaInsets.left,
-                  y: height - (135 + safeAreaInsets.bottom),
-                  width: 135,
-                  height: 135,
-                  type: .left),
-            .init(x: width - (135 + 10 + safeAreaInsets.right),
-                  y: height - (135 + safeAreaInsets.bottom),
-                  width: 135,
-                  height: 135,
-                  type: .right)
-        ])
+        ], screens: [], thumbsticks: [])
         
         return .init(author: .init(name: "Antique",
                                    socials: [
                                     .init(type: .twitter,
                                           username: "antique_codes")
                                    ]),
-                     core: .cytrus,
+                     core: .peach,
                      orientations: .init(portrait: portrait,
                                          landscapeLeft: portrait,
                                          landscapeRight: portrait,
                                          supportedDevices: Machine.iPhone_mini),
                      title: "Default Skin")
-        
         
     case .iPhone8_1,
             .iPhone8_2,
@@ -233,18 +184,6 @@ var cytrusSkin: Skin? {
                   height: 50,
                   type: .b,
                   buttonClassName: "blurredButton"),
-            .init(x: width - (100 + 10 + safeAreaInsets.right),
-                  y: height - (150 + safeAreaInsets.bottom),
-                  width: 50,
-                  height: 50,
-                  type: .x,
-                  buttonClassName: "blurredButton"),
-            .init(x: width - (150 + 10 + safeAreaInsets.right),
-                  y: height - (100 + safeAreaInsets.bottom),
-                  width: 50,
-                  height: 50,
-                  type: .y,
-                  buttonClassName: "blurredButton"),
             .init(x: 50 + 10 + safeAreaInsets.left,
                   y: height - (150 + safeAreaInsets.bottom),
                   width: 50,
@@ -269,12 +208,6 @@ var cytrusSkin: Skin? {
                   height: 50,
                   type: .dpadRight,
                   buttonClassName: "blurredButton"),
-            .init(x: width / 2 - 15,
-                  y: height - (30 + safeAreaInsets.bottom),
-                  width: 30,
-                  height: 30,
-                  type: .settings, // TODO: this is actually home
-                  buttonClassName: "blurredButton"),
             .init(x: width / 2 - 65,
                   y: height - (30 + safeAreaInsets.bottom),
                   width: 30,
@@ -293,50 +226,26 @@ var cytrusSkin: Skin? {
                   height: 50,
                   type: .l,
                   buttonClassName: "blurredButton"),
-            .init(x: 10 + buttonWidth + 20 + safeAreaInsets.left,
-                  y: height - (210 + safeAreaInsets.bottom),
-                  width: buttonWidth,
-                  height: 50,
-                  type: .zl,
-                  buttonClassName: "blurredButton"),
             .init(x: width - (10 + buttonWidth + safeAreaInsets.right),
                   y: height - (210 + safeAreaInsets.bottom),
                   width: buttonWidth,
                   height: 50,
                   type: .r,
                   buttonClassName: "blurredButton"),
-            .init(x: width - (10 + (buttonWidth * 2) + 20 + safeAreaInsets.right),
-                  y: height - (210 + safeAreaInsets.bottom),
-                  width: buttonWidth,
-                  height: 50,
-                  type: .zr,
-                  buttonClassName: "blurredButton"),
-        ], screens: [
-            .init(x: safeAreaInsets.left,
-                  y: safeAreaInsets.top,
-                  width: width - (safeAreaInsets.left + safeAreaInsets.right),
-                  height: height - (safeAreaInsets.top + safeAreaInsets.bottom))
-        ], thumbsticks: [
-            .init(x: 10 + safeAreaInsets.left,
-                  y: height - (150 + safeAreaInsets.bottom),
-                  width: 150,
-                  height: 150,
-                  thumbstickClassName: "blurredThumbstick",
-                  type: .left),
-            .init(x: width - (150 + 10 + safeAreaInsets.right),
-                  y: height - (150 + safeAreaInsets.bottom),
-                  width: 150,
-                  height: 150,
-                  thumbstickClassName: "blurredThumbstick",
-                  type: .right)
-        ])
+            .init(x: width / 2 - 15,
+                  y: height - (30 + safeAreaInsets.bottom),
+                  width: 30,
+                  height: 30,
+                  type: .settings,
+                  buttonClassName: "blurredButton")
+        ], screens: [], thumbsticks: [])
         
         return .init(author: .init(name: "Antique",
                                    socials: [
                                     .init(type: .twitter,
                                           username: "antique_codes")
                                    ]),
-                     core: .cytrus,
+                     core: .peach,
                      orientations: .init(portrait: portrait,
                                          landscapeLeft: portrait,
                                          landscapeRight: portrait,
@@ -420,18 +329,6 @@ var cytrusSkin: Skin? {
                   height: 50,
                   type: .b,
                   buttonClassName: "blurredButton"),
-            .init(x: width - (100 + 10 + safeAreaInsets.right),
-                  y: height - (150 + safeAreaInsets.bottom),
-                  width: 50,
-                  height: 50,
-                  type: .x,
-                  buttonClassName: "blurredButton"),
-            .init(x: width - (150 + 10 + safeAreaInsets.right),
-                  y: height - (100 + safeAreaInsets.bottom),
-                  width: 50,
-                  height: 50,
-                  type: .y,
-                  buttonClassName: "blurredButton"),
             .init(x: 50 + 10 + safeAreaInsets.left,
                   y: height - (150 + safeAreaInsets.bottom),
                   width: 50,
@@ -456,12 +353,6 @@ var cytrusSkin: Skin? {
                   height: 50,
                   type: .dpadRight,
                   buttonClassName: "blurredButton"),
-            .init(x: width / 2 - 15,
-                  y: height - (30 + safeAreaInsets.bottom),
-                  width: 30,
-                  height: 30,
-                  type: .settings, // TODO: this is actually home
-                  buttonClassName: "blurredButton"),
             .init(x: width / 2 - 65,
                   y: height - (30 + safeAreaInsets.bottom),
                   width: 30,
@@ -480,48 +371,26 @@ var cytrusSkin: Skin? {
                   height: 50,
                   type: .l,
                   buttonClassName: "blurredButton"),
-            .init(x: 10 + buttonWidth + 20 + safeAreaInsets.left,
-                  y: height - (210 + safeAreaInsets.bottom),
-                  width: buttonWidth,
-                  height: 50,
-                  type: .zl,
-                  buttonClassName: "blurredButton"),
             .init(x: width - (10 + buttonWidth + safeAreaInsets.right),
                   y: height - (210 + safeAreaInsets.bottom),
                   width: buttonWidth,
                   height: 50,
                   type: .r,
                   buttonClassName: "blurredButton"),
-            .init(x: width - (10 + (buttonWidth * 2) + 20 + safeAreaInsets.right),
-                  y: height - (210 + safeAreaInsets.bottom),
-                  width: buttonWidth,
-                  height: 50,
-                  type: .zr,
-                  buttonClassName: "blurredButton"),
-        ], screens: [
-            .init(x: safeAreaInsets.left,
-                  y: safeAreaInsets.top,
-                  width: width - (safeAreaInsets.left + safeAreaInsets.right),
-                  height: height - (safeAreaInsets.top + safeAreaInsets.bottom))
-        ], thumbsticks: [
-            .init(x: 10 + safeAreaInsets.left,
-                  y: height - (150 + safeAreaInsets.bottom),
-                  width: 150,
-                  height: 150,
-                  type: .left),
-            .init(x: width - (150 + 10 + safeAreaInsets.right),
-                  y: height - (150 + safeAreaInsets.bottom),
-                  width: 150,
-                  height: 150,
-                  type: .right)
-        ])
+            .init(x: width / 2 - 15,
+                  y: height - (30 + safeAreaInsets.bottom),
+                  width: 30,
+                  height: 30,
+                  type: .settings,
+                  buttonClassName: "blurredButton")
+        ], screens: [], thumbsticks: [])
         
         return .init(author: .init(name: "Antique",
                                    socials: [
                                     .init(type: .twitter,
                                           username: "antique_codes")
                                    ]),
-                     core: .cytrus,
+                     core: .peach,
                      orientations: .init(portrait: portrait,
                                          landscapeLeft: portrait,
                                          landscapeRight: portrait,
@@ -529,3 +398,4 @@ var cytrusSkin: Skin? {
                      title: "Default Skin")
     }
 }
+

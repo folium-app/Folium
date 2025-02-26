@@ -24,6 +24,20 @@ enum ApplicationState : Int {
     case disconnected = 2
 }
 
+@_silgen_name("csops")
+func csops(
+    _ pid: pid_t,
+    _ ops: UInt32,
+    _ useraddr: UnsafeMutableRawPointer?,
+    _ usersize: size_t
+) -> Int32
+
+struct JITStreamerEBResponse : Codable, Hashable {
+    let done, ok, in_progress: Bool
+    let error: String?
+    let position: UInt
+}
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
@@ -50,17 +64,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let version, let build {
             let currentlyInstalledVersion = "\(version).\(build)"
             let currentlySavedVersion = UserDefaults.standard.string(forKey: "currentlySavedVersion")
-            
-            if version.doubleValue >= 1.10 {
-                if currentlySavedVersion == nil || currentlySavedVersion != currentlyInstalledVersion {
-                    UserDefaults.standard.setValue(currentlyInstalledVersion, forKey: "currentlySavedVersion")
-                }
-                
-                try? configureMissingDirectories(for: LibraryManager.shared.cores.map { $0.rawValue })
-                configureAuthenticationStateListener()
-            } else {
-                fallbackToArchiveFeature(window, currentlySavedVersion, currentlyInstalledVersion)
+            if currentlySavedVersion == nil || currentlySavedVersion != currentlyInstalledVersion {
+                UserDefaults.standard.setValue(currentlyInstalledVersion, forKey: "currentlySavedVersion")
             }
+            
+            try? configureMissingDirectories(for: LibraryManager.shared.cores.map { $0.rawValue })
+            configureAuthenticationStateListener()
         }
         
         configureDefaultUserDefaults()
@@ -68,6 +77,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let userDefaults = UserDefaults(suiteName: "group.com.antique.Folium") {
             userDefaults.set(AppStoreCheck.shared.additionalFeaturesAreAllowed, forKey: "additionalFeaturesAreAllowed")
             WidgetCenter.shared.reloadAllTimelines()
+        }
+        
+        var flags: Int32 = 0
+        _ = csops(getpid(), 0, &flags, MemoryLayout<Int32>.size)
+        if flags & 0x10000000 == 0 {
+            let bundleIdentifier = Bundle.main.bundleIdentifier
+            if let bundleIdentifier, access("\(Bundle.main.bundlePath)/../_TrollStore", F_OK) == 0 {
+                let enableJITURL = URL(string: "apple-magnifier://enable-jit?bundle-id=\(bundleIdentifier)")
+                if let enableJITURL, UIApplication.shared.canOpenURL(enableJITURL) {
+                    Task {
+                        await UIApplication.shared.open(enableJITURL)
+                    }
+                }
+            }
+            
+            if let bundleIdentifier, let url = URL(string: "http://[fd00::]:9172/launch_app/\(bundleIdentifier)") {
+                Task {
+                    let (data, _) = try await URLSession.shared.data(from: url)
+                    _ = try JSONDecoder().decode(JITStreamerEBResponse.self, from: data)
+                }
+            }
         }
     }
 
@@ -206,31 +236,6 @@ extension SceneDelegate {
                     UserDefaults.standard.set(value, forKey: "\(core.lowercased()).\(key)")
                 }
             }
-        }
-    }
-    
-    
-    fileprivate func fallbackToArchiveFeature(_ window: UIWindow, _ currentlySavedVersion: String?, _ currentlyInstalledVersion: String?) {
-        if currentlySavedVersion == nil || currentlySavedVersion != currentlyInstalledVersion {
-            UserDefaults.standard.setValue(currentlyInstalledVersion, forKey: "currentlySavedVersion")
-            
-            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            let aarURL = if #available(iOS 16, *) {
-                documentsDirectory.appending(component: "archive.aar")
-            } else {
-                documentsDirectory.appendingPathComponent("archive.aar")
-            }
-            
-            if !FileManager.default.fileExists(atPath: aarURL.path) {
-                window.rootViewController = ArchiveController()
-                window.makeKeyAndVisible()
-            } else {
-                try? configureMissingDirectories(for: LibraryManager.shared.cores.map { $0.rawValue })
-                configureAuthenticationStateListener()
-            }
-        } else {
-            try? configureMissingDirectories(for: LibraryManager.shared.cores.map { $0.rawValue })
-            configureAuthenticationStateListener()
         }
     }
 }

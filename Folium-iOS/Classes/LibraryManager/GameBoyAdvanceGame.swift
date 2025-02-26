@@ -9,6 +9,25 @@ import Foundation
 
 // MARK: Class for the Game Boy Advance core, Tomato
 class GameBoyAdvanceGame : GameBase, @unchecked Sendable {
+    var icon: URL?
+    var iconData: Data? = nil
+    
+    init(icon: URL? = nil, core: String, fileDetails: GameBase.FileDetails, skins: [Skin], title: String) {
+        self.icon = icon
+        super.init(core: core, fileDetails: fileDetails, skins: skins, title: title)
+    }
+    
+    static func iconFromHeader(for url: URL) throws -> URL? {
+        let title = try titleFromHeader(for: url)
+        
+        // TODO: fix the region code
+        if let imageURL = URL(string: "https://raw.githubusercontent.com/libretro/libretro-thumbnails/refs/heads/master/Nintendo - Game Boy Advance/Named_Boxarts/\(title) (USA).png") {
+            return imageURL
+        } else {
+            return nil
+        }
+    }
+    
     static func titleFromHeader(for url: URL) throws -> String {
         let title = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
         

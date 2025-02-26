@@ -54,6 +54,8 @@ class SkinController : LastPlayedPlayTimeController {
                 case .grape: grapeSkin
                 case .lychee: lycheeSkin
                 case .mango: mangoSkin
+                case .peach: peachSkin
+                case .tomato: tomatoSkin
                 default:
                     nil
                 }
@@ -74,6 +76,8 @@ extension SkinController : ControllerButtonDelegate {
     func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         guard let core = Core(rawValue: game.core) else { return }
         switch core {
+        case .cytrus:
+            CytrusDefaultController.touchBegan(with: type, playerIndex: playerIndex)
         case .grape:
             GrapeDefaultController.touchBegan(with: type, playerIndex: playerIndex)
         case .lychee:
@@ -82,6 +86,10 @@ extension SkinController : ControllerButtonDelegate {
         case .mango:
             MangoDefaultController.touchBegan(with: type, playerIndex: playerIndex)
             MangoSkinController.touchBegan(with: type, playerIndex: playerIndex)
+        case .peach:
+            PeachDefaultController.touchBegan(with: type, playerIndex: playerIndex)
+        case .tomato:
+            TomatoDefaultController.touchBegan(with: type, playerIndex: playerIndex)
         default:
             break
         }
@@ -90,6 +98,8 @@ extension SkinController : ControllerButtonDelegate {
     func touchEnded(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         guard let core = Core(rawValue: game.core) else { return }
         switch core {
+        case .cytrus:
+            CytrusDefaultController.touchEnded(with: type, playerIndex: playerIndex)
         case .grape:
             GrapeDefaultController.touchEnded(with: type, playerIndex: playerIndex)
         case .lychee:
@@ -98,6 +108,10 @@ extension SkinController : ControllerButtonDelegate {
         case .mango:
             MangoDefaultController.touchEnded(with: type, playerIndex: playerIndex)
             MangoSkinController.touchEnded(with: type, playerIndex: playerIndex)
+        case .peach:
+            PeachDefaultController.touchEnded(with: type, playerIndex: playerIndex)
+        case .tomato:
+            TomatoDefaultController.touchEnded(with: type, playerIndex: playerIndex)
         default:
             break
         }
@@ -106,6 +120,8 @@ extension SkinController : ControllerButtonDelegate {
     func touchMoved(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         guard let core = Core(rawValue: game.core) else { return }
         switch core {
+        case .cytrus:
+            CytrusDefaultController.touchMoved(with: type, playerIndex: playerIndex)
         case .grape:
             GrapeDefaultController.touchMoved(with: type, playerIndex: playerIndex)
         case .lychee:
@@ -114,6 +130,10 @@ extension SkinController : ControllerButtonDelegate {
         case .mango:
             MangoDefaultController.touchMoved(with: type, playerIndex: playerIndex)
             MangoSkinController.touchMoved(with: type, playerIndex: playerIndex)
+        case .peach:
+            PeachDefaultController.touchMoved(with: type, playerIndex: playerIndex)
+        case .tomato:
+            TomatoDefaultController.touchMoved(with: type, playerIndex: playerIndex)
         default:
             break
         }
