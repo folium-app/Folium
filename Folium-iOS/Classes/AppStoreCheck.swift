@@ -62,6 +62,6 @@ struct AppStoreCheck {
     }
     
     var additionalFeaturesAreAllowed: Bool {
-        [.appStore, .testFlight].contains(currentAppEnvironment) || debugging
+        [.appStore, .testFlight].contains(currentAppEnvironment)
     }
 }
