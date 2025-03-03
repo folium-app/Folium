@@ -1,53 +1,63 @@
 //
-//  NintendoDSCell.swift
+//  CytrusCell.swift
 //  Folium-iOS
 //
-//  Created by Jarrod Norwell on 18/7/2024.
+//  Created by Jarrod Norwell on 17/7/2024.
 //
 
+import Cytrus
 import Foundation
+import SwiftUI
 import UIKit
 
-@MainActor class NintendoDSCell : DefaultCell {
+@MainActor class CytrusCell : DefaultCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1 / 1).isActive = true
     }
     
-    required init?(coder: NSCoder) {
+    @MainActor required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func set(_ nintendoDSGame: NintendoDSGame, with viewController: UIViewController) {
-        set(text: nintendoDSGame.title, image: Data(bytes: nintendoDSGame.icon, count: 32 * 32 * MemoryLayout<UInt32>.size), with: .white)
+    func set(_ cytrusGame: CytrusGame, with viewController: UIViewController) {
+        set(text: cytrusGame.title, image: cytrusGame.icon, with: .white)
         
-        guard let blurredImageView, let imageView, let cgImage = CGImage.cgImage(nintendoDSGame.icon, 32, 32) else {
+        guard let blurredImageView, let imageView else {
             return
         }
         
-        let image = UIImage(cgImage: cgImage)
-        
-        blurredImageView.image = image
-        imageView.image = image.blurMasked(radius: 2)
+        if let icon = cytrusGame.icon, let image = icon.decodeRGB565(width: 48, height: 48) {
+            blurredImageView.image = image
+            imageView.image = image.blurMasked(radius: 2)
+        }
         
         guard let optionsButton else {
             return
         }
         
         var children: [UIMenuElement] = [
+            UIAction(title: "Cheats", image: .init(systemName: "hammer"), handler: { _ in
+                let cheatsController = UINavigationController(rootViewController: CheatsController(cytrusGame.identifier))
+                cheatsController.modalPresentationStyle = .fullScreen
+                viewController.present(cheatsController, animated: true)
+            }),
+            UIAction(title: "Copy SHA256", subtitle: "Used for Widgets, etc", image: .init(systemName: "clipboard"), handler: { _ in
+                UIPasteboard.general.string = cytrusGame.fileDetails.sha256
+            }),
             UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: [.destructive], handler: { _ in
                 guard let viewController = viewController as? LibraryController else {
                     return
                 }
                 
-                viewController.present(viewController.alert(title: "Delete \(nintendoDSGame.title)",
-                                                            message: "Are you sure you want to delete \(nintendoDSGame.title)?",
+                viewController.present(viewController.alert(title: "Delete \(cytrusGame.title)",
+                                                            message: "Are you sure you want to delete \(cytrusGame.title)?",
                                                             preferredStyle: .alert, actions: [
                                                                 .init(title: "Dismiss", style: .cancel),
                                                                 .init(title: "Delete", style: .destructive, handler: { _ in
                                                                     do {
-                                                                        try FileManager.default.removeItem(at: nintendoDSGame.fileDetails.url)
+                                                                        try FileManager.default.removeItem(at: cytrusGame.fileDetails.url)
                                                                         viewController.beginPopulatingGames(with: try LibraryManager.shared.games().get())
                                                                     } catch {
                                                                         print(#function, error, error.localizedDescription)
@@ -58,12 +68,12 @@ import UIKit
             })
         ]
         
-        if nintendoDSGame.skins.count > 0 {
-            children.append(UIMenu(title: "Skins", children: nintendoDSGame.skins.reduce(into: [UIAction](), { partialResult, element in
+        if cytrusGame.skins.count > 0 {
+            children.append(UIMenu(title: "Skins", children: cytrusGame.skins.reduce(into: [UIAction](), { partialResult, element in
                 partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
-                    let nintendoDSEmulationController = GrapeSkinController(game: nintendoDSGame, skin: element)
-                    nintendoDSEmulationController.modalPresentationStyle = .fullScreen
-                    viewController.present(nintendoDSEmulationController, animated: true)
+                    let cytrusEmulationController = Nintendo3DSEmulationController(game: cytrusGame, skin: element)
+                    cytrusEmulationController.modalPresentationStyle = .fullScreen
+                    viewController.present(cytrusEmulationController, animated: true)
                 }))
             })))
         }

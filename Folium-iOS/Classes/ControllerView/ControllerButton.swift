@@ -96,6 +96,8 @@ class ControllerButton : UIView {
 
 class BlurredButton : ControllerButton {
     fileprivate var visualEffectView: UIVisualEffectView? = nil
+    fileprivate var imageView: UIImageView? = nil
+    fileprivate var label: UILabel? = nil
     
     override init(button: Button, skin: Skin, delegate: (any ControllerButtonDelegate)? = nil) {
         super.init(button: button, skin: skin, delegate: delegate)
@@ -114,6 +116,36 @@ class BlurredButton : ControllerButton {
         visualEffectView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         visualEffectView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         visualEffectView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        
+        if [.l, .zl, .r, .zr].contains(button.type) {
+            label = .init(frame: .zero)
+            guard let label else { return }
+            label.translatesAutoresizingMaskIntoConstraints = false
+            label.alpha = 1 / 5
+            label.font = .boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title1).pointSize)
+            label.text = button.letter(for: skin.core)
+            label.textAlignment = .center
+            label.textColor = .white
+            visualEffectView.contentView.addSubview(label)
+            
+            label.topAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
+            label.leadingAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+            label.bottomAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
+            label.trailingAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
+        } else {
+            imageView = .init(image: button.image(for: skin.core))
+            guard let imageView else { return }
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            imageView.alpha = 1 / 5
+            imageView.contentMode = .scaleAspectFit
+            imageView.tintColor = .white
+            visualEffectView.contentView.addSubview(imageView)
+            
+            imageView.topAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.topAnchor, constant: [.minus, .home, .plus, .settings].contains(button.type) ? 4 : 8).isActive = true
+            imageView.leadingAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.leadingAnchor, constant: [.minus, .home, .plus, .settings].contains(button.type) ? 4 : 8).isActive = true
+            imageView.bottomAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.bottomAnchor, constant: [.minus, .home, .plus, .settings].contains(button.type) ? -4 : -8).isActive = true
+            imageView.trailingAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.trailingAnchor, constant: [.minus, .home, .plus, .settings].contains(button.type) ? -4 : -8).isActive = true
+        }
     }
     
     @MainActor required init?(coder: NSCoder) {

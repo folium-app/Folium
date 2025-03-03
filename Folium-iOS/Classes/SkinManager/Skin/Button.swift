@@ -33,6 +33,9 @@ struct Button : Codable, Hashable {
         case fastForward = "fastForward"
         case settings = "settings"
         
+        case loadState = "loadState"
+        case saveState = "saveState"
+        
         enum CodingKeys : String, CodingKey {
             case a = "circle"
             case b = "cross"
@@ -83,13 +86,13 @@ struct Button : Codable, Hashable {
         case .y:
             core.isNintendo ? "Y" : nil
         case .l:
-            core.isNintendo ? "L" : nil
+            core.isNintendo ? "L" : "L1"
         case .r:
-            core.isNintendo ? "R" : nil
+            core.isNintendo ? "R" : "R1"
         case .zl:
-            core.isNintendo ? "ZL" : nil
+            core.isNintendo ? "ZL" : "L2"
         case .zr:
-            core.isNintendo ? "ZR" : nil
+            core.isNintendo ? "ZR" : "R2"
         default:
             nil
         }
@@ -115,31 +118,31 @@ struct Button : Codable, Hashable {
         case .dpadRight:
             .init(systemName: "arrowtriangle.right.circle.fill")
             
-        case .l:
-            if #available(iOS 17, *) {
-                .init(systemName: core.isNintendo ? "l.button.roundedbottom.horizontal.fill" : "l1.button.roundedbottom.horizontal.fill")
-            } else {
-                .init(systemName: core.isNintendo ? "l.rectangle.roundedbottom.fill" : "l1.rectangle.roundedbottom.fill")
-            }
-        case .r:
-            if #available(iOS 17, *) {
-                .init(systemName: core.isNintendo ? "r.button.roundedbottom.horizontal.fill" : "r1.button.roundedbottom.horizontal.fill")
-            } else {
-                .init(systemName: core.isNintendo ? "r.rectangle.roundedbottom.fill" : "r1.rectangle.roundedbottom.fill")
-            }
+        case .l: nil
+            // if #available(iOS 17, *) {
+            //     .init(systemName: core.isNintendo ? "l.button.roundedbottom.horizontal.fill" : "l1.button.roundedbottom.horizontal.fill")
+            // } else {
+            //     .init(systemName: core.isNintendo ? "l.rectangle.roundedbottom.fill" : "l1.rectangle.roundedbottom.fill")
+            // }
+        case .r: nil
+            // if #available(iOS 17, *) {
+            //     .init(systemName: core.isNintendo ? "r.button.roundedbottom.horizontal.fill" : "r1.button.roundedbottom.horizontal.fill")
+            // } else {
+            //     .init(systemName: core.isNintendo ? "r.rectangle.roundedbottom.fill" : "r1.rectangle.roundedbottom.fill")
+            // }
             
-        case .zl:
-            if #available(iOS 17, *) {
-                .init(systemName: core.isNintendo ? "zl.button.roundedtop.horizontal.fill" : "l2.button.roundedtop.horizontal.fill")
-            } else {
-                .init(systemName: core.isNintendo ? "zl.rectangle.roundedtop.fill" :"l2.rectangle.roundedtop.fill")
-            }
-        case .zr:
-            if #available(iOS 17, *) {
-                .init(systemName: core.isNintendo ? "zr.button.roundedtop.horizontal.fill" : "r2.button.roundedtop.horizontal.fill")
-            } else {
-                .init(systemName: core.isNintendo ? "zr.rectangle.roundedtop.fill" :"r2.rectangle.roundedtop.fill")
-            }
+        case .zl: nil
+            // if #available(iOS 17, *) {
+            //     .init(systemName: core.isNintendo ? "zl.button.roundedtop.horizontal.fill" : "l2.button.roundedtop.horizontal.fill")
+            // } else {
+            //     .init(systemName: core.isNintendo ? "zl.rectangle.roundedtop.fill" :"l2.rectangle.roundedtop.fill")
+            // }
+        case .zr: nil
+            // if #available(iOS 17, *) {
+            //     .init(systemName: core.isNintendo ? "zr.button.roundedtop.horizontal.fill" : "r2.button.roundedtop.horizontal.fill")
+            // } else {
+            //     .init(systemName: core.isNintendo ? "zr.rectangle.roundedtop.fill" :"r2.rectangle.roundedtop.fill")
+            // }
             
         case .home:
             .init(systemName: "house.circle.fill")
@@ -151,7 +154,10 @@ struct Button : Codable, Hashable {
         case .fastForward:
             .init(systemName: "forward.fill")
         case .settings:
-            .init(systemName: "gearshape.fill")
+            .init(systemName: "gearshape.circle.fill")
+            
+        case .loadState: .init(systemName: "arrow.up.document.fill")
+        case .saveState: .init(systemName: "arrow.down.document.fill")
         }
     }
 }

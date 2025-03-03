@@ -163,7 +163,7 @@ class BlurredThumbstick : ControllerThumbstick {
     override init(thumbstick: Thumbstick, skin: Skin, delegate: (any ControllerThumbstickDelegate)? = nil) {
         super.init(thumbstick: thumbstick, skin: skin, delegate: delegate)
         
-        visualEffectView = .init(effect: UIBlurEffect(style: .systemUltraThinMaterial))
+        visualEffectView = .init(effect: UIBlurEffect(style: .systemMaterialDark))
         guard let stickView, let visualEffectView else {
             return
         }

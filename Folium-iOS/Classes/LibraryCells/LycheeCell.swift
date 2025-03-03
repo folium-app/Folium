@@ -1,5 +1,5 @@
 //
-//  PlayStation1Cell.swift
+//  LycheeCell.swift
 //  Folium-iOS
 //
 //  Created by Jarrod Norwell on 29/7/2024.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-@MainActor class PlayStation1Cell : DefaultCell {
+@MainActor class LycheeCell : DefaultCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -19,10 +19,10 @@ import UIKit
         fatalError("init(coder:) has not been implemented")
     }
     
-    func set(_ playStation1Game: PlayStation1Game, with viewController: UIViewController) {
+    func set(_ lycheeGame: LycheeGame, with viewController: UIViewController) {
         guard let blurredImageView, let imageView else { return }
         
-        if let url = playStation1Game.icon {
+        if let url = lycheeGame.icon {
             let task = Task {
                 let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
                 let (data, _) = try await URLSession.shared.data(for: request)
@@ -32,20 +32,20 @@ import UIKit
             Task {
                 switch await task.result {
                 case .success(let data):
-                    set(text: playStation1Game.title, image: data, with: .white)
+                    set(text: lycheeGame.title, image: data, with: .white)
                     if let image = UIImage(data: data) {
-                        playStation1Game.iconData = image.pngData()
+                        lycheeGame.data = image.pngData()
                         blurredImageView.image = image
                         imageView.image = image.blurMasked(radius: 2)
                     } else {
-                        print(playStation1Game.title, "success but no image")
+                        print(lycheeGame.title, "success but no image")
                         blurredImageView.image = nil
                         imageView.image = nil
-                        set(text: playStation1Game.title, image: nil, with: .white)
+                        set(text: lycheeGame.title, image: nil, with: .white)
                     }
                 case .failure(let error):
-                    print(playStation1Game.title, error.localizedDescription)
-                    set(text: playStation1Game.title, image: nil, with: .white)
+                    print(lycheeGame.title, error.localizedDescription)
+                    set(text: lycheeGame.title, image: nil, with: .white)
                 }
             }
         } else {
@@ -59,28 +59,28 @@ import UIKit
         
         var children: [UIMenuElement] = [
             UIAction(title: "Copy SHA256", subtitle: "Used for Widgets, etc", image: .init(systemName: "clipboard"), handler: { _ in
-                UIPasteboard.general.string = playStation1Game.fileDetails.sha256
+                UIPasteboard.general.string = lycheeGame.fileDetails.sha256
             }),
             UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: [.destructive], handler: { _ in
                 guard let viewController = viewController as? LibraryController else {
                     return
                 }
                 
-                viewController.present(viewController.alert(title: "Delete \(playStation1Game.title)",
-                                                            message: "Are you sure you want to delete \(playStation1Game.title)?",
+                viewController.present(viewController.alert(title: "Delete \(lycheeGame.title)",
+                                                            message: "Are you sure you want to delete \(lycheeGame.title)?",
                                                             preferredStyle: .alert, actions: [
                                                                 .init(title: "Dismiss", style: .cancel),
                                                                 .init(title: "Delete", style: .destructive, handler: { _ in
                                                                     do {
-                                                                        let cueFileURL = playStation1Game.fileDetails.url
-                                                                        let binFileURLs = try PlayStation1Game.getBinFiles(from: cueFileURL)
+                                                                        let cueFileURL = lycheeGame.fileDetails.url
+                                                                        let binFileURLs = try LycheeGame.files(from: cueFileURL)
                                                                         try binFileURLs.forEach { url in
                                                                             try FileManager.default.removeItem(at: cueFileURL
                                                                                 .deletingLastPathComponent()
                                                                                 .appending(path: url))
                                                                         }
                                                                         
-                                                                        try FileManager.default.removeItem(at: playStation1Game.fileDetails.url)
+                                                                        try FileManager.default.removeItem(at: lycheeGame.fileDetails.url)
                                                                         viewController.beginPopulatingGames(with: try LibraryManager.shared.games().get())
                                                                     } catch {
                                                                         print(#function, error, error.localizedDescription)
@@ -91,12 +91,12 @@ import UIKit
             })
         ]
         
-        if playStation1Game.skins.count > 0 {
-            children.append(UIMenu(title: "Skins", children: playStation1Game.skins.reduce(into: [UIAction](), { partialResult, element in
+        if lycheeGame.skins.count > 0 {
+            children.append(UIMenu(title: "Skins", children: lycheeGame.skins.reduce(into: [UIAction](), { partialResult, element in
                 partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
-                    let playStation1EmulationController = LycheeSkinController(game: playStation1Game, skin: element)
-                    playStation1EmulationController.modalPresentationStyle = .fullScreen
-                    viewController.present(playStation1EmulationController, animated: true)
+                    let lycheeEmulationController = LycheeSkinController(game: lycheeGame, skin: element)
+                    lycheeEmulationController.modalPresentationStyle = .fullScreen
+                    viewController.present(lycheeEmulationController, animated: true)
                 }))
             })))
         }

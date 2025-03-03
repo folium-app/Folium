@@ -58,6 +58,7 @@ var cytrusSkin: Skin? {
             .iPhone12_1,
             .iPhone13_1:
         let buttonWidth: Double = 45 * (7 / 5)
+        let stateButtonWidth = buttonWidth
         
         let portrait: Orientation = .init(buttons: [
             .init(x: width - (45 + 10 + safeAreaInsets.right),
@@ -155,6 +156,19 @@ var cytrusSkin: Skin? {
                   width: 0,
                   height: 0,
                   type: .settings,
+                  buttonClassName: "blurredButton"),
+            
+            .init(x: 10 + safeAreaInsets.left,
+                  y: height - (210 + safeAreaInsets.bottom + 60),
+                  width: stateButtonWidth,
+                  height: 40,
+                  type: .loadState,
+                  buttonClassName: "blurredButton"),
+            .init(x: width - (10 + stateButtonWidth + safeAreaInsets.right),
+                  y: height - (210 + safeAreaInsets.bottom + 60),
+                  width: stateButtonWidth,
+                  height: 40,
+                  type: .saveState,
                   buttonClassName: "blurredButton")
         ], screens: [
             .init(x: safeAreaInsets.left,
@@ -219,6 +233,7 @@ var cytrusSkin: Skin? {
             .iPhone16_3,
             .iPhone16_4:
         let buttonWidth: Double = 50 * (7 / 5)
+        let stateButtonWidth = buttonWidth
         
         let portrait: Orientation = .init(buttons: [
             .init(x: width - (50 + 10 + safeAreaInsets.right),
@@ -311,6 +326,19 @@ var cytrusSkin: Skin? {
                   height: 50,
                   type: .zr,
                   buttonClassName: "blurredButton"),
+            
+            .init(x: 10 + safeAreaInsets.left,
+                  y: height - (210 + safeAreaInsets.bottom + 60),
+                  width: stateButtonWidth,
+                  height: 40,
+                  type: .loadState,
+                  buttonClassName: "blurredButton"),
+            .init(x: width - (10 + stateButtonWidth + safeAreaInsets.right),
+                  y: height - (210 + safeAreaInsets.bottom + 60),
+                  width: stateButtonWidth,
+                  height: 40,
+                  type: .saveState,
+                  buttonClassName: "blurredButton")
         ], screens: [
             .init(x: safeAreaInsets.left,
                   y: safeAreaInsets.top,
@@ -406,6 +434,7 @@ var cytrusSkin: Skin? {
             .iPadPro7Gen_3,
             .iPadPro7Gen_4:
         let buttonWidth: Double = 50 * (7 / 5)
+        let stateButtonWidth = buttonWidth
         
         let portrait: Orientation = .init(buttons: [
             .init(x: width - (50 + 10 + safeAreaInsets.right),
@@ -498,6 +527,19 @@ var cytrusSkin: Skin? {
                   height: 50,
                   type: .zr,
                   buttonClassName: "blurredButton"),
+            
+            .init(x: 10 + safeAreaInsets.left,
+                  y: height - (210 + safeAreaInsets.bottom + 60),
+                  width: stateButtonWidth,
+                  height: 40,
+                  type: .loadState,
+                  buttonClassName: "blurredButton"),
+            .init(x: width - (10 + stateButtonWidth + safeAreaInsets.right),
+                  y: height - (210 + safeAreaInsets.bottom + 60),
+                  width: stateButtonWidth,
+                  height: 40,
+                  type: .saveState,
+                  buttonClassName: "blurredButton")
         ], screens: [
             .init(x: safeAreaInsets.left,
                   y: safeAreaInsets.top,

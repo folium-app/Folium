@@ -155,6 +155,7 @@ extension CGImage {
         return imageRef
     }
     
+    static func gba(_ buffer: UnsafeMutablePointer<UInt32>, _ width: Int, _ height: Int) -> CGImage? { nes(buffer, width, height) }
     static func nes(_ buffer: UnsafeMutablePointer<UInt32>, _ width: Int, _ height: Int) -> CGImage? {
         let colorSpaceRef = CGColorSpaceCreateDeviceRGB()
                 

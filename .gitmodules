@@ -10,9 +10,6 @@
 [submodule "Mango"]
 	path = Cores/Mango
 	url = https://github.com/folium-app/Mango
-[submodule "Tomato"]
-	path = Cores/Tomato
-	url = https://github.com/folium-app/Tomato
 [submodule "Packages/DirectoryManager"]
 	path = Packages/DirectoryManager
 	url = https://github.com/folium-app/DirectoryManager
@@ -28,3 +25,9 @@
 [submodule "Cores/Cherry"]
 	path = Cores/Cherry
 	url = https://github.com/folium-app/Cherry
+[submodule "Cores/Peach"]
+	path = Cores/Peach
+	url = https://github.com/folium-app/Peach
+[submodule "Cores/Tomato"]
+	path = Cores/Tomato
+	url = https://github.com/folium-app/Tomato

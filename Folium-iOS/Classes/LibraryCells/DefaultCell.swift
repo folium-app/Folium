@@ -158,39 +158,9 @@ import UIKit
                     .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize),
                     .foregroundColor: color
                 ])
-            }
-        }
-        
-        
-        /*
-        print(string, data)
-        let userDefaults = UserDefaults.standard
-        
-        guard let textLabel else {
-            return
-        }
-        
-        if let _ = color {
-            textLabel.backgroundColor = .clear
-        }
-        
-        let color = color ?? .tertiarySystemBackground
-        
-        if data == nil {
-            textLabel.attributedText = .init(string: string, attributes: [
-                .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize),
-                .foregroundColor: color
-            ])
-        } else {
-            if userDefaults.bool(forKey: "folium.showGameTitles") {
-                textLabel.attributedText = .init(string: string, attributes: [
-                    .font : UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize),
-                    .foregroundColor: color
-                ])
             } else {
                 textLabel.attributedText = nil
             }
         }
-         */
     }
 }

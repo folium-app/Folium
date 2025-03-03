@@ -11,13 +11,13 @@ import SettingsKit
 import UIKit
 
 enum CytrusSettingsHeaders : Int, CaseIterable {
-    case core, debugging, layoutCustom, layoutDefault, rendering, audio, networking
+    case core, debugging/*, layoutCustom*/, layoutDefault, rendering, audio, networking
     
     var header: SettingHeader {
         switch self {
         case .core: .init(text: "Core")
         case .debugging: .init(text: "Debugging")
-        case .layoutCustom: .init(text: "Layout (Custom)")
+        // case .layoutCustom: .init(text: "Layout (Custom)")
         case .layoutDefault: .init(text: "Layout (Default)", secondaryText: "Disable Custom Layout")
         case .rendering: .init(text: "Rendering")
         case .audio: .init(text: "Audio")
@@ -317,12 +317,8 @@ class CytrusSettingsController : UICollectionViewController {
         
         snapshot.appendItems(debuggingItems, toSection: CytrusSettingsHeaders.debugging)
         
+        /*
         snapshot.appendItems([
-            settingsKit.bool(key: "cytrus.customLayout",
-                             title: "Custom Layout",
-                             details: "Enabled the below custom layout values",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.customLayout"),
-                             delegate: self),
             settingsKit.inputNumber(key: "cytrus.customTopLeft",
                                     title: "Custom Top Left",
                                     min: 0,
@@ -372,18 +368,18 @@ class CytrusSettingsController : UICollectionViewController {
                                     value: UserDefaults.standard.double(forKey: "cytrus.customBottomBottom"),
                                     delegate: self)
         ], toSection: CytrusSettingsHeaders.layoutCustom)
+         */
         
         snapshot.appendItems([
             settingsKit.selection(key: "cytrus.layoutOption",
                                   title: "Layout Option",
                                   values: [
-                                    "Default" : 0,
+                                    "Original" : 0,
                                     "Single Screen" : 1,
                                     "Large Screen" : 2,
-                                    "Side Screen" : 3,
-                                    "Hybrid Screen" : 5,
-                                    "Mobile Portrait" : 6,
-                                    "Mobile Landscape" : 7
+                                    "Side By Side" : 3,
+                                    "Hybrid Screen" : 4,
+                                    "Custom Layout (N/A)" : 5
                                   ],
                                   selectedValue: UserDefaults.standard.value(forKey: "cytrus.layoutOption"),
                                   delegate: self)
@@ -491,6 +487,11 @@ class CytrusSettingsController : UICollectionViewController {
                              title: "Preload Textures",
                              details: "Loads all custom textures into memory. This feature can use a lot of memory",
                              value: UserDefaults.standard.bool(forKey: "cytrus.preloadTextures"),
+                             delegate: self),
+            settingsKit.bool(key: "cytrus.redEyeRender",
+                             title: "Red Eye Render",
+                             details: "Greatly improves performance in some games when disabled, but can cause flickering in others",
+                             value: UserDefaults.standard.bool(forKey: "cytrus.redEyeRender"),
                              delegate: self)
         ], toSection: CytrusSettingsHeaders.rendering)
         

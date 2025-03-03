@@ -134,6 +134,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 }
 
 extension SceneDelegate {
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let context = URLContexts.first else { return }
+        guard let components = URLComponents(string: context.url.absoluteString) else { return }
+        
+        guard let host = components.host else { return }
+        switch host {
+        case "launch-game":
+            guard let query = components.query else { return }
+            if query.hasPrefix("sha256="), let sha256 = query.components(separatedBy: "=").last {
+                // TODO: launch game from sha256
+            }
+        default: break
+        }
+    }
+    
     fileprivate func configureAuthenticationStateListener() {
         guard let window else {
             return
@@ -207,6 +222,7 @@ extension SceneDelegate {
                 "factor3D" : 0,
                 "monoRender" : 0,
                 "preloadTextures" : false,
+                "redEyeRender" : true,
                 
                 "audioMuted" : false,
                 "audioEmulation" : 0,

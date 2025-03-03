@@ -76,10 +76,10 @@ class GrapeSkinController : UIViewController {
     fileprivate var topScreenImageView: UIImageView? = nil, bottomScreenImageView: UIImageView? = nil
     
     var skin: Skin
-    init(game: NintendoDSGame, skin: Skin) {
+    init(game: GrapeGame, skin: Skin) {
         self.skin = skin
         super.init(nibName: nil, bundle: nil)
-        Grape.shared.insertCartridge(from: game.fileDetails.url)
+        _ = Grape.shared.insertCartridge(from: game.fileDetails.url)
     }
     
     required init?(coder: NSCoder) {
@@ -146,9 +146,27 @@ class GrapeSkinController : UIViewController {
         
         configureAudio()
         
-        let displayLink = CADisplayLink(target: self, selector: #selector(step))
-        displayLink.preferredFrameRateRange = .init(minimum: 30, maximum: 60)
-        displayLink.add(to: .main, forMode: .common)
+        Grape.shared.framebuffer { [weak self] framebuffer in
+            guard let self else { return }
+            
+            let size = Grape.shared.videoBufferSize()
+            
+            guard let topScreenImageView, let bottomScreenImageView else { return }
+            guard let topCGImage = CGImage.cgImage(framebuffer, .init(size.width), .init(size.height)) else { return }
+            
+            Task {
+                topScreenImageView.image = .init(cgImage: topCGImage)
+            }
+            
+            guard let bottomCGImage = CGImage.cgImage(framebuffer.advanced(by: .init(size.width * size.height)),
+                                                      .init(size.width), .init(size.height)) else { return }
+            
+            Task {
+                bottomScreenImageView.image = .init(cgImage: bottomCGImage)
+            }
+        }
+        
+        Thread.detachNewThread { Grape.shared.start() }
         
         var config = UIButton.Configuration.plain()
         config.buttonSize = .small
@@ -172,14 +190,13 @@ class GrapeSkinController : UIViewController {
                 self.present(grapeSettingsController, animated: true)
             }),
             UIAction(title: "Toggle Play/Pause", handler: { _ in
-                SDL_PauseAudioDevice(self.audioDeviceID, Grape.shared.togglePause() ? 1 : 0)
+                Grape.shared.pause()
+                SDL_PauseAudioDevice(self.audioDeviceID, Grape.shared.running() ? 0 : 1)
             }),
             UIAction(title: "Stop & Exit", attributes: [.destructive], handler: { _ in
                 let alertController = UIAlertController(title: "Stop & Exit", message: "Are you sure?", preferredStyle: .alert)
                 alertController.addAction(.init(title: "Dismiss", style: .cancel))
                 alertController.addAction(.init(title: "Stop & Exit", style: .destructive, handler: { _ in
-                    displayLink.remove(from: .main, forMode: .common)
-                    
                     SDL_CloseAudioDevice(self.audioDeviceID)
                     
                     Grape.shared.stop()
@@ -314,7 +331,8 @@ class GrapeSkinController : UIViewController {
                 return
             }
             
-            SDL_PauseAudioDevice(self.audioDeviceID, Grape.shared.togglePause() ? 1 : 0)
+            Grape.shared.pause()
+            SDL_PauseAudioDevice(self.audioDeviceID, Grape.shared.running() ? 0 : 1)
         }
     }
     
@@ -369,30 +387,6 @@ class GrapeSkinController : UIViewController {
                     break
                 }
             }
-        }
-    }
-    
-    @objc func step() {
-        Grape.shared.step()
-        
-        let topScreenBuffer = Grape.shared.videoBuffer()
-        
-        let size = Grape.shared.videoBufferSize()
-        
-        guard let topScreenImageView, let topScreenCGImage = CGImage.cgImage(topScreenBuffer, Int(size.width), Int(size.height)) else {
-            return
-        }
-        
-        Task {
-            topScreenImageView.image = .init(cgImage: topScreenCGImage)
-        }
-        
-        guard let bottomScreenImageView, let bottomScreenCGImage = CGImage.cgImage(topScreenBuffer.advanced(by: 256 * 192), Int(size.width), Int(size.height)) else {
-            return
-        }
-        
-        Task {
-            bottomScreenImageView.image = .init(cgImage: bottomScreenCGImage)
         }
     }
     

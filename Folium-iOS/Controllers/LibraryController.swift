@@ -42,12 +42,12 @@ class LibraryController : UICollectionViewController {
         
         // TODO: Redo this
         let gameBoyCellRegistration: UICollectionView.CellRegistration<GameBoyCell, GameBoyGame> = .init { $0.set(text: $2.title, with: .white) }
-        let gameBoyAdvanceCellRegistration: UICollectionView.CellRegistration<GameBoyAdvanceCell, GameBoyAdvanceGame> = .init { $0.set($2, with: self) }
-        let nintendo3DSCellRegistration: UICollectionView.CellRegistration<Nintendo3DSCell, Nintendo3DSGame> = .init { $0.set($2, with: self) }
-        let nintendoDSCellRegistration: UICollectionView.CellRegistration<NintendoDSCell, NintendoDSGame> = .init { $0.set($2, with: self) }
-        let playStation1CellRegistration: UICollectionView.CellRegistration<PlayStation1Cell, PlayStation1Game> = .init { $0.set($2, with: self) }
-        let nesCellRegistration: UICollectionView.CellRegistration<NintendoEntertainmentSystemCell, NintendoEntertainmentSystemGame> = .init { $0.set(text: $2.title, with: .white) }
-        let superNESCellRegistration: UICollectionView.CellRegistration<SuperNESCell, SuperNESGame> = .init { $0.set($2, with: self) }
+        let tomatoCellRegistration: UICollectionView.CellRegistration<TomatoCell, TomatoGame> = .init { $0.set($2, with: self) }
+        let cytrusCellRegistration: UICollectionView.CellRegistration<CytrusCell, CytrusGame> = .init { $0.set($2, with: self) }
+        let grapeCellRegistration: UICollectionView.CellRegistration<GrapeCell, GrapeGame> = .init { $0.set($2, with: self) }
+        let lycheeCellRegistration: UICollectionView.CellRegistration<LycheeCell, LycheeGame> = .init { $0.set($2, with: self) }
+        let peachCellRegistration: UICollectionView.CellRegistration<PeachCell, PeachGame> = .init { $0.set($2, with: self) }
+        let mangoCellRegistration: UICollectionView.CellRegistration<MangoCell, MangoGame> = .init { $0.set($2, with: self) }
         
         let headerCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewListCell> = .init(elementKind: UICollectionView.elementKindSectionHeader) { [weak self] supplementaryView, elementKind, indexPath in
             var contentConfiguration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
@@ -80,18 +80,18 @@ class LibraryController : UICollectionViewController {
             switch itemIdentifier {
             case let gameBoyGame as GameBoyGame:
                 collectionView.dequeueConfiguredReusableCell(using: gameBoyCellRegistration, for: indexPath, item: gameBoyGame)
-            case let gameBoyAdvanceGame as GameBoyAdvanceGame:
-                collectionView.dequeueConfiguredReusableCell(using: gameBoyAdvanceCellRegistration, for: indexPath, item: gameBoyAdvanceGame)
-            case let nintendo3DSGame as Nintendo3DSGame:
-                collectionView.dequeueConfiguredReusableCell(using: nintendo3DSCellRegistration, for: indexPath, item: nintendo3DSGame)
-            case let nintendoDSGame as NintendoDSGame:
-                collectionView.dequeueConfiguredReusableCell(using: nintendoDSCellRegistration, for: indexPath, item: nintendoDSGame)
-            case let playStation1Game as PlayStation1Game:
-                collectionView.dequeueConfiguredReusableCell(using: playStation1CellRegistration, for: indexPath, item: playStation1Game)
-            case let nintendoEnterainmentSystemGame as NintendoEntertainmentSystemGame:
-                collectionView.dequeueConfiguredReusableCell(using: nesCellRegistration, for: indexPath, item: nintendoEnterainmentSystemGame)
-            case let superNESGame as SuperNESGame:
-                collectionView.dequeueConfiguredReusableCell(using: superNESCellRegistration, for: indexPath, item: superNESGame)
+            case let tomatoGame as TomatoGame:
+                collectionView.dequeueConfiguredReusableCell(using: tomatoCellRegistration, for: indexPath, item: tomatoGame)
+            case let cytrusGame as CytrusGame:
+                collectionView.dequeueConfiguredReusableCell(using: cytrusCellRegistration, for: indexPath, item: cytrusGame)
+            case let grapeGame as GrapeGame:
+                collectionView.dequeueConfiguredReusableCell(using: grapeCellRegistration, for: indexPath, item: grapeGame)
+            case let lycheeGame as LycheeGame:
+                collectionView.dequeueConfiguredReusableCell(using: lycheeCellRegistration, for: indexPath, item: lycheeGame)
+            case let peachGame as PeachGame:
+                collectionView.dequeueConfiguredReusableCell(using: peachCellRegistration, for: indexPath, item: peachGame)
+            case let mangoGame as MangoGame:
+                collectionView.dequeueConfiguredReusableCell(using: mangoCellRegistration, for: indexPath, item: mangoGame)
             default:
                 nil
             }
@@ -109,10 +109,13 @@ class LibraryController : UICollectionViewController {
     }
     
     func beginImportingGames() {
-        let documentPickerController = UIDocumentPickerViewController(forOpeningContentTypes: ContentTypeManager.contentTypes)
+        let documentPickerController = UIDocumentPickerViewController(forOpeningContentTypes: ContentTypeManager.contentTypes, asCopy: true)
         documentPickerController.allowsMultipleSelection = true
         documentPickerController.delegate = self
-        self.present(documentPickerController, animated: true)
+        if let sheetPresentationController = documentPickerController.sheetPresentationController {
+            sheetPresentationController.detents = [.medium(), .large()]
+        }
+        present(documentPickerController, animated: true)
     }
     
     func beginPopulatingGames(with games: [GameBase]) {
@@ -273,42 +276,42 @@ extension LibraryController {
         
         guard let dataSource, let item = dataSource.itemIdentifier(for: indexPath) else { return }
         switch item {
-        case let nintendoDSGame as NintendoDSGame:
+        case let grapeGame as GrapeGame:
             guard let skin = grapeSkin else { return }
             
-            let nintendoDSEmulationController = GrapeDefaultController(game: nintendoDSGame, skin: skin)
-            nintendoDSEmulationController.modalPresentationStyle = .fullScreen
-            present(nintendoDSEmulationController, animated: true)
-        case let nintendo3DSGame as Nintendo3DSGame:
+            let grapeEmulationController = GrapeDefaultController(game: grapeGame, skin: skin)
+            grapeEmulationController.modalPresentationStyle = .fullScreen
+            present(grapeEmulationController, animated: true)
+        case let cytrusGame as CytrusGame:
             guard let skin = cytrusSkin else { return }
             
-            let nintendo3DSEmulationController = CytrusDefaultController(game: nintendo3DSGame, skin: skin)
-            nintendo3DSEmulationController.modalPresentationStyle = .fullScreen
-            present(nintendo3DSEmulationController, animated: true)
-        case let superNESGame as SuperNESGame:
+            let cytrusEmulationController = CytrusDefaultController(game: cytrusGame, skin: skin)
+            cytrusEmulationController.modalPresentationStyle = .fullScreen
+            present(cytrusEmulationController, animated: true)
+        case let mangoGame as MangoGame:
             guard let skin = mangoSkin else { return }
             
-            let superNESEmulationController = MangoDefaultController(game: superNESGame, skin: skin)
-            superNESEmulationController.modalPresentationStyle = .fullScreen
-            present(superNESEmulationController, animated: true)
-        case let playStation1Game as PlayStation1Game:
+            let mangoEmulationController = MangoDefaultController(game: mangoGame, skin: skin)
+            mangoEmulationController.modalPresentationStyle = .fullScreen
+            present(mangoEmulationController, animated: true)
+        case let lycheeGame as LycheeGame:
             guard let skin = lycheeSkin else { return }
             
-            let lycheeSkinController = LycheeDefaultController(game: playStation1Game, skin: skin)
-            lycheeSkinController.modalPresentationStyle = .fullScreen
-            present(lycheeSkinController, animated: true)
-        case let gameBoyAdvanceGame as GameBoyAdvanceGame:
+            let lycheeEmulationController = LycheeDefaultController(game: lycheeGame, skin: skin)
+            lycheeEmulationController.modalPresentationStyle = .fullScreen
+            present(lycheeEmulationController, animated: true)
+        case let tomatoGame as TomatoGame:
             guard let skin = tomatoSkin else { return }
             
-            let gameBoyAdvanceEmulationController = TomatoDefaultController(game: gameBoyAdvanceGame, skin: skin)
-            gameBoyAdvanceEmulationController.modalPresentationStyle = .fullScreen
-            present(gameBoyAdvanceEmulationController, animated: true)
-        case let nintendoEntertainmentSystemGame as NintendoEntertainmentSystemGame:
+            let tomatoEmulationController = TomatoDefaultController(game: tomatoGame, skin: skin)
+            tomatoEmulationController.modalPresentationStyle = .fullScreen
+            present(tomatoEmulationController, animated: true)
+        case let peachGame as PeachGame:
             guard let skin = peachSkin else { return }
             
-            let nintendoEntertainmentSystemEmulationController = PeachDefaultController(game: nintendoEntertainmentSystemGame, skin: skin)
-            nintendoEntertainmentSystemEmulationController.modalPresentationStyle = .fullScreen
-            present(nintendoEntertainmentSystemEmulationController, animated: true)
+            let peachEmulationController = PeachDefaultController(game: peachGame, skin: skin)
+            peachEmulationController.modalPresentationStyle = .fullScreen
+            present(peachEmulationController, animated: true)
         default:
             break
         }
@@ -322,44 +325,37 @@ extension LibraryController : UIDocumentPickerDelegate {
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
-        urls.forEach { url in
-            Task {
-                try urls.forEach { url in
-                    if url.pathExtension.lowercased() == "cia" {
-                        _ = Cytrus.shared.importGame(at: url)
-                    } else {
-                        let romsDirectoryURL: URL =
-                        switch url.pathExtension.lowercased() {
-                        case "dsi", "nds":
-                            documentDirectory.appendingPathComponent("Grape", conformingTo: .folder)
-                                .appendingPathComponent("roms", conformingTo: .folder)
-                        case "3ds", "app", "cci", "cxi":
-                            documentDirectory.appendingPathComponent("Cytrus", conformingTo: .folder)
-                                .appendingPathComponent("roms", conformingTo: .folder)
-                        case "bin", "cue":
-                            if url.lastPathComponent.lowercased() == "bios.bin" {
-                                documentDirectory.appendingPathComponent("Lychee", conformingTo: .folder)
-                                    .appendingPathComponent("sysdata", conformingTo: .folder)
-                            } else {
-                                documentDirectory.appendingPathComponent("Lychee", conformingTo: .folder)
-                                    .appendingPathComponent("roms", conformingTo: .folder)
-                            }
-                        case "sfc", "smc":
-                            documentDirectory.appendingPathComponent("Mango", conformingTo: .folder)
-                                .appendingPathComponent("roms", conformingTo: .folder)
-                        case "gba":
-                            documentDirectory.appendingPathComponent("Tomato", conformingTo: .folder)
-                                .appendingPathComponent("roms", conformingTo: .folder)
-                        default:
-                            documentDirectory
-                        }
-                        
-                        try FileManager.default.moveItem(at: url, to: romsDirectoryURL.appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL))
+        Task {
+            try urls.forEach { url in
+                if url.pathExtension.lowercased() == "cia" {
+                    print(Cytrus.shared.importGame(at: url))
+                } else {
+                    let romsDirectoryURL: URL =
+                    switch url.pathExtension.lowercased() {
+                    case "dsi", "nds":
+                        documentDirectory.appendingPathComponent("Grape", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    case "3ds", "app", "cci", "cxi":
+                        documentDirectory.appendingPathComponent("Cytrus", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    case "bin", "cue":
+                        documentDirectory.appendingPathComponent("Lychee", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    case "sfc", "smc":
+                        documentDirectory.appendingPathComponent("Mango", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    case "gba":
+                        documentDirectory.appendingPathComponent("Tomato", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    default:
+                        documentDirectory
                     }
+                    
+                    try FileManager.default.moveItem(at: url, to: romsDirectoryURL.appendingPathComponent(url.lastPathComponent, conformingTo: .fileURL))
                 }
-                
-                beginPopulatingGames(with: try LibraryManager.shared.games().get())
             }
+            
+            beginPopulatingGames(with: try LibraryManager.shared.games().get())
         }
     }
 }

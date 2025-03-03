@@ -61,16 +61,16 @@ class LastPlayedPlayTimeController : UIViewController {
         if let timer { timer.invalidate() }
         
         let icon: Data? = switch game {
-        case let nintendoDSGame as NintendoDSGame:
-            if let cgImage = CGImage.cgImage(nintendoDSGame.icon, 32, 32) {
+        case let grapeGame as GrapeGame:
+            if let cgImage = CGImage.cgImage(grapeGame.icon, 32, 32) {
                 UIImage(cgImage: cgImage).pngData()
             } else {
                 nil
             }
-        case let nintendo3DSGame as Nintendo3DSGame: nintendo3DSGame.icon
-        case let playStation1Game as PlayStation1Game: playStation1Game.iconData
+        case let cytrusGame as CytrusGame: cytrusGame.icon
+        case let lycheeGame as LycheeGame: lycheeGame.data
         case let playStation2Game as PlayStation2Game: playStation2Game.iconData
-        case let superNESGame as SuperNESGame: superNESGame.iconData
+        case let mangoGame as MangoGame: mangoGame.data
         default:
             nil
         }

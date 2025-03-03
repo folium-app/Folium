@@ -1,35 +1,33 @@
 //
-//  GameBoyAdvanceGame.swift
+//  TomatoGame.swift
+//  Folium-iOS
 //
-//
-//  Created by Jarrod Norwell on 8/7/2024.
+//  Created by Jarrod Norwell on 2/3/2025.
+//  Copyright © 2025 Jarrod Norwell. All rights reserved.
 //
 
 import Foundation
 
-// MARK: Class for the Game Boy Advance core, Tomato
-class GameBoyAdvanceGame : GameBase, @unchecked Sendable {
-    var icon: URL?
-    var iconData: Data? = nil
+class TomatoGame : GameBase, @unchecked Sendable {
+    var icon: URL? = nil
+    var data: Data? = nil
     
     init(icon: URL? = nil, core: String, fileDetails: GameBase.FileDetails, skins: [Skin], title: String) {
         self.icon = icon
         super.init(core: core, fileDetails: fileDetails, skins: skins, title: title)
     }
     
-    static func iconFromHeader(for url: URL) throws -> URL? {
-        let title = try titleFromHeader(for: url)
-        
-        // TODO: fix the region code
-        if let imageURL = URL(string: "https://raw.githubusercontent.com/libretro/libretro-thumbnails/refs/heads/master/Nintendo - Game Boy Advance/Named_Boxarts/\(title) (USA).png") {
-            return imageURL
+    static func icon(for url: URL) throws -> URL? {
+        // TODO: Force region to USA as auto detection isn't done yet
+        if let imageURL = URL(string: "https://raw.githubusercontent.com/libretro/libretro-thumbnails/refs/heads/master/Nintendo - Game Boy Advance/Named_Boxarts/\(try title(for: url)) (USA).png") {
+            imageURL
         } else {
-            return nil
+            nil
         }
     }
     
-    static func titleFromHeader(for url: URL) throws -> String {
-        let title = url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
+    static func title(for url: URL) throws -> String {
+        let title = url.deletingPathExtension().lastPathComponent
         
         let file = try FileHandle(forReadingFrom: url)
         try file.seek(toOffset: 0x80000A0)

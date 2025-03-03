@@ -17,7 +17,7 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
     var metalView: MTKView? = nil
     
     var skin: Skin
-    init(game: Nintendo3DSGame, skin: Skin) {
+    init(game: CytrusGame, skin: Skin) {
         self.skin = skin
         super.init(game: game)
         Cytrus.shared.allocateVulkanLibrary()
@@ -82,11 +82,11 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
         button.showsMenuAsPrimaryAction = true
         button.menu = .init(children: [
             UIAction(title: "Open Cheats", image: .init(systemName: "hammer"), handler: { _ in
-                guard let game = self.game as? Nintendo3DSGame else {
+                guard let game = self.game as? CytrusGame else {
                     return
                 }
                 
-                let cheatsController = UINavigationController(rootViewController: CheatsController(titleIdentifier: game.titleIdentifier))
+                let cheatsController = UINavigationController(rootViewController: CheatsController(game.identifier))
                 cheatsController.modalPresentationStyle = .fullScreen
                 self.present(cheatsController, animated: true)
             }),

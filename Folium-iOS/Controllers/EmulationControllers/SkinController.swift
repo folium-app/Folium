@@ -141,7 +141,33 @@ extension SkinController : ControllerButtonDelegate {
 }
 
 extension SkinController : ControllerThumbstickDelegate {
-    func touchBegan(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {}
-    func touchEnded(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {}
-    func touchMoved(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {}
+    func touchBegan(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {
+        guard let core = Core(rawValue: game.core) else { return }
+        switch core {
+        case .cytrus:
+            CytrusDefaultController.touchBegan(with: type, position: position, playerIndex: playerIndex)
+        default:
+            break
+        }
+    }
+    
+    func touchEnded(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {
+        guard let core = Core(rawValue: game.core) else { return }
+        switch core {
+        case .cytrus:
+            CytrusDefaultController.touchEnded(with: type, position: position, playerIndex: playerIndex)
+        default:
+            break
+        }
+    }
+    
+    func touchMoved(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {
+        guard let core = Core(rawValue: game.core) else { return }
+        switch core {
+        case .cytrus:
+            CytrusDefaultController.touchMoved(with: type, position: position, playerIndex: playerIndex)
+        default:
+            break
+        }
+    }
 }

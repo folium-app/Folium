@@ -52,6 +52,7 @@ var tomatoSkin: Skin? {
             .iPhone12_1,
             .iPhone13_1:
         let buttonWidth: Double = 45 * (7 / 5)
+        let stateButtonWidth: Double = 45 * (7 / 5)
         
         let portrait: Orientation = .init(buttons: [
             .init(x: width - (45 + 10 + safeAreaInsets.right),
@@ -119,6 +120,19 @@ var tomatoSkin: Skin? {
                   width: 30,
                   height: 30,
                   type: .settings,
+                  buttonClassName: "blurredButton"),
+            
+            .init(x: 10 + safeAreaInsets.left,
+                  y: height - (210 + safeAreaInsets.bottom + 60),
+                  width: stateButtonWidth,
+                  height: 40,
+                  type: .loadState,
+                  buttonClassName: "blurredButton"),
+            .init(x: width - (10 + stateButtonWidth + safeAreaInsets.right),
+                  y: height - (210 + safeAreaInsets.bottom + 60),
+                  width: stateButtonWidth,
+                  height: 40,
+                  type: .saveState,
                   buttonClassName: "blurredButton")
         ], screens: [], thumbsticks: [])
         
@@ -166,6 +180,7 @@ var tomatoSkin: Skin? {
             .iPhone16_3,
             .iPhone16_4:
         let buttonWidth: Double = 50 * (7 / 5)
+        let stateButtonWidth: Double = 50 * (7 / 5)
         
         let portrait: Orientation = .init(buttons: [
             .init(x: width - (50 + 10 + safeAreaInsets.right),
@@ -233,6 +248,19 @@ var tomatoSkin: Skin? {
                   width: 30,
                   height: 30,
                   type: .settings,
+                  buttonClassName: "blurredButton"),
+            
+            .init(x: 10 + safeAreaInsets.left,
+                  y: height - (210 + safeAreaInsets.bottom + 60),
+                  width: stateButtonWidth,
+                  height: 40,
+                  type: .loadState,
+                  buttonClassName: "blurredButton"),
+            .init(x: width - (10 + stateButtonWidth + safeAreaInsets.right),
+                  y: height - (210 + safeAreaInsets.bottom + 60),
+                  width: stateButtonWidth,
+                  height: 40,
+                  type: .saveState,
                   buttonClassName: "blurredButton")
         ], screens: [], thumbsticks: [])
         
@@ -311,6 +339,7 @@ var tomatoSkin: Skin? {
             .iPadPro7Gen_3,
             .iPadPro7Gen_4:
         let buttonWidth: Double = 50 * (7 / 5)
+        let stateButtonWidth: Double = 50 * (7 / 5)
         
         let portrait: Orientation = .init(buttons: [
             .init(x: width - (50 + 10 + safeAreaInsets.right),
@@ -378,6 +407,19 @@ var tomatoSkin: Skin? {
                   width: 30,
                   height: 30,
                   type: .settings,
+                  buttonClassName: "blurredButton"),
+            
+            .init(x: 10 + safeAreaInsets.left,
+                  y: height - (210 + safeAreaInsets.bottom + 60),
+                  width: stateButtonWidth,
+                  height: 40,
+                  type: .loadState,
+                  buttonClassName: "blurredButton"),
+            .init(x: width - (10 + stateButtonWidth + safeAreaInsets.right),
+                  y: height - (210 + safeAreaInsets.bottom + 60),
+                  width: stateButtonWidth,
+                  height: 40,
+                  type: .saveState,
                   buttonClassName: "blurredButton")
         ], screens: [], thumbsticks: [])
         

@@ -11,17 +11,6 @@ import GameController
 import Peach
 import UIKit
 
-enum NESControllerButton : UInt8 {
-    case right = 0b10000000
-    case left = 0b01000000
-    case down = 0b00100000
-    case up = 0b00010000
-    case start = 0b00001000
-    case select = 0b00000100
-    case b = 0b00000010
-    case a = 0b00000001
-}
-
 class PeachDefaultController : SkinController {
     var imageView: UIImageView? = nil, blurredImageView: UIImageView? = nil
     
@@ -232,21 +221,21 @@ class PeachDefaultController : SkinController {
     static func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
         case .a:
-            Peach.shared.button(button: NESControllerButton.a.rawValue, player: playerIndex.rawValue, pressed: true)
+            Peach.shared.button(button: .a, player: playerIndex.rawValue, pressed: true)
         case .b:
-            Peach.shared.button(button: NESControllerButton.b.rawValue, player: playerIndex.rawValue, pressed: true)
+            Peach.shared.button(button: .b, player: playerIndex.rawValue, pressed: true)
         case .dpadUp:
-            Peach.shared.button(button: NESControllerButton.up.rawValue, player: playerIndex.rawValue, pressed: true)
+            Peach.shared.button(button: .up, player: playerIndex.rawValue, pressed: true)
         case .dpadDown:
-            Peach.shared.button(button: NESControllerButton.down.rawValue, player: playerIndex.rawValue, pressed: true)
+            Peach.shared.button(button: .down, player: playerIndex.rawValue, pressed: true)
         case .dpadLeft:
-            Peach.shared.button(button: NESControllerButton.left.rawValue, player: playerIndex.rawValue, pressed: true)
+            Peach.shared.button(button: .left, player: playerIndex.rawValue, pressed: true)
         case .dpadRight:
-            Peach.shared.button(button: NESControllerButton.right.rawValue, player: playerIndex.rawValue, pressed: true)
+            Peach.shared.button(button: .right, player: playerIndex.rawValue, pressed: true)
         case .minus:
-            Peach.shared.button(button: NESControllerButton.select.rawValue, player: playerIndex.rawValue, pressed: true)
+            Peach.shared.button(button: .select, player: playerIndex.rawValue, pressed: true)
         case .plus:
-            Peach.shared.button(button: NESControllerButton.start.rawValue, player: playerIndex.rawValue, pressed: true)
+            Peach.shared.button(button: .start, player: playerIndex.rawValue, pressed: true)
         case .settings:
             if let viewController = UIApplication.shared.viewController as? PeachDefaultController {
                 if let controllerView = viewController.controllerView, let button = controllerView.button(for: type) {
@@ -262,21 +251,21 @@ class PeachDefaultController : SkinController {
     static func touchEnded(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
         case .a:
-            Peach.shared.button(button: NESControllerButton.a.rawValue, player: playerIndex.rawValue, pressed: false)
+            Peach.shared.button(button: .a, player: playerIndex.rawValue, pressed: false)
         case .b:
-            Peach.shared.button(button: NESControllerButton.b.rawValue, player: playerIndex.rawValue, pressed: false)
+            Peach.shared.button(button: .b, player: playerIndex.rawValue, pressed: false)
         case .dpadUp:
-            Peach.shared.button(button: NESControllerButton.up.rawValue, player: playerIndex.rawValue, pressed: false)
+            Peach.shared.button(button: .up, player: playerIndex.rawValue, pressed: false)
         case .dpadDown:
-            Peach.shared.button(button: NESControllerButton.down.rawValue, player: playerIndex.rawValue, pressed: false)
+            Peach.shared.button(button: .down, player: playerIndex.rawValue, pressed: false)
         case .dpadLeft:
-            Peach.shared.button(button: NESControllerButton.left.rawValue, player: playerIndex.rawValue, pressed: false)
+            Peach.shared.button(button: .left, player: playerIndex.rawValue, pressed: false)
         case .dpadRight:
-            Peach.shared.button(button: NESControllerButton.right.rawValue, player: playerIndex.rawValue, pressed: false)
+            Peach.shared.button(button: .right, player: playerIndex.rawValue, pressed: false)
         case .minus:
-            Peach.shared.button(button: NESControllerButton.select.rawValue, player: playerIndex.rawValue, pressed: false)
+            Peach.shared.button(button: .select, player: playerIndex.rawValue, pressed: false)
         case .plus:
-            Peach.shared.button(button: NESControllerButton.start.rawValue, player: playerIndex.rawValue, pressed: false)
+            Peach.shared.button(button: .start, player: playerIndex.rawValue, pressed: false)
         default:
             break
         }

@@ -24,7 +24,7 @@ class GameBoyEmulationController : UIViewController {
         self.game = game
         self.skin = skin
         super.init(nibName: nil, bundle: nil)
-        tomato.insertCartridge(from: game.fileDetails.url)
+        // tomato.insertCartridge(from: game.fileDetails.url)
     }
     
     required init?(coder: NSCoder) {
@@ -57,18 +57,18 @@ class GameBoyEmulationController : UIViewController {
     }
     
     @objc func step() {
-        guard let imageView else {
-            return
-        }
-        
-        let diff = tomato.tomatoObjC.step(&vbuf, audio: &abuf)
-        
-        guard let cgImage = CGImage.gambatteImage(from: vbuf) else {
-            return
-        }
-        
-        Task {
-            imageView.image = .init(cgImage: cgImage)
-        }
+       //  guard let imageView else {
+       //      return
+       //  }
+       //
+       //  let diff = tomato.tomatoObjC.step(&vbuf, audio: &abuf)
+       //
+       //  guard let cgImage = CGImage.gambatteImage(from: vbuf) else {
+       //      return
+       //  }
+       //
+       //  Task {
+       //      imageView.image = .init(cgImage: cgImage)
+       //  }
     }
 }

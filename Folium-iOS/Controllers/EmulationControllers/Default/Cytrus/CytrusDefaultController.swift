@@ -53,6 +53,9 @@ class CytrusDefaultController : SkinController {
         topMetalCallbackView = .init(frame: .zero, device: MTLCreateSystemDefaultDevice())
         guard let topMetalCallbackView else { return }
         topMetalCallbackView.translatesAutoresizingMaskIntoConstraints = false
+        topMetalCallbackView.callback = {
+            
+        }
         if let controllerView {
             view.insertSubview(topMetalCallbackView, belowSubview: controllerView)
         }
@@ -201,6 +204,52 @@ class CytrusDefaultController : SkinController {
             
             self.cytrus.pausePlay(applicationState == .foregrounded)
         }
+        
+        NotificationCenter.default.addObserver(forName: .init("openKeyboard"), object: nil, queue: .main) { notification in
+            guard let config = notification.object as? KeyboardConfig else {
+                return
+            }
+            
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
+            
+            let cancelAction: UIAlertAction = .init(title: "Cancel", style: .cancel) { _ in
+                NotificationCenter.default.post(name: .init("closeKeyboard"), object: nil, userInfo: [
+                    "buttonPressed" : 0,
+                    "keyboardText" : ""
+                ])
+            }
+            
+            let okayButton: UIAlertAction = .init(title: "Okay", style: .default) { _ in
+                guard let textFields = alertController.textFields, let textField = textFields.first else {
+                    return
+                }
+                
+                NotificationCenter.default.post(name: .init("closeKeyboard"), object: nil, userInfo: [
+                    "buttonPressed" : 0,
+                    "keyboardText" : textField.text ?? ""
+                ])
+            }
+            
+            
+            
+            switch config.buttonConfig {
+            case .single:
+                alertController.addAction(okayButton)
+            case .dual:
+                alertController.addAction(cancelAction)
+                alertController.addAction(okayButton)
+            case .triple:
+                break
+            case .none:
+                break
+            @unknown default:
+                break
+            }
+            
+            
+            alertController.addTextField()
+            self.present(alertController, animated: true)
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -277,6 +326,9 @@ class CytrusDefaultController : SkinController {
             Cytrus.shared.virtualControllerButtonDown(.select)
         case .plus:
             Cytrus.shared.virtualControllerButtonDown(.start)
+            
+        case .loadState: Cytrus.shared.loadState()
+        case .saveState: Cytrus.shared.saveState()
         case .settings:
             if let viewController = UIApplication.shared.viewController as? CytrusDefaultController {
                 if let controllerView = viewController.controllerView, let button = controllerView.button(for: type) {
@@ -331,6 +383,18 @@ class CytrusDefaultController : SkinController {
     }
     
     static func touchMoved(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {}
+    
+    static func touchBegan(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {
+        Cytrus.shared.thumbstickMoved(type == .left ? .circlePad : .cStick, position.x, position.y)
+    }
+    
+    static func touchMoved(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {
+        Cytrus.shared.thumbstickMoved(type == .left ? .circlePad : .cStick, position.x, position.y)
+    }
+    
+    static func touchEnded(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {
+        Cytrus.shared.thumbstickMoved(type == .left ? .circlePad : .cStick, position.x, position.y)
+    }
 }
 
 extension CytrusDefaultController {
@@ -363,11 +427,11 @@ extension CytrusDefaultController : UIContextMenuInteractionDelegate {
         .init(actionProvider: { _ in
                 .init(children: [
                     UIAction(title: "Open Cheats", image: .init(systemName: "hammer"), handler: { _ in
-                        guard let game = self.game as? Nintendo3DSGame else {
+                        guard let game = self.game as? CytrusGame else {
                             return
                         }
                         
-                        let cheatsController = UINavigationController(rootViewController: CheatsController(titleIdentifier: game.titleIdentifier))
+                        let cheatsController = UINavigationController(rootViewController: CheatsController(game.identifier))
                         cheatsController.modalPresentationStyle = .fullScreen
                         self.present(cheatsController, animated: true)
                     }),

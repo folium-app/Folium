@@ -14,6 +14,8 @@ class MissingFilesController : UICollectionViewController {
     fileprivate var dataSource: UICollectionViewDiffableDataSource<Core, MissingFile>? = nil
     fileprivate var snapshot: NSDiffableDataSourceSnapshot<Core, MissingFile>? = nil
     
+    var selectedItem: MissingFile? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.setLeftBarButton(.init(systemItem: .close, primaryAction: .init(handler: { _ in
@@ -67,6 +69,28 @@ class MissingFilesController : UICollectionViewController {
             $0.dequeueConfiguredReusableSupplementary(using: headerCellRegistration, for: $2)
         }
         
+        beginPopulatingMissingFiles()
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        guard let dataSource, let item = dataSource.itemIdentifier(for: indexPath) else { return }
+        
+        selectedItem = item
+        
+        let documentPickerController = UIDocumentPickerViewController(forOpeningContentTypes: [
+            .item
+        ])
+        documentPickerController.delegate = self
+        if let sheetPresentationController = documentPickerController.sheetPresentationController {
+            sheetPresentationController.detents = [.medium(), .large()]
+        }
+        present(documentPickerController, animated: true)
+    }
+    
+    func beginPopulatingMissingFiles() {
+        guard let dataSource else { return }
+        
         snapshot = .init()
         guard var snapshot else { return }
         snapshot.appendSections(LibraryManager.shared.cores)
@@ -81,6 +105,24 @@ class MissingFilesController : UICollectionViewController {
             }
             
             await dataSource.apply(snapshot)
+        }
+    }
+}
+
+extension MissingFilesController : UIDocumentPickerDelegate {
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        controller.dismiss(animated: true)
+    }
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let selectedItem, let url = urls.first else { return }
+        do {
+            try selectedItem.import(from: url)
+            self.selectedItem = nil
+            
+            beginPopulatingMissingFiles()
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }

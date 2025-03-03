@@ -7,23 +7,21 @@
 //
 
 import Foundation
-import Grape
-import SDL
+import Tomato
 import UIKit
 import GameController
+import AVFAudio
 
-typealias TomatoAudioCallback = @convention(c)(UnsafeMutableRawPointer?, UnsafeMutablePointer<UInt8>?, Int32) -> Void
 class TomatoDefaultController : SkinController {
-    var audioDeviceID: SDL_AudioDeviceID!
-    
     var imageView: UIImageView? = nil, blurredImageView: UIImageView? = nil
+    var framerateLabel: UILabel? = nil
     
     var portraitConstraints: [NSLayoutConstraint] = []
     var landscapeConstraints: [NSLayoutConstraint] = []
     
     override init(game: GameBase, skin: Skin) {
         super.init(game: game, skin: skin)
-        _ = Grape.shared.insertCartridge(from: game.fileDetails.url)
+        Tomato.shared.insert(cartridge: game.fileDetails.url)
     }
     
     @MainActor required init?(coder: NSCoder) {
@@ -54,6 +52,19 @@ class TomatoDefaultController : SkinController {
         imageView.layer.cornerRadius = 10
         visualEffectView.contentView.addSubview(imageView)
         
+        framerateLabel = .init()
+        guard let framerateLabel else { return }
+        framerateLabel.translatesAutoresizingMaskIntoConstraints = false
+        framerateLabel.font = .boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize)
+        framerateLabel.layer.shadowColor = UIColor.black.cgColor
+        framerateLabel.layer.shadowRadius = 3
+        framerateLabel.layer.shadowOffset = .zero
+        framerateLabel.layer.shadowOpacity = 1
+        framerateLabel.textColor = .white
+        imageView.addSubview(framerateLabel)
+        
+        framerateLabel.sizeToFit()
+        
         portraitConstraints.append(contentsOf: [
             blurredImageView.topAnchor.constraint(equalTo: view.topAnchor),
             blurredImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -64,12 +75,15 @@ class TomatoDefaultController : SkinController {
             visualEffectView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             visualEffectView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            imageView.topAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.topAnchor, constant: 20),
-            imageView.leadingAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            imageView.trailingAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            imageView.topAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.topAnchor, constant: 10),
+            imageView.leadingAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            imageView.trailingAnchor.constraint(equalTo: visualEffectView.contentView.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 3 / 4),
             
-            blurredImageView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20)
+            blurredImageView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+            
+            framerateLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -10),
+            framerateLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 10)
         ])
         
         landscapeConstraints.append(contentsOf: [
@@ -82,12 +96,15 @@ class TomatoDefaultController : SkinController {
             visualEffectView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             visualEffectView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            imageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            imageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 4 / 3),
             
-            blurredImageView.widthAnchor.constraint(equalTo: imageView.widthAnchor, constant: 20)
+            blurredImageView.widthAnchor.constraint(equalTo: imageView.widthAnchor, constant: 20),
+            
+            framerateLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -10),
+            framerateLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 10)
         ])
         
         switch interfaceOrientation() {
@@ -97,11 +114,23 @@ class TomatoDefaultController : SkinController {
             view.addConstraints(landscapeConstraints)
         }
         
-        configureAudio()
+        Task {
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord)
+        }
         
-        let displayLink = CADisplayLink(target: self, selector: #selector(step))
-        displayLink.preferredFrameRateRange = .init(minimum: 30, maximum: 60)
-        displayLink.add(to: .main, forMode: .common)
+        Tomato.shared.framebuffer { framebuffer in
+            guard let imageView = self.imageView, let blurredImageView = self.blurredImageView else { return }
+            guard let topCGImage = CGImage.gba(framebuffer, 240, 160) else { return }
+            
+            imageView.image = .init(cgImage: topCGImage)
+            blurredImageView.image = .init(cgImage: topCGImage)
+        }
+        
+        Tomato.shared.framerate { framerate in
+            framerateLabel.text = .init(format: "%.2f fps", framerate)
+        }
+        
+        Thread.detachNewThread { Tomato.shared.start() }
         
         Task {
             await GCController.startWirelessControllerDiscovery()
@@ -200,11 +229,11 @@ class TomatoDefaultController : SkinController {
         }
         
         NotificationCenter.default.addObserver(forName: .init("applicationStateDidChange"), object: nil, queue: .main) { notification in
-            guard let _ = notification.object as? ApplicationState else {
+            guard let applicationState = notification.object as? ApplicationState else {
                 return
             }
             
-            SDL_PauseAudioDevice(self.audioDeviceID, Grape.shared.togglePause() ? 1 : 0)
+            Tomato.shared.pause(applicationState == .backgrounded)
         }
     }
     
@@ -229,64 +258,30 @@ class TomatoDefaultController : SkinController {
         }
     }
     
-    @objc func step() {
-        Grape.shared.step()
-        
-        let screenBuffer = Grape.shared.videoBuffer()
-        
-        let size = Grape.shared.videoBufferSize()
-        
-        guard let imageView, let blurredImageView else { return }
-        guard let topCGImage = CGImage.cgImage(screenBuffer, .init(size.width), .init(size.height)) else { return }
-        
-        Task {
-            imageView.image = .init(cgImage: topCGImage)
-            blurredImageView.image = .init(cgImage: topCGImage)
-        }
-    }
-    
-    func configureAudio() {
-        SDL_SetMainReady()
-        SDL_InitSubSystem(SDL_INIT_AUDIO)
-        
-        let callback: GrapeAudioCallback = { userdata, stream, len in
-            SDL_memcpy(stream, Grape.shared.audioBuffer(), Int(len))
-        }
-        
-        var spec = SDL_AudioSpec()
-        spec.callback = callback
-        spec.userdata = nil
-        spec.channels = 2
-        spec.format = SDL_AudioFormat(AUDIO_S16)
-        spec.freq = 48000
-        spec.samples = 1024
-        
-        audioDeviceID = SDL_OpenAudioDevice(nil, 0, &spec, nil, 0)
-        SDL_PauseAudioDevice(audioDeviceID, 0)
-    }
-    
     static func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
-        case .dpadUp:
-            Grape.shared.input(6, true)
-        case .dpadDown:
-            Grape.shared.input(7, true)
-        case .dpadLeft:
-            Grape.shared.input(5, true)
-        case .dpadRight:
-            Grape.shared.input(4, true)
-        case .minus:
-            Grape.shared.input(2, true)
-        case .plus:
-            Grape.shared.input(3, true)
         case .a:
-            Grape.shared.input(0, true)
+            Tomato.shared.button(button: .a, player: playerIndex.rawValue, pressed: true)
         case .b:
-            Grape.shared.input(1, true)
+            Tomato.shared.button(button: .b, player: playerIndex.rawValue, pressed: true)
+        case .dpadUp:
+            Tomato.shared.button(button: .up, player: playerIndex.rawValue, pressed: true)
+        case .dpadDown:
+            Tomato.shared.button(button: .down, player: playerIndex.rawValue, pressed: true)
+        case .dpadLeft:
+            Tomato.shared.button(button: .left, player: playerIndex.rawValue, pressed: true)
+        case .dpadRight:
+            Tomato.shared.button(button: .right, player: playerIndex.rawValue, pressed: true)
+        case .minus:
+            Tomato.shared.button(button: .select, player: playerIndex.rawValue, pressed: true)
+        case .plus:
+            Tomato.shared.button(button: .start, player: playerIndex.rawValue, pressed: true)
         case .l:
-            Grape.shared.input(9, true)
+            Tomato.shared.button(button: .l, player: playerIndex.rawValue, pressed: true)
         case .r:
-            Grape.shared.input(8, true)
+            Tomato.shared.button(button: .r, player: playerIndex.rawValue, pressed: true)
+        case .loadState: Tomato.shared.load()
+        case .saveState: Tomato.shared.save()
         case .settings:
             if let viewController = UIApplication.shared.viewController as? TomatoDefaultController {
                 if let controllerView = viewController.controllerView, let button = controllerView.button(for: type) {
@@ -301,26 +296,26 @@ class TomatoDefaultController : SkinController {
     
     static func touchEnded(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
-        case .dpadUp:
-            Grape.shared.input(6, false)
-        case .dpadDown:
-            Grape.shared.input(7, false)
-        case .dpadLeft:
-            Grape.shared.input(5, false)
-        case .dpadRight:
-            Grape.shared.input(4, false)
-        case .minus:
-            Grape.shared.input(2, false)
-        case .plus:
-            Grape.shared.input(3, false)
         case .a:
-            Grape.shared.input(0, false)
+            Tomato.shared.button(button: .a, player: playerIndex.rawValue, pressed: false)
         case .b:
-            Grape.shared.input(1, false)
+            Tomato.shared.button(button: .b, player: playerIndex.rawValue, pressed: false)
+        case .dpadUp:
+            Tomato.shared.button(button: .up, player: playerIndex.rawValue, pressed: false)
+        case .dpadDown:
+            Tomato.shared.button(button: .down, player: playerIndex.rawValue, pressed: false)
+        case .dpadLeft:
+            Tomato.shared.button(button: .left, player: playerIndex.rawValue, pressed: false)
+        case .dpadRight:
+            Tomato.shared.button(button: .right, player: playerIndex.rawValue, pressed: false)
+        case .minus:
+            Tomato.shared.button(button: .select, player: playerIndex.rawValue, pressed: false)
+        case .plus:
+            Tomato.shared.button(button: .start, player: playerIndex.rawValue, pressed: false)
         case .l:
-            Grape.shared.input(9, false)
+            Tomato.shared.button(button: .l, player: playerIndex.rawValue, pressed: false)
         case .r:
-            Grape.shared.input(8, false)
+            Tomato.shared.button(button: .r, player: playerIndex.rawValue, pressed: false)
         default:
             break
         }
@@ -337,7 +332,8 @@ extension TomatoDefaultController : UIContextMenuInteractionDelegate {
                         let alertController = UIAlertController(title: "Stop & Exit", message: "Are you sure?", preferredStyle: .alert)
                         alertController.addAction(.init(title: "Dismiss", style: .cancel))
                         alertController.addAction(.init(title: "Stop & Exit", style: .destructive, handler: { _ in
-                            Grape.shared.stop()
+                            Tomato.shared.save()
+                            Tomato.shared.stop()
                             
                             self.dismiss(animated: true)
                         }))

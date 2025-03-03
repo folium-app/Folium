@@ -1,5 +1,5 @@
 {
-  "originHash" : "b8a3473d4f4818f1dbeb40e9a00741049f85b81e9a394dbbc1c91ba4ac0ba258",
+  "originHash" : "35d709910780a7475e146eccbb2816021714261ef4bc4be34d7d219020d62fb0",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -74,6 +74,15 @@
       }
     },
     {
+      "identity" : "hqx",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jarrodnorwell/HQx",
+      "state" : {
+        "branch" : "main",
+        "revision" : "8ebedfb78c8dcb3f7abd103afa807a964aa22c11"
+      }
+    },
+    {
       "identity" : "interop-ios-for-google-sdks",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/interop-ios-for-google-sdks.git",
@@ -89,15 +98,6 @@
       "state" : {
         "revision" : "a0bc79961d7be727d258d33d5a6b2f1023270ba1",
         "version" : "1.22.5"
-      }
-    },
-    {
-      "identity" : "libyuv",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ronnyf/libyuv",
-      "state" : {
-        "branch" : "release/webrtc",
-        "revision" : "83e460580a72f15d02381050028634b4736e2d5d"
       }
     },
     {
@@ -152,6 +152,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "c9618dee5fb9406005a18ec61a6291e87be1e40e"
+      }
+    },
+    {
+      "identity" : "xbrz",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jarrodnorwell/xBRZ",
+      "state" : {
+        "branch" : "main",
+        "revision" : "6e5e334ed20cd18f2e7e77603fe43ef8352b89ef"
       }
     },
     {

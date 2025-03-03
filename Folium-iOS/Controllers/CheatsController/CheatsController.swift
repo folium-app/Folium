@@ -14,8 +14,8 @@ class CheatsController : UICollectionViewController {
     var dataSource: UICollectionViewDiffableDataSource<String, Cheat>! = nil
     var snapshot: NSDiffableDataSourceSnapshot<String, Cheat>! = nil
     
-    var titleIdentifier: UInt64
-    init(titleIdentifier: UInt64) {
+    var titleIdentifier: UInt64? = nil
+    init(_ titleIdentifier: UInt64? = nil) {
         self.titleIdentifier = titleIdentifier
         
         let layout = UICollectionViewCompositionalLayout.list(using: .init(appearance: .insetGrouped))
@@ -56,20 +56,23 @@ class CheatsController : UICollectionViewController {
             collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
         }
         
-        CheatsManager.shared().loadCheats(titleIdentifier)
-        let cheats = CheatsManager.shared().getCheats()
-        
-        snapshot = .init()
-        snapshot.appendSections(["Cheats"])
-        snapshot.appendItems(cheats, toSection: "Cheats")
-        
-        Task {
-            await dataSource.apply(snapshot)
+        if let titleIdentifier {
+            CheatsManager.shared().loadCheats(titleIdentifier)
+            let cheats = CheatsManager.shared().getCheats()
+            
+            snapshot = .init()
+            snapshot.appendSections(["Cheats"])
+            snapshot.appendItems(cheats, toSection: "Cheats")
+            
+            Task {
+                await dataSource.apply(snapshot)
+            }
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
+        guard let titleIdentifier else { return }
         
         var snapshot = dataSource.snapshot()
         let item = dataSource.itemIdentifier(for: indexPath)

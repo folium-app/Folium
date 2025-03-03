@@ -1,27 +1,26 @@
 //
-//  SuperNESGame.swift
+//  MangoGame.swift
 //  Folium-iOS
 //
-//  Created by Jarrod Norwell on 24/8/2024.
-//  Copyright © 2024 Jarrod Norwell. All rights reserved.
+//  Created by Jarrod Norwell on 2/3/2025.
+//  Copyright © 2025 Jarrod Norwell. All rights reserved.
 //
 
 import Foundation
 import Mango
 
-// MARK: Class for the Game Boy Advance core, Tomato
-class SuperNESGame : GameBase, @unchecked Sendable {
-    var icon: URL?
-    var iconData: Data? = nil
+class MangoGame : GameBase, @unchecked Sendable {
+    var icon: URL? = nil
+    var data: Data? = nil
     
     init(icon: URL? = nil, core: String, fileDetails: GameBase.FileDetails, skins: [Skin], title: String) {
         self.icon = icon
         super.init(core: core, fileDetails: fileDetails, skins: skins, title: title)
     }
     
-    static func iconFromHeader(for url: URL) throws -> URL? {
+    static func icon(for url: URL) throws -> URL? {
         let region = Mango.shared.regionForCartridge(at: url)
-        let title = try titleFromHeader(for: url, true)
+        let title = title(for: url, true)
         
         if region.isEmpty || region == "" {
             return nil
@@ -34,10 +33,9 @@ class SuperNESGame : GameBase, @unchecked Sendable {
         }
     }
     
-    static func titleFromHeader(for url: URL, _ fromFileName: Bool = false) throws -> String {
-        return if fromFileName {
-            url.lastPathComponent
-                .replacingOccurrences(of: ".\(url.pathExtension)", with: "")
+    static func title(for url: URL, _ fromFileName: Bool = false) -> String {
+        if fromFileName {
+            url.deletingPathExtension().lastPathComponent
         } else {
             Mango.shared.titleForCartridge(at: url)
         }

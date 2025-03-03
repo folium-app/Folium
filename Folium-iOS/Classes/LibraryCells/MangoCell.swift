@@ -1,5 +1,5 @@
 //
-//  SuperNESCell.swift
+//  MangoCell.swift
 //  Folium-iOS
 //
 //  Created by Jarrod Norwell on 24/8/2024.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-@MainActor class SuperNESCell : DefaultCell {
+@MainActor class MangoCell : DefaultCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -20,11 +20,11 @@ import UIKit
         fatalError("init(coder:) has not been implemented")
     }
     
-    func set(_ superNESGame: SuperNESGame, with viewController: UIViewController) {
-        set(text: superNESGame.title, image: superNESGame.iconData, with: .white)
+    func set(_ mangoGame: MangoGame, with viewController: UIViewController) {
+        set(text: mangoGame.title, image: mangoGame.data, with: .white)
         guard let blurredImageView, let imageView else { return }
         
-        if let url = superNESGame.icon {
+        if let url = mangoGame.icon {
             let task = Task {
                 let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
                 let (data, _) = try await URLSession.shared.data(for: request)
@@ -34,20 +34,18 @@ import UIKit
             Task {
                 switch await task.result {
                 case .success(let data):
-                    set(text: superNESGame.title, image: data, with: .white)
+                    set(text: mangoGame.title, image: data, with: .white)
                     if let image = UIImage(data: data) {
-                        superNESGame.iconData = image.pngData()
+                        mangoGame.data = image.pngData()
                         blurredImageView.image = image
                         imageView.image = image.blurMasked(radius: 2)
                     } else {
-                        print(superNESGame.title, "success but no image")
                         blurredImageView.image = nil
                         imageView.image = nil
-                        set(text: superNESGame.title, image: nil, with: .white)
+                        set(text: mangoGame.title, image: nil, with: .white)
                     }
                 case .failure(let error):
-                    print(superNESGame.title, error.localizedDescription)
-                    set(text: superNESGame.title, image: nil, with: .white)
+                    set(text: mangoGame.title, image: nil, with: .white)
                 }
             }
         } else {
@@ -60,18 +58,21 @@ import UIKit
         }
         
         var children: [UIMenuElement] = [
+            UIAction(title: "Copy SHA256", subtitle: "Used for Widgets, etc", image: .init(systemName: "clipboard"), handler: { _ in
+                UIPasteboard.general.string = mangoGame.fileDetails.sha256
+            }),
             UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: [.destructive], handler: { _ in
                 guard let viewController = viewController as? LibraryController else {
                     return
                 }
                 
-                viewController.present(viewController.alert(title: "Delete \(superNESGame.title)",
-                                                            message: "Are you sure you want to delete \(superNESGame.title)?",
+                viewController.present(viewController.alert(title: "Delete \(mangoGame.title)",
+                                                            message: "Are you sure you want to delete \(mangoGame.title)?",
                                                             preferredStyle: .alert, actions: [
                                                                 .init(title: "Dismiss", style: .cancel),
                                                                 .init(title: "Delete", style: .destructive, handler: { _ in
                                                                     do {
-                                                                        try FileManager.default.removeItem(at: superNESGame.fileDetails.url)
+                                                                        try FileManager.default.removeItem(at: mangoGame.fileDetails.url)
                                                                         viewController.beginPopulatingGames(with: try LibraryManager.shared.games().get())
                                                                     } catch {
                                                                         print(#function, error, error.localizedDescription)
@@ -82,12 +83,12 @@ import UIKit
             })
         ]
         
-        if superNESGame.skins.count > 0 {
-            children.append(UIMenu(title: "Skins", children: superNESGame.skins.reduce(into: [UIAction](), { partialResult, element in
+        if mangoGame.skins.count > 0 {
+            children.append(UIMenu(title: "Skins", children: mangoGame.skins.reduce(into: [UIAction](), { partialResult, element in
                 partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
-                    let superNESEmulationController = MangoSkinController(game: superNESGame, skin: element)
-                    superNESEmulationController.modalPresentationStyle = .fullScreen
-                    viewController.present(superNESEmulationController, animated: true)
+                    let mangoEmulationController = MangoSkinController(game: mangoGame, skin: element)
+                    mangoEmulationController.modalPresentationStyle = .fullScreen
+                    viewController.present(mangoEmulationController, animated: true)
                 }))
             })))
         }

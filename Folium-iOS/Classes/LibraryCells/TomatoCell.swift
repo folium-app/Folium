@@ -1,16 +1,15 @@
 //
-//  GameBoyAdvanceCell.swift
+//  TomatoCell.swift
 //  Folium
 //
 //  Created by Jarrod Norwell on 22/2/2025.
 //  Copyright © 2025 Jarrod Norwell. All rights reserved.
 //
 
-
 import Foundation
 import UIKit
 
-@MainActor class GameBoyAdvanceCell : DefaultCell {
+@MainActor class TomatoCell : DefaultCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -21,11 +20,11 @@ import UIKit
         fatalError("init(coder:) has not been implemented")
     }
     
-    func set(_ gameBoyAdvanceGame: GameBoyAdvanceGame, with viewController: UIViewController) {
-        set(text: gameBoyAdvanceGame.title, image: gameBoyAdvanceGame.iconData, with: .white)
+    func set(_ tomatoGame: TomatoGame, with viewController: UIViewController) {
+        set(text: tomatoGame.title, image: tomatoGame.data, with: .white)
         guard let blurredImageView, let imageView else { return }
         
-        if let url = gameBoyAdvanceGame.icon {
+        if let url = tomatoGame.icon {
             let task = Task {
                 let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
                 let (data, _) = try await URLSession.shared.data(for: request)
@@ -35,20 +34,20 @@ import UIKit
             Task {
                 switch await task.result {
                 case .success(let data):
-                    set(text: gameBoyAdvanceGame.title, image: data, with: .white)
+                    set(text: tomatoGame.title, image: data, with: .white)
                     if let image = UIImage(data: data) {
-                        gameBoyAdvanceGame.iconData = image.pngData()
+                        tomatoGame.data = image.pngData()
                         blurredImageView.image = image
                         imageView.image = image.blurMasked(radius: 2)
                     } else {
-                        print(gameBoyAdvanceGame.title, "success but no image")
+                        print(tomatoGame.title, "success but no image")
                         blurredImageView.image = nil
                         imageView.image = nil
-                        set(text: gameBoyAdvanceGame.title, image: nil, with: .white)
+                        set(text: tomatoGame.title, image: nil, with: .white)
                     }
                 case .failure(let error):
-                    print(gameBoyAdvanceGame.title, error.localizedDescription)
-                    set(text: gameBoyAdvanceGame.title, image: nil, with: .white)
+                    print(tomatoGame.title, error.localizedDescription)
+                    set(text: tomatoGame.title, image: nil, with: .white)
                 }
             }
         } else {
@@ -61,18 +60,21 @@ import UIKit
         }
         
         var children: [UIMenuElement] = [
+            UIAction(title: "Copy SHA256", subtitle: "Used for Widgets, etc", image: .init(systemName: "clipboard"), handler: { _ in
+                UIPasteboard.general.string = tomatoGame.fileDetails.sha256
+            }),
             UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: [.destructive], handler: { _ in
                 guard let viewController = viewController as? LibraryController else {
                     return
                 }
                 
-                viewController.present(viewController.alert(title: "Delete \(gameBoyAdvanceGame.title)",
-                                                            message: "Are you sure you want to delete \(gameBoyAdvanceGame.title)?",
+                viewController.present(viewController.alert(title: "Delete \(tomatoGame.title)",
+                                                            message: "Are you sure you want to delete \(tomatoGame.title)?",
                                                             preferredStyle: .alert, actions: [
                                                                 .init(title: "Dismiss", style: .cancel),
                                                                 .init(title: "Delete", style: .destructive, handler: { _ in
                                                                     do {
-                                                                        try FileManager.default.removeItem(at: gameBoyAdvanceGame.fileDetails.url)
+                                                                        try FileManager.default.removeItem(at: tomatoGame.fileDetails.url)
                                                                         viewController.beginPopulatingGames(with: try LibraryManager.shared.games().get())
                                                                     } catch {
                                                                         print(#function, error, error.localizedDescription)
@@ -83,12 +85,12 @@ import UIKit
             })
         ]
         
-        if gameBoyAdvanceGame.skins.count > 0 {
-            children.append(UIMenu(title: "Skins", children: gameBoyAdvanceGame.skins.reduce(into: [UIAction](), { partialResult, element in
+        if tomatoGame.skins.count > 0 {
+            children.append(UIMenu(title: "Skins", children: tomatoGame.skins.reduce(into: [UIAction](), { partialResult, element in
                 partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
-                    let superNESEmulationController = MangoSkinController(game: gameBoyAdvanceGame, skin: element)
-                    superNESEmulationController.modalPresentationStyle = .fullScreen
-                    viewController.present(superNESEmulationController, animated: true)
+                    let tomatoEmulationController = TomatoDefaultController(game: tomatoGame, skin: element)
+                    tomatoEmulationController.modalPresentationStyle = .fullScreen
+                    viewController.present(tomatoEmulationController, animated: true)
                 }))
             })))
         }

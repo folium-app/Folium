@@ -24,7 +24,7 @@ class GrapeDefaultController : SkinController {
     
     override init(game: GameBase, skin: Skin) {
         super.init(game: game, skin: skin)
-        Grape.shared.insertCartridge(from: game.fileDetails.url)
+        _ = Grape.shared.insertCartridge(from: game.fileDetails.url)
     }
     
     @MainActor required init?(coder: NSCoder) {
@@ -168,9 +168,28 @@ class GrapeDefaultController : SkinController {
         
         configureAudio()
         
-        let displayLink = CADisplayLink(target: self, selector: #selector(step))
-        displayLink.preferredFrameRateRange = .init(minimum: 30, maximum: 60)
-        displayLink.add(to: .main, forMode: .common)
+        Grape.shared.framebuffer { [weak self] framebuffer in
+            guard let self else { return }
+            
+            let size = Grape.shared.videoBufferSize()
+            
+            guard let topCGImage = CGImage.cgImage(framebuffer, .init(size.width), .init(size.height)) else { return }
+            
+            Task {
+                topImageView.image = .init(cgImage: topCGImage)
+                topBlurredImageView.image = .init(cgImage: topCGImage)
+            }
+            
+            guard let bottomCGImage = CGImage.cgImage(framebuffer.advanced(by: .init(size.width * size.height)),
+                                                      .init(size.width), .init(size.height)) else { return }
+            
+            Task {
+                bottomImageView.image = .init(cgImage: bottomCGImage)
+                bottomBlurredImageView.image = .init(cgImage: bottomCGImage)
+            }
+        }
+        
+        Grape.shared.start()
         
         Task {
             await GCController.startWirelessControllerDiscovery()
@@ -289,7 +308,8 @@ class GrapeDefaultController : SkinController {
                 return
             }
             
-            SDL_PauseAudioDevice(self.audioDeviceID, Grape.shared.togglePause() ? 1 : 0)
+            Task { Grape.shared.pause() }
+            SDL_PauseAudioDevice(self.audioDeviceID, Grape.shared.running() ? 1 : 0)
         }
     }
     
@@ -341,31 +361,6 @@ class GrapeDefaultController : SkinController {
         }
     }
     
-    @objc func step() {
-        Grape.shared.step()
-        
-        let screenBuffer = Grape.shared.videoBuffer()
-        
-        let size = Grape.shared.videoBufferSize()
-        
-        guard let topImageView, let topBlurredImageView else { return }
-        guard let topCGImage = CGImage.cgImage(screenBuffer, .init(size.width), .init(size.height)) else { return }
-        
-        Task {
-            topImageView.image = .init(cgImage: topCGImage)
-            topBlurredImageView.image = .init(cgImage: topCGImage)
-        }
-        
-        guard let bottomImageView, let bottomBlurredImageView else { return }
-        guard let bottomCGImage = CGImage.cgImage(screenBuffer.advanced(by: .init(size.width * size.height)),
-                                                  .init(size.width), .init(size.height)) else { return }
-        
-        Task {
-            bottomImageView.image = .init(cgImage: bottomCGImage)
-            bottomBlurredImageView.image = .init(cgImage: bottomCGImage)
-        }
-    }
-    
     func configureAudio() {
         SDL_SetMainReady()
         SDL_InitSubSystem(SDL_INIT_AUDIO)
@@ -412,6 +407,8 @@ class GrapeDefaultController : SkinController {
             Grape.shared.input(9, true)
         case .r:
             Grape.shared.input(8, true)
+        case .loadState: Grape.shared.loadState()
+        case .saveState: Grape.shared.saveState()
         case .settings:
             if let viewController = UIApplication.shared.viewController as? GrapeDefaultController {
                 if let controllerView = viewController.controllerView, let button = controllerView.button(for: type) {
@@ -491,6 +488,11 @@ extension GrapeDefaultController : UIContextMenuInteractionDelegate {
                         let alertController = UIAlertController(title: "Stop & Exit", message: "Are you sure?", preferredStyle: .alert)
                         alertController.addAction(.init(title: "Dismiss", style: .cancel))
                         alertController.addAction(.init(title: "Stop & Exit", style: .destructive, handler: { _ in
+                            Grape.shared.pause()
+                            
+                            SDL_PauseAudioDevice(self.audioDeviceID, 1)
+                            SDL_CloseAudioDevice(self.audioDeviceID)
+                            
                             Grape.shared.stop()
                             
                             self.dismiss(animated: true)
