@@ -106,6 +106,25 @@ class LibraryController : UICollectionViewController {
         Task {
             beginPopulatingGames(with: try LibraryManager.shared.games().get())
         }
+        
+        /*
+         NotificationCenter.default.addObserver(forName: .init("shouldLaunchGameForMD5"), object: nil, queue: .main) { notification in
+            guard let window = self.view.window, let windowScene = window.windowScene,
+                  let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
+            
+            print("set")
+            
+            guard let md5 = sceneDelegate.md5 else { return }
+            
+            print(md5)
+            
+            let game = LibraryManager.shared.allGames.first(where: { $0.fileDetails.md5 == md5 })
+            guard let game else { return }
+            print(game)
+            
+            self.launch(game: game)
+        }
+         */
     }
     
     func beginImportingGames() {
@@ -132,6 +151,49 @@ class LibraryController : UICollectionViewController {
         }
         
         Task { await dataSource.apply(snapshot) }
+    }
+    
+    func launch(game item: GameBase) {
+        switch item {
+        case let grapeGame as GrapeGame:
+            guard let skin = grapeSkin else { return }
+            
+            let grapeEmulationController = GrapeDefaultController(game: grapeGame, skin: skin)
+            grapeEmulationController.modalPresentationStyle = .fullScreen
+            present(grapeEmulationController, animated: true)
+        case let cytrusGame as CytrusGame:
+            guard let skin = cytrusSkin else { return }
+            
+            let cytrusEmulationController = CytrusDefaultController(game: cytrusGame, skin: skin)
+            cytrusEmulationController.modalPresentationStyle = .fullScreen
+            present(cytrusEmulationController, animated: true)
+        case let mangoGame as MangoGame:
+            guard let skin = mangoSkin else { return }
+            
+            let mangoEmulationController = MangoDefaultController(game: mangoGame, skin: skin)
+            mangoEmulationController.modalPresentationStyle = .fullScreen
+            present(mangoEmulationController, animated: true)
+        case let lycheeGame as LycheeGame:
+            guard let skin = lycheeSkin else { return }
+            
+            let lycheeEmulationController = LycheeDefaultController(game: lycheeGame, skin: skin)
+            lycheeEmulationController.modalPresentationStyle = .fullScreen
+            present(lycheeEmulationController, animated: true)
+        case let tomatoGame as TomatoGame:
+            guard let skin = tomatoSkin else { return }
+            
+            let tomatoEmulationController = TomatoDefaultController(game: tomatoGame, skin: skin)
+            tomatoEmulationController.modalPresentationStyle = .fullScreen
+            present(tomatoEmulationController, animated: true)
+        case let peachGame as PeachGame:
+            guard let skin = peachSkin else { return }
+            
+            let peachEmulationController = PeachDefaultController(game: peachGame, skin: skin)
+            peachEmulationController.modalPresentationStyle = .fullScreen
+            present(peachEmulationController, animated: true)
+        default:
+            break
+        }
     }
     
     @objc func refreshGames(_ refreshControl: UIRefreshControl) {
@@ -275,46 +337,7 @@ extension LibraryController {
         collectionView.deselectItem(at: indexPath, animated: true)
         
         guard let dataSource, let item = dataSource.itemIdentifier(for: indexPath) else { return }
-        switch item {
-        case let grapeGame as GrapeGame:
-            guard let skin = grapeSkin else { return }
-            
-            let grapeEmulationController = GrapeDefaultController(game: grapeGame, skin: skin)
-            grapeEmulationController.modalPresentationStyle = .fullScreen
-            present(grapeEmulationController, animated: true)
-        case let cytrusGame as CytrusGame:
-            guard let skin = cytrusSkin else { return }
-            
-            let cytrusEmulationController = CytrusDefaultController(game: cytrusGame, skin: skin)
-            cytrusEmulationController.modalPresentationStyle = .fullScreen
-            present(cytrusEmulationController, animated: true)
-        case let mangoGame as MangoGame:
-            guard let skin = mangoSkin else { return }
-            
-            let mangoEmulationController = MangoDefaultController(game: mangoGame, skin: skin)
-            mangoEmulationController.modalPresentationStyle = .fullScreen
-            present(mangoEmulationController, animated: true)
-        case let lycheeGame as LycheeGame:
-            guard let skin = lycheeSkin else { return }
-            
-            let lycheeEmulationController = LycheeDefaultController(game: lycheeGame, skin: skin)
-            lycheeEmulationController.modalPresentationStyle = .fullScreen
-            present(lycheeEmulationController, animated: true)
-        case let tomatoGame as TomatoGame:
-            guard let skin = tomatoSkin else { return }
-            
-            let tomatoEmulationController = TomatoDefaultController(game: tomatoGame, skin: skin)
-            tomatoEmulationController.modalPresentationStyle = .fullScreen
-            present(tomatoEmulationController, animated: true)
-        case let peachGame as PeachGame:
-            guard let skin = peachSkin else { return }
-            
-            let peachEmulationController = PeachDefaultController(game: peachGame, skin: skin)
-            peachEmulationController.modalPresentationStyle = .fullScreen
-            present(peachEmulationController, animated: true)
-        default:
-            break
-        }
+        launch(game: item)
     }
 }
 

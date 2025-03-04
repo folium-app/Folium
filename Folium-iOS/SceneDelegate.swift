@@ -39,7 +39,8 @@ struct JITStreamerEBResponse : Codable, Hashable {
 }
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    var window: UIWindow?
+    var window: UIWindow? = nil
+    var md5: String? = nil
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -142,8 +143,10 @@ extension SceneDelegate {
         switch host {
         case "launch-game":
             guard let query = components.query else { return }
-            if query.hasPrefix("sha256="), let sha256 = query.components(separatedBy: "=").last {
-                // TODO: launch game from sha256
+            if query.hasPrefix("md5="), let md5 = query.components(separatedBy: "=").last {
+                self.md5 = md5
+                print(self.md5)
+                NotificationCenter.default.post(name: .init("shouldLaunchGameForMD5"), object: nil)
             }
         default: break
         }

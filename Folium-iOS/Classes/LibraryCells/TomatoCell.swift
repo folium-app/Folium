@@ -60,8 +60,8 @@ import UIKit
         }
         
         var children: [UIMenuElement] = [
-            UIAction(title: "Copy SHA256", subtitle: "Used for Widgets, etc", image: .init(systemName: "clipboard"), handler: { _ in
-                UIPasteboard.general.string = tomatoGame.fileDetails.sha256
+            UIAction(title: "Copy MD5", subtitle: "Used for Widgets, etc", image: .init(systemName: "clipboard"), handler: { _ in
+                UIPasteboard.general.string = tomatoGame.fileDetails.md5
             }),
             UIAction(title: "Delete", image: .init(systemName: "trash"), attributes: [.destructive], handler: { _ in
                 guard let viewController = viewController as? LibraryController else {

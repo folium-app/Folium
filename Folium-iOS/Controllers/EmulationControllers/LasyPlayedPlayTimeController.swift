@@ -17,21 +17,21 @@ struct User : Codable {
     struct Game : Codable {
         var console: String = ""
         var icon: Data? = nil
-        let sha256: String
+        let md5: String
         var lastPlayed, playTime: TimeInterval
     }
     
     var games: [Game]
     let name: String
     
-    mutating func updateGame(console: String, sha256: String, with lastPlayed: TimeInterval = 0,
+    mutating func updateGame(console: String, md5: String, with lastPlayed: TimeInterval = 0,
                              and playTime: TimeInterval = 0, icon: Data? = nil) {
-        if let index = games.firstIndex(where: { $0.sha256 == sha256 }) {
+        if let index = games.firstIndex(where: { $0.md5 == md5 }) {
             games[index].icon = icon
             games[index].lastPlayed = lastPlayed
             games[index].playTime += playTime
         } else {
-            games.append(.init(console: console, icon: icon, sha256: sha256, lastPlayed: lastPlayed, playTime: playTime))
+            games.append(.init(console: console, icon: icon, md5: md5, lastPlayed: lastPlayed, playTime: playTime))
         }
     }
 }
@@ -77,14 +77,14 @@ class LastPlayedPlayTimeController : UIViewController {
         
         let user = Auth.auth().currentUser
         let userDefaults = UserDefaults(suiteName: "group.com.antique.Folium")
-        let sha256 = game.fileDetails.sha256
+        let md5 = game.fileDetails.md5
         
         Task {
             if AppStoreCheck.shared.additionalFeaturesAreAllowed, let user {
-                if let sha256 {
+                if let md5 {
                     let document = Firestore.firestore().collection("users").document(user.uid)
                     var user = try await document.getDocument(as: User.self)
-                    user.updateGame(console: game.core, sha256: sha256, with: Date.now.timeIntervalSince1970, and: self.time, icon: icon)
+                    user.updateGame(console: game.core, md5: md5, with: Date.now.timeIntervalSince1970, and: self.time, icon: icon)
                     
                     try document.setData(from: user, merge: true)
                     

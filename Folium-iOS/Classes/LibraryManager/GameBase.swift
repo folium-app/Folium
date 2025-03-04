@@ -22,7 +22,7 @@ class GameBase : AnyHashableSendable, @unchecked Sendable {
             self.url = url
         }
         
-        var sha256: String? { try? SHA256(for: url) }
+        var md5: String? = nil
         
         var size: String {
             let attributes = try? FileManager.default.attributesOfItem(atPath: url.path)
@@ -32,10 +32,9 @@ class GameBase : AnyHashableSendable, @unchecked Sendable {
             return formatter.string(fromByteCount: (attributes?[.size] ?? 0) as! Int64)
         }
         
-        fileprivate func SHA256(for url: URL) throws -> String {
+        static func MD5(for url: URL) throws -> String {
             let handle = try FileHandle(forReadingFrom: url)
-            var hasher = CryptoKit.SHA256()
-            
+            var hasher = CryptoKit.Insecure.MD5()
             while try autoreleasepool(invoking: {
                 guard let data = try handle.readToEnd(), !data.isEmpty else {
                     return false

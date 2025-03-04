@@ -11,6 +11,8 @@ struct LibraryManager : @unchecked Sendable {
     var cores: [Core] { [.cytrus, .grape, .lychee, .mango, .peach, .tomato] }
     var coresWithGames: any RangeReplaceableCollection<Core> = []
     
+    var allGames: [GameBase] = []
+    
     mutating func games() throws -> Result<[GameBase], Error> {
         let skinManager = SkinManager.shared
         do {
@@ -19,6 +21,7 @@ struct LibraryManager : @unchecked Sendable {
             print(#function, error, error.localizedDescription)
         }
         
+        allGames.removeAll()
         coresWithGames.removeAll()
         
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -88,7 +91,7 @@ struct LibraryManager : @unchecked Sendable {
                             case "ds", "nds":
                                 coresWithGames.appendUnique(.grape)
                                 
-                                partialResult.append(generateGrapeGame(.grape, url, skinManager))
+                                partialResult.append(try generateGrapeGame(.grape, url, skinManager))
                             case "sfc", "smc":
                                 coresWithGames.appendUnique(.mango)
                                 
@@ -96,7 +99,7 @@ struct LibraryManager : @unchecked Sendable {
                             case "nes":
                                 coresWithGames.appendUnique(.peach)
                                 
-                                partialResult.append(generatePeachGame(.peach, url, skinManager))
+                                partialResult.append(try generatePeachGame(.peach, url, skinManager))
                             case "gba":
                                 coresWithGames.appendUnique(.tomato)
                                 
@@ -116,73 +119,87 @@ struct LibraryManager : @unchecked Sendable {
             coresWithGames.removeAll(where: { $0.isBeta == true })
         }
         
+        allGames.append(contentsOf: games)
+        
         return .success(games)
     }
     
     
     func generateCytrusGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) throws -> CytrusGame {
-        .init(icon: try CytrusGame.icon(for: url),
-              identifier: try CytrusGame.identifier(for: url),
-              core: core.rawValue,
-              fileDetails: .init(extension: url.pathExtension.lowercased(),
-                                 name: url.lastPathComponent,
-                                 nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
-                                 url: url),
-              skins: skinManager.skins(for: core),
-              title: try CytrusGame.title(for: url))
+        let game = CytrusGame(icon: try CytrusGame.icon(for: url),
+                               identifier: try CytrusGame.identifier(for: url),
+                               core: core.rawValue,
+                               fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                  name: url.lastPathComponent,
+                                                  nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
+                                                  url: url),
+                               skins: skinManager.skins(for: core),
+                               title: try CytrusGame.title(for: url))
+        //game.fileDetails.md5 = try GameBase.FileDetails.MD5(for: url)
+        return game
     }
     
-    func generateGrapeGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) -> GrapeGame {
-        .init(icon: GrapeGame.icon(for: url),
-              core: core.rawValue,
-              fileDetails: .init(extension: url.pathExtension.lowercased(),
-                                 name: url.lastPathComponent,
-                                 nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
-                                 url: url),
-              skins: skinManager.skins(for: core),
-              title: GrapeGame.title(for: url))
+    func generateGrapeGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) throws -> GrapeGame {
+        let game = GrapeGame(icon: GrapeGame.icon(for: url),
+                             core: core.rawValue,
+                             fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                name: url.lastPathComponent,
+                                                nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
+                                                url: url),
+                             skins: skinManager.skins(for: core),
+                             title: GrapeGame.title(for: url))
+        //game.fileDetails.md5 = try GameBase.FileDetails.MD5(for: url)
+        return game
     }
     
     func generateLycheeGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) throws -> LycheeGame {
-        .init(icon: try LycheeGame.icon(for: url),
-              core: core.rawValue,
-              fileDetails: .init(extension: url.pathExtension.lowercased(),
-                                 name: url.lastPathComponent,
-                                 nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
-                                 url: url),
-              skins: skinManager.skins(for: core),
-              title: try LycheeGame.title(for: url))
+        let game = LycheeGame(icon: try LycheeGame.icon(for: url),
+                              core: core.rawValue,
+                              fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                 name: url.lastPathComponent,
+                                                 nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
+                                                 url: url),
+                              skins: skinManager.skins(for: core),
+                              title: try LycheeGame.title(for: url))
+        //game.fileDetails.md5 = try GameBase.FileDetails.MD5(for: url)
+        return game
     }
     
     func generateMangoGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) throws -> MangoGame {
-        .init(icon: try MangoGame.icon(for: url),
-              core: core.rawValue,
-              fileDetails: .init(extension: url.pathExtension.lowercased(),
-                                 name: url.lastPathComponent,
-                                 nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
-                                 url: url),
-              skins: skinManager.skins(for: core),
-              title: MangoGame.title(for: url))
+        let game = MangoGame(icon: try MangoGame.icon(for: url),
+                             core: core.rawValue,
+                             fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                name: url.lastPathComponent,
+                                                nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
+                                                url: url),
+                             skins: skinManager.skins(for: core),
+                             title: MangoGame.title(for: url))
+        //game.fileDetails.md5 = try GameBase.FileDetails.MD5(for: url)
+        return game
     }
     
-    func generatePeachGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) -> PeachGame {
-        .init(core: core.rawValue,
-              fileDetails: .init(extension: url.pathExtension.lowercased(),
-                                 name: url.lastPathComponent,
-                                 nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
-                                 url: url),
-              skins: skinManager.skins(for: core),
-              title: PeachGame.title(for: url))
+    func generatePeachGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) throws -> PeachGame {
+        let game = PeachGame(core: core.rawValue,
+                             fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                name: url.lastPathComponent,
+                                                nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
+                                                url: url),
+                             skins: skinManager.skins(for: core),
+                             title: PeachGame.title(for: url))
+        //game.fileDetails.md5 = try GameBase.FileDetails.MD5(for: url)
+        return game
     }
     
     func generateTomatoGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) throws -> TomatoGame {
-        .init(icon: try TomatoGame.icon(for: url),
-              core: core.rawValue,
-              fileDetails: .init(extension: url.pathExtension.lowercased(),
-                                 name: url.lastPathComponent,
-                                 nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
-                                 url: url),
-              skins: skinManager.skins(for: core),
-              title: try TomatoGame.title(for: url))
+        let game = TomatoGame(icon: try TomatoGame.icon(for: url),
+                              core: core.rawValue,
+                              fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                 name: url.lastPathComponent,
+                                                 nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
+                                                 url: url),
+                              skins: skinManager.skins(for: core),
+                              title: try TomatoGame.title(for: url))
+        //game.fileDetails.md5 = try GameBase.FileDetails.MD5(for: url)
+        return game
     }
 }
