@@ -49,6 +49,9 @@ class LibraryController : UICollectionViewController {
         let peachCellRegistration: UICollectionView.CellRegistration<PeachCell, PeachGame> = .init { $0.set($2, with: self) }
         let mangoCellRegistration: UICollectionView.CellRegistration<MangoCell, MangoGame> = .init { $0.set($2, with: self) }
         
+        let cherryCellRegistration: UICollectionView.CellRegistration<PlayStation2Cell, PlayStation2Game> = .init { $0.set($2, with: self) }
+        let guavaCellRegistration: UICollectionView.CellRegistration<Nintendo64Cell, Nintendo64Game> = .init { $0.set(text: $2.title, with: .white) }
+        
         let headerCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewListCell> = .init(elementKind: UICollectionView.elementKindSectionHeader) { [weak self] supplementaryView, elementKind, indexPath in
             var contentConfiguration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
             if let self, let dataSource = self.dataSource, let core = dataSource.sectionIdentifier(for: indexPath.section) {
@@ -92,6 +95,10 @@ class LibraryController : UICollectionViewController {
                 collectionView.dequeueConfiguredReusableCell(using: peachCellRegistration, for: indexPath, item: peachGame)
             case let mangoGame as MangoGame:
                 collectionView.dequeueConfiguredReusableCell(using: mangoCellRegistration, for: indexPath, item: mangoGame)
+            case let cherryGame as PlayStation2Game:
+                collectionView.dequeueConfiguredReusableCell(using: cherryCellRegistration, for: indexPath, item: cherryGame)
+            case let guavaGame as Nintendo64Game:
+                collectionView.dequeueConfiguredReusableCell(using: guavaCellRegistration, for: indexPath, item: guavaGame)
             default:
                 nil
             }
@@ -191,6 +198,17 @@ class LibraryController : UICollectionViewController {
             let peachEmulationController = PeachDefaultController(game: peachGame, skin: skin)
             peachEmulationController.modalPresentationStyle = .fullScreen
             present(peachEmulationController, animated: true)
+            
+        case let cherryGame as PlayStation2Game:
+            guard let skin = lycheeSkin else { return }
+            
+            let cherryEmulationController = CherryDefaultController(game: cherryGame, skin: skin)
+            cherryEmulationController.modalPresentationStyle = .fullScreen
+            present(cherryEmulationController, animated: true)
+        case let guavaGame as Nintendo64Game:
+            let guavaEmulationController = Nintendo64EmulationController(game: guavaGame)
+            guavaEmulationController.modalPresentationStyle = .fullScreen
+            present(guavaEmulationController, animated: true)
         default:
             break
         }
@@ -369,6 +387,9 @@ extension LibraryController : UIDocumentPickerDelegate {
                             .appendingPathComponent("roms", conformingTo: .folder)
                     case "gba":
                         documentDirectory.appendingPathComponent("Tomato", conformingTo: .folder)
+                            .appendingPathComponent("roms", conformingTo: .folder)
+                    case "n64", "z64":
+                        documentDirectory.appendingPathComponent("Guava", conformingTo: .folder)
                             .appendingPathComponent("roms", conformingTo: .folder)
                     default:
                         documentDirectory

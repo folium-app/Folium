@@ -24,18 +24,19 @@
 		E609432D2D77023B004190CF /* GrapeObjC.mm in Sources */ = {isa = PBXBuildFile; fileRef = E609432C2D77023B004190CF /* GrapeObjC.mm */; };
 		E60943352D77062A004190CF /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60943342D77062A004190CF /* Config.cpp */; };
 		E60943372D770664004190CF /* ScreenLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60943362D770664004190CF /* ScreenLayout.cpp */; };
-		E60F60D32C412517006902E2 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E60F60D22C412517006902E2 /* libzstd */; };
 		E6101AB12C63FC0F00AEF0B5 /* Grape in Frameworks */ = {isa = PBXBuildFile; productRef = E6101AB02C63FC0F00AEF0B5 /* Grape */; };
 		E6106E722C79C5210045A2C4 /* Mango in Frameworks */ = {isa = PBXBuildFile; productRef = E6106E712C79C5210045A2C4 /* Mango */; };
 		E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E666166F2C410E130065B363 /* libCytrus.a */; };
 		E626CA342C58A65A00CA2B9F /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E626CA332C58A65A00CA2B9F /* SDL */; };
 		E626CA362C58A67600CA2B9F /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = E626CA352C58A67600CA2B9F /* SDL */; };
 		E641805D2D6A124600CDDE3C /* Peach in Frameworks */ = {isa = PBXBuildFile; productRef = E641805C2D6A124600CDDE3C /* Peach */; };
+		E648EB7F2D79889D0001106D /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E648EB7E2D79889D0001106D /* libzstd */; };
+		E648EB822D7988D40001106D /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = E648EB812D7988D40001106D /* OpenSSL */; };
+		E648EB842D79895D0001106D /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = E648EB832D79895D0001106D /* OpenSSL */; };
 		E64C33722D17F5EA00C06A35 /* Cherry in Frameworks */ = {isa = PBXBuildFile; productRef = E64C33712D17F5EA00C06A35 /* Cherry */; };
 		E65169DE2CC2444F00588B21 /* FUIAlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65169DD2CC2444F00588B21 /* FUIAlertKit */; };
 		E65552B22D6F99B700EE094E /* Tomato in Frameworks */ = {isa = PBXBuildFile; productRef = E65552B12D6F99B700EE094E /* Tomato */; };
 		E657D7B42CFEC4F100B4AEA9 /* Lychee in Frameworks */ = {isa = PBXBuildFile; productRef = E657D7B32CFEC4F100B4AEA9 /* Lychee */; };
-		E667C0782C47C7EA00DB0327 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = E667C0772C47C7EA00DB0327 /* OpenSSL */; };
 		E667C07A2C47C7F700DB0327 /* CoreHaptics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E667C0792C47C7F700DB0327 /* CoreHaptics.framework */; };
 		E667C07C2C47C81500DB0327 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E667C07B2C47C81500DB0327 /* CoreMotion.framework */; };
 		E67655942CE3D07E00222E44 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E67655932CE3D07E00222E44 /* FirebaseAuth */; };
@@ -485,6 +486,7 @@
 		E690F39F2D6F078500731AEA /* ContentTypeManager in Frameworks */ = {isa = PBXBuildFile; productRef = E690F39E2D6F078500731AEA /* ContentTypeManager */; };
 		E6A483BD2C36917800CFA6DA /* DirectoryManager in Frameworks */ = {isa = PBXBuildFile; productRef = E6A483BC2C36917800CFA6DA /* DirectoryManager */; };
 		E6A483C22C36A27700CFA6DA /* LayoutManager in Frameworks */ = {isa = PBXBuildFile; productRef = E6A483C12C36A27700CFA6DA /* LayoutManager */; };
+		E6A85F4A2D7B192000D395B3 /* Guava in Frameworks */ = {isa = PBXBuildFile; productRef = E6A85F492D7B192000D395B3 /* Guava */; };
 		E6ACC7672CE5E99E00C27006 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E67655A02CE49E7600222E44 /* WidgetKit.framework */; };
 		E6ACC7682CE5E99E00C27006 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E67655A22CE49E7700222E44 /* SwiftUI.framework */; };
 		E6ACC7752CE5E9A000C27006 /* PlayTimeWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E6ACC7662CE5E99E00C27006 /* PlayTimeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -1157,6 +1159,7 @@
 		E6833C4B2D76EA6A009B918E /* Peach */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Peach; sourceTree = "<group>"; };
 		E6833C4C2D76EA6A009B918E /* Tomato */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Tomato; sourceTree = "<group>"; };
 		E690A6A82C33B09E00652203 /* Folium-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Folium-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6A85F482D7B191400D395B3 /* Guava */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Guava; sourceTree = "<group>"; };
 		E6ACC7662CE5E99E00C27006 /* PlayTimeWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PlayTimeWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -1282,8 +1285,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E60F60D32C412517006902E2 /* libzstd in Frameworks */,
 				E626CA362C58A67600CA2B9F /* SDL in Frameworks */,
+				E648EB822D7988D40001106D /* OpenSSL in Frameworks */,
+				E648EB7F2D79889D0001106D /* libzstd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1310,6 +1314,7 @@
 				E64C33722D17F5EA00C06A35 /* Cherry in Frameworks */,
 				E6AF131D2D357824002E6EDD /* SettingsKit in Frameworks */,
 				E626CA342C58A65A00CA2B9F /* SDL in Frameworks */,
+				E648EB842D79895D0001106D /* OpenSSL in Frameworks */,
 				E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */,
 				E667C07A2C47C7F700DB0327 /* CoreHaptics.framework in Frameworks */,
 				E67655982CE3D07E00222E44 /* FirebaseFirestoreCombine-Community in Frameworks */,
@@ -1319,8 +1324,8 @@
 				E6101AB12C63FC0F00AEF0B5 /* Grape in Frameworks */,
 				E65169DE2CC2444F00588B21 /* FUIAlertKit in Frameworks */,
 				E657D7B42CFEC4F100B4AEA9 /* Lychee in Frameworks */,
-				E667C0782C47C7EA00DB0327 /* OpenSSL in Frameworks */,
 				E67655942CE3D07E00222E44 /* FirebaseAuth in Frameworks */,
+				E6A85F4A2D7B192000D395B3 /* Guava in Frameworks */,
 				E65552B22D6F99B700EE094E /* Tomato in Frameworks */,
 				E6106E722C79C5210045A2C4 /* Mango in Frameworks */,
 				E6A483C22C36A27700CFA6DA /* LayoutManager in Frameworks */,
@@ -2986,6 +2991,7 @@
 		E6833C4D2D76EA6A009B918E /* Cores */ = {
 			isa = PBXGroup;
 			children = (
+				E6A85F482D7B191400D395B3 /* Guava */,
 				E6833B9B2D76EA6A009B918E /* Cytrus */,
 				E6833C462D76EA6A009B918E /* NewGrape */,
 				E6833C472D76EA6A009B918E /* Cherry */,
@@ -3044,8 +3050,9 @@
 			);
 			name = Cytrus;
 			packageProductDependencies = (
-				E60F60D22C412517006902E2 /* libzstd */,
 				E626CA352C58A67600CA2B9F /* SDL */,
+				E648EB7E2D79889D0001106D /* libzstd */,
+				E648EB812D7988D40001106D /* OpenSSL */,
 			);
 			productName = Cytrus;
 			productReference = E666166F2C410E130065B363 /* libCytrus.a */;
@@ -3116,7 +3123,6 @@
 			packageProductDependencies = (
 				E6A483BC2C36917800CFA6DA /* DirectoryManager */,
 				E6A483C12C36A27700CFA6DA /* LayoutManager */,
-				E667C0772C47C7EA00DB0327 /* OpenSSL */,
 				E626CA332C58A65A00CA2B9F /* SDL */,
 				E6101AB02C63FC0F00AEF0B5 /* Grape */,
 				E6106E712C79C5210045A2C4 /* Mango */,
@@ -3130,6 +3136,8 @@
 				E641805C2D6A124600CDDE3C /* Peach */,
 				E690F39E2D6F078500731AEA /* ContentTypeManager */,
 				E65552B12D6F99B700EE094E /* Tomato */,
+				E648EB832D79895D0001106D /* OpenSSL */,
+				E6A85F492D7B192000D395B3 /* Guava */,
 			);
 			productName = Folium;
 			productReference = E690A6A82C33B09E00652203 /* Folium-iOS.app */;
@@ -3195,10 +3203,10 @@
 			);
 			mainGroup = E690A69F2C33B09E00652203;
 			packageReferences = (
-				E60F60D12C412517006902E2 /* XCRemoteSwiftPackageReference "zstd" */,
-				E667C0762C47C7E900DB0327 /* XCRemoteSwiftPackageReference "OpenSSL" */,
 				E626CA322C58A65A00CA2B9F /* XCRemoteSwiftPackageReference "SwiftSDL2" */,
 				E67655922CE3D07E00222E44 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				E648EB7D2D79889D0001106D /* XCRemoteSwiftPackageReference "zstd" */,
+				E648EB802D7988D40001106D /* XCRemoteSwiftPackageReference "OpenSSL" */,
 			);
 			preferredProjectObjectVersion = 60;
 			productRefGroup = E690A6A92C33B09E00652203 /* Products */;
@@ -3757,6 +3765,10 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				EXCLUDED_SOURCE_FILE_NAMES = (
+					"$(SRCROOT)/Cores/Sudachi/*",
+					"$(SRCROOT)/Cores/Sudachi/**/*.h",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					CPPHTTPLIB_OPENSSL_SUPPORT,
@@ -3800,7 +3812,7 @@
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TVOS_DEPLOYMENT_TARGET = 17.5;
-				USER_HEADER_SEARCH_PATHS = Cores/Cytrus/Core/include;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Cores/Cytrus/Core/include";
 			};
 			name = Debug;
 		};
@@ -3812,6 +3824,10 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				EXCLUDED_SOURCE_FILE_NAMES = (
+					"$(SRCROOT)/Cores/Sudachi/*",
+					"$(SRCROOT)/Cores/Sudachi/**/*.h",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					CPPHTTPLIB_OPENSSL_SUPPORT,
 					ENABLE_VULKAN,
@@ -3854,7 +3870,7 @@
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TVOS_DEPLOYMENT_TARGET = 17.5;
-				USER_HEADER_SEARCH_PATHS = Cores/Cytrus/Core/include;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Cores/Cytrus/Core/include";
 			};
 			name = Release;
 		};
@@ -3865,7 +3881,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = LastPlayedWidget/LastPlayedWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastPlayedWidget/Info.plist;
@@ -3898,7 +3914,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = LastPlayedWidget/LastPlayedWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastPlayedWidget/Info.plist;
@@ -4122,7 +4138,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -4175,7 +4191,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
@@ -4224,7 +4240,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = PlayTimeWidget/PlayTimeWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTimeWidget/Info.plist;
@@ -4257,7 +4273,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = PlayTimeWidget/PlayTimeWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTimeWidget/Info.plist;
@@ -4343,7 +4359,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E60F60D12C412517006902E2 /* XCRemoteSwiftPackageReference "zstd" */ = {
+		E626CA322C58A65A00CA2B9F /* XCRemoteSwiftPackageReference "SwiftSDL2" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ctreffs/SwiftSDL2";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		E648EB7D2D79889D0001106D /* XCRemoteSwiftPackageReference "zstd" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/facebook/zstd";
 			requirement = {
@@ -4351,20 +4375,12 @@
 				kind = branch;
 			};
 		};
-		E626CA322C58A65A00CA2B9F /* XCRemoteSwiftPackageReference "SwiftSDL2" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ctreffs/SwiftSDL2";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.4.1;
-			};
-		};
-		E667C0762C47C7E900DB0327 /* XCRemoteSwiftPackageReference "OpenSSL" */ = {
+		E648EB802D7988D40001106D /* XCRemoteSwiftPackageReference "OpenSSL" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krzyzanowskim/OpenSSL";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.1.6000;
+				branch = main;
+				kind = branch;
 			};
 		};
 		E67655922CE3D07E00222E44 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
@@ -4378,11 +4394,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E60F60D22C412517006902E2 /* libzstd */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E60F60D12C412517006902E2 /* XCRemoteSwiftPackageReference "zstd" */;
-			productName = libzstd;
-		};
 		E6101AB02C63FC0F00AEF0B5 /* Grape */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Grape;
@@ -4405,6 +4416,21 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Peach;
 		};
+		E648EB7E2D79889D0001106D /* libzstd */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E648EB7D2D79889D0001106D /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstd;
+		};
+		E648EB812D7988D40001106D /* OpenSSL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E648EB802D7988D40001106D /* XCRemoteSwiftPackageReference "OpenSSL" */;
+			productName = OpenSSL;
+		};
+		E648EB832D79895D0001106D /* OpenSSL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E648EB802D7988D40001106D /* XCRemoteSwiftPackageReference "OpenSSL" */;
+			productName = OpenSSL;
+		};
 		E64C33712D17F5EA00C06A35 /* Cherry */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Cherry;
@@ -4420,11 +4446,6 @@
 		E657D7B32CFEC4F100B4AEA9 /* Lychee */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Lychee;
-		};
-		E667C0772C47C7EA00DB0327 /* OpenSSL */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E667C0762C47C7E900DB0327 /* XCRemoteSwiftPackageReference "OpenSSL" */;
-			productName = OpenSSL;
 		};
 		E67655932CE3D07E00222E44 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -4452,6 +4473,10 @@
 		E6A483C12C36A27700CFA6DA /* LayoutManager */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LayoutManager;
+		};
+		E6A85F492D7B192000D395B3 /* Guava */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Guava;
 		};
 		E6AF131C2D357824002E6EDD /* SettingsKit */ = {
 			isa = XCSwiftPackageProductDependency;

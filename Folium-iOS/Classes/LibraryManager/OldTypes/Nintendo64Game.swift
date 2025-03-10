@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: Class for the Nintendo 64 core, Guava
 class Nintendo64Game : GameBase, @unchecked Sendable {
-    static func titleFromHeader(for url: URL) throws -> String {
+    static func title(for url: URL) -> String {
         url.lastPathComponent.replacingOccurrences(of: ".\(url.pathExtension)", with: "")
     }
 }

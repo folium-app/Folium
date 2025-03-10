@@ -180,7 +180,8 @@ var mangoSkin: Skin? {
             .iPhone16_1,
             .iPhone16_2,
             .iPhone16_3,
-            .iPhone16_4:
+            .iPhone16_4,
+            .iPhone16_5:
         let buttonWidth: Double = 50 * (7 / 5)
         
         let portrait: Orientation = .init(buttons: [
@@ -337,7 +338,13 @@ var mangoSkin: Skin? {
             .iPadPro7Gen_1,
             .iPadPro7Gen_2,
             .iPadPro7Gen_3,
-            .iPadPro7Gen_4:
+            .iPadPro7Gen_4,
+            .iPadAir7Gen_1,
+            .iPadAir7Gen_2,
+            .iPadAir7Gen_3,
+            .iPadAir7Gen_4,
+            .iPad11Gen_1,
+            .iPad11Gen_2:
         let buttonWidth: Double = 50 * (7 / 5)
         
         let portrait: Orientation = .init(buttons: [

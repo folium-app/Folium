@@ -90,7 +90,7 @@ enum Core : String, Codable, Comparable, CaseIterable, CustomStringConvertible, 
     
     var isBeta: Bool {
         switch self {
-        case .cherry, .lychee, .mango, .peach, .tomato: true
+        case .cherry, .guava, .lychee, .mango, .peach, .tomato: true
         default: false
         }
     }

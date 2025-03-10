@@ -104,6 +104,10 @@ struct LibraryManager : @unchecked Sendable {
                                 coresWithGames.appendUnique(.tomato)
                                 
                                 partialResult.append(try generateTomatoGame(.tomato, url, skinManager))
+                            case "n64", "z64":
+                                coresWithGames.appendUnique(.guava)
+                                
+                                partialResult.append(generateGuavaGame(.guava, url, skinManager))
                             default:
                                 break
                             }
@@ -199,6 +203,18 @@ struct LibraryManager : @unchecked Sendable {
                                                  url: url),
                               skins: skinManager.skins(for: core),
                               title: try TomatoGame.title(for: url))
+        //game.fileDetails.md5 = try GameBase.FileDetails.MD5(for: url)
+        return game
+    }
+    
+    func generateGuavaGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) -> Nintendo64Game {
+        let game = Nintendo64Game(core: core.rawValue,
+                                  fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                     name: url.lastPathComponent,
+                                                     nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
+                                                     url: url),
+                                  skins: skinManager.skins(for: core),
+                                  title: Nintendo64Game.title(for: url))
         //game.fileDetails.md5 = try GameBase.FileDetails.MD5(for: url)
         return game
     }
