@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 4/7/2024.
 //
 
+import CoreMotion
 import ContentTypeManager
 import Cytrus
 import DirectoryManager
@@ -20,6 +21,8 @@ class LibraryController : UICollectionViewController {
     var dataSource: UICollectionViewDiffableDataSource<Core, GameBase>? = nil
     var snapshot: NSDiffableDataSourceSnapshot<Core, GameBase>? = nil
     var searchSnapshot: NSDiffableDataSourceSnapshot<Core, GameBase>? = nil
+    
+    var coreMotion: CMPedometer = .init()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,6 +115,14 @@ class LibraryController : UICollectionViewController {
         
         Task {
             beginPopulatingGames(with: try LibraryManager.shared.games().get())
+        }
+        
+        let hourBefore = Calendar.current.date(byAdding: .hour, value: -1, to: .now)
+        if let hourBefore {
+            coreMotion.queryPedometerData(from: hourBefore, to: .now) { data, error in
+                guard let data else { return }
+                Cytrus.shared.stepsPerHour = data.numberOfSteps.uint16Value
+            }
         }
         
         /*
@@ -355,11 +366,11 @@ extension LibraryController {
         collectionView.deselectItem(at: indexPath, animated: true)
         
         guard let dataSource, let item = dataSource.itemIdentifier(for: indexPath) else { return }
-        if UIDevice.current.userInterfaceIdiom == .pad, ![Core.cytrus.rawValue].contains(item.core) {
+        if UIDevice.current.userInterfaceIdiom == .pad || item.core != Core.cytrus.rawValue {
             launch(game: item)
         } else {
             let intermediateController: GameIntermediateController = .init(item)
-            intermediateController.modalPresentationStyle = .fullScreen
+            intermediateController.modalPresentationStyle = .overFullScreen
             present(intermediateController, animated: true)
         }
     }

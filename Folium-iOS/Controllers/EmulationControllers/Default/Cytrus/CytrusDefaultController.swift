@@ -65,6 +65,11 @@ class CytrusDefaultController : SkinController {
         topMetalCallbackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         topMetalCallbackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
+        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
+            let interaction = UIContextMenuInteraction(delegate: self)
+            button.addInteraction(interaction)
+        }
+        
         NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidConnect, object: nil, queue: .main) { notification in
             guard let controller = notification.object as? GCController, let extendedGamepad = controller.extendedGamepad else {
                 return
@@ -331,12 +336,11 @@ class CytrusDefaultController : SkinController {
             Cytrus.shared.virtualControllerButtonDown(.start)
             
         case .loadState: Cytrus.shared.loadState()
-        case .saveState: Cytrus.shared.saveState()
-        case .settings:
+        case .saveState:
+            Cytrus.shared.saveState()
             if let viewController = UIApplication.shared.viewController as? CytrusDefaultController {
-                if let controllerView = viewController.controllerView, let button = controllerView.button(for: type) {
-                    let interaction = UIContextMenuInteraction(delegate: viewController)
-                    button.addInteraction(interaction)
+                if let game = viewController.game as? CytrusGame {
+                    game.update()
                 }
             }
         default:
@@ -434,8 +438,8 @@ extension CytrusDefaultController : UIContextMenuInteractionDelegate {
                             return
                         }
                         
-                        let cheatsController = UINavigationController(rootViewController: CheatsController(game))
-                        cheatsController.modalPresentationStyle = .fullScreen
+                        let cheatsController = GameIntermediateController(game, fromGame: true)
+                        cheatsController.modalPresentationStyle = .overFullScreen
                         self.present(cheatsController, animated: true)
                     }),
                     UIAction(title: "Open Settings", image: .init(systemName: "gearshape"), handler: { _ in

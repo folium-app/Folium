@@ -86,8 +86,8 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
                     return
                 }
                 
-                let cheatsController = UINavigationController(rootViewController: CheatsController(game))
-                cheatsController.modalPresentationStyle = .fullScreen
+                let cheatsController = GameIntermediateController(game, fromGame: true)
+                cheatsController.modalPresentationStyle = .overFullScreen
                 self.present(cheatsController, animated: true)
             }),
             UIAction(title: "Open Settings", image: .init(systemName: "gearshape"), handler: { _ in

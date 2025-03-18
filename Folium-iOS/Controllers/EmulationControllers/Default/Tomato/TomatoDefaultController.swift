@@ -136,6 +136,11 @@ class TomatoDefaultController : SkinController {
             await GCController.startWirelessControllerDiscovery()
         }
         
+        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
+            let interaction = UIContextMenuInteraction(delegate: self)
+            button.addInteraction(interaction)
+        }
+        
         NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidConnect, object: nil, queue: .main) { notification in
             guard let controller = notification.object as? GCController, let extendedGamepad = controller.extendedGamepad else {
                 return
@@ -282,13 +287,6 @@ class TomatoDefaultController : SkinController {
             Tomato.shared.button(button: .r, player: playerIndex.rawValue, pressed: true)
         case .loadState: Tomato.shared.load()
         case .saveState: Tomato.shared.save()
-        case .settings:
-            if let viewController = UIApplication.shared.viewController as? TomatoDefaultController {
-                if let controllerView = viewController.controllerView, let button = controllerView.button(for: type) {
-                    let interaction = UIContextMenuInteraction(delegate: viewController)
-                    button.addInteraction(interaction)
-                }
-            }
         default:
             break
         }

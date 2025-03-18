@@ -11,6 +11,25 @@ import Foundation
 import LayoutManager
 import UIKit
 
+class BlurredCollectionViewCell : UICollectionViewCell {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        let visualEffectView: UIVisualEffectView = .init(effect: UIBlurEffect(style: .systemThinMaterial))
+        visualEffectView.translatesAutoresizingMaskIntoConstraints = false
+        insertSubview(visualEffectView, belowSubview: self)
+        
+        visualEffectView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        visualEffectView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        visualEffectView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        visualEffectView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 class MaskedVisualEffectView : UIVisualEffectView {
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -24,7 +43,7 @@ class MaskedVisualEffectView : UIVisualEffectView {
             UIColor.black.cgColor,
             UIColor.clear.cgColor
         ]
-        gradientLayer.locations = [0.9, 1.0]
+        gradientLayer.locations = [0.8, 1.0]
         
         layer.mask = gradientLayer
     }
@@ -151,6 +170,7 @@ class GamePlayCell : UICollectionViewCell {
     func set(_ play: Play, _ viewController: UIViewController) {
         guard let button else { return }
         button.addTarget(viewController, action: play.selector, for: .touchUpInside)
+        button.isEnabled = !play.disable
         
         if let icon = play.icon {
             switch play.core {
@@ -173,7 +193,7 @@ class GamePlayCell : UICollectionViewCell {
     }
 }
 
-class GameCheatCell : UICollectionViewCell, UIContextMenuInteractionDelegate {
+class GameCheatCell : BlurredCollectionViewCell, UIContextMenuInteractionDelegate {
     var textLabel: UILabel? = nil, secondaryTextLabel: UILabel? = nil
     
     var cheat: Cheat? = nil
@@ -184,7 +204,7 @@ class GameCheatCell : UICollectionViewCell, UIContextMenuInteractionDelegate {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .secondarySystemBackground
+        // backgroundColor = .secondarySystemBackground
         clipsToBounds = true
         layer.cornerCurve = .continuous
         layer.cornerRadius = 15
@@ -232,11 +252,10 @@ class GameCheatCell : UICollectionViewCell, UIContextMenuInteractionDelegate {
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
         .init(actionProvider:  { _ in
                 .init(children: [
-                    UIAction(title: "Delete", image: .init(systemName: "trash.fill"), attributes: [.destructive, .disabled], handler: { _ in
-                        guard let game = self.game as? CytrusGame, let identifier = game.identifier, let indexPath = self.indexPath else { return }
-                        CheatsManager.shared().loadCheats(identifier)
-                        CheatsManager.shared().removeCheat(at: indexPath.item)
-                        CheatsManager.shared().saveCheats(identifier)
+                    UIAction(title: "Delete", image: .init(systemName: "trash.fill"), attributes: .destructive, handler: { _ in
+                        guard let game = self.game as? CytrusGame, let indexPath = self.indexPath else { return }
+                        game.cheatsManager.removeCheat(at: indexPath.item)
+                        game.cheatsManager.saveCheats()
                         
                         game.update()
                         if let handler = self.handler { handler() }
@@ -246,13 +265,13 @@ class GameCheatCell : UICollectionViewCell, UIContextMenuInteractionDelegate {
     }
 }
 
-class GameSaveCell : UICollectionViewCell {
+class GameSaveCell : BlurredCollectionViewCell {
     var imageView: UIImageView? = nil // use for validity status
     var textLabel: UILabel? = nil, secondaryTextLabel: UILabel? = nil
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .secondarySystemBackground
+        // backgroundColor = .secondarySystemBackground
         clipsToBounds = true
         layer.cornerCurve = .continuous
         layer.cornerRadius = 15
@@ -354,15 +373,16 @@ class GameDeleteCell : UICollectionViewCell {
     func set(_ delete: GameDelete, _ viewController: UIViewController) {
         guard let button else { return }
         button.addTarget(viewController, action: delete.selector, for: .touchUpInside)
+        button.isEnabled = !delete.disable
     }
 }
 
-class GameNoDataCell : UICollectionViewCell {
+class GameNoDataCell : BlurredCollectionViewCell {
     var textLabel: UILabel? = nil
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .secondarySystemBackground
+        // backgroundColor = .secondarySystemBackground
         clipsToBounds = true
         layer.cornerCurve = .continuous
         layer.cornerRadius = 15
@@ -431,11 +451,14 @@ class Play : AnyHashableSendable, @unchecked Sendable {
     var iconBuffer: UnsafeMutablePointer<UInt32>? = nil
     let selector: Selector
     
-    init(core: Core, icon: Data? = nil, iconBuffer: UnsafeMutablePointer<UInt32>? = nil, selector: Selector) {
+    var disable: Bool = false
+    
+    init(core: Core, icon: Data? = nil, iconBuffer: UnsafeMutablePointer<UInt32>? = nil, selector: Selector, disable: Bool = false) {
         self.core = core
         self.icon = icon
         self.iconBuffer = iconBuffer
         self.selector = selector
+        self.disable = disable
     }
 }
 
@@ -477,9 +500,12 @@ class GameDelete : AnyHashableSendable, @unchecked Sendable {
     let core: Core
     let selector: Selector
     
-    init(core: Core, selector: Selector) {
+    var disable: Bool = false
+    
+    init(core: Core, selector: Selector, disable: Bool = false) {
         self.core = core
         self.selector = selector
+        self.disable = disable
     }
 }
 
@@ -500,8 +526,10 @@ class GameIntermediateController : UICollectionViewController {
     var button: UIButton? = nil
     
     var game: GameBase
-    init(_ game: GameBase) {
+    var fromGame: Bool = false
+    init(_ game: GameBase, fromGame: Bool = false) {
         self.game = game
+        self.fromGame = fromGame
         super.init(collectionViewLayout: LayoutManager.shared.intermediate)
     }
     
@@ -511,7 +539,11 @@ class GameIntermediateController : UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = nil
+        
+        let visualEffectView: UIVisualEffectView = .init(effect: UIBlurEffect(style: .systemThinMaterial))
+        collectionView.backgroundColor = nil
+        collectionView.backgroundView = visualEffectView
         
         var configuration: UIButton.Configuration = .filled()
         configuration.buttonSize = .large
@@ -555,7 +587,13 @@ class GameIntermediateController : UICollectionViewController {
         let cheatCellRegistration: UICollectionView.CellRegistration<GameCheatCell, GameCheat> = .init { cell, indexPath, itemIdentifier in
             cell.set(itemIdentifier, self.game, indexPath)
             cell.handler = {
-                // self.reloadData()
+                guard let dataSource = self.dataSource else { return }
+                var snapshot = dataSource.snapshot()
+                snapshot.deleteItems([itemIdentifier])
+                if snapshot.itemIdentifiers(inSection: .cheats).isEmpty {
+                    snapshot.appendItems([LimitedOrNoData(text: "No Cheats")], toSection: .cheats)
+                }
+                Task { await dataSource.apply(snapshot) }
             }
         }
         
@@ -627,7 +665,8 @@ class GameIntermediateController : UICollectionViewController {
             snapshot.appendItems([
                 Play(core: .init(rawValue: cytrusGame.core)!,
                      icon: cytrusGame.icon,
-                     selector: #selector(playCytrusGame))
+                     selector: #selector(playCytrusGame),
+                     disable: fromGame)
             ], toSection: .play)
             
             snapshot.appendItems(cheats, toSection: .cheats)
@@ -655,10 +694,10 @@ class GameIntermediateController : UICollectionViewController {
             
             let new3DSKernelMemoryMode: String = if let new3DSKernelMemoryMode = cytrusGame.new3DSKernelMemoryMode {
                 switch new3DSKernelMemoryMode {
-                case .legacy: kernelMemoryMode
+                case .legacy: "Same as Kernel Memory Mode"
                 case .prod, .dev2: "124 MB application memory"
                 case .dev1: "178 MB application memory"
-                default: kernelMemoryMode
+                default: "Same as Kernel Memory Mode"
                 }
             } else { "No New 3DS Kernel Memory Mode" }
             let new3DSKernelMemoryModeAlignment: NSTextAlignment = if cytrusGame.new3DSKernelMemoryMode == nil { .center } else { .left }
@@ -680,7 +719,8 @@ class GameIntermediateController : UICollectionViewController {
             
             snapshot.appendItems([
                 GameDelete(core: .init(rawValue: cytrusGame.core)!,
-                           selector: #selector(deleteCytrusGame))
+                           selector: #selector(deleteCytrusGame),
+                           disable: fromGame)
             ], toSection: .delete)
         case let grapeGame as GrapeGame:
             snapshot.appendItems([
@@ -710,16 +750,16 @@ class GameIntermediateController : UICollectionViewController {
         guard let dataSource, let item = dataSource.itemIdentifier(for: indexPath) else { return }
         switch item {
         case let cheat as GameCheat:
-            guard let cytrusGame = game as? CytrusGame, let identifier = cytrusGame.identifier else { return }
+            guard let cytrusGame = game as? CytrusGame else { return }
             cheat.cheat.enabled.toggle()
-            CheatsManager().update(cheat.cheat, at: indexPath.item)
-            CheatsManager().saveCheats(identifier)
+            cytrusGame.cheatsManager.update(cheat.cheat, at: indexPath.item)
+            cytrusGame.cheatsManager.saveCheats()
             
             cytrusGame.update()
             
             var snapshot = dataSource.snapshot()
             snapshot.reloadItems([cheat])
-            Task { await dataSource.apply(snapshot) }
+            Task { await dataSource.apply(snapshot, animatingDifferences: false) }
         case let save as GameSaveState:
             guard let identifier = save.identifier else { return }
             
@@ -740,7 +780,14 @@ class GameIntermediateController : UICollectionViewController {
                     print(error.localizedDescription)
                 }
                 
-                self.reloadData()
+                guard let dataSource = self.dataSource else { return }
+                
+                var snapshot = dataSource.snapshot()
+                snapshot.deleteItems([save])
+                if snapshot.itemIdentifiers(inSection: .saveStates).isEmpty {
+                    snapshot.appendItems([LimitedOrNoData(text: "No Save States")], toSection: .saveStates)
+                }
+                Task { await dataSource.apply(snapshot, animatingDifferences: false) }
             }))
             self.present(alertController, animated: true)
         default: break

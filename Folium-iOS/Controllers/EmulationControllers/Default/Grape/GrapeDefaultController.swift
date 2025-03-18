@@ -195,6 +195,11 @@ class GrapeDefaultController : SkinController {
             await GCController.startWirelessControllerDiscovery()
         }
         
+        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
+            let interaction = UIContextMenuInteraction(delegate: self)
+            button.addInteraction(interaction)
+        }
+        
         NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidConnect, object: nil, queue: .main) { notification in
             guard let controller = notification.object as? GCController, let extendedGamepad = controller.extendedGamepad else {
                 return
@@ -409,13 +414,6 @@ class GrapeDefaultController : SkinController {
             Grape.shared.input(8, true)
         case .loadState: Grape.shared.loadState()
         case .saveState: Grape.shared.saveState()
-        case .settings:
-            if let viewController = UIApplication.shared.viewController as? GrapeDefaultController {
-                if let controllerView = viewController.controllerView, let button = controllerView.button(for: type) {
-                    let interaction = UIContextMenuInteraction(delegate: viewController)
-                    button.addInteraction(interaction)
-                }
-            }
         default:
             break
         }

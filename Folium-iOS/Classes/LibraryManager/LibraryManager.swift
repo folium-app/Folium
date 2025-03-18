@@ -30,17 +30,15 @@ struct LibraryManager : @unchecked Sendable {
         for url in Cytrus.shared.installed() {
             coresWithGames.appendUnique(.cytrus)
             
-            if CytrusGame.title(for: url).isEmpty { break }
-            
-            games.append(generateCytrusGame(.cytrus, url, skinManager))
+            let game = generateCytrusGame(.cytrus, url, skinManager)
+            if !game.title.isEmpty { games.append(game) }
         }
         
         for url in Cytrus.shared.system() {
             coresWithGames.appendUnique(.cytrus)
             
-            if CytrusGame.title(for: url).isEmpty { break }
-            
-            games.append(generateCytrusGame(.cytrus, url, skinManager))
+            let game = generateCytrusGame(.cytrus, url, skinManager)
+            if !game.title.isEmpty { games.append(game) }
         }
         
         try cores.forEach { core in
@@ -83,11 +81,10 @@ struct LibraryManager : @unchecked Sendable {
                                                                       skins: skinManager.skins(for: .cherry),
                                                                       title: title))
                             case "3ds", "cci", "cxi":
-                                if CytrusGame.title(for: url).isEmpty { break }
-                                
                                 coresWithGames.appendUnique(.cytrus)
                                 
-                                partialResult.append(generateCytrusGame(.cytrus, url, skinManager))
+                                let game = generateCytrusGame(.cytrus, url, skinManager)
+                                if !game.title.isEmpty { partialResult.append(game) }
                             case "ds", "nds":
                                 coresWithGames.appendUnique(.grape)
                                 
@@ -136,8 +133,7 @@ struct LibraryManager : @unchecked Sendable {
                                                  name: url.lastPathComponent,
                                                  nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
                                                  url: url),
-                              skins: skinManager.skins(for: core),
-                              title: CytrusGame.title(for: url))
+                              skins: skinManager.skins(for: core))
         //game.fileDetails.md5 = try GameBase.FileDetails.MD5(for: url)
         return game
     }

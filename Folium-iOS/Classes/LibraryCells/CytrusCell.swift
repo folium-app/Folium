@@ -40,8 +40,8 @@ import UIKit
         
         var children: [UIMenuElement] = [
             UIAction(title: "Cheats", image: .init(systemName: "hammer"), handler: { _ in
-                let cheatsController = UINavigationController(rootViewController: CheatsController(cytrusGame))
-                cheatsController.modalPresentationStyle = .fullScreen
+                let cheatsController = GameIntermediateController(cytrusGame)
+                cheatsController.modalPresentationStyle = .overFullScreen
                 viewController.present(cheatsController, animated: true)
             }),
             UIAction(title: "Copy MD5", subtitle: "Used for Widgets, etc", image: .init(systemName: "clipboard"), handler: { _ in
