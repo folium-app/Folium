@@ -48,10 +48,10 @@ class GameBase : AnyHashableSendable, @unchecked Sendable {
         }
     }
     
-    let core: String
-    let fileDetails: FileDetails
-    let skins: [Skin]
-    let title: String
+    var core: String
+    var fileDetails: FileDetails
+    var skins: [Skin]
+    var title: String
     
     init(core: String, fileDetails: FileDetails, skins: [Skin], title: String) {
         self.core = core

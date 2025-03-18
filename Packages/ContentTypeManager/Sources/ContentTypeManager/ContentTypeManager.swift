@@ -7,6 +7,7 @@ public struct ContentTypeManager {
     public static var contentTypes: [UTType] {
         [
             .archive,
+            .item,
             
             .init("com.antique.Folium-iOS.app")!,
             .init("com.antique.Folium-iOS.cci")!,

@@ -21,7 +21,8 @@ import UIKit
         fatalError("init(coder:) has not been implemented")
     }
     
-    func set(_ cytrusGame: CytrusGame, with viewController: UIViewController) {
+    func set(_ cytrusGame: CytrusGame, with viewController: UIViewController? = nil) {
+        guard let viewController else { return }
         set(text: cytrusGame.title, image: cytrusGame.icon, with: .white)
         
         guard let blurredImageView, let imageView else {
@@ -39,7 +40,7 @@ import UIKit
         
         var children: [UIMenuElement] = [
             UIAction(title: "Cheats", image: .init(systemName: "hammer"), handler: { _ in
-                let cheatsController = UINavigationController(rootViewController: CheatsController(cytrusGame.identifier))
+                let cheatsController = UINavigationController(rootViewController: CheatsController(cytrusGame))
                 cheatsController.modalPresentationStyle = .fullScreen
                 viewController.present(cheatsController, animated: true)
             }),

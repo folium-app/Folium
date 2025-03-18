@@ -491,6 +491,7 @@
 		E6ACC7682CE5E99E00C27006 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E67655A22CE49E7700222E44 /* SwiftUI.framework */; };
 		E6ACC7752CE5E9A000C27006 /* PlayTimeWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E6ACC7662CE5E99E00C27006 /* PlayTimeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E6AF131D2D357824002E6EDD /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6AF131C2D357824002E6EDD /* SettingsKit */; };
+		E6DFCB9E2D85641000597391 /* BuildStrings.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6DFCB9D2D85641000597391 /* BuildStrings.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1161,6 +1162,8 @@
 		E690A6A82C33B09E00652203 /* Folium-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Folium-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6A85F482D7B191400D395B3 /* Guava */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Guava; sourceTree = "<group>"; };
 		E6ACC7662CE5E99E00C27006 /* PlayTimeWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PlayTimeWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6DFCB9C2D85641000597391 /* BuildStrings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BuildStrings.h; sourceTree = "<group>"; };
+		E6DFCB9D2D85641000597391 /* BuildStrings.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BuildStrings.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -2592,6 +2595,8 @@
 				E6833B1A2D76EA6A009B918E /* CytrusObjC.mm */,
 				E6833B1B2D76EA6A009B918E /* MultiplayerManager.h */,
 				E6833B1C2D76EA6A009B918E /* MultiplayerManager.mm */,
+				E6DFCB9C2D85641000597391 /* BuildStrings.h */,
+				E6DFCB9D2D85641000597391 /* BuildStrings.mm */,
 			);
 			path = CytrusObjC;
 			sourceTree = "<group>";
@@ -3108,6 +3113,7 @@
 				E690A6A62C33B09E00652203 /* Resources */,
 				E60F5AF02C4122D8006902E2 /* Embed Frameworks */,
 				E67655B52CE49E7900222E44 /* Embed Foundation Extensions */,
+				E65552E22D87DEA6004F0398 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3247,6 +3253,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E65552E22D87DEA6004F0398 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "GIT=`xcrun -find git`\nGIT_REV=`${GIT} rev-parse HEAD`\nDATE=`date`\nBUILD_DATE=`TZ=Australia/Perth ${DATE}`\n/usr/libexec/PlistBuddy -c \"Set :GIT_REV ${GIT_REV}\" \"${SRCROOT}/Folium-iOS/Info.plist\"\n/usr/libexec/PlistBuddy -c \"Set :BUILD_DATE ${BUILD_DATE}\" \"${SRCROOT}/Folium-iOS/Info.plist\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E666166B2C410E130065B363 /* Sources */ = {
@@ -3550,6 +3577,7 @@
 				E6833D772D76EA6A009B918E /* room.cpp in Sources */,
 				E6833D782D76EA6A009B918E /* ir.cpp in Sources */,
 				E6833D792D76EA6A009B918E /* network.cpp in Sources */,
+				E6DFCB9E2D85641000597391 /* BuildStrings.mm in Sources */,
 				E6833D7A2D76EA6A009B918E /* web_backend.cpp in Sources */,
 				E6833D7B2D76EA6A009B918E /* ir_u.cpp in Sources */,
 				E6833D7C2D76EA6A009B918E /* server_port.cpp in Sources */,
@@ -3881,7 +3909,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = LastPlayedWidget/LastPlayedWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastPlayedWidget/Info.plist;
@@ -3893,7 +3921,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.16;
+				MARKETING_VERSION = 1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.LastPlayedWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3914,7 +3942,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = LastPlayedWidget/LastPlayedWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LastPlayedWidget/Info.plist;
@@ -3926,7 +3954,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.16;
+				MARKETING_VERSION = 1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.LastPlayedWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -4138,8 +4166,9 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4163,7 +4192,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.16;
+				MARKETING_VERSION = 1.17;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
@@ -4191,8 +4220,9 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4216,7 +4246,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.16;
+				MARKETING_VERSION = 1.17;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
@@ -4240,7 +4270,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = PlayTimeWidget/PlayTimeWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTimeWidget/Info.plist;
@@ -4252,7 +4282,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.16;
+				MARKETING_VERSION = 1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.PlayTimeWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -4273,7 +4303,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = PlayTimeWidget/PlayTimeWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PlayTimeWidget/Info.plist;
@@ -4285,7 +4315,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.16;
+				MARKETING_VERSION = 1.17;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.PlayTimeWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

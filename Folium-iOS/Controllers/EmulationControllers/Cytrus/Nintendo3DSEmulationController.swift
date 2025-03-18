@@ -86,7 +86,7 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
                     return
                 }
                 
-                let cheatsController = UINavigationController(rootViewController: CheatsController(game.identifier))
+                let cheatsController = UINavigationController(rootViewController: CheatsController(game))
                 cheatsController.modalPresentationStyle = .fullScreen
                 self.present(cheatsController, animated: true)
             }),
@@ -324,6 +324,10 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        if let cytrusGame = game as? CytrusGame {
+            cytrusGame.update() // update cheats, saves, etc?
+        }
+        
         NotificationCenter.default.removeObserver(self)
         if Cytrus.shared.stopped() {
             Cytrus.shared.deallocateVulkanLibrary()

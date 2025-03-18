@@ -43,7 +43,7 @@ class LibraryController : UICollectionViewController {
         // TODO: Redo this
         let gameBoyCellRegistration: UICollectionView.CellRegistration<GameBoyCell, GameBoyGame> = .init { $0.set(text: $2.title, with: .white) }
         let tomatoCellRegistration: UICollectionView.CellRegistration<TomatoCell, TomatoGame> = .init { $0.set($2, with: self) }
-        let cytrusCellRegistration: UICollectionView.CellRegistration<CytrusCell, CytrusGame> = .init { $0.set($2, with: self) }
+        let cytrusCellRegistration: UICollectionView.CellRegistration<CytrusCell, CytrusGame> = .init { [weak self] in $0.set($2, with: self) }
         let grapeCellRegistration: UICollectionView.CellRegistration<GrapeCell, GrapeGame> = .init { $0.set($2, with: self) }
         let lycheeCellRegistration: UICollectionView.CellRegistration<LycheeCell, LycheeGame> = .init { $0.set($2, with: self) }
         let peachCellRegistration: UICollectionView.CellRegistration<PeachCell, PeachGame> = .init { $0.set($2, with: self) }
@@ -355,7 +355,13 @@ extension LibraryController {
         collectionView.deselectItem(at: indexPath, animated: true)
         
         guard let dataSource, let item = dataSource.itemIdentifier(for: indexPath) else { return }
-        launch(game: item)
+        if UIDevice.current.userInterfaceIdiom == .pad, ![Core.cytrus.rawValue].contains(item.core) {
+            launch(game: item)
+        } else {
+            let intermediateController: GameIntermediateController = .init(item)
+            intermediateController.modalPresentationStyle = .fullScreen
+            present(intermediateController, animated: true)
+        }
     }
 }
 

@@ -30,17 +30,17 @@ struct LibraryManager : @unchecked Sendable {
         for url in Cytrus.shared.installed() {
             coresWithGames.appendUnique(.cytrus)
             
-            if try CytrusGame.title(for: url).isEmpty { break }
+            if CytrusGame.title(for: url).isEmpty { break }
             
-            games.append(try generateCytrusGame(.cytrus, url, skinManager))
+            games.append(generateCytrusGame(.cytrus, url, skinManager))
         }
         
         for url in Cytrus.shared.system() {
             coresWithGames.appendUnique(.cytrus)
             
-            if try CytrusGame.title(for: url).isEmpty { break }
+            if CytrusGame.title(for: url).isEmpty { break }
             
-            games.append(try generateCytrusGame(.cytrus, url, skinManager))
+            games.append(generateCytrusGame(.cytrus, url, skinManager))
         }
         
         try cores.forEach { core in
@@ -83,15 +83,15 @@ struct LibraryManager : @unchecked Sendable {
                                                                       skins: skinManager.skins(for: .cherry),
                                                                       title: title))
                             case "3ds", "cci", "cxi":
-                                if try CytrusGame.title(for: url).isEmpty { break }
+                                if CytrusGame.title(for: url).isEmpty { break }
                                 
                                 coresWithGames.appendUnique(.cytrus)
                                 
-                                partialResult.append(try generateCytrusGame(.cytrus, url, skinManager))
+                                partialResult.append(generateCytrusGame(.cytrus, url, skinManager))
                             case "ds", "nds":
                                 coresWithGames.appendUnique(.grape)
                                 
-                                partialResult.append(try generateGrapeGame(.grape, url, skinManager))
+                                partialResult.append(generateGrapeGame(.grape, url, skinManager))
                             case "sfc", "smc":
                                 coresWithGames.appendUnique(.mango)
                                 
@@ -99,7 +99,7 @@ struct LibraryManager : @unchecked Sendable {
                             case "nes":
                                 coresWithGames.appendUnique(.peach)
                                 
-                                partialResult.append(try generatePeachGame(.peach, url, skinManager))
+                                partialResult.append(generatePeachGame(.peach, url, skinManager))
                             case "gba":
                                 coresWithGames.appendUnique(.tomato)
                                 
@@ -129,21 +129,20 @@ struct LibraryManager : @unchecked Sendable {
     }
     
     
-    func generateCytrusGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) throws -> CytrusGame {
-        let game = CytrusGame(icon: try CytrusGame.icon(for: url),
-                               identifier: try CytrusGame.identifier(for: url),
-                               core: core.rawValue,
-                               fileDetails: .init(extension: url.pathExtension.lowercased(),
-                                                  name: url.lastPathComponent,
-                                                  nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
-                                                  url: url),
-                               skins: skinManager.skins(for: core),
-                               title: try CytrusGame.title(for: url))
+    func generateCytrusGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) -> CytrusGame {
+        let game = CytrusGame(for: url,
+                              core: core.rawValue,
+                              fileDetails: .init(extension: url.pathExtension.lowercased(),
+                                                 name: url.lastPathComponent,
+                                                 nameWithoutExtension: url.deletingPathExtension().lastPathComponent,
+                                                 url: url),
+                              skins: skinManager.skins(for: core),
+                              title: CytrusGame.title(for: url))
         //game.fileDetails.md5 = try GameBase.FileDetails.MD5(for: url)
         return game
     }
     
-    func generateGrapeGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) throws -> GrapeGame {
+    func generateGrapeGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) -> GrapeGame {
         let game = GrapeGame(icon: GrapeGame.icon(for: url),
                              core: core.rawValue,
                              fileDetails: .init(extension: url.pathExtension.lowercased(),
@@ -182,7 +181,7 @@ struct LibraryManager : @unchecked Sendable {
         return game
     }
     
-    func generatePeachGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) throws -> PeachGame {
+    func generatePeachGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) -> PeachGame {
         let game = PeachGame(core: core.rawValue,
                              fileDetails: .init(extension: url.pathExtension.lowercased(),
                                                 name: url.lastPathComponent,

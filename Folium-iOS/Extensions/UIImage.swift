@@ -129,4 +129,36 @@ extension UIImage {
         
         return data
     }
+    
+    func dominantColor() -> UIColor? {
+            guard let cgImage = self.cgImage else { return nil }
+            
+            // Resize image to 1x1 pixel
+            let width = 1
+            let height = 1
+            let bitmapInfo = CGImageAlphaInfo.premultipliedLast.rawValue
+            let colorSpace = CGColorSpaceCreateDeviceRGB()
+            var pixelData = [UInt8](repeating: 0, count: 4)
+            
+            guard let context = CGContext(
+                data: &pixelData,
+                width: width,
+                height: height,
+                bitsPerComponent: 8,
+                bytesPerRow: width * 4,
+                space: colorSpace,
+                bitmapInfo: bitmapInfo
+            ) else { return nil }
+            
+            // Draw the image into the 1x1 context
+            context.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
+            
+            // Extract color components
+            let r = CGFloat(pixelData[0]) / 255.0
+            let g = CGFloat(pixelData[1]) / 255.0
+            let b = CGFloat(pixelData[2]) / 255.0
+            let a = CGFloat(pixelData[3]) / 255.0
+            
+            return UIColor(red: r, green: g, blue: b, alpha: a)
+        }
 }

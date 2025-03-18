@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BUILD_DATE</key>
+	<date>2025-03-17T05:15:40Z</date>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -20,6 +22,8 @@
 			<string>ExtendedGamepad</string>
 		</dict>
 	</array>
+	<key>GIT_REV</key>
+	<string>3ac7fd97c0315175804c9ec6792be990d6307d5e</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

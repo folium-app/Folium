@@ -261,6 +261,9 @@ class CytrusDefaultController : SkinController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
+        if let cytrusGame = game as? CytrusGame {
+            cytrusGame.update() // update cheats, saves, etc?
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
@@ -431,7 +434,7 @@ extension CytrusDefaultController : UIContextMenuInteractionDelegate {
                             return
                         }
                         
-                        let cheatsController = UINavigationController(rootViewController: CheatsController(game.identifier))
+                        let cheatsController = UINavigationController(rootViewController: CheatsController(game))
                         cheatsController.modalPresentationStyle = .fullScreen
                         self.present(cheatsController, animated: true)
                     }),
