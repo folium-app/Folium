@@ -152,9 +152,7 @@ extension SceneDelegate {
     }
     
     fileprivate func configureAuthenticationStateListener() {
-        guard let window else {
-            return
-        }
+        guard let window else { return }
         
         _ = Auth.auth().addStateDidChangeListener { auth, user in
             if let rootViewController = window.rootViewController {

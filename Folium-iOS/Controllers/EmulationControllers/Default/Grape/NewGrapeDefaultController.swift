@@ -7,11 +7,14 @@
 //
 
 import Foundation
-import NewGrape
-import UIKit
 import GameController
+import NewGrape
+import SDL
+import UIKit
 
 class NewGrapeDefaultController : SkinController {
+    var audioDeviceID: SDL_AudioDeviceID!
+    
     var topImageView: UIImageView? = nil, topBlurredImageView: UIImageView? = nil
     var bottomImageView: UIImageView? = nil, bottomBlurredImageView: UIImageView? = nil
     
@@ -21,11 +24,6 @@ class NewGrapeDefaultController : SkinController {
     var displayLink: CADisplayLink? = nil
     
     override init(game: GameBase, skin: Skin) {
-        var skin = skin
-        // skin.orientations.portrait.buttons.removeAll(where: { [.loadState, .saveState].contains($0.type) })
-        // skin.orientations.landscapeLeft?.buttons.removeAll(where: { [.loadState, .saveState].contains($0.type) })
-        // skin.orientations.landscapeRight?.buttons.removeAll(where: { [.loadState, .saveState].contains($0.type) })
-        // skin.orientations.portraitUpsideDown?.buttons.removeAll(where: { [.loadState, .saveState].contains($0.type) })
         super.init(game: game, skin: skin)
         
         NewGrape.shared.insert(from: game.fileDetails.url)
@@ -170,7 +168,11 @@ class NewGrapeDefaultController : SkinController {
             view.addConstraints(landscapeConstraints)
         }
         
-        NewGrape.shared.ab { buffer, samples in }
+        configureAudio()
+        
+        NewGrape.shared.ab { buffer, samples in
+            SDL_QueueAudio(self.audioDeviceID, buffer, .init(samples * 4))
+        }
         
         NewGrape.shared.fbs { top, bottom in
             guard let cgImage = CGImage.ds_dsi(top, 256, 192) else { return }
@@ -315,8 +317,10 @@ class NewGrapeDefaultController : SkinController {
                 return
             }
             
-            // Task { Grape.shared.pause() }
-            // SDL_PauseAudioDevice(self.audioDeviceID, Grape.shared.running() ? 1 : 0)
+            guard let displayLink = self.displayLink else { return }
+            displayLink.isPaused.toggle()
+            
+            SDL_PauseAudioDevice(self.audioDeviceID, displayLink.isPaused ? 1 : 0)
         }
     }
     
@@ -360,6 +364,22 @@ class NewGrapeDefaultController : SkinController {
             
             self.view.setNeedsUpdateConstraints()
         }
+    }
+    
+    func configureAudio() {
+        SDL_SetMainReady()
+        SDL_InitSubSystem(SDL_INIT_AUDIO)
+        
+        var spec: SDL_AudioSpec = .init()
+        spec.callback = nil
+        spec.userdata = nil
+        spec.channels = 2
+        spec.format = .init(AUDIO_S16)
+        spec.freq = 32768
+        spec.samples = 1024
+        
+        audioDeviceID = SDL_OpenAudioDevice(nil, 0, &spec, nil, 0)
+        SDL_PauseAudioDevice(audioDeviceID, 0)
     }
     
     @objc func step() {
@@ -491,6 +511,9 @@ extension NewGrapeDefaultController : UIContextMenuInteractionDelegate {
                             guard let displayLink = self.displayLink else { return }
                             displayLink.remove(from: .main, forMode: .common)
                             self.displayLink = nil
+                            
+                            SDL_PauseAudioDevice(self.audioDeviceID, 1)
+                            SDL_CloseAudioDevice(self.audioDeviceID)
                             
                             NewGrape.shared.stop()
                             
