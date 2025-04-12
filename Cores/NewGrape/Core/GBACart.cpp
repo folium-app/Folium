@@ -1,5 +1,5 @@
 /*
-    Copyright 2016-2024 melonDS team
+    Copyright 2016-2022 melonDS team
 
     This file is part of melonDS.
 
@@ -16,19 +16,13 @@
     with melonDS. If not, see http://www.gnu.org/licenses/.
 */
 
-#include <assert.h>
 #include <stdio.h>
 #include <string.h>
-#include "NDS.h"
-#include "GBACart.h"
-#include "CRC32.h"
-#include "Platform.h"
-#include "Utils.h"
+#include "melonDS/NDS.h"
+#include "melonDS/GBACart.h"
+#include "melonDS/CRC32.h"
+#include "melonDS/Platform.h"
 
-namespace melonDS
-{
-using Platform::Log;
-using Platform::LogLevel;
 
 namespace GBACart
 {
@@ -45,7 +39,22 @@ const char SOLAR_SENSOR_GAMECODES[10][5] =
     "A3IJ"  // Boktai - The Sun Is in Your Hand (USA) (Sample)
 };
 
-CartCommon::CartCommon(GBACart::CartType type) : CartType(type)
+
+bool CartInserted;
+u8* CartROM;
+u32 CartROMSize;
+u32 CartID;
+
+CartCommon* Cart;
+
+u16 OpenBusDecay;
+
+
+CartCommon::CartCommon()
+{
+}
+
+CartCommon::~CartCommon()
 {
 }
 
@@ -58,7 +67,11 @@ void CartCommon::DoSavestate(Savestate* file)
     file->Section("GBCS");
 }
 
-void CartCommon::SetSaveMemory(const u8* savedata, u32 savelen)
+void CartCommon::SetupSave(u32 type)
+{
+}
+
+void CartCommon::LoadSave(const u8* savedata, u32 savelen)
 {
 }
 
@@ -67,7 +80,7 @@ int CartCommon::SetInput(int num, bool pressed)
     return -1;
 }
 
-u16 CartCommon::ROMRead(u32 addr) const
+u16 CartCommon::ROMRead(u32 addr)
 {
     return 0;
 }
@@ -85,41 +98,26 @@ void CartCommon::SRAMWrite(u32 addr, u8 val)
 {
 }
 
-u8* CartCommon::GetSaveMemory() const
+
+CartGame::CartGame(u8* rom, u32 len) : CartCommon()
 {
-    return nullptr;
+    ROM = rom;
+    ROMLength = len;
+
+    SRAM = nullptr;
+    SRAMLength = 0;
+    SRAMType = S_NULL;
+    SRAMFlashState = {};
 }
 
-u32 CartCommon::GetSaveMemoryLength() const
+CartGame::~CartGame()
 {
-    return 0;
+    if (SRAM) delete[] SRAM;
 }
 
-CartGame::CartGame(const u8* rom, u32 len, const u8* sram, u32 sramlen, void* userdata, GBACart::CartType type) :
-    CartGame(CopyToUnique(rom, len), len, CopyToUnique(sram, sramlen), sramlen, userdata, type)
+u32 CartGame::Checksum()
 {
-}
-
-CartGame::CartGame(std::unique_ptr<u8[]>&& rom, u32 len, std::unique_ptr<u8[]>&& sram, u32 sramlen, void* userdata, GBACart::CartType type) :
-    CartCommon(type),
-    ROM(std::move(rom)),
-    ROMLength(len),
-    SRAM(std::move(sram)),
-    SRAMLength(sramlen),
-    UserData(userdata)
-{
-    if (SRAM && SRAMLength)
-    {
-        SetupSave(sramlen);
-    }
-}
-
-CartGame::~CartGame() = default;
-// unique_ptr cleans up the allocated memory
-
-u32 CartGame::Checksum() const
-{
-    u32 crc = CRC32(ROM.get(), 0xC0, 0);
+    u32 crc = CRC32(ROM, 0xC0, 0);
 
     // TODO: hash more contents?
 
@@ -146,12 +144,14 @@ void CartGame::DoSavestate(Savestate* file)
     if (SRAMLength != oldlen)
     {
         // reallocate save memory
-        SRAM = SRAMLength ? std::make_unique<u8[]>(SRAMLength) : nullptr;
+        if (oldlen) delete[] SRAM;
+        SRAM = nullptr;
+        if (SRAMLength) SRAM = new u8[SRAMLength];
     }
     if (SRAMLength)
     {
         // fill save memory if data is present
-        file->VarArray(SRAM.get(), SRAMLength);
+        file->VarArray(SRAM, SRAMLength);
     }
     else
     {
@@ -171,14 +171,24 @@ void CartGame::DoSavestate(Savestate* file)
     file->Var8((u8*)&SRAMType);
 
     if ((!file->Saving) && SRAM)
-        Platform::WriteGBASave(SRAM.get(), SRAMLength, 0, SRAMLength, UserData);
+        Platform::WriteGBASave(SRAM, SRAMLength, 0, SRAMLength);
 }
 
 void CartGame::SetupSave(u32 type)
 {
+    if (SRAM) delete[] SRAM;
+    SRAM = nullptr;
+
     // TODO: have type be determined from some list, like in NDSCart
     // and not this gross hack!!
     SRAMLength = type;
+
+    if (SRAMLength)
+    {
+        SRAM = new u8[SRAMLength];
+        memset(SRAM, 0xFF, SRAMLength);
+    }
+
     switch (SRAMLength)
     {
     case 512:
@@ -194,14 +204,13 @@ void CartGame::SetupSave(u32 type)
         SRAMType = S_FLASH512K;
         break;
     case 128*1024:
-    case (128*1024 + 0x10): // .sav file with appended real time clock data (ex: emulator mGBA)
         SRAMType = S_FLASH1M;
         break;
     case 0:
         SRAMType = S_NULL;
         break;
     default:
-        Log(LogLevel::Warn, "!! BAD GBA SAVE LENGTH %d\n", SRAMLength);
+        printf("!! BAD GBA SAVE LENGTH %d\n", SRAMLength);
     }
 
     if (SRAMType == S_FLASH512K)
@@ -218,16 +227,16 @@ void CartGame::SetupSave(u32 type)
     }
 }
 
-void CartGame::SetSaveMemory(const u8* savedata, u32 savelen)
+void CartGame::LoadSave(const u8* savedata, u32 savelen)
 {
-    SetupSave(savelen);
+    if (!SRAM) return;
 
     u32 len = std::min(savelen, SRAMLength);
-    memcpy(SRAM.get(), savedata, len);
-    Platform::WriteGBASave(savedata, len, 0, len, UserData);
+    memcpy(SRAM, savedata, len);
+    Platform::WriteGBASave(savedata, len, 0, len);
 }
 
-u16 CartGame::ROMRead(u32 addr) const
+u16 CartGame::ROMRead(u32 addr)
 {
     addr &= 0x01FFFFFF;
 
@@ -274,7 +283,7 @@ void CartGame::ROMWrite(u32 addr, u16 val)
             break;
 
         default:
-            Log(LogLevel::Warn, "Unknown GBA GPIO write 0x%02X @ 0x%04X\n", val, addr);
+            printf("Unknown GBA GPIO write 0x%02X @ 0x%04X\n", val, addr);
             break;
     }
 }
@@ -323,16 +332,6 @@ void CartGame::SRAMWrite(u32 addr, u8 val)
     }
 }
 
-u8* CartGame::GetSaveMemory() const
-{
-    return SRAM.get();
-}
-
-u32 CartGame::GetSaveMemoryLength() const
-{
-    return SRAMLength;
-}
-
 void CartGame::ProcessGPIO()
 {
 }
@@ -370,7 +369,7 @@ u8 CartGame::SRAMRead_FLASH(u32 addr)
         case 0xB0: // bank switching (128K only)
             break; // ignore here, handled in Write_Flash()
         default:
-            Log(LogLevel::Warn, "GBACart_SRAM::Read_Flash: unknown command 0x%02X @ 0x%04X\n", SRAMFlashState.cmd, addr);
+            printf("GBACart_SRAM::Read_Flash: unknown command 0x%02X @ 0x%04X\n", SRAMFlashState.cmd, addr);
             break;
     }
 
@@ -465,7 +464,7 @@ void CartGame::SRAMWrite_FLASH(u32 addr, u8 val)
                 u32 start_addr = addr + 0x10000 * SRAMFlashState.bank;
                 memset((u8*)&SRAM[start_addr], 0xFF, 0x1000);
 
-                Platform::WriteGBASave(SRAM.get(), SRAMLength, start_addr, 0x1000, UserData);
+                Platform::WriteGBASave(SRAM, SRAMLength, start_addr, 0x1000);
             }
             SRAMFlashState.state = 0;
             SRAMFlashState.cmd = 0;
@@ -503,7 +502,7 @@ void CartGame::SRAMWrite_FLASH(u32 addr, u8 val)
         return;
     }
 
-    Log(LogLevel::Debug, "GBACart_SRAM::Write_Flash: unknown write 0x%02X @ 0x%04X (state: 0x%02X)\n",
+    printf("GBACart_SRAM::Write_Flash: unknown write 0x%02X @ 0x%04X (state: 0x%02X)\n",
         val, addr, SRAMFlashState.state);
 }
 
@@ -524,26 +523,23 @@ void CartGame::SRAMWrite_SRAM(u32 addr, u8 val)
         *(u8*)&SRAM[addr] = val;
 
         // TODO: optimize this!!
-        Platform::WriteGBASave(SRAM.get(), SRAMLength, addr, 1, UserData);
+        Platform::WriteGBASave(SRAM, SRAMLength, addr, 1);
     }
 }
 
 
-CartGameSolarSensor::CartGameSolarSensor(const u8* rom, u32 len, const u8* sram, u32 sramlen, void* userdata) :
-    CartGameSolarSensor(CopyToUnique(rom, len), len, CopyToUnique(sram, sramlen), sramlen, userdata)
-{
-}
-
-CartGameSolarSensor::CartGameSolarSensor(std::unique_ptr<u8[]>&& rom, u32 len, std::unique_ptr<u8[]>&& sram, u32 sramlen, void* userdata) :
-    CartGame(std::move(rom), len, std::move(sram), sramlen, userdata, CartType::GameSolarSensor)
-{
-}
-
 const int CartGameSolarSensor::kLuxLevels[11] = {0, 5, 11, 18, 27, 42, 62, 84, 109, 139, 183};
+
+CartGameSolarSensor::CartGameSolarSensor(u8* rom, u32 len) : CartGame(rom, len)
+{
+}
+
+CartGameSolarSensor::~CartGameSolarSensor()
+{
+}
 
 void CartGameSolarSensor::Reset()
 {
-    CartGame::Reset();
     LightEdge = false;
     LightCounter = 0;
     LightSample = 0xFF;
@@ -582,11 +578,6 @@ int CartGameSolarSensor::SetInput(int num, bool pressed)
     return -1;
 }
 
-void CartGameSolarSensor::SetLightLevel(u8 level) noexcept
-{
-    LightLevel = std::clamp<u8>(level, 0, 10);
-}
-
 void CartGameSolarSensor::ProcessGPIO()
 {
     if (GPIO.data & 4) return; // Boktai chip select
@@ -595,7 +586,7 @@ void CartGameSolarSensor::ProcessGPIO()
         u8 prev = LightSample;
         LightCounter = 0;
         LightSample = (0xFF - (0x16 + kLuxLevels[LightLevel]));
-        Log(LogLevel::Debug, "Solar sensor reset (sample: 0x%02X -> 0x%02X)\n", prev, LightSample);
+        printf("Solar sensor reset (sample: 0x%02X -> 0x%02X)\n", prev, LightSample);
     }
     if (GPIO.data & 1 && LightEdge) LightCounter++;
 
@@ -609,11 +600,13 @@ void CartGameSolarSensor::ProcessGPIO()
 }
 
 
-CartRAMExpansion::CartRAMExpansion() : CartCommon(RAMExpansion)
+CartRAMExpansion::CartRAMExpansion() : CartCommon()
 {
 }
 
-CartRAMExpansion::~CartRAMExpansion() = default;
+CartRAMExpansion::~CartRAMExpansion()
+{
+}
 
 void CartRAMExpansion::Reset()
 {
@@ -629,7 +622,7 @@ void CartRAMExpansion::DoSavestate(Savestate* file)
     file->Var16(&RAMEnable);
 }
 
-u16 CartRAMExpansion::ROMRead(u32 addr) const
+u16 CartRAMExpansion::ROMRead(u32 addr)
 {
     addr &= 0x01FFFFFF;
 
@@ -686,54 +679,29 @@ void CartRAMExpansion::ROMWrite(u32 addr, u16 val)
     }
 }
 
-CartRumblePak::CartRumblePak(void* userdata) : 
-    CartCommon(RumblePak),
-    UserData(userdata)
+
+bool Init()
 {
+    CartROM = nullptr;
+
+    Cart = nullptr;
+
+    return true;
 }
 
-CartRumblePak::~CartRumblePak() = default;
-
-void CartRumblePak::Reset()
+void DeInit()
 {
-    RumbleState = 0;
+    if (CartROM) delete[] CartROM;
+
+    if (Cart) delete Cart;
 }
 
-void CartRumblePak::DoSavestate(Savestate* file)
-{
-    CartCommon::DoSavestate(file);
-    file->Var16(&RumbleState);
-}
-
-u16 CartRumblePak::ROMRead(u32 addr) const
-{
-    // A1 is pulled low on a real Rumble Pak, so return the
-    // necessary detection value here,
-    // and let the existing open bus implementation take care of the rest
-    return 0xFFFD;
-}
-
-void CartRumblePak::ROMWrite(u32 addr, u16 val)
-{
-    addr &= 0x01FFFFFF;
-    if (RumbleState != val)
-    {
-	Platform::Addon_RumbleStop(UserData);
-	RumbleState = val;
-	Platform::Addon_RumbleStart(16, UserData);
-    }
-}
-
-GBACartSlot::GBACartSlot(melonDS::NDS& nds, std::unique_ptr<CartCommon>&& cart) noexcept : NDS(nds), Cart(std::move(cart))
-{
-}
-
-void GBACartSlot::Reset() noexcept
+void Reset()
 {
     if (Cart) Cart->Reset();
 }
 
-void GBACartSlot::DoSavestate(Savestate* file) noexcept
+void DoSavestate(Savestate* file)
 {
     file->Section("GBAC"); // Game Boy Advance Cartridge
 
@@ -767,61 +735,53 @@ void GBACartSlot::DoSavestate(Savestate* file) noexcept
     if (Cart) Cart->DoSavestate(file);
 }
 
-std::unique_ptr<CartCommon> ParseROM(std::unique_ptr<u8[]>&& romdata, u32 romlen, void* userdata)
+bool LoadROM(const u8* romdata, u32 romlen)
 {
-    return ParseROM(std::move(romdata), romlen, nullptr, 0, userdata);
-}
+    if (CartInserted)
+        EjectCart();
 
-std::unique_ptr<CartCommon> ParseROM(const u8* romdata, u32 romlen, const u8* sramdata, u32 sramlen, void* userdata)
-{
-    auto [romcopy, romcopylen] = PadToPowerOf2(romdata, romlen);
+    CartROMSize = 0x200;
+    while (CartROMSize < romlen)
+        CartROMSize <<= 1;
 
-    return ParseROM(std::move(romcopy), romcopylen, CopyToUnique(sramdata, sramlen), sramlen, userdata);
-}
-
-std::unique_ptr<CartCommon> ParseROM(const u8* romdata, u32 romlen, void* userdata)
-{
-    return ParseROM(romdata, romlen, nullptr, 0, userdata);
-}
-
-std::unique_ptr<CartCommon> ParseROM(std::unique_ptr<u8[]>&& romdata, u32 romlen, std::unique_ptr<u8[]>&& sramdata, u32 sramlen, void* userdata)
-{
-    if (romdata == nullptr)
+    try
     {
-        Log(LogLevel::Error, "GBACart: romdata is null\n");
-        return nullptr;
+        CartROM = new u8[CartROMSize];
+    }
+    catch (const std::bad_alloc& e)
+    {
+        printf("GBACart: failed to allocate memory for ROM (%d bytes)\n", CartROMSize);
+        return false;
     }
 
-    if (romlen == 0)
-    {
-        Log(LogLevel::Error, "GBACart: romlen is zero\n");
-        return nullptr;
-    }
-
-    auto [cartrom, cartromsize] = PadToPowerOf2(std::move(romdata), romlen);
+    memset(CartROM, 0, CartROMSize);
+    memcpy(CartROM, romdata, romlen);
 
     char gamecode[5] = { '\0' };
-    memcpy(&gamecode, cartrom.get() + 0xAC, 4);
+    memcpy(&gamecode, CartROM + 0xAC, 4);
+    printf("GBA game code: %s\n", gamecode);
 
     bool solarsensor = false;
-    for (const char* i : SOLAR_SENSOR_GAMECODES)
+    for (size_t i = 0; i < sizeof(SOLAR_SENSOR_GAMECODES)/sizeof(SOLAR_SENSOR_GAMECODES[0]); i++)
     {
-        if (strcmp(gamecode, i) == 0)
+        if (strcmp(gamecode, SOLAR_SENSOR_GAMECODES[i]) == 0)
             solarsensor = true;
     }
 
     if (solarsensor)
     {
-        Log(LogLevel::Info, "GBA solar sensor support detected!\n");
+        printf("GBA solar sensor support detected!\n");
     }
 
-    std::unique_ptr<CartCommon> cart;
-    if (solarsensor)
-        cart = std::make_unique<CartGameSolarSensor>(std::move(cartrom), cartromsize, std::move(sramdata), sramlen, userdata);
-    else
-        cart = std::make_unique<CartGame>(std::move(cartrom), cartromsize, std::move(sramdata), sramlen, userdata);
+    CartInserted = true;
 
-    cart->Reset();
+    if (solarsensor)
+        Cart = new CartGameSolarSensor(CartROM, CartROMSize);
+    else
+        Cart = new CartGame(CartROM, CartROMSize);
+
+    if (Cart)
+        Cart->Reset();
 
     // save
     //printf("GBA save file: %s\n", sram);
@@ -829,70 +789,56 @@ std::unique_ptr<CartCommon> ParseROM(std::unique_ptr<u8[]>&& romdata, u32 romlen
     // TODO: have a list of sorts like in NDSCart? to determine the savemem type
     //if (Cart) Cart->LoadSave(sram, 0);
 
-    return cart;
+    // TODO: setup cart save here! from a list or something
+
+    return true;
 }
 
-std::unique_ptr<CartCommon> LoadAddon(int type, void* userdata)
-{
-    std::unique_ptr<CartCommon> cart;
-    switch (type)
-    {
-    case GBAAddon_RAMExpansion:
-        cart = std::make_unique<CartRAMExpansion>();
-        break;
-    case GBAAddon_RumblePak:
-        cart = std::make_unique<CartRumblePak>(userdata);
-        break;
-
-    default:
-        Log(LogLevel::Warn, "GBACart: !! invalid addon type %d\n", type);
-        return nullptr;
-    }
-
-    cart->Reset();
-    return cart;
-}
-
-void GBACartSlot::SetCart(std::unique_ptr<CartCommon>&& cart) noexcept
-{
-    Cart = std::move(cart);
-
-    if (!Cart)
-    {
-        Log(LogLevel::Info, "Ejected GBA cart\n");
-        return;
-    }
-
-    const u8* cartrom = Cart->GetROM();
-
-    if (cartrom)
-    {
-        char gamecode[5] = { '\0' };
-        memcpy(&gamecode, Cart->GetROM() + 0xAC, 4);
-        Log(LogLevel::Info, "Inserted GBA cart with game code: %s\n", gamecode);
-    }
-    else
-    {
-        Log(LogLevel::Info, "Inserted GBA cart with no game code (it's probably an accessory)\n");
-    }
-}
-
-void GBACartSlot::SetSaveMemory(const u8* savedata, u32 savelen) noexcept
+void LoadSave(const u8* savedata, u32 savelen)
 {
     if (Cart)
     {
-        Cart->SetSaveMemory(savedata, savelen);
+        // gross hack
+        Cart->SetupSave(savelen);
+
+        Cart->LoadSave(savedata, savelen);
     }
 }
 
-std::unique_ptr<CartCommon> GBACartSlot::EjectCart() noexcept
+void LoadAddon(int type)
 {
-    return std::move(Cart);
-    // Cart will be nullptr after this function returns, due to the move
+    CartROMSize = 0;
+    CartROM = nullptr;
+
+    switch (type)
+    {
+    case NDS::GBAAddon_RAMExpansion:
+        Cart = new CartRAMExpansion();
+        break;
+
+    default:
+        printf("GBACart: !! invalid addon type %d\n", type);
+        return;
+    }
+
+    CartInserted = true;
+}
+
+void EjectCart()
+{
+    if (Cart) delete Cart;
+    Cart = nullptr;
+
+    if (CartROM) delete[] CartROM;
+
+    CartInserted = false;
+    CartROM = nullptr;
+    CartROMSize = 0;
+    CartID = 0;
 }
 
 
-int GBACartSlot::SetInput(int num, bool pressed) noexcept
+int SetInput(int num, bool pressed)
 {
     if (Cart) return Cart->SetInput(num, pressed);
 
@@ -900,30 +846,34 @@ int GBACartSlot::SetInput(int num, bool pressed) noexcept
 }
 
 
-u16 GBACartSlot::ROMRead(u32 addr) const noexcept
+void SetOpenBusDecay(u16 val)
+{
+    OpenBusDecay = val;
+}
+
+
+u16 ROMRead(u32 addr)
 {
     if (Cart) return Cart->ROMRead(addr);
 
     return ((addr >> 1) & 0xFFFF) | OpenBusDecay;
 }
 
-void GBACartSlot::ROMWrite(u32 addr, u16 val) noexcept
+void ROMWrite(u32 addr, u16 val)
 {
     if (Cart) Cart->ROMWrite(addr, val);
 }
 
-u8 GBACartSlot::SRAMRead(u32 addr) noexcept
+u8 SRAMRead(u32 addr)
 {
     if (Cart) return Cart->SRAMRead(addr);
 
     return 0xFF;
 }
 
-void GBACartSlot::SRAMWrite(u32 addr, u8 val) noexcept
+void SRAMWrite(u32 addr, u8 val)
 {
     if (Cart) Cart->SRAMWrite(addr, val);
-}
-
 }
 
 }

@@ -1,5 +1,5 @@
 /*
-    Copyright 2016-2024 melonDS team
+    Copyright 2016-2022 melonDS team
 
     This file is part of melonDS.
 
@@ -17,10 +17,10 @@
 */
 
 #include <stdio.h>
-#include "ARM.h"
+#include "melonDS/ARM.h"
 
 
-namespace melonDS::ARMInterpreter
+namespace ARMInterpreter
 {
 
 
@@ -62,20 +62,14 @@ namespace melonDS::ARMInterpreter
 
 #define A_STR \
     offset += cpu->R[(cpu->CurInstr>>16) & 0xF]; \
-    u32 storeval = cpu->R[(cpu->CurInstr>>12) & 0xF]; \
-    if (((cpu->CurInstr>>12) & 0xF) == 0xF) \
-        storeval += 4; \
-    cpu->DataWrite32(offset, storeval); \
+    cpu->DataWrite32(offset, cpu->R[(cpu->CurInstr>>12) & 0xF]); \
     if (cpu->CurInstr & (1<<21)) cpu->R[(cpu->CurInstr>>16) & 0xF] = offset; \
     cpu->AddCycles_CD();
 
 // TODO: user mode (bit21)
 #define A_STR_POST \
     u32 addr = cpu->R[(cpu->CurInstr>>16) & 0xF]; \
-    u32 storeval = cpu->R[(cpu->CurInstr>>12) & 0xF]; \
-    if (((cpu->CurInstr>>12) & 0xF) == 0xF) \
-        storeval += 4; \
-    cpu->DataWrite32(addr, storeval); \
+    cpu->DataWrite32(addr, cpu->R[(cpu->CurInstr>>12) & 0xF]); \
     cpu->R[(cpu->CurInstr>>16) & 0xF] += offset; \
     cpu->AddCycles_CD();
 
@@ -430,9 +424,9 @@ void A_LDM(ARM* cpu)
         }
     }
 
-    u32 pc = 0;
     if (cpu->CurInstr & (1<<15))
     {
+        u32 pc;
         if (preinc) base += 4;
         if (first) cpu->DataRead32 (base, &pc);
         else       cpu->DataRead32S(base, &pc);
@@ -440,7 +434,12 @@ void A_LDM(ARM* cpu)
 
         if (cpu->Num == 1)
             pc &= ~0x1;
+
+        cpu->JumpTo(pc, cpu->CurInstr & (1<<22));
     }
+
+    if ((cpu->CurInstr & (1<<22)) && !(cpu->CurInstr & (1<<15)))
+        cpu->UpdateMode((cpu->CPSR&~0x1F)|0x10, cpu->CPSR, true);
 
     if (cpu->CurInstr & (1<<21))
     {
@@ -460,12 +459,6 @@ void A_LDM(ARM* cpu)
         else
             cpu->R[baseid] = wbbase;
     }
-
-    if ((cpu->CurInstr & (1<<22)) && !(cpu->CurInstr & (1<<15)))
-        cpu->UpdateMode((cpu->CPSR&~0x1F)|0x10, cpu->CPSR, true);
-
-    if (cpu->CurInstr & (1<<15))
-        cpu->JumpTo(pc, cpu->CurInstr & (1<<22));
 
     cpu->AddCycles_CDI();
 }

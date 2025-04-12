@@ -7,9 +7,9 @@
 #include <algorithm>
 #include <vector>
 
-#include "Compat.h"
+#include "melonDS/Compat.h"
 
-#include "../types.h"
+#include "melonDS/melonDS/types.h"
 
 #ifdef _MSC_VER
 #include <intrin.h>

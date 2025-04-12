@@ -6,7 +6,7 @@
 #include <bitset>
 #include <initializer_list>
 #include <type_traits>
-#include "../types.h"
+#include "melonDS/melonDS/types.h"
 
 namespace Common
 {

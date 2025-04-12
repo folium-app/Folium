@@ -8,9 +8,9 @@
 #include <functional>
 #include <stdint.h>
 
-#include "ArmCommon.h"
-#include "BitSet.h"
-#include "Compat.h"
+#include "melonDS/melonDS/ArmCommon.h"
+#include "melonDS/melonDS/BitSet.h"
+#include "melonDS/melonDS/Compat.h"
 
 namespace Arm64Gen
 {

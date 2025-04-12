@@ -25,7 +25,7 @@ A million repetitions of "a"
 #include <string.h>
 #include <sys/types.h>	/* for u_int*_t */
 #if defined(__sun)
-#include "solarisfixes.h"
+#include "melonDS/solarisfixes.h"
 #endif
 #if defined(__HAIKU__)
 #include <ByteOrder.h>

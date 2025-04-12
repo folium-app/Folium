@@ -1,5 +1,5 @@
 /*
-    Copyright 2016-2024 melonDS team
+    Copyright 2016-2022 melonDS team
 
     This file is part of melonDS.
 
@@ -19,17 +19,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <algorithm>
-#include "NDS.h"
-#include "GPU.h"
-#include "FIFO.h"
-#include "GPU3D_Soft.h"
-#include "Platform.h"
-#include "GPU3D.h"
+#include "melonDS/NDS.h"
+#include "melonDS/GPU.h"
+#include "melonDS/FIFO.h"
 
-namespace melonDS
-{
-using Platform::Log;
-using Platform::LogLevel;
 
 // 3D engine notes
 //
@@ -102,6 +95,9 @@ using Platform::LogLevel;
 // * additionally, some commands (BEGIN, LIGHT_VECTOR, BOXTEST) stall the polygon pipeline
 
 
+namespace GPU3D
+{
+
 const u8 CmdNumParams[256] =
 {
     // 0x00
@@ -139,34 +135,157 @@ const u8 CmdNumParams[256] =
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
+typedef union
+{
+    u64 _contents;
+    struct
+    {
+        u32 Param;
+        u8 Command;
+    };
+
+} CmdFIFOEntry;
+
+FIFO<CmdFIFOEntry, 256> CmdFIFO;
+FIFO<CmdFIFOEntry, 4> CmdPIPE;
+
+FIFO<CmdFIFOEntry, 64> CmdStallQueue;
+
+u32 NumCommands, CurCommand, ParamCount, TotalParams;
+
+bool GeometryEnabled;
+bool RenderingEnabled;
+
+u32 DispCnt;
+u8 AlphaRefVal, AlphaRef;
+
+u16 ToonTable[32];
+u16 EdgeTable[8];
+
+u32 FogColor, FogOffset;
+u8 FogDensityTable[32];
+
+u32 ClearAttr1, ClearAttr2;
+
+u32 RenderDispCnt;
+u8 RenderAlphaRef;
+
+u16 RenderToonTable[32];
+u16 RenderEdgeTable[8];
+
+u32 RenderFogColor, RenderFogOffset, RenderFogShift;
+u8 RenderFogDensityTable[34];
+
+u32 RenderClearAttr1, RenderClearAttr2;
+
+bool RenderFrameIdentical;
+
+u16 RenderXPos;
+
+u32 ZeroDotWLimit;
+
+u32 GXStat;
+
+u32 ExecParams[32];
+u32 ExecParamCount;
+
+u64 Timestamp;
+s32 CycleCount;
+s32 VertexPipeline;
+s32 NormalPipeline;
+s32 PolygonPipeline;
+s32 VertexSlotCounter;
+u32 VertexSlotsFree;
+
+u32 NumPushPopCommands;
+u32 NumTestCommands;
+
+
+u32 MatrixMode;
+
+s32 ProjMatrix[16];
+s32 PosMatrix[16];
+s32 VecMatrix[16];
+s32 TexMatrix[16];
+
+s32 ClipMatrix[16];
+bool ClipMatrixDirty;
+
+u32 Viewport[6];
+
+s32 ProjMatrixStack[16];
+s32 PosMatrixStack[32][16];
+s32 VecMatrixStack[32][16];
+s32 TexMatrixStack[16];
+s32 ProjMatrixStackPointer;
+s32 PosMatrixStackPointer;
+s32 TexMatrixStackPointer;
+
 void MatrixLoadIdentity(s32* m);
+void UpdateClipMatrix();
 
-GPU3D::GPU3D(melonDS::NDS& nds, std::unique_ptr<Renderer3D>&& renderer) noexcept :
-    NDS(nds),
-    CurrentRenderer(renderer ? std::move(renderer) : std::make_unique<SoftRenderer>())
+
+u32 PolygonMode;
+s16 CurVertex[3];
+u8 VertexColor[3];
+s16 TexCoords[2];
+s16 RawTexCoords[2];
+s16 Normal[3];
+
+s16 LightDirection[4][3];
+u8 LightColor[4][3];
+u8 MatDiffuse[3];
+u8 MatAmbient[3];
+u8 MatSpecular[3];
+u8 MatEmission[3];
+
+bool UseShininessTable;
+u8 ShininessTable[128];
+
+u32 PolygonAttr;
+u32 CurPolygonAttr;
+
+u32 TexParam;
+u32 TexPalette;
+
+s32 PosTestResult[4];
+s16 VecTestResult[3];
+
+Vertex TempVertexBuffer[4];
+u32 VertexNum;
+u32 VertexNumInPoly;
+u32 NumConsecutivePolygons;
+Polygon* LastStripPolygon;
+u32 NumOpaquePolygons;
+
+Vertex VertexRAM[6144 * 2];
+Polygon PolygonRAM[2048 * 2];
+
+Vertex* CurVertexRAM;
+Polygon* CurPolygonRAM;
+u32 NumVertices, NumPolygons;
+u32 CurRAMBank;
+
+std::array<Polygon*,2048> RenderPolygonRAM;
+u32 RenderNumPolygons;
+
+u32 FlushRequest;
+u32 FlushAttributes;
+
+std::unique_ptr<GPU3D::Renderer3D> CurrentRenderer = {};
+
+bool AbortFrame;
+
+bool Init()
+{
+    return true;
+}
+
+void DeInit()
 {
 }
 
-void Vertex::DoSavestate(Savestate* file) noexcept
-{
-    file->VarArray(Position, sizeof(Position));
-    file->VarArray(Color, sizeof(Color));
-    file->VarArray(TexCoords, sizeof(TexCoords));
-
-    file->Bool32(&Clipped);
-
-    file->VarArray(FinalPosition, sizeof(FinalPosition));
-    file->VarArray(FinalColor, sizeof(FinalColor));
-    file->VarArray(HiresPosition, sizeof(HiresPosition));
-}
-
-void GPU3D::SetCurrentRenderer(std::unique_ptr<Renderer3D>&& renderer) noexcept
-{
-    CurrentRenderer = std::move(renderer);
-    CurrentRenderer->Reset(NDS.GPU);
-}
-
-void GPU3D::ResetRenderingState() noexcept
+void ResetRenderingState()
 {
     RenderNumPolygons = 0;
 
@@ -185,20 +304,32 @@ void GPU3D::ResetRenderingState() noexcept
     RenderClearAttr2 = 0x00007FFF;
 }
 
-void GPU3D::Reset() noexcept
+void Reset()
 {
     CmdFIFO.Clear();
     CmdPIPE.Clear();
 
     CmdStallQueue.Clear();
 
-    ZeroDotWLimit = 0xFFFFFF;
+    NumCommands = 0;
+    CurCommand = 0;
+    ParamCount = 0;
+    TotalParams = 0;
+
+    NumPushPopCommands = 0;
+    NumTestCommands = 0;
+
+    DispCnt = 0;
+    AlphaRef = 0;
+
+    ZeroDotWLimit = 0; // CHECKME
 
     GXStat = 0;
 
     memset(ExecParams, 0, 32*4);
     ExecParamCount = 0;
 
+    Timestamp = 0;
     CycleCount = 0;
     VertexPipeline = 0;
     NormalPipeline = 0;
@@ -206,8 +337,6 @@ void GPU3D::Reset() noexcept
     VertexSlotCounter = 0;
     VertexSlotsFree = 1;
 
-    NumPushPopCommands = 0;
-    NumTestCommands = 0;
 
     MatrixMode = 0;
 
@@ -225,99 +354,40 @@ void GPU3D::Reset() noexcept
     memset(PosMatrixStack, 0, 31 * 16*4);
     memset(VecMatrixStack, 0, 31 * 16*4);
     memset(TexMatrixStack, 0, 16*4);
-
     ProjMatrixStackPointer = 0;
     PosMatrixStackPointer = 0;
     TexMatrixStackPointer = 0;
 
-    NumCommands = 0;
-    CurCommand = 0;
-    ParamCount = 0;
-    TotalParams = 0;
-
-    GeometryEnabled = false;
-    RenderingEnabled = false;
-
-    DispCnt = 0;
-    AlphaRefVal = 0;
-    AlphaRef = 0;
-
-    memset(ToonTable, 0, sizeof(ToonTable));
-    memset(EdgeTable, 0, sizeof(EdgeTable));
-
-    // TODO: confirm initial polyid/color/fog values
-    FogOffset = 0;
-    FogColor = 0;
-    memset(FogDensityTable, 0, sizeof(FogDensityTable));
-
-    ClearAttr1 = 0x3F000000;
-    ClearAttr2 = 0x00007FFF;
-
-    ResetRenderingState();
-
-    AbortFrame = false;
-
-    Timestamp = 0;
-
-    PolygonMode = 0;
-    memset(CurVertex, 0, sizeof(CurVertex));
-    memset(VertexColor, 0, sizeof(VertexColor));
-    memset(TexCoords, 0, sizeof(TexCoords));
-    memset(RawTexCoords, 0, sizeof(RawTexCoords));
-    memset(Normal, 0, sizeof(Normal));
-
-    memset(LightDirection, 0, sizeof(LightDirection));
-    memset(LightColor, 0, sizeof(LightColor));
-    memset(MatDiffuse, 0, sizeof(MatDiffuse));
-    memset(MatAmbient, 0, sizeof(MatAmbient));
-    memset(MatSpecular, 0, sizeof(MatSpecular));
-    memset(MatEmission, 0, sizeof(MatSpecular));
-
-    UseShininessTable = false;
-    // Shininess table seems to be uninitialized garbage, at least on n3dsxl hw?
-    // Also doesn't seem to be cleared properly unless the system is fully powered off?
-    memset(ShininessTable, 0, sizeof(ShininessTable));
-
-    PolygonAttr = 0;
-    CurPolygonAttr = 0;
-
-    TexParam = 0;
-    TexPalette = 0;
-
     memset(PosTestResult, 0, 4*4);
     memset(VecTestResult, 0, 2*3);
 
-    memset(TempVertexBuffer, 0, sizeof(TempVertexBuffer));
     VertexNum = 0;
     VertexNumInPoly = 0;
-    NumConsecutivePolygons = 0;
-    LastStripPolygon = nullptr;
-    NumOpaquePolygons = 0;
 
+    CurRAMBank = 0;
     CurVertexRAM = &VertexRAM[0];
     CurPolygonRAM = &PolygonRAM[0];
     NumVertices = 0;
     NumPolygons = 0;
-    CurRAMBank = 0;
+    NumOpaquePolygons = 0;
+
+    // TODO: confirm initial polyid/color/fog values
+    ClearAttr1 = 0x3F000000;
+    ClearAttr2 = 0x00007FFF;
 
     FlushRequest = 0;
     FlushAttributes = 0;
 
+    ResetRenderingState();
+
     RenderXPos = 0;
 
-    if (CurrentRenderer)
-        CurrentRenderer->Reset(NDS.GPU);
+    AbortFrame = false;
 }
 
-void GPU3D::DoSavestate(Savestate* file) noexcept
+void DoSavestate(Savestate* file)
 {
     file->Section("GP3D");
-
-    SoftRenderer* softRenderer = dynamic_cast<SoftRenderer*>(CurrentRenderer.get());
-    if (softRenderer && softRenderer->IsThreaded())
-    {
-        softRenderer->SetupRenderThread(NDS.GPU);
-    }
 
     CmdFIFO.DoSavestate(file);
     CmdPIPE.DoSavestate(file);
@@ -394,21 +464,33 @@ void GPU3D::DoSavestate(Savestate* file) noexcept
     file->Var32(&VertexNumInPoly);
     file->Var32(&NumConsecutivePolygons);
 
-    for (Vertex& vtx : TempVertexBuffer)
+    for (int i = 0; i < 4; i++)
     {
-        vtx.DoSavestate(file);
+        Vertex* vtx = &TempVertexBuffer[i];
+
+        file->VarArray(vtx->Position, sizeof(s32)*4);
+        file->VarArray(vtx->Color, sizeof(s32)*3);
+        file->VarArray(vtx->TexCoords, sizeof(s16)*2);
+
+        file->Bool32(&vtx->Clipped);
+
+        file->VarArray(vtx->FinalPosition, sizeof(s32)*2);
+        file->VarArray(vtx->FinalColor, sizeof(s32)*3);
     }
 
     if (file->Saving)
     {
-        u32 index = LastStripPolygon ? (u32)(LastStripPolygon - &PolygonRAM[0]) : UINT32_MAX;
-        file->Var32(&index);
+        u32 id;
+        if (LastStripPolygon) id = (u32)((LastStripPolygon - (&PolygonRAM[0])) / sizeof(Polygon));
+        else                  id = -1;
+        file->Var32(&id);
     }
     else
     {
-        u32 index = UINT32_MAX;
-        file->Var32(&index);
-        LastStripPolygon = (index == UINT32_MAX) ? nullptr : &PolygonRAM[index];
+        u32 id;
+        file->Var32(&id);
+        if (id == 0xFFFFFFFF) LastStripPolygon = NULL;
+        else          LastStripPolygon = &PolygonRAM[id];
     }
 
     file->Var32(&CurRAMBank);
@@ -419,9 +501,18 @@ void GPU3D::DoSavestate(Savestate* file) noexcept
     file->Var32(&FlushRequest);
     file->Var32(&FlushAttributes);
 
-    for (Vertex& vtx : VertexRAM)
+    for (int i = 0; i < 6144*2; i++)
     {
-        vtx.DoSavestate(file);
+        Vertex* vtx = &VertexRAM[i];
+
+        file->VarArray(vtx->Position, sizeof(s32)*4);
+        file->VarArray(vtx->Color, sizeof(s32)*3);
+        file->VarArray(vtx->TexCoords, sizeof(s16)*2);
+
+        file->Bool32(&vtx->Clipped);
+
+        file->VarArray(vtx->FinalPosition, sizeof(s32)*2);
+        file->VarArray(vtx->FinalColor, sizeof(s32)*3);
     }
 
     for(int i = 0; i < 2048*2; i++)
@@ -435,17 +526,20 @@ void GPU3D::DoSavestate(Savestate* file) noexcept
             for (int j = 0; j < 10; j++)
             {
                 Vertex* ptr = poly->Vertices[j];
-                u32 index = ptr ? (u32)(ptr - &VertexRAM[0]) : UINT32_MAX;
-                file->Var32(&index);
+                u32 id;
+                if (ptr) id = (u32)((ptr - (&VertexRAM[0])) / sizeof(Vertex));
+                else     id = -1;
+                file->Var32(&id);
             }
         }
         else
         {
             for (int j = 0; j < 10; j++)
             {
-                u32 index = UINT32_MAX;
-                file->Var32(&index);
-                poly->Vertices[j] = index == UINT32_MAX ? nullptr : &VertexRAM[index];
+                u32 id = -1;
+                file->Var32(&id);
+                if (id == 0xFFFFFFFF) poly->Vertices[j] = NULL;
+                else          poly->Vertices[j] = &VertexRAM[id];
             }
         }
 
@@ -465,7 +559,7 @@ void GPU3D::DoSavestate(Savestate* file) noexcept
         file->Bool32(&poly->IsShadowMask);
         file->Bool32(&poly->IsShadow);
 
-        if (file->IsAtLeastVersion(4, 1))
+        if (file->IsAtleastVersion(4, 1))
             file->Var32((u32*)&poly->Type);
         else
             poly->Type = 0;
@@ -493,6 +587,7 @@ void GPU3D::DoSavestate(Savestate* file) noexcept
         }
     }
 
+    // probably not worth storing the vblank-latched Renderxxxxxx variables
     CmdStallQueue.DoSavestate(file);
 
     file->Var32((u32*)&VertexPipeline);
@@ -508,27 +603,10 @@ void GPU3D::DoSavestate(Savestate* file) noexcept
 
         CurVertexRAM = &VertexRAM[CurRAMBank ? 6144 : 0];
         CurPolygonRAM = &PolygonRAM[CurRAMBank ? 2048 : 0];
-    }
 
-    file->Var32(&RenderNumPolygons);
-    if (file->Saving)
-    {
-        for (const Polygon* p : RenderPolygonRAM)
-        {
-            u32 index = p ? (p - &PolygonRAM[0]) : UINT32_MAX;
-
-            file->Var32(&index);
-        }
-    }
-    else
-    {
-        for (int i = 0; i < RenderPolygonRAM.size(); ++i)
-        {
-            u32 index = UINT32_MAX;
-            file->Var32(&index);
-
-            RenderPolygonRAM[i] = index == UINT32_MAX ? nullptr : &PolygonRAM[index];
-        }
+        // better safe than sorry, I guess
+        // might cause a blank frame but atleast it won't shit itself
+        RenderNumPolygons = 0;
     }
 
     file->VarArray(CurVertex, sizeof(s16)*3);
@@ -548,23 +626,11 @@ void GPU3D::DoSavestate(Savestate* file) noexcept
     file->VarArray(ShininessTable, 128*sizeof(u8));
 
     file->Bool32(&AbortFrame);
-    file->Bool32(&GeometryEnabled);
-    file->Bool32(&RenderingEnabled);
-    file->Var32(&PolygonMode);
-    file->Var32(&PolygonAttr);
-    file->Var32(&CurPolygonAttr);
-    file->Var32(&TexParam);
-    file->Var32(&TexPalette);
-    RenderFrameIdentical = false;
-    if (softRenderer && softRenderer->IsThreaded())
-    {
-        softRenderer->EnableRenderThread();
-    }
 }
 
 
 
-void GPU3D::SetEnabled(bool geometry, bool rendering) noexcept
+void SetEnabled(bool geometry, bool rendering)
 {
     GeometryEnabled = geometry;
     RenderingEnabled = rendering;
@@ -697,7 +763,7 @@ void MatrixTranslate(s32* m, s32* s)
     m[15] += ((s64)s[0]*m[3] + (s64)s[1]*m[7] + (s64)s[2]*m[11]) >> 12;
 }
 
-void GPU3D::UpdateClipMatrix() noexcept
+void UpdateClipMatrix()
 {
     if (!ClipMatrixDirty) return;
     ClipMatrixDirty = false;
@@ -708,7 +774,7 @@ void GPU3D::UpdateClipMatrix() noexcept
 
 
 
-void GPU3D::AddCycles(s32 num) noexcept
+void AddCycles(s32 num)
 {
     CycleCount += num;
 
@@ -739,7 +805,7 @@ void GPU3D::AddCycles(s32 num) noexcept
     }
 }
 
-void GPU3D::NextVertexSlot() noexcept
+void NextVertexSlot()
 {
     s32 num = (9 - VertexSlotCounter) + 1;
 
@@ -782,7 +848,7 @@ void GPU3D::NextVertexSlot() noexcept
     }
 }
 
-void GPU3D::StallPolygonPipeline(s32 delay, s32 nonstalldelay) noexcept
+void StallPolygonPipeline(s32 delay, s32 nonstalldelay)
 {
     if (PolygonPipeline > 0)
     {
@@ -837,7 +903,7 @@ void ClipSegment(Vertex* outbuf, Vertex* vin, Vertex* vout)
 }
 
 template<int comp, bool attribs>
-int ClipAgainstPlane(const GPU3D& gpu, Vertex* vertices, int nverts, int clipstart)
+int ClipAgainstPlane(Vertex* vertices, int nverts, int clipstart)
 {
     Vertex temp[10];
     int prev, next;
@@ -857,7 +923,7 @@ int ClipAgainstPlane(const GPU3D& gpu, Vertex* vertices, int nverts, int clipsta
         Vertex vtx = vertices[i];
         if (vtx.Position[comp] > vtx.Position[3])
         {
-            if ((comp == 2) && (!(gpu.CurPolygonAttr & (1<<12)))) return 0;
+            if ((comp == 2) && (!(CurPolygonAttr & (1<<12)))) return 0;
 
             Vertex* vprev = &vertices[prev];
             if (vprev->Position[comp] <= vprev->Position[3])
@@ -918,7 +984,7 @@ int ClipAgainstPlane(const GPU3D& gpu, Vertex* vertices, int nverts, int clipsta
 }
 
 template<bool attribs>
-int ClipPolygon(GPU3D& gpu, Vertex* vertices, int nverts, int clipstart)
+int ClipPolygon(Vertex* vertices, int nverts, int clipstart)
 {
     // clip.
     // for each vertex:
@@ -931,13 +997,13 @@ int ClipPolygon(GPU3D& gpu, Vertex* vertices, int nverts, int clipstart)
     // clipping seems to process the Y plane before the X plane.
 
     // Z clipping
-    nverts = ClipAgainstPlane<2, attribs>(gpu, vertices, nverts, clipstart);
+    nverts = ClipAgainstPlane<2, attribs>(vertices, nverts, clipstart);
 
     // Y clipping
-    nverts = ClipAgainstPlane<1, attribs>(gpu, vertices, nverts, clipstart);
+    nverts = ClipAgainstPlane<1, attribs>(vertices, nverts, clipstart);
 
     // X clipping
-    nverts = ClipAgainstPlane<0, attribs>(gpu, vertices, nverts, clipstart);
+    nverts = ClipAgainstPlane<0, attribs>(vertices, nverts, clipstart);
 
     return nverts;
 }
@@ -950,7 +1016,7 @@ bool ClipCoordsEqual(Vertex* a, Vertex* b)
            a->Position[3] == b->Position[3];
 }
 
-void GPU3D::SubmitPolygon() noexcept
+void SubmitPolygon()
 {
     Vertex clippedvertices[10];
     Vertex* reusedvertices[2];
@@ -998,9 +1064,9 @@ void GPU3D::SubmitPolygon() noexcept
 
     dot = ((s64)v1->Position[0] * normalX) + ((s64)v1->Position[1] * normalY) + ((s64)v1->Position[3] * normalZ);
 
-    bool facingview = (dot <= 0);
+    bool facingview = (dot < 0);
 
-    if (dot < 0)
+    if (facingview)
     {
         if (!(CurPolygonAttr & (1<<7)))
         {
@@ -1083,7 +1149,7 @@ void GPU3D::SubmitPolygon() noexcept
 
     // clipping
 
-    nverts = ClipPolygon<true>(*this, clippedvertices, nverts, clipstart);
+    nverts = ClipPolygon<true>(clippedvertices, nverts, clipstart);
     if (nverts == 0)
     {
         LastStripPolygon = NULL;
@@ -1281,7 +1347,7 @@ void GPU3D::SubmitPolygon() noexcept
     {
         Vertex* vtx = poly->Vertices[i];
 
-        if (vtx->FinalPosition[1] < ytop)
+        if (vtx->FinalPosition[1] < ytop || (vtx->FinalPosition[1] == ytop && vtx->FinalPosition[0] < xtop))
         {
             xtop = vtx->FinalPosition[0];
             ytop = vtx->FinalPosition[1];
@@ -1355,7 +1421,7 @@ void GPU3D::SubmitPolygon() noexcept
         LastStripPolygon = NULL;
 }
 
-void GPU3D::SubmitVertex() noexcept
+void SubmitVertex()
 {
     s64 vertex[4] = {(s64)CurVertex[0], (s64)CurVertex[1], (s64)CurVertex[2], 0x1000};
     Vertex* vertextrans = &TempVertexBuffer[VertexNumInPoly];
@@ -1453,7 +1519,7 @@ void GPU3D::SubmitVertex() noexcept
     AddCycles(3);
 }
 
-void GPU3D::CalculateLighting() noexcept
+void CalculateLighting()
 {
     if ((TexParam >> 30) == 2)
     {
@@ -1461,85 +1527,66 @@ void GPU3D::CalculateLighting() noexcept
         TexCoords[1] = RawTexCoords[1] + (((s64)Normal[0]*TexMatrix[1] + (s64)Normal[1]*TexMatrix[5] + (s64)Normal[2]*TexMatrix[9]) >> 21);
     }
 
-    s32 normaltrans[3]; // should be 1 bit sign 10 bits frac
-    normaltrans[0] = ((Normal[0]*VecMatrix[0] + Normal[1]*VecMatrix[4] + Normal[2]*VecMatrix[8]) << 9) >> 21;
-    normaltrans[1] = ((Normal[0]*VecMatrix[1] + Normal[1]*VecMatrix[5] + Normal[2]*VecMatrix[9]) << 9) >> 21;
-    normaltrans[2] = ((Normal[0]*VecMatrix[2] + Normal[1]*VecMatrix[6] + Normal[2]*VecMatrix[10]) << 9) >> 21;
+    s32 normaltrans[3];
+    normaltrans[0] = (Normal[0]*VecMatrix[0] + Normal[1]*VecMatrix[4] + Normal[2]*VecMatrix[8]) >> 12;
+    normaltrans[1] = (Normal[0]*VecMatrix[1] + Normal[1]*VecMatrix[5] + Normal[2]*VecMatrix[9]) >> 12;
+    normaltrans[2] = (Normal[0]*VecMatrix[2] + Normal[1]*VecMatrix[6] + Normal[2]*VecMatrix[10]) >> 12;
+
+    VertexColor[0] = MatEmission[0];
+    VertexColor[1] = MatEmission[1];
+    VertexColor[2] = MatEmission[2];
 
     s32 c = 0;
-    u32 vtxbuff[3] =
-    {
-        (u32)MatEmission[0] << 14,
-        (u32)MatEmission[1] << 14,
-        (u32)MatEmission[2] << 14
-    };
     for (int i = 0; i < 4; i++)
     {
         if (!(CurPolygonAttr & (1<<i)))
             continue;
 
-        // (credit to azusa for working out most of the details of the diff. algorithm, and essentially the entire spec. algorithm)
-        
-        // calculate dot product
-        // bottom 9 bits are discarded after multiplying and before adding
-        s32 dot = ((LightDirection[i][0]*normaltrans[0]) >> 9) +
-                  ((LightDirection[i][1]*normaltrans[1]) >> 9) +
-                  ((LightDirection[i][2]*normaltrans[2]) >> 9);
+        // overflow handling (for example, if the normal length is >1)
+        // according to some hardware tests
+        // * diffuse level is saturated to 255
+        // * shininess level mirrors back to 0 and is ANDed with 0xFF, that before being squared
+        // TODO: check how it behaves when the computed shininess is >=0x200
 
-        s32 shinelevel;
-        if (dot > 0) 
-        {
-            // -- diffuse lighting --
-            
-            // convert dot to signed 11 bit int
-            // then we truncate the result of the multiplications to an unsigned 20 bits before adding to the vtx color
-            s32 diffdot = (dot << 21) >> 21;
-            vtxbuff[0] += (MatDiffuse[0] * LightColor[i][0] * diffdot) & 0xFFFFF;
-            vtxbuff[1] += (MatDiffuse[1] * LightColor[i][1] * diffdot) & 0xFFFFF;
-            vtxbuff[2] += (MatDiffuse[2] * LightColor[i][2] * diffdot) & 0xFFFFF;
+        s32 difflevel = (-(LightDirection[i][0]*normaltrans[0] +
+                         LightDirection[i][1]*normaltrans[1] +
+                         LightDirection[i][2]*normaltrans[2])) >> 10;
+        if (difflevel < 0) difflevel = 0;
+        else if (difflevel > 255) difflevel = 255;
 
-            // -- specular lighting --
-        
-            // reuse the dot product from diffuse lighting
-            dot += normaltrans[2];
+        s32 shinelevel = -(((LightDirection[i][0]>>1)*normaltrans[0] +
+                          (LightDirection[i][1]>>1)*normaltrans[1] +
+                          ((LightDirection[i][2]-0x200)>>1)*normaltrans[2]) >> 10);
+        if (shinelevel < 0) shinelevel = 0;
+        else if (shinelevel > 255) shinelevel = (0x100 - shinelevel) & 0xFF;
+        shinelevel = ((shinelevel * shinelevel) >> 7) - 0x100; // really (2*shinelevel*shinelevel)-1
+        if (shinelevel < 0) shinelevel = 0;
 
-            // convert to s11, then square it, and truncate to 10 bits
-            dot = (dot << 21) >> 21;
-            dot = ((dot * dot) >> 10) & 0x3FF;
-
-            // multiply dot and reciprocal, the subtract '1'
-            shinelevel = ((dot * SpecRecip[i]) >> 8) - (1<<9);
-
-            if (shinelevel < 0) shinelevel = 0;
-            else
-            {
-                // sign extend to convert to signed 14 bit integer
-                shinelevel = (shinelevel << 18) >> 18;
-                if (shinelevel < 0) shinelevel = 0; // for some reason there seems to be a redundant check for <0?
-                else if (shinelevel > 0x1FF) shinelevel = 0x1FF;
-            }
-        }
-        else shinelevel = 0;
-
-        // convert shinelevel to use for lookup in the shininess table if enabled.
         if (UseShininessTable)
         {
-            shinelevel >>= 2;
+            // checkme
+            shinelevel >>= 1;
             shinelevel = ShininessTable[shinelevel];
-            shinelevel <<= 1;
         }
 
-        // Note: ambient seems to be a plain bitshift
-        vtxbuff[0] += ((MatSpecular[0] * shinelevel) + (MatAmbient[0] << 9)) * LightColor[i][0];
-        vtxbuff[1] += ((MatSpecular[1] * shinelevel) + (MatAmbient[1] << 9)) * LightColor[i][1];
-        vtxbuff[2] += ((MatSpecular[2] * shinelevel) + (MatAmbient[2] << 9)) * LightColor[i][2];
+        VertexColor[0] += ((MatSpecular[0] * LightColor[i][0] * shinelevel) >> 13);
+        VertexColor[0] += ((MatDiffuse[0] * LightColor[i][0] * difflevel) >> 13);
+        VertexColor[0] += ((MatAmbient[0] * LightColor[i][0]) >> 5);
+
+        VertexColor[1] += ((MatSpecular[1] * LightColor[i][1] * shinelevel) >> 13);
+        VertexColor[1] += ((MatDiffuse[1] * LightColor[i][1] * difflevel) >> 13);
+        VertexColor[1] += ((MatAmbient[1] * LightColor[i][1]) >> 5);
+
+        VertexColor[2] += ((MatSpecular[2] * LightColor[i][2] * shinelevel) >> 13);
+        VertexColor[2] += ((MatDiffuse[2] * LightColor[i][2] * difflevel) >> 13);
+        VertexColor[2] += ((MatAmbient[2] * LightColor[i][2]) >> 5);
+
+        if (VertexColor[0] > 31) VertexColor[0] = 31;
+        if (VertexColor[1] > 31) VertexColor[1] = 31;
+        if (VertexColor[2] > 31) VertexColor[2] = 31;
 
         c++;
     }
-
-    VertexColor[0] = (vtxbuff[0] >> 14 > 31) ? 31 : (vtxbuff[0] >> 14);
-    VertexColor[1] = (vtxbuff[1] >> 14 > 31) ? 31 : (vtxbuff[1] >> 14);
-    VertexColor[2] = (vtxbuff[2] >> 14 > 31) ? 31 : (vtxbuff[2] >> 14);
 
     if (c < 1) c = 1;
     NormalPipeline = 7;
@@ -1547,7 +1594,7 @@ void GPU3D::CalculateLighting() noexcept
 }
 
 
-void GPU3D::BoxTest(const u32* params) noexcept
+void BoxTest(u32* params)
 {
     Vertex cube[8];
     Vertex face[10];
@@ -1591,7 +1638,7 @@ void GPU3D::BoxTest(const u32* params) noexcept
 
     // front face (-Z)
     face[0] = cube[0]; face[1] = cube[1]; face[2] = cube[2]; face[3] = cube[3];
-    res = ClipPolygon<false>(*this, face, 4, 0);
+    res = ClipPolygon<false>(face, 4, 0);
     if (res > 0)
     {
         GXStat |= (1<<1);
@@ -1600,7 +1647,7 @@ void GPU3D::BoxTest(const u32* params) noexcept
 
     // back face (+Z)
     face[0] = cube[4]; face[1] = cube[5]; face[2] = cube[6]; face[3] = cube[7];
-    res = ClipPolygon<false>(*this, face, 4, 0);
+    res = ClipPolygon<false>(face, 4, 0);
     if (res > 0)
     {
         GXStat |= (1<<1);
@@ -1609,7 +1656,7 @@ void GPU3D::BoxTest(const u32* params) noexcept
 
     // left face (-X)
     face[0] = cube[0]; face[1] = cube[3]; face[2] = cube[4]; face[3] = cube[5];
-    res = ClipPolygon<false>(*this, face, 4, 0);
+    res = ClipPolygon<false>(face, 4, 0);
     if (res > 0)
     {
         GXStat |= (1<<1);
@@ -1618,7 +1665,7 @@ void GPU3D::BoxTest(const u32* params) noexcept
 
     // right face (+X)
     face[0] = cube[1]; face[1] = cube[2]; face[2] = cube[7]; face[3] = cube[6];
-    res = ClipPolygon<false>(*this, face, 4, 0);
+    res = ClipPolygon<false>(face, 4, 0);
     if (res > 0)
     {
         GXStat |= (1<<1);
@@ -1627,7 +1674,7 @@ void GPU3D::BoxTest(const u32* params) noexcept
 
     // bottom face (-Y)
     face[0] = cube[0]; face[1] = cube[1]; face[2] = cube[6]; face[3] = cube[5];
-    res = ClipPolygon<false>(*this, face, 4, 0);
+    res = ClipPolygon<false>(face, 4, 0);
     if (res > 0)
     {
         GXStat |= (1<<1);
@@ -1636,7 +1683,7 @@ void GPU3D::BoxTest(const u32* params) noexcept
 
     // top face (+Y)
     face[0] = cube[2]; face[1] = cube[3]; face[2] = cube[4]; face[3] = cube[7];
-    res = ClipPolygon<false>(*this, face, 4, 0);
+    res = ClipPolygon<false>(face, 4, 0);
     if (res > 0)
     {
         GXStat |= (1<<1);
@@ -1644,7 +1691,7 @@ void GPU3D::BoxTest(const u32* params) noexcept
     }
 }
 
-void GPU3D::PosTest() noexcept
+void PosTest()
 {
     s64 vertex[4] = {(s64)CurVertex[0], (s64)CurVertex[1], (s64)CurVertex[2], 0x1000};
 
@@ -1657,7 +1704,7 @@ void GPU3D::PosTest() noexcept
     AddCycles(5);
 }
 
-void GPU3D::VecTest(u32 param) noexcept
+void VecTest(u32 param)
 {
     // TODO: maybe it overwrites the normal registers, too
 
@@ -1680,7 +1727,7 @@ void GPU3D::VecTest(u32 param) noexcept
 
 
 
-void GPU3D::CmdFIFOWrite(const CmdFIFOEntry& entry) noexcept
+void CmdFIFOWrite(CmdFIFOEntry& entry)
 {
     if (CmdFIFO.IsEmpty() && !CmdPIPE.IsFull())
     {
@@ -1695,7 +1742,7 @@ void GPU3D::CmdFIFOWrite(const CmdFIFOEntry& entry) noexcept
             // has 64 entries. this is less complicated than trying to make STMxx stall-able.
 
             CmdStallQueue.Write(entry);
-            NDS.GXFIFOStall();
+            NDS::GXFIFOStall();
             return;
         }
 
@@ -1716,7 +1763,7 @@ void GPU3D::CmdFIFOWrite(const CmdFIFOEntry& entry) noexcept
     }
 }
 
-GPU3D::CmdFIFOEntry GPU3D::CmdFIFORead() noexcept
+CmdFIFOEntry CmdFIFORead()
 {
     CmdFIFOEntry ret = CmdPIPE.Read();
 
@@ -1739,7 +1786,7 @@ GPU3D::CmdFIFOEntry GPU3D::CmdFIFORead() noexcept
             }
 
             if (CmdStallQueue.IsEmpty())
-                NDS.GXFIFOUnstall();
+                NDS::GXFIFOUnstall();
         }
 
         CheckFIFODMA();
@@ -1749,7 +1796,39 @@ GPU3D::CmdFIFOEntry GPU3D::CmdFIFORead() noexcept
     return ret;
 }
 
-void GPU3D::ExecuteCommand() noexcept
+inline void VertexPipelineSubmitCmd()
+{
+    // vertex commands 0x24, 0x25, 0x26, 0x27, 0x28
+    if (!(VertexSlotsFree & 0x1)) NextVertexSlot();
+    else                          AddCycles(1);
+    NormalPipeline = 0;
+}
+
+inline void VertexPipelineCmdDelayed6()
+{
+    // commands 0x20, 0x30, 0x31, 0x72 that can run 6 cycles after a vertex
+    if (VertexPipeline > 2) AddCycles((VertexPipeline - 2) + 1);
+    else                    AddCycles(NormalPipeline + 1);
+    NormalPipeline = 0;
+}
+
+inline void VertexPipelineCmdDelayed8()
+{
+    // commands 0x29, 0x2A, 0x2B, 0x33, 0x34, 0x41, 0x60, 0x71 that can run 8 cycles after a vertex
+    if (VertexPipeline > 0) AddCycles(VertexPipeline + 1);
+    else                    AddCycles(NormalPipeline + 1);
+    NormalPipeline = 0;
+}
+
+inline void VertexPipelineCmdDelayed4()
+{
+    // all other commands can run 4 cycles after a vertex
+    // no need to do much here since that is the minimum
+    AddCycles(NormalPipeline + 1);
+    NormalPipeline = 0;
+}
+
+void ExecuteCommand()
 {
     CmdFIFOEntry entry = CmdFIFORead();
 
@@ -2033,15 +2112,9 @@ void GPU3D::ExecuteCommand() noexcept
                 dir[0] = (s16)((entry.Param & 0x000003FF) << 6) >> 6;
                 dir[1] = (s16)((entry.Param & 0x000FFC00) >> 4) >> 6;
                 dir[2] = (s16)((entry.Param & 0x3FF00000) >> 14) >> 6;
-                // the order of operations here is very specific: discard bottom 12 bits -> negate -> then sign extend to convert to 11 bit signed int
-                // except for when used to calculate the specular reciprocal; then it's: sign extend -> discard lsb -> negate.
-                LightDirection[l][0] = (-((dir[0]*VecMatrix[0] + dir[1]*VecMatrix[4] + dir[2]*VecMatrix[8] ) >> 12) << 21) >> 21;
-                LightDirection[l][1] = (-((dir[0]*VecMatrix[1] + dir[1]*VecMatrix[5] + dir[2]*VecMatrix[9] ) >> 12) << 21) >> 21;
-                LightDirection[l][2] = (-((dir[0]*VecMatrix[2] + dir[1]*VecMatrix[6] + dir[2]*VecMatrix[10]) >> 12) << 21) >> 21;
-                s32 den =              -(((dir[0]*VecMatrix[2] + dir[1]*VecMatrix[6] + dir[2]*VecMatrix[10]) << 9) >> 21) + (1<<9);
-
-                if (den == 0) SpecRecip[l] = 0;
-                else SpecRecip[l] = (1<<18) / den;
+                LightDirection[l][0] = (dir[0]*VecMatrix[0] + dir[1]*VecMatrix[4] + dir[2]*VecMatrix[8]) >> 12;
+                LightDirection[l][1] = (dir[0]*VecMatrix[1] + dir[1]*VecMatrix[5] + dir[2]*VecMatrix[9]) >> 12;
+                LightDirection[l][2] = (dir[0]*VecMatrix[2] + dir[1]*VecMatrix[6] + dir[2]*VecMatrix[10]) >> 12;
             }
             AddCycles(5);
             break;
@@ -2353,13 +2426,13 @@ void GPU3D::ExecuteCommand() noexcept
     }
 }
 
-s32 GPU3D::CyclesToRunFor() const noexcept
+s32 CyclesToRunFor()
 {
     if (CycleCount < 0) return 0;
     return CycleCount;
 }
 
-void GPU3D::FinishWork(s32 cycles) noexcept
+void FinishWork(s32 cycles)
 {
     AddCycles(cycles);
     if (NormalPipeline)
@@ -2373,18 +2446,18 @@ void GPU3D::FinishWork(s32 cycles) noexcept
     GXStat &= ~(1<<27);
 }
 
-void GPU3D::Run() noexcept
+void Run()
 {
     if (!GeometryEnabled || FlushRequest ||
         (CmdPIPE.IsEmpty() && !(GXStat & (1<<27))))
     {
-        Timestamp = NDS.ARM9Timestamp >> NDS.ARM9ClockShift;
+        Timestamp = NDS::ARM9Timestamp >> NDS::ARM9ClockShift;
         return;
     }
 
-    s32 cycles = (NDS.ARM9Timestamp >> NDS.ARM9ClockShift) - Timestamp;
+    s32 cycles = (NDS::ARM9Timestamp >> NDS::ARM9ClockShift) - Timestamp;
     CycleCount -= cycles;
-    Timestamp = NDS.ARM9Timestamp >> NDS.ARM9ClockShift;
+    Timestamp = NDS::ARM9Timestamp >> NDS::ARM9ClockShift;
 
     if (CycleCount <= 0)
     {
@@ -2408,7 +2481,7 @@ void GPU3D::Run() noexcept
 }
 
 
-void GPU3D::CheckFIFOIRQ() noexcept
+void CheckFIFOIRQ()
 {
     bool irq = false;
     switch (GXStat >> 30)
@@ -2417,30 +2490,24 @@ void GPU3D::CheckFIFOIRQ() noexcept
     case 2: irq = CmdFIFO.IsEmpty(); break;
     }
 
-    if (irq) NDS.SetIRQ(0, IRQ_GXFIFO);
-    else     NDS.ClearIRQ(0, IRQ_GXFIFO);
+    if (irq) NDS::SetIRQ(0, NDS::IRQ_GXFIFO);
+    else     NDS::ClearIRQ(0, NDS::IRQ_GXFIFO);
 }
 
-void GPU3D::CheckFIFODMA() noexcept
+void CheckFIFODMA()
 {
     if (CmdFIFO.Level() < 128)
-        NDS.CheckDMAs(0, 0x07);
+        NDS::CheckDMAs(0, 0x07);
 }
 
-void GPU3D::VCount144(GPU& gpu) noexcept
+void VCount144()
 {
-    CurrentRenderer->VCount144(gpu);
+    CurrentRenderer->VCount144();
 }
 
-void GPU3D::RestartFrame(GPU& gpu) noexcept
+void RestartFrame()
 {
-    CurrentRenderer->RestartFrame(gpu);
-}
-
-void GPU3D::Stop(const GPU& gpu) noexcept
-{
-    if (CurrentRenderer)
-        CurrentRenderer->Stop(gpu);
+    CurrentRenderer->RestartFrame();
 }
 
 
@@ -2456,7 +2523,7 @@ bool YSort(Polygon* a, Polygon* b)
     return a->SortKey < b->SortKey;
 }
 
-void GPU3D::VBlank() noexcept
+void VBlank()
 {
     if (GeometryEnabled)
     {
@@ -2533,20 +2600,21 @@ void GPU3D::VBlank() noexcept
     }
 }
 
-void GPU3D::VCount215(GPU& gpu) noexcept
+void VCount215()
 {
-    CurrentRenderer->RenderFrame(gpu);
+    CurrentRenderer->RenderFrame();
 }
 
-void GPU3D::SetRenderXPos(u16 xpos) noexcept
+void SetRenderXPos(u16 xpos)
 {
     if (!RenderingEnabled) return;
 
     RenderXPos = xpos & 0x01FF;
 }
 
+u32 ScrolledLine[256];
 
-u32* GPU3D::GetLine(int line) noexcept
+u32* GetLine(int line)
 {
     if (!AbortFrame)
     {
@@ -2581,12 +2649,8 @@ u32* GPU3D::GetLine(int line) noexcept
     return ScrolledLine;
 }
 
-bool GPU3D::IsRendererAccelerated() const noexcept
-{
-    return CurrentRenderer && CurrentRenderer->Accelerated;
-}
 
-void GPU3D::WriteToGXFIFO(u32 val) noexcept
+void WriteToGXFIFO(u32 val)
 {
     if (NumCommands == 0)
     {
@@ -2625,7 +2689,7 @@ void GPU3D::WriteToGXFIFO(u32 val) noexcept
 }
 
 
-u8 GPU3D::Read8(u32 addr) noexcept
+u8 Read8(u32 addr)
 {
     switch (addr)
     {
@@ -2660,11 +2724,11 @@ u8 GPU3D::Read8(u32 addr) noexcept
         }
     }
 
-    Log(LogLevel::Debug, "unknown GPU3D read8 %08X\n", addr);
+    printf("unknown GPU3D read8 %08X\n", addr);
     return 0;
 }
 
-u16 GPU3D::Read16(u32 addr) noexcept
+u16 Read16(u32 addr)
 {
     switch (addr)
     {
@@ -2704,11 +2768,11 @@ u16 GPU3D::Read16(u32 addr) noexcept
     case 0x04000634: return VecTestResult[2];
     }
 
-    Log(LogLevel::Debug, "unknown GPU3D read16 %08X\n", addr);
+    printf("unknown GPU3D read16 %08X\n", addr);
     return 0;
 }
 
-u32 GPU3D::Read32(u32 addr) noexcept
+u32 Read32(u32 addr)
 {
     switch (addr)
     {
@@ -2761,7 +2825,7 @@ u32 GPU3D::Read32(u32 addr) noexcept
     return 0;
 }
 
-void GPU3D::Write8(u32 addr, u8 val) noexcept
+void Write8(u32 addr, u8 val)
 {
     if (!RenderingEnabled && addr >= 0x04000320 && addr < 0x04000400) return;
     if (!GeometryEnabled  && addr >= 0x04000400 && addr < 0x04000700) return;
@@ -2808,10 +2872,10 @@ void GPU3D::Write8(u32 addr, u8 val) noexcept
         return;
     }
 
-    Log(LogLevel::Debug, "unknown GPU3D write8 %08X %02X\n", addr, val);
+    printf("unknown GPU3D write8 %08X %02X\n", addr, val);
 }
 
-void GPU3D::Write16(u32 addr, u16 val) noexcept
+void Write16(u32 addr, u16 val)
 {
     if (!RenderingEnabled && addr >= 0x04000320 && addr < 0x04000400) return;
     if (!GeometryEnabled  && addr >= 0x04000400 && addr < 0x04000700) return;
@@ -2895,10 +2959,10 @@ void GPU3D::Write16(u32 addr, u16 val) noexcept
         return;
     }
 
-    Log(LogLevel::Debug, "unknown GPU3D write16 %08X %04X\n", addr, val);
+    printf("unknown GPU3D write16 %08X %04X\n", addr, val);
 }
 
-void GPU3D::Write32(u32 addr, u32 val) noexcept
+void Write32(u32 addr, u32 val)
 {
     if (!RenderingEnabled && addr >= 0x04000320 && addr < 0x04000400) return;
     if (!GeometryEnabled  && addr >= 0x04000400 && addr < 0x04000700) return;
@@ -2992,13 +3056,7 @@ void GPU3D::Write32(u32 addr, u32 val) noexcept
         return;
     }
 
-    Log(LogLevel::Debug, "unknown GPU3D write32 %08X %08X\n", addr, val);
-}
-
-void GPU3D::Blit(const GPU& gpu) noexcept
-{
-    if (CurrentRenderer)
-        CurrentRenderer->Blit(gpu);
+    printf("unknown GPU3D write32 %08X %08X\n", addr, val);
 }
 
 Renderer3D::Renderer3D(bool Accelerated)

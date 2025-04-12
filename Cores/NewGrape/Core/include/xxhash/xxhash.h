@@ -90,7 +90,7 @@ extern "C" {
  *
  * Usage:
  *     #define XXH_INLINE_ALL
- *     #include "xxhash.h"
+ *     #include "melonDS/xxhash.h"
  *
  * Do not compile and link xxhash.o as a separate object, as it is not useful.
  */
