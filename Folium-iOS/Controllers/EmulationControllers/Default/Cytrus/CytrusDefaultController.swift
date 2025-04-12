@@ -50,6 +50,29 @@ class CytrusDefaultController : SkinController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        Cytrus.shared.diskCacheCallback { stage, progress, maximum in
+            enum LoadCallbackStage : UInt8, CustomStringConvertible {
+                case prepare, preload, decompile, build, complete
+                
+                var description: String {
+                    switch self {
+                    case .prepare:
+                        "Prepare"
+                    case .preload:
+                        "Preload"
+                    case .decompile:
+                        "Decompile"
+                    case .build:
+                        "Build"
+                    case .complete:
+                        "Complete"
+                    }
+                }
+            }
+            
+            print(LoadCallbackStage(rawValue: stage)?.description ?? "No stage available", progress, maximum)
+        }
+        
         topMetalCallbackView = .init(frame: .zero, device: MTLCreateSystemDefaultDevice())
         guard let topMetalCallbackView else { return }
         topMetalCallbackView.translatesAutoresizingMaskIntoConstraints = false
@@ -335,9 +358,15 @@ class CytrusDefaultController : SkinController {
         case .plus:
             Cytrus.shared.virtualControllerButtonDown(.start)
             
-        case .loadState: Cytrus.shared.loadState()
+        case .loadState:
+            Cytrus.shared.loadState { result in
+                UINotificationFeedbackGenerator().notificationOccurred(result ? .success : .error)
+            }
         case .saveState:
-            Cytrus.shared.saveState()
+            Cytrus.shared.saveState { result in
+                UINotificationFeedbackGenerator().notificationOccurred(result ? .success : .error)
+            }
+            
             if let viewController = UIApplication.shared.viewController as? CytrusDefaultController {
                 if let game = viewController.game as? CytrusGame {
                     game.update()

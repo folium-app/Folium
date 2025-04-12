@@ -411,10 +411,10 @@ class GameNoDataCell : BlurredCollectionViewCell {
     }
 }
 
-enum SectionType : Int, CaseIterable, CustomStringConvertible {
+enum SectionType : Int, CaseIterable {
     case header, play, cheats, coreVersion, kernelMemoryMode, new3DSKernelMemoryMode, publisher, regions, saveStates, delete
     
-    var description: String {
+    var header: String {
         switch self {
         case .header: "Header"
         case .play: "Play"
@@ -426,6 +426,13 @@ enum SectionType : Int, CaseIterable, CustomStringConvertible {
         case .regions: "Regions"
         case .saveStates: "Save States"
         case .delete: "Delete"
+        }
+    }
+    
+    var footer: String? {
+        switch self {
+        case .cheats, .saveStates: "Swipe for more"
+        default: nil
         }
     }
 }
@@ -612,7 +619,15 @@ class GameIntermediateController : UICollectionViewController {
         let supplementaryCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewListCell> = .init(elementKind: UICollectionView.elementKindSectionHeader) { supplementaryView, elementKind, indexPath in
             var contentConfiguration = UIListContentConfiguration.extraProminentInsetGroupedHeader()
             if let dataSource = self.dataSource, let section = dataSource.sectionIdentifier(for: indexPath.section) {
-                contentConfiguration.text = section.description
+                contentConfiguration.text = section.header
+            }
+            supplementaryView.contentConfiguration = contentConfiguration
+        }
+        
+        let footerSupplementaryCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewListCell> = .init(elementKind: UICollectionView.elementKindSectionFooter) { supplementaryView, elementKind, indexPath in
+            var contentConfiguration: UIListContentConfiguration = if #available(iOS 18, *) { .footer() } else { .plainFooter() }
+            if let dataSource = self.dataSource, let section = dataSource.sectionIdentifier(for: indexPath.section), dataSource.snapshot().itemIdentifiers(inSection: section).count > 1 {
+                contentConfiguration.text = section.footer
             }
             supplementaryView.contentConfiguration = contentConfiguration
         }
@@ -632,12 +647,19 @@ class GameIntermediateController : UICollectionViewController {
             case let noData as LimitedOrNoData:
                 collectionView.dequeueConfiguredReusableCell(using: noDataCelRegistration, for: indexPath, item: noData)
             default:
-                 nil
+                nil
             }
         }
         guard let dataSource else { return }
+        
         dataSource.supplementaryViewProvider = { collectionView, elementKind, indexPath in
-            collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryCellRegistration, for: indexPath)
+            switch elementKind {
+            case UICollectionView.elementKindSectionHeader:
+                collectionView.dequeueConfiguredReusableSupplementary(using: supplementaryCellRegistration, for: indexPath)
+            case UICollectionView.elementKindSectionFooter:
+                collectionView.dequeueConfiguredReusableSupplementary(using: footerSupplementaryCellRegistration, for: indexPath)
+            default: nil
+            }
         }
         
         reloadData()

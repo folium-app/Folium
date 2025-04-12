@@ -412,8 +412,14 @@ class GrapeDefaultController : SkinController {
             Grape.shared.input(9, true)
         case .r:
             Grape.shared.input(8, true)
-        case .loadState: Grape.shared.loadState()
-        case .saveState: Grape.shared.saveState()
+        case .loadState:
+            Grape.shared.loadState { result in
+                UINotificationFeedbackGenerator().notificationOccurred(result ? .success : .error)
+            }
+        case .saveState:
+            Grape.shared.saveState { result in
+                UINotificationFeedbackGenerator().notificationOccurred(result ? .success : .error)
+            }
         default:
             break
         }

@@ -79,7 +79,11 @@ extension SkinController : ControllerButtonDelegate {
         case .cytrus:
             CytrusDefaultController.touchBegan(with: type, playerIndex: playerIndex)
         case .grape:
-            GrapeDefaultController.touchBegan(with: type, playerIndex: playerIndex)
+            if self.isKind(of: GrapeDefaultController.classForCoder()) {
+                GrapeDefaultController.touchBegan(with: type, playerIndex: playerIndex)
+            } else {
+                NewGrapeDefaultController.touchBegan(with: type, playerIndex: playerIndex)
+            }
         case .lychee:
             LycheeDefaultController.touchBegan(with: type, playerIndex: playerIndex)
             LycheeSkinController.touchBegan(with: type, playerIndex: playerIndex)
@@ -101,7 +105,11 @@ extension SkinController : ControllerButtonDelegate {
         case .cytrus:
             CytrusDefaultController.touchEnded(with: type, playerIndex: playerIndex)
         case .grape:
-            GrapeDefaultController.touchEnded(with: type, playerIndex: playerIndex)
+            if self.isKind(of: GrapeDefaultController.classForCoder()) {
+                GrapeDefaultController.touchEnded(with: type, playerIndex: playerIndex)
+            } else {
+                NewGrapeDefaultController.touchEnded(with: type, playerIndex: playerIndex)
+            }
         case .lychee:
             LycheeDefaultController.touchEnded(with: type, playerIndex: playerIndex)
             LycheeSkinController.touchEnded(with: type, playerIndex: playerIndex)
@@ -123,7 +131,11 @@ extension SkinController : ControllerButtonDelegate {
         case .cytrus:
             CytrusDefaultController.touchMoved(with: type, playerIndex: playerIndex)
         case .grape:
-            GrapeDefaultController.touchMoved(with: type, playerIndex: playerIndex)
+            if self.isKind(of: GrapeDefaultController.classForCoder()) {
+                GrapeDefaultController.touchMoved(with: type, playerIndex: playerIndex)
+            } else {
+                NewGrapeDefaultController.touchMoved(with: type, playerIndex: playerIndex)
+            }
         case .lychee:
             LycheeDefaultController.touchMoved(with: type, playerIndex: playerIndex)
             LycheeSkinController.touchMoved(with: type, playerIndex: playerIndex)

@@ -16,7 +16,7 @@ struct Author : Codable, Hashable {
 struct Skin : Codable, Hashable {
     let author: Author
     let core: Core
-    let orientations: Orientations
+    var orientations: Orientations
     let title: String
     
     var debugging: Bool? = false

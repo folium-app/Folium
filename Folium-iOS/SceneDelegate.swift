@@ -145,7 +145,6 @@ extension SceneDelegate {
             guard let query = components.query else { return }
             if query.hasPrefix("md5="), let md5 = query.components(separatedBy: "=").last {
                 self.md5 = md5
-                print(self.md5)
                 NotificationCenter.default.post(name: .init("shouldLaunchGameForMD5"), object: nil)
             }
         default: break
@@ -198,6 +197,9 @@ extension SceneDelegate {
                 "new3DS" : true,
                 "lleApplets" : false,
                 "regionValue" : -1,
+                
+                "systemLanguage" : 1,
+                "username" : "Cytrus",
                 
                 "layoutOption" : 6,
                 

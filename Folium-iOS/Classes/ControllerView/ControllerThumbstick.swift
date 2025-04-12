@@ -91,14 +91,6 @@ class ControllerThumbstick : UIView {
             return
         }
         
-        guard let stickView, let widthConstraint, let heightConstraint else {
-            return
-        }
-        
-        // widthConstraint.constant = 10
-        // heightConstraint.constant = 10
-        // stickView.layoutIfNeeded()
-        
         delegate.touchBegan(with: thumbstick.type, position: position(in: self, with: touch.location(in: self)), playerIndex: .index1)
     }
     
@@ -114,8 +106,6 @@ class ControllerThumbstick : UIView {
         
         centerXConstraint.constant = 0
         centerYConstraint.constant = 0
-        // widthConstraint.constant = 0
-        // heightConstraint.constant = 0
         UIView.animate(withDuration: 0.2) {
             self.layoutIfNeeded()
         }

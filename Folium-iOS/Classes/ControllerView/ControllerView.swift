@@ -181,17 +181,29 @@ class ControllerView : PassthroughView {
     
     func hide() {
         UIView.transition(with: self, duration: 0.2) {
-            self.subviews.filter {
+            var subs = self.subviews.filter {
                 $0.isKind(of: ControllerButton.classForCoder()) || $0.isKind(of: ControllerThumbstick.classForCoder())
-            }.forEach { $0.alpha = 0 }
+            }
+                
+            subs.removeAll(where: {
+                ($0 as? ControllerButton)?.button.type == .settings
+            })
+            
+            subs.forEach { $0.alpha = 0 }
         }
     }
     
     func show() {
         UIView.transition(with: self, duration: 0.2) {
-            self.subviews.filter {
-                $0.isKind(of: ControllerButton.classForCoder()) || $0.isKind(of: ControllerThumbstick.classForCoder())
-            }.forEach { $0.alpha = 1 }
+            var subs = self.subviews.filter {
+                $0.isKind(of: ControllerButton.classForCoder()) || $0.isKind(of: ControllerThumbstick.classForCoder()) && (($0 as? ControllerButton)?.button.type != .settings)
+            }
+            
+            subs.removeAll(where: {
+                ($0 as? ControllerButton)?.button.type == .settings
+            })
+            
+            subs.forEach { $0.alpha = 1 }
         }
     }
     

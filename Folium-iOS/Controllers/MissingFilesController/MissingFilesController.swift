@@ -80,7 +80,7 @@ class MissingFilesController : UICollectionViewController {
         
         let documentPickerController = UIDocumentPickerViewController(forOpeningContentTypes: [
             .item
-        ])
+        ], asCopy: true)
         documentPickerController.delegate = self
         if let sheetPresentationController = documentPickerController.sheetPresentationController {
             sheetPresentationController.detents = [.medium(), .large()]
@@ -93,9 +93,9 @@ class MissingFilesController : UICollectionViewController {
         
         snapshot = .init()
         guard var snapshot else { return }
-        snapshot.appendSections(LibraryManager.shared.cores)
+        snapshot.appendSections(LibraryManager.shared.coresWithGames.sorted())
         Task {
-            LibraryManager.shared.cores.forEach { core in
+            LibraryManager.shared.coresWithGames.sorted().forEach { core in
                 snapshot.appendItems(DirectoryManager.shared.scanDirectoryForMissingFiles(for: core.rawValue)
                     .sorted(by: { $0.name < $1.name }), toSection: core)
                 

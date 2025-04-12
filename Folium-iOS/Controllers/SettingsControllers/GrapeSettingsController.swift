@@ -8,15 +8,18 @@
 
 import Foundation
 import Grape
+import NewGrape
 import SettingsKit
 import UIKit
 
 enum GrapeSettingsHeaders : Int, CaseIterable {
-    case core
+    case global, noods, melonds
     
     var header: SettingHeader {
         switch self {
-        case .core: .init(text: "Core")
+        case .global: .init(text: "Global", secondaryText: "Settings used for both NooDS and melonDS")
+        case .noods: .init(text: "NooDS")
+        case .melonds: .init(text: "melonDS")
         }
     }
     
@@ -206,12 +209,13 @@ class GrapeSettingsController : UICollectionViewController {
         
         snapshot = .init()
         snapshot.appendSections(GrapeSettingsHeaders.allCases)
-        
         snapshot.appendItems([
             settingsKit.bool(key: "grape.directBoot",
                              title: "Direct Boot",
                              value: UserDefaults.standard.bool(forKey: "grape.directBoot"),
                              delegate: self),
+        ], toSection: .global)
+        snapshot.appendItems([
             settingsKit.bool(key: "grape.threaded2D",
                              title: "Threaded 2D",
                              value: UserDefaults.standard.bool(forKey: "grape.threaded2D"),
@@ -219,12 +223,14 @@ class GrapeSettingsController : UICollectionViewController {
             settingsKit.bool(key: "grape.threaded3D",
                              title: "Threaded 3D",
                              value: UserDefaults.standard.bool(forKey: "grape.threaded3D"),
-                             delegate: self),
+                             delegate: self)
+        ], toSection: GrapeSettingsHeaders.noods)
+        snapshot.appendItems([
             settingsKit.bool(key: "grape.dsiMode",
                              title: "DSi Mode",
                              value: UserDefaults.standard.bool(forKey: "grape.dsiMode"),
                              delegate: self)
-        ], toSection: GrapeSettingsHeaders.core)
+        ], toSection: .melonds)
         
         Task {
             await dataSource.apply(snapshot)
@@ -239,6 +245,7 @@ class GrapeSettingsController : UICollectionViewController {
 extension GrapeSettingsController : SettingDelegate {
     func didChangeSetting(at indexPath: IndexPath) {
         Grape.shared.updateSettings()
+        NewGrape.shared.updateSettings()
         
         guard let sectionIdentifier = dataSource.sectionIdentifier(for: indexPath.section) else {
             return

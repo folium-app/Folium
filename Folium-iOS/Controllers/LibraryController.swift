@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 4/7/2024.
 //
 
+import AuthenticationServices
 import CoreMotion
 import ContentTypeManager
 import Cytrus
@@ -23,6 +24,7 @@ class LibraryController : UICollectionViewController {
     var searchSnapshot: NSDiffableDataSourceSnapshot<Core, GameBase>? = nil
     
     var coreMotion: CMPedometer = .init()
+    var currentNonce: String? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -176,9 +178,19 @@ class LibraryController : UICollectionViewController {
         case let grapeGame as GrapeGame:
             guard let skin = grapeSkin else { return }
             
-            let grapeEmulationController = GrapeDefaultController(game: grapeGame, skin: skin)
-            grapeEmulationController.modalPresentationStyle = .fullScreen
-            present(grapeEmulationController, animated: true)
+            let alertController: UIAlertController = .init(title: "Choose Nintendo DS core", message: "Choose between NooDS or melonDS while melonDS is being tested", preferredStyle: .alert)
+            alertController.addAction(.init(title: "NooDS", style: .default, handler: { _ in
+                let grapeEmulationController = GrapeDefaultController(game: grapeGame, skin: skin)
+                grapeEmulationController.modalPresentationStyle = .fullScreen
+                self.present(grapeEmulationController, animated: true)
+            }))
+            alertController.addAction(.init(title: "melonDS (BETA)", style: .default, handler: { _ in
+                let grapeEmulationController = NewGrapeDefaultController(game: grapeGame, skin: skin)
+                grapeEmulationController.modalPresentationStyle = .fullScreen
+                self.present(grapeEmulationController, animated: true)
+            }))
+            alertController.addAction(.init(title: "Cancel", style: .cancel))
+            present(alertController, animated: true)
         case let cytrusGame as CytrusGame:
             guard let skin = cytrusSkin else { return }
             
@@ -314,13 +326,34 @@ class LibraryController : UICollectionViewController {
                 ]))
             } else {
                 children.append(UIMenu(options: .displayInline, children: [
+                    UIAction(title: "Delete Account", image: .init(systemName: "delete.left"), attributes: [.destructive], handler: { [weak self] _ in
+                        guard let self else { return }
+                        
+                        self.present(alert(title: "Sign In to Delete", message: "Firebase requires a recent sign in to delete your account", preferredStyle: .alert, actions: [
+                            .init(title: "Sign In", style: .destructive, handler: { _ in
+                                let nonce: String = .nonce()
+                                self.currentNonce = nonce
+                                
+                                let provider = ASAuthorizationAppleIDProvider()
+                                let request = provider.createRequest()
+                                request.requestedScopes = [.email, .fullName]
+                                request.nonce = .sha256(from: nonce)
+                                
+                                let controller = ASAuthorizationController(authorizationRequests: [request])
+                                controller.delegate = self
+                                controller.presentationContextProvider = self
+                                controller.performRequests()
+                            }),
+                            .init(title: "Cancel", style: .cancel)
+                        ]), animated: true)
+                    }),
                     UIAction(title: "Sign Out", image: .init(systemName: "arrow.right"), attributes: [.destructive], handler: { [weak self] _ in
                         guard let self else { return }
                         
                         do {
                             try Auth.auth().signOut()
                             
-                            let authenticationController = AuthenticationController()
+                            let authenticationController: AuthenticationController = .init()
                             authenticationController.modalPresentationStyle = .fullScreen
                             self.present(authenticationController, animated: true)
                         } catch {
@@ -345,9 +378,10 @@ class LibraryController : UICollectionViewController {
         guard AppStoreCheck.shared.additionalFeaturesAreAllowed, let user = Auth.auth().currentUser,
               let displayName = user.displayName, let firstName = displayName.components(separatedBy: " ").first, let userDefaults else { return }
         
-        let prefix = switch Calendar.current.component(.hour, from: .now) {
-        case 6...11: "Good Morning"
-        case 12...17: "Good Afternoon"
+        let hour: Int = Calendar.current.component(.hour, from: .now)
+        let prefix: String = switch hour {
+        case 6 ... 11: "Good Morning"
+        case 12 ... 18: "Good Afternoon"
         default: "Good Evening"
         }
         
@@ -448,5 +482,42 @@ extension LibraryController : UISearchControllerDelegate, UISearchResultsUpdatin
         }
         
         Task { await dataSource.apply(newSnapshot) }
+    }
+}
+
+extension LibraryController : ASAuthorizationControllerPresentationContextProviding, ASAuthorizationControllerDelegate {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        if let window = view.window {
+            return window
+        } else {
+            print("\(#function): failed")
+            return .init() // MARK: this should not be called
+        }
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
+        let identityToken = credential.identityToken, let identityTokenString: String = .init(data: identityToken, encoding: .utf8) else {
+            return
+        }
+        
+        let appleCredential = OAuthProvider.appleCredential(withIDToken: identityTokenString, rawNonce: currentNonce, fullName: credential.fullName)
+        
+        Task {
+            let result = try await Auth.auth().signIn(with: appleCredential)
+            
+            do {
+                try await Firestore.firestore().collection("users").document(result.user.uid).delete()
+                try await result.user.delete()
+                
+                let authenticationController: AuthenticationController = .init()
+                authenticationController.modalPresentationStyle = .fullScreen
+                self.present(authenticationController, animated: true)
+            } catch {
+                let alertController: UIAlertController = .init(title: "Error", message: "Error deleting account\n\n\(error.localizedDescription)", preferredStyle: .alert)
+                alertController.addAction(.init(title: "Dismiss", style: .cancel))
+                self.present(alertController, animated: true)
+            }
+        }
     }
 }

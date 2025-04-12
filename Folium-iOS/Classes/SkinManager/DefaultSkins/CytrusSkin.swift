@@ -180,11 +180,13 @@ var cytrusSkin: Skin? {
                   y: height - (135 + safeAreaInsets.bottom),
                   width: 135,
                   height: 135,
+                  thumbstickClassName: "blurredThumbstick",
                   type: .left),
             .init(x: width - (135 + 10 + safeAreaInsets.right),
                   y: height - (135 + safeAreaInsets.bottom),
                   width: 135,
                   height: 135,
+                  thumbstickClassName: "blurredThumbstick",
                   type: .right)
         ])
         
@@ -557,11 +559,13 @@ var cytrusSkin: Skin? {
                   y: height - (150 + safeAreaInsets.bottom),
                   width: 150,
                   height: 150,
+                  thumbstickClassName: "blurredThumbstick",
                   type: .left),
             .init(x: width - (150 + 10 + safeAreaInsets.right),
                   y: height - (150 + safeAreaInsets.bottom),
                   width: 150,
                   height: 150,
+                  thumbstickClassName: "blurredThumbstick",
                   type: .right)
         ])
         

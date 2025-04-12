@@ -11,11 +11,12 @@ import SettingsKit
 import UIKit
 
 enum CytrusSettingsHeaders : Int, CaseIterable {
-    case core, debugging, layoutCustom, layoutDefault, rendering, audio, networking
+    case core, systemSaveGame, debugging, layoutCustom, layoutDefault, rendering, audio, networking
     
     var header: SettingHeader {
         switch self {
         case .core: .init(text: "Core")
+        case .systemSaveGame: .init(text: "System Save Game")
         case .debugging: .init(text: "Debugging")
         case .layoutCustom: .init(text: "Layout (Custom)")
         case .layoutDefault: .init(text: "Layout (Default)", secondaryText: "Disable Custom Layout")
@@ -289,8 +290,43 @@ class CytrusSettingsController : UICollectionViewController {
                                     "Taiwan" : 6
                                   ],
                                   selectedValue: UserDefaults.standard.value(forKey: "cytrus.regionValue"),
+                                  action: {},
                                   delegate: self)
         ], toSection: CytrusSettingsHeaders.core)
+        
+        snapshot.appendItems([
+            settingsKit.selection(key: "cytrus.systemLanguage",
+                                  title: "System Language",
+                                  values: [
+                                    "Japanese" : 0,
+                                    "English" : 1,
+                                    "French" : 2,
+                                    "German" : 3,
+                                    "Italian" : 4,
+                                    "Spanish" : 5,
+                                    "Simplified Chinese" : 6,
+                                    "Korean" : 7,
+                                    "Dutch" : 8,
+                                    "Portuguese" : 9,
+                                    "Russian" : 10,
+                                    "Traditional Chinese" : 11
+                                  ],
+                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.systemLanguage"),
+                                  action: {
+                                      guard let systemLanguage = UserDefaults.standard.value(forKey: "cytrus.systemLanguage") as? Int else { return }
+                                      SystemSaveGame.shared.set(systemLanguage)
+                                  },
+                                  delegate: self),
+            settingsKit.inputString(key: "cytrus.username",
+                                    title: "Username",
+                                    placeholder: "Cytrus",
+                                    value: UserDefaults.standard.string(forKey: "cytrus.username"),
+                                    action: {
+                                        guard let username = UserDefaults.standard.string(forKey: "cytrus.username") else { return }
+                                        SystemSaveGame.shared.set(username)
+                                    },
+                                    delegate: self)
+        ], toSection: .systemSaveGame)
         
         var debuggingItems: [AHS] = [
             settingsKit.selection(key: "cytrus.logLevel",
@@ -305,6 +341,7 @@ class CytrusSettingsController : UICollectionViewController {
                                     "Critical" : 5
                                   ],
                                   selectedValue: UserDefaults.standard.value(forKey: "cytrus.logLevel"),
+                                  action: {},
                                   delegate: self)
         ]
         
@@ -386,6 +423,7 @@ class CytrusSettingsController : UICollectionViewController {
                                     "Mobile Landscape" : 7
                                   ],
                                   selectedValue: UserDefaults.standard.value(forKey: "cytrus.layoutOption"),
+                                  action: {},
                                   delegate: self)
         ], toSection: CytrusSettingsHeaders.layoutDefault)
         
@@ -448,6 +486,7 @@ class CytrusSettingsController : UICollectionViewController {
                                     "MMPX" : 5
                                   ],
                                   selectedValue: UserDefaults.standard.value(forKey: "cytrus.textureFilter"),
+                                  action: {},
                                   delegate: self),
             settingsKit.selection(key: "cytrus.textureSampling",
                                   title: "Texture Sampling",
@@ -457,6 +496,7 @@ class CytrusSettingsController : UICollectionViewController {
                                     "Linear" : 2
                                   ],
                                   selectedValue: UserDefaults.standard.value(forKey: "cytrus.textureSampling"),
+                                  action: {},
                                   delegate: self),
             settingsKit.selection(key: "cytrus.render3D",
                                   title: "Render 3D",
@@ -470,6 +510,7 @@ class CytrusSettingsController : UICollectionViewController {
                                     "CardboardVR" : 5
                                   ],
                                   selectedValue: UserDefaults.standard.value(forKey: "cytrus.render3D"),
+                                  action: {},
                                   delegate: self),
             settingsKit.stepper(key: "cytrus.factor3D",
                                 title: "3D Factor",
@@ -486,17 +527,19 @@ class CytrusSettingsController : UICollectionViewController {
                                     "Right Eye" : 1
                                   ],
                                   selectedValue: UserDefaults.standard.value(forKey: "cytrus.monoRender"),
+                                  action: {},
                                   delegate: self),
             settingsKit.bool(key: "cytrus.preloadTextures",
                              title: "Preload Textures",
                              details: "Loads all custom textures into memory. This feature can use a lot of memory",
                              value: UserDefaults.standard.bool(forKey: "cytrus.preloadTextures"),
                              delegate: self),
-            settingsKit.bool(key: "cytrus.redEyeRender",
-                             title: "Red Eye Render",
-                             details: "Greatly improves performance in some games when disabled, but can cause flickering in others",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.redEyeRender"),
-                             delegate: self)
+            // TODO: add this back when it isn't bad
+            // settingsKit.bool(key: "cytrus.redEyeRender",
+            //                  title: "Red Eye Render",
+            //                  details: "Greatly improves performance in some games when disabled, but can cause flickering in others",
+            //                  value: UserDefaults.standard.bool(forKey: "cytrus.redEyeRender"),
+            //                  delegate: self)
         ], toSection: CytrusSettingsHeaders.rendering)
         
         snapshot.appendItems([
@@ -511,6 +554,7 @@ class CytrusSettingsController : UICollectionViewController {
                                     "LLE (Multithreaded)" : 2
                                   ],
                                   selectedValue: UserDefaults.standard.value(forKey: "cytrus.audioEmulation"),
+                                  action: {},
                                   delegate: self),
             settingsKit.bool(key: "cytrus.audioStretching",
                              title: "Audio Stretching",
@@ -526,9 +570,10 @@ class CytrusSettingsController : UICollectionViewController {
                                     "None" : 1,
                                     "CoreAudio" : 2,
                                     "OpenAL" : 3,
-                                    "SDL2" : 4
+                                    "SDL3" : 4
                                   ],
                                   selectedValue: UserDefaults.standard.value(forKey: "cytrus.outputType"),
+                                  action: {},
                                   delegate: self),
             settingsKit.selection(key: "cytrus.inputType",
                                   title: "Input Type",
@@ -539,6 +584,7 @@ class CytrusSettingsController : UICollectionViewController {
                                     "OpenAL" : 3
                                   ],
                                   selectedValue: UserDefaults.standard.value(forKey: "cytrus.inputType"),
+                                  action: {},
                                   delegate: self)
         ], toSection: CytrusSettingsHeaders.audio)
         

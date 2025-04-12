@@ -157,10 +157,10 @@ struct Button : Codable, Hashable {
             return .init(systemName: "gearshape.circle.fill")
             
         case .loadState:
-            let string = if #available(iOS 16, *) { "arrow.up.document.fill" } else { "arrow.up.doc.fill" }
+            let string = if #available(iOS 18, *) { "arrow.up.document.fill" } else { "arrow.up.doc.fill" }
             return .init(systemName: string)
         case .saveState:
-            let string = if #available(iOS 16, *) { "arrow.down.document.fill" } else { "arrow.down.doc.fill" }
+            let string = if #available(iOS 18, *) { "arrow.down.document.fill" } else { "arrow.down.doc.fill" }
             return .init(systemName: string)
         }
     }

@@ -13,13 +13,13 @@ struct Orientation : Codable, Hashable {
     var backgroundImageName: String? = nil
     var sharedAlpha: Double? = 1
     
-    let buttons: [Button]
+    var buttons: [Button]
     var screens: [Screen]
     let thumbsticks: [Thumbstick]
 }
 
 struct Orientations : Codable, Hashable {
-    let portrait: Orientation
+    var portrait: Orientation
     var portraitUpsideDown: Orientation? = nil
     var landscapeLeft: Orientation? = nil, landscapeRight: Orientation? = nil
     
