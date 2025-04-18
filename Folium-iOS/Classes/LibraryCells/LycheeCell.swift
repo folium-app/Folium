@@ -94,9 +94,9 @@ import UIKit
         if lycheeGame.skins.count > 0 {
             children.append(UIMenu(title: "Skins", children: lycheeGame.skins.reduce(into: [UIAction](), { partialResult, element in
                 partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
-                    let lycheeEmulationController = LycheeSkinController(game: lycheeGame, skin: element)
-                    lycheeEmulationController.modalPresentationStyle = .fullScreen
-                    viewController.present(lycheeEmulationController, animated: true)
+                    let lycheeSkinController = LycheeSkinController(game: lycheeGame, skin: element)
+                    lycheeSkinController.modalPresentationStyle = .fullScreen
+                    viewController.present(lycheeSkinController, animated: true)
                 }))
             })))
         }

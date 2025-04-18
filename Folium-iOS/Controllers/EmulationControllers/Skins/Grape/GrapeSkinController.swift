@@ -8,6 +8,7 @@
 import AVFoundation
 import Foundation
 import Grape
+import HQx
 import GameController
 import SDL
 import UIKit
@@ -146,23 +147,47 @@ class GrapeSkinController : UIViewController {
         
         configureAudio()
         
-        Grape.shared.framebuffer { [weak self] framebuffer in
-            guard let self else { return }
+        hqxInit()
+        
+        let scale: Int = .init(UserDefaults.standard.double(forKey: "grape.resolutionFactor"))
+        var width: Int = 256, height: Int = 192
+        if scale > 1 {
+            width *= scale
+            height *= scale
+        }
+        
+        let topScaled: UnsafeMutablePointer<UInt32> = .allocate(capacity: width * height)
+        let bottomScaled: UnsafeMutablePointer<UInt32> = .allocate(capacity: width * height)
+        
+        Grape.shared.fbs { top, bottom in
+            guard let topScreenImageView = self.topScreenImageView,
+            let bottomScreenImageView = self.bottomScreenImageView else { return }
             
-            let size = Grape.shared.videoBufferSize()
-            
-            guard let topScreenImageView, let bottomScreenImageView else { return }
-            guard let topCGImage = CGImage.cgImage(framebuffer, .init(size.width), .init(size.height)) else { return }
-            
-            Task {
-                topScreenImageView.image = .init(cgImage: topCGImage)
+            let hqx = switch scale {
+            case 2: hq2x_32
+            case 3: hq3x_32
+            case 4: hq4x_32
+            default: hq2x_32
             }
             
-            guard let bottomCGImage = CGImage.cgImage(framebuffer.advanced(by: .init(size.width * size.height)),
-                                                      .init(size.width), .init(size.height)) else { return }
+            if scale > 1 {
+                hqx(top, topScaled, 256, 192)
+                hqx(bottom, bottomScaled, 256, 192)
+            }
+            
+            let topBuffer = if scale > 1 { topScaled } else { top }
+            let bottomBuffer = if scale > 1 { bottomScaled } else { bottom }
+            
+            guard let cgImage = CGImage.genericRGBA8888(topBuffer, width, height) else { return }
             
             Task {
-                bottomScreenImageView.image = .init(cgImage: bottomCGImage)
+                topScreenImageView.image = .init(cgImage: cgImage)
+            }
+            
+            guard let cgImage = CGImage.genericRGBA8888(bottomBuffer, width, height) else { return }
+            
+            Task {
+                bottomScreenImageView.image = .init(cgImage: cgImage)
             }
         }
         

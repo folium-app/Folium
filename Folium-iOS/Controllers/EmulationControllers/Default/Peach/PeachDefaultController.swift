@@ -32,6 +32,14 @@ class PeachDefaultController : SkinController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let controllerView {
+            controllerView.updateFramesCallback = {
+                if let button = controllerView.button(for: .settings) {
+                    let interaction = UIContextMenuInteraction(delegate: self)
+                    button.addInteraction(interaction)
+                }
+            }
+        }
         
         blurredImageView = .init()
         guard let blurredImageView else { return }

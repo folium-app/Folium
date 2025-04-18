@@ -22,7 +22,7 @@ class LycheeGame : GameBase, @unchecked Sendable {
         var data: URL? = nil
         for bin in try files(from: url) {
             let file = url.deletingLastPathComponent().appending(path: bin)
-            let id = Lychee.shared.gameID(from: file)
+            let id = Lychee.shared.id(from: file)
             data = if id.isEmpty || id == "" {
                 nil
             } else {

@@ -88,9 +88,9 @@ import UIKit
         if tomatoGame.skins.count > 0 {
             children.append(UIMenu(title: "Skins", children: tomatoGame.skins.reduce(into: [UIAction](), { partialResult, element in
                 partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
-                    let tomatoEmulationController = TomatoDefaultController(game: tomatoGame, skin: element)
-                    tomatoEmulationController.modalPresentationStyle = .fullScreen
-                    viewController.present(tomatoEmulationController, animated: true)
+                    let tomatoDefaultController = TomatoDefaultController(game: tomatoGame, skin: element)
+                    tomatoDefaultController.modalPresentationStyle = .fullScreen
+                    viewController.present(tomatoDefaultController, animated: true)
                 }))
             })))
         }

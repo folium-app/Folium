@@ -8,6 +8,7 @@
 
 import Foundation
 import GameController
+import HQx
 import NewGrape
 import SDL
 import UIKit
@@ -35,6 +36,14 @@ class NewGrapeDefaultController : SkinController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let controllerView {
+            controllerView.updateFramesCallback = {
+                if let button = controllerView.button(for: .settings) {
+                    let interaction = UIContextMenuInteraction(delegate: self)
+                    button.addInteraction(interaction)
+                }
+            }
+        }
         
         topBlurredImageView = .init()
         guard let topBlurredImageView else { return }
@@ -174,15 +183,42 @@ class NewGrapeDefaultController : SkinController {
             SDL_QueueAudio(self.audioDeviceID, buffer, .init(samples * 4))
         }
         
+        hqxInit()
+        
+        let scale: Int = .init(UserDefaults.standard.double(forKey: "grape.resolutionFactor"))
+        var width: Int = 256, height: Int = 192
+        if scale > 1 {
+            width *= scale
+            height *= scale
+        }
+        
+        let topScaled: UnsafeMutablePointer<UInt32> = .allocate(capacity: width * height)
+        let bottomScaled: UnsafeMutablePointer<UInt32> = .allocate(capacity: width * height)
+        
         NewGrape.shared.fbs { top, bottom in
-            guard let cgImage = CGImage.ds_dsi(top, 256, 192) else { return }
+            let hqx = switch scale {
+            case 2: hq2x_32
+            case 3: hq3x_32
+            case 4: hq4x_32
+            default: hq2x_32
+            }
+            
+            if scale > 1 {
+                hqx(top, topScaled, 256, 192)
+                hqx(bottom, bottomScaled, 256, 192)
+            }
+            
+            let topBuffer = if scale > 1 { topScaled } else { top }
+            let bottomBuffer = if scale > 1 { bottomScaled } else { bottom }
+            
+            guard let cgImage = CGImage.ds_dsi(topBuffer, width, height) else { return }
             
             Task {
                 topImageView.image = .init(cgImage: cgImage)
                 topBlurredImageView.image = .init(cgImage: cgImage)
             }
             
-            guard let cgImage = CGImage.ds_dsi(bottom, 256, 192) else { return }
+            guard let cgImage = CGImage.ds_dsi(bottomBuffer, width, height) else { return }
             
             Task {
                 bottomImageView.image = .init(cgImage: cgImage)
@@ -462,7 +498,7 @@ class NewGrapeDefaultController : SkinController {
 extension NewGrapeDefaultController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        guard let bottomImageView, let touch = touches.first else {
+        guard let bottomImageView, let touch = touches.first, touch.view == bottomImageView else {
             return
         }
         
@@ -484,7 +520,7 @@ extension NewGrapeDefaultController {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
-        guard let bottomImageView, let touch = touches.first else {
+        guard let bottomImageView, let touch = touches.first, touch.view == bottomImageView else {
             return
         }
         

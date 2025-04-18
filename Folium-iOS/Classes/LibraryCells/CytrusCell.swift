@@ -72,9 +72,9 @@ import UIKit
         if cytrusGame.skins.count > 0 {
             children.append(UIMenu(title: "Skins", children: cytrusGame.skins.reduce(into: [UIAction](), { partialResult, element in
                 partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
-                    let cytrusEmulationController = Nintendo3DSEmulationController(game: cytrusGame, skin: element)
-                    cytrusEmulationController.modalPresentationStyle = .fullScreen
-                    viewController.present(cytrusEmulationController, animated: true)
+                    let cytrusSkinController = CytrusSkinController(game: cytrusGame, skin: element)
+                    cytrusSkinController.modalPresentationStyle = .fullScreen
+                    viewController.present(cytrusSkinController, animated: true)
                 }))
             })))
         }

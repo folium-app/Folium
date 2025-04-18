@@ -1,5 +1,5 @@
 //
-//  Nintendo3DSEmulationController.swift
+//  CytrusSkinController.swift
 //  Folium-iOS
 //
 //  Created by Jarrod Norwell on 25/7/2024.
@@ -12,7 +12,7 @@ import GameController
 import MetalKit
 import UIKit
 
-class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
+class CytrusSkinController : LastPlayedPlayTimeController {
     var controllerView: ControllerView? = nil
     var metalView: MTKView? = nil
     
@@ -20,7 +20,7 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
     init(game: CytrusGame, skin: Skin) {
         self.skin = skin
         super.init(game: game)
-        Cytrus.shared.allocateVulkanLibrary()
+        Cytrus.shared.allocate()
     }
     
     required init?(coder: NSCoder) {
@@ -51,9 +51,7 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
             .init(frame: view.bounds, device: MTLCreateSystemDefaultDevice())
         }
         
-        guard let metalView else {
-            return
-        }
+        guard let metalView, let layer = metalView.layer as? CAMetalLayer else { return }
         
         controllerView = .init(orientation: orientation, skin: skin, delegates: (self, self))
         guard let controllerView else {
@@ -69,7 +67,7 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
         controllerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         view.insertSubview(metalView, belowSubview: controllerView)
         
-        Cytrus.shared.allocateMetalLayer(for: metalView.layer as! CAMetalLayer, with: metalView.bounds.size)
+        Cytrus.shared.initialize(layer, layer.bounds.size)
         
         var config = UIButton.Configuration.plain()
         config.buttonSize = .small
@@ -268,7 +266,7 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
         }
         
         NotificationCenter.default.addObserver(forName: .init("openKeyboard"), object: nil, queue: .main) { notification in
-            guard let config = notification.object as? KeyboardConfig else {
+            guard let config = notification.object as? ButtonConfig else {
                 return
             }
             
@@ -294,7 +292,7 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
             
             
             
-            switch config.buttonConfig {
+            switch config {
             case .single:
                 alertController.addAction(okayButton)
             case .dual:
@@ -330,8 +328,8 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
         
         NotificationCenter.default.removeObserver(self)
         if Cytrus.shared.stopped() {
-            Cytrus.shared.deallocateVulkanLibrary()
-            Cytrus.shared.deallocateMetalLayers()
+            Cytrus.shared.deallocate()
+            Cytrus.shared.deinitialize()
         }
     }
     
@@ -367,12 +365,12 @@ class Nintendo3DSEmulationController : LastPlayedPlayTimeController {
     }
     
     @objc fileprivate func boot() {
-        Cytrus.shared.insertCartridgeAndBoot(with: game.fileDetails.url)
+        Cytrus.shared.insert(game.fileDetails.url)
     }
 }
 
 // MARK: Touches
-extension Nintendo3DSEmulationController {
+extension CytrusSkinController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         guard let touch = touches.first, let view = touch.view, view == metalView else {
@@ -398,96 +396,45 @@ extension Nintendo3DSEmulationController {
 }
 
 // MARK: Button Delegate
-extension Nintendo3DSEmulationController : ControllerButtonDelegate {
+extension CytrusSkinController : ControllerButtonDelegate {
     func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
-        switch type {
-        case .a:
-            Cytrus.shared.virtualControllerButtonDown(.A)
-        case .b:
-            Cytrus.shared.virtualControllerButtonDown(.B)
-        case .x:
-            Cytrus.shared.virtualControllerButtonDown(.X)
-        case .y:
-            Cytrus.shared.virtualControllerButtonDown(.Y)
+        guard let buttonType = CytrusButtonType.type(type.rawValue) else {
+            // not a normal button, try custom ones
+            switch type {
+            case .loadState:
+                Cytrus.shared.loadState { result in
+                    UINotificationFeedbackGenerator().notificationOccurred(result ? .success : .error)
+                }
+            case .saveState:
+                Cytrus.shared.saveState { result in
+                    UINotificationFeedbackGenerator().notificationOccurred(result ? .success : .error)
+                }
+                
+                if let viewController = UIApplication.shared.viewController as? CytrusDefaultController {
+                    if let game = viewController.game as? CytrusGame {
+                        game.update()
+                    }
+                }
+            default:
+                break
+            }
             
-        case .dpadUp:
-            Cytrus.shared.virtualControllerButtonDown(.directionalPadUp)
-        case .dpadDown:
-            Cytrus.shared.virtualControllerButtonDown(.directionalPadDown)
-        case .dpadLeft:
-            Cytrus.shared.virtualControllerButtonDown(.directionalPadLeft)
-        case .dpadRight:
-            Cytrus.shared.virtualControllerButtonDown(.directionalPadRight)
-            
-        case .l:
-            Cytrus.shared.virtualControllerButtonDown(.triggerL)
-        case .r:
-            Cytrus.shared.virtualControllerButtonDown(.triggerR)
-            
-        case .zl:
-            Cytrus.shared.virtualControllerButtonDown(.triggerZL)
-        case .zr:
-            Cytrus.shared.virtualControllerButtonDown(.triggerZR)
-            
-        case .home:
-            Cytrus.shared.virtualControllerButtonDown(.home)
-        case .minus:
-            Cytrus.shared.virtualControllerButtonDown(.select)
-        case .plus:
-            Cytrus.shared.virtualControllerButtonDown(.start)
-            
-        default:
-            break
+            return
         }
+        
+        Cytrus.shared.input(playerIndex.rawValue, buttonType, true)
     }
     
     func touchEnded(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
-        switch type {
-        case .a:
-            Cytrus.shared.virtualControllerButtonUp(.A)
-        case .b:
-            Cytrus.shared.virtualControllerButtonUp(.B)
-        case .x:
-            Cytrus.shared.virtualControllerButtonUp(.X)
-        case .y:
-            Cytrus.shared.virtualControllerButtonUp(.Y)
-            
-        case .dpadUp:
-            Cytrus.shared.virtualControllerButtonUp(.directionalPadUp)
-        case .dpadDown:
-            Cytrus.shared.virtualControllerButtonUp(.directionalPadDown)
-        case .dpadLeft:
-            Cytrus.shared.virtualControllerButtonUp(.directionalPadLeft)
-        case .dpadRight:
-            Cytrus.shared.virtualControllerButtonUp(.directionalPadRight)
-            
-        case .l:
-            Cytrus.shared.virtualControllerButtonUp(.triggerL)
-        case .r:
-            Cytrus.shared.virtualControllerButtonUp(.triggerR)
-            
-        case .zl:
-            Cytrus.shared.virtualControllerButtonUp(.triggerZL)
-        case .zr:
-            Cytrus.shared.virtualControllerButtonUp(.triggerZR)
-            
-        case .home:
-            Cytrus.shared.virtualControllerButtonUp(.home)
-        case .minus:
-            Cytrus.shared.virtualControllerButtonUp(.select)
-        case .plus:
-            Cytrus.shared.virtualControllerButtonUp(.start)
-            
-        default:
-            break
-        }
+        guard let buttonType = CytrusButtonType.type(type.rawValue) else { return }
+        Cytrus.shared.input(playerIndex.rawValue, buttonType, false)
     }
     
     func touchMoved(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {}
 }
 
 // MARK: Thumbstick Delegate
-extension Nintendo3DSEmulationController : ControllerThumbstickDelegate {
+extension CytrusSkinController : ControllerThumbstickDelegate {
     func touchBegan(with type: Thumbstick.`Type`, position: (x: Float, y: Float), playerIndex: GCControllerPlayerIndex) {
         Cytrus.shared.thumbstickMoved(type == .left ? .circlePad : .cStick, position.x, position.y)
     }

@@ -1,5 +1,5 @@
 {
-  "originHash" : "c2298672a9354f7e60b96363d4d9e0ab7a0b4c2e5dc2bba4f77c38767fc62a5a",
+  "originHash" : "49021333f9d3975f1254135a8894886a8cae16bfa2ece258e42c32e971c3959b",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -152,15 +152,6 @@
       "state" : {
         "branch" : "main",
         "revision" : "c9618dee5fb9406005a18ec61a6291e87be1e40e"
-      }
-    },
-    {
-      "identity" : "xbrz",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jarrodnorwell/xBRZ",
-      "state" : {
-        "branch" : "main",
-        "revision" : "6e5e334ed20cd18f2e7e77603fe43ef8352b89ef"
       }
     },
     {

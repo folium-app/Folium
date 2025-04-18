@@ -28,6 +28,8 @@ class PassthroughView : UIView {
 class ControllerView : PassthroughView {
     var imageView: UIImageView? = nil
     
+    var updateFramesCallback: (() -> Void)? = nil
+    
     var orientation: Orientation
     var skin: Skin
     var delegates: (button: ControllerButtonDelegate?, thumbstick: ControllerThumbstickDelegate?)
@@ -177,6 +179,8 @@ class ControllerView : PassthroughView {
         }
         
         controllerDisconnected ? show() : hide()
+        
+        if let updateFramesCallback { updateFramesCallback() }
     }
     
     func hide() {

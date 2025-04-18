@@ -53,15 +53,15 @@ import UIKit
             })
         ]
         
-        // if peachGame.skins.count > 0 {
-        //     children.append(UIMenu(title: "Skins", children: peachGame.skins.reduce(into: [UIAction](), { partialResult, element in
-        //         partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
-        //             let cytrusEmulationController = Nintendo3DSEmulationController(game: cytrusGame, skin: element)
-        //             cytrusEmulationController.modalPresentationStyle = .fullScreen
-        //             viewController.present(cytrusEmulationController, animated: true)
-        //         }))
-        //     })))
-        // }
+        if peachGame.skins.count > 0 {
+            children.append(UIMenu(title: "Skins", children: peachGame.skins.reduce(into: [UIAction](), { partialResult, element in
+                partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
+                    // let cytrusEmulationController = Nintendo3DSEmulationController(game: cytrusGame, skin: element)
+                    // cytrusEmulationController.modalPresentationStyle = .fullScreen
+                    // viewController.present(cytrusEmulationController, animated: true)
+                }))
+            })))
+        }
         
         optionsButton.menu = .init(children: children)
     }

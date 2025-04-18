@@ -243,9 +243,13 @@ extension SceneDelegate {
             ],
             "Grape" : [
                 "directBoot" : true,
+                
                 "threaded2D" : true,
                 "threaded3D" : true,
-                "dsiMode" : false
+                
+                "dsiMode" : false,
+                
+                "resolutionFactor" : 1
             ]
         ]
         

@@ -8,6 +8,7 @@
 
 import Foundation
 import Grape
+import HQx
 import SDL
 import UIKit
 import GameController
@@ -33,6 +34,14 @@ class GrapeDefaultController : SkinController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let controllerView {
+            controllerView.updateFramesCallback = {
+                if let button = controllerView.button(for: .settings) {
+                    let interaction = UIContextMenuInteraction(delegate: self)
+                    button.addInteraction(interaction)
+                }
+            }
+        }
         
         topBlurredImageView = .init()
         guard let topBlurredImageView else { return }
@@ -168,24 +177,46 @@ class GrapeDefaultController : SkinController {
         
         configureAudio()
         
-        Grape.shared.framebuffer { [weak self] framebuffer in
-            guard let self else { return }
-            
-            let size = Grape.shared.videoBufferSize()
-            
-            guard let topCGImage = CGImage.cgImage(framebuffer, .init(size.width), .init(size.height)) else { return }
-            
-            Task {
-                topImageView.image = .init(cgImage: topCGImage)
-                topBlurredImageView.image = .init(cgImage: topCGImage)
+        hqxInit()
+        
+        let scale: Int = .init(UserDefaults.standard.double(forKey: "grape.resolutionFactor"))
+        var width: Int = 256, height: Int = 192
+        if scale > 1 {
+            width *= scale
+            height *= scale
+        }
+        
+        let topScaled: UnsafeMutablePointer<UInt32> = .allocate(capacity: width * height)
+        let bottomScaled: UnsafeMutablePointer<UInt32> = .allocate(capacity: width * height)
+        
+        Grape.shared.fbs { top, bottom in
+            let hqx = switch scale {
+            case 2: hq2x_32
+            case 3: hq3x_32
+            case 4: hq4x_32
+            default: hq2x_32
             }
             
-            guard let bottomCGImage = CGImage.cgImage(framebuffer.advanced(by: .init(size.width * size.height)),
-                                                      .init(size.width), .init(size.height)) else { return }
+            if scale > 1 {
+                hqx(top, topScaled, 256, 192)
+                hqx(bottom, bottomScaled, 256, 192)
+            }
+            
+            let topBuffer = if scale > 1 { topScaled } else { top }
+            let bottomBuffer = if scale > 1 { bottomScaled } else { bottom }
+            
+            guard let cgImage = CGImage.genericRGBA8888(topBuffer, width, height) else { return }
             
             Task {
-                bottomImageView.image = .init(cgImage: bottomCGImage)
-                bottomBlurredImageView.image = .init(cgImage: bottomCGImage)
+                topImageView.image = .init(cgImage: cgImage)
+                topBlurredImageView.image = .init(cgImage: cgImage)
+            }
+            
+            guard let cgImage = CGImage.genericRGBA8888(bottomBuffer, width, height) else { return }
+            
+            Task {
+                bottomImageView.image = .init(cgImage: cgImage)
+                bottomBlurredImageView.image = .init(cgImage: cgImage)
             }
         }
         

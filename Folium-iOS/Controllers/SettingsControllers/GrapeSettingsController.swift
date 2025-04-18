@@ -214,6 +214,13 @@ class GrapeSettingsController : UICollectionViewController {
                              title: "Direct Boot",
                              value: UserDefaults.standard.bool(forKey: "grape.directBoot"),
                              delegate: self),
+            settingsKit.stepper(key: "grape.resolutionFactor",
+                                title: "Resolution Factor",
+                                details: "Factor for the DS and DSi resolution",
+                                min: 1,
+                                max: 4,
+                                value: UserDefaults.standard.double(forKey: "grape.resolutionFactor"),
+                                delegate: self),
         ], toSection: .global)
         snapshot.appendItems([
             settingsKit.bool(key: "grape.threaded2D",

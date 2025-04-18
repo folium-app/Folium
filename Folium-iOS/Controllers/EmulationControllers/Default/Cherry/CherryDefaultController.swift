@@ -30,6 +30,14 @@ class CherryDefaultController : SkinController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let controllerView {
+            controllerView.updateFramesCallback = {
+                if let button = controllerView.button(for: .settings) {
+                    let interaction = UIContextMenuInteraction(delegate: self)
+                    button.addInteraction(interaction)
+                }
+            }
+        }
         
         blurredImageView = .init()
         guard let blurredImageView else { return }
@@ -100,9 +108,9 @@ class CherryDefaultController : SkinController {
         
         Cherry.shared.buffer { buffer in
             Task {
-                guard let cgImage = CGImage.bgr32CGImage(buffer, 640, 480) else { return }
-                imageView.image = .init(cgImage: cgImage)
-                blurredImageView.image = .init(cgImage: cgImage)
+                // guard let cgImage = CGImage.bgr32CGImage(buffer, 640, 480) else { return }
+                // imageView.image = .init(cgImage: cgImage)
+                // blurredImageView.image = .init(cgImage: cgImage)
             }
         }
         

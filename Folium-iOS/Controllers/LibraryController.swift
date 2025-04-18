@@ -420,7 +420,7 @@ extension LibraryController : UIDocumentPickerDelegate {
         Task {
             try urls.forEach { url in
                 if url.pathExtension.lowercased() == "cia" {
-                    print(Cytrus.shared.importGame(at: url))
+                    print(Cytrus.shared.import(url))
                 } else {
                     let romsDirectoryURL: URL =
                     switch url.pathExtension.lowercased() {

@@ -124,7 +124,7 @@ class GameArtworkTitleCell : UICollectionViewCell {
         if let iconBuffer = header.iconBuffer {
             switch header.core {
             case .grape:
-                if let cgImage = CGImage.cgImage(iconBuffer, 32, 32) {
+                if let cgImage = CGImage.genericRGBA8888(iconBuffer, 32, 32) {
                     imageView.image = .init(cgImage: cgImage)
                 }
             default: break
@@ -184,7 +184,7 @@ class GamePlayCell : UICollectionViewCell {
         if let iconBuffer = play.iconBuffer {
             switch play.core {
             case .grape:
-                if let cgImage = CGImage.cgImage(iconBuffer, 32, 32) {
+                if let cgImage = CGImage.genericRGBA8888(iconBuffer, 32, 32) {
                     button.configuration?.baseBackgroundColor = UIImage(cgImage: cgImage).dominantColor()
                 }
             default: break
@@ -567,7 +567,7 @@ class GameIntermediateController : UICollectionViewController {
                 }
             }
         case let grapeGame as GrapeGame:
-            if let cgImage = CGImage.cgImage(grapeGame.icon, 32, 32) {
+            if let cgImage = CGImage.genericRGBA8888(grapeGame.icon, 32, 32) {
                 configuration.baseBackgroundColor = UIImage(cgImage: cgImage).dominantColor()
             }
         default: break

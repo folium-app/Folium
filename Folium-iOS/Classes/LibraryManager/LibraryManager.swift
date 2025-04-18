@@ -58,7 +58,7 @@ struct LibraryManager : @unchecked Sendable {
                         if let isRegularFile = attributes.isRegularFile, isRegularFile {
                             let nameWithoutExtension = url.deletingLastPathComponent().lastPathComponent
                             switch url.pathExtension.lowercased() {
-                            case "cue":
+                            case "cue", "exe":
                                 if try LycheeGame.title(for: url).isEmpty { break }
                                 
                                 coresWithGames.appendUnique(.lychee)
@@ -85,7 +85,7 @@ struct LibraryManager : @unchecked Sendable {
                                 
                                 let game = generateCytrusGame(.cytrus, url, skinManager)
                                 if !game.title.isEmpty { partialResult.append(game) }
-                            case "ds", "nds":
+                            case "ds", "dsi", "nds":
                                 coresWithGames.appendUnique(.grape)
                                 
                                 partialResult.append(generateGrapeGame(.grape, url, skinManager))
@@ -152,7 +152,7 @@ struct LibraryManager : @unchecked Sendable {
     }
     
     func generateLycheeGame(_ core: Core, _ url: URL, _ skinManager: SkinManager) throws -> LycheeGame {
-        let game = LycheeGame(icon: try LycheeGame.icon(for: url),
+        let game = LycheeGame(icon: url.pathExtension.lowercased() == "exe" ? nil : try LycheeGame.icon(for: url),
                               core: core.rawValue,
                               fileDetails: .init(extension: url.pathExtension.lowercased(),
                                                  name: url.lastPathComponent,

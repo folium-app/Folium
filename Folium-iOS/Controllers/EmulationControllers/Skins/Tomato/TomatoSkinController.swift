@@ -1,5 +1,5 @@
 //
-//  GameBoyEmulationController.swift
+//  TomatoSkinController.swift
 //  Folium-iOS
 //
 //  Created by Jarrod Norwell on 15/9/2024.
@@ -11,20 +11,16 @@ import SpriteKit
 import Tomato
 import UIKit
 
-class GameBoyEmulationController : UIViewController {
+class TomatoSkinController : SkinController {
     let tomato = Tomato.shared
     
     var imageView: UIImageView? = nil
     var vbuf = [UInt32](repeating: 0xF8F8F8, count: 160 * 144)
     var abuf = [UInt32](repeating: 0, count: 160 * 144)
     
-    var game: GameBoyGame
-    var skin: Skin
-    init(game: GameBoyGame, skin: Skin) {
-        self.game = game
-        self.skin = skin
-        super.init(nibName: nil, bundle: nil)
-        // tomato.insertCartridge(from: game.fileDetails.url)
+    override init(game: GameBase, skin: Skin) {
+        super.init(game: game, skin: skin)
+        tomato.insert(cartridge: game.fileDetails.url)
     }
     
     required init?(coder: NSCoder) {

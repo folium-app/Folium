@@ -62,7 +62,7 @@ class LastPlayedPlayTimeController : UIViewController {
         
         let icon: Data? = switch game {
         case let grapeGame as GrapeGame:
-            if let cgImage = CGImage.cgImage(grapeGame.icon, 32, 32) {
+            if let cgImage = CGImage.genericRGBA8888(grapeGame.icon, 32, 32) {
                 UIImage(cgImage: cgImage).pngData()
             } else {
                 nil

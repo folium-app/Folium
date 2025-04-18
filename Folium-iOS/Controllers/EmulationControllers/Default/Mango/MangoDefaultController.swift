@@ -34,6 +34,14 @@ class MangoDefaultController : SkinController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let controllerView {
+            controllerView.updateFramesCallback = {
+                if let button = controllerView.button(for: .settings) {
+                    let interaction = UIContextMenuInteraction(delegate: self)
+                    button.addInteraction(interaction)
+                }
+            }
+        }
         
         blurredImageView = .init()
         guard let blurredImageView else { return }
@@ -265,7 +273,7 @@ class MangoDefaultController : SkinController {
         let audioBuffer = mango.audioBuffer()
         let videoBuffer = mango.videoBuffer()
         guard let audioBuffer, let videoBuffer else { return }
-        guard let cgImage = CGImage.cgImage(buffer8: videoBuffer, 512, 480) else { return }
+        guard let cgImage = CGImage.snes(videoBuffer, 512, 480) else { return }
         
         let wantedSamples = 48000 / (mango.type() == .PAL ? 50 : 60)
         if SDL_GetQueuedAudioSize(audioDeviceID) <= wantedSamples * 4 * 6 {

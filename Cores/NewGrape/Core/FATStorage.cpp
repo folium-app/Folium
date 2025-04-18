@@ -153,7 +153,7 @@ u32 FATStorage::ReadSectorsInternal(FILE* file, u64 filelen, u32 start, u32 num,
 
     melon_fseek(file, addr, SEEK_SET);
 
-    u32 res = fread(data, 0x200, num, file);
+    u32 res = static_cast<u32>(fread(data, 0x200, num, file));
     if (res < num)
     {
         if (feof(file))
@@ -169,20 +169,20 @@ u32 FATStorage::ReadSectorsInternal(FILE* file, u64 filelen, u32 start, u32 num,
 u32 FATStorage::WriteSectorsInternal(FILE* file, u64 filelen, u32 start, u32 num, u8* data)
 {
     if (!file) return 0;
-
+    
     u64 addr = start * 0x200ULL;
     u32 len = num * 0x200;
-
+    
     if ((addr+len) > filelen)
     {
         if (addr >= filelen) return 0;
         len = filelen - addr;
         num = len >> 9;
     }
-
+    
     melon_fseek(file, addr, SEEK_SET);
-
-    u32 res = fwrite(data, 0x200, num, file);
+    
+    u32 res = static_cast<u32>(fwrite(data, 0x200, num, file));
     return res;
 }
 
@@ -276,7 +276,7 @@ void FATStorage::LoadIndex()
             continue;
         }
 
-        int sep = path.rfind('/');
+        size_t sep = path.rfind('/');
         if (sep == std::string::npos) continue;
 
         path = path.substr(0, sep);
@@ -306,7 +306,7 @@ void FATStorage::LoadIndex()
             continue;
         }
 
-        int sep = path.rfind('/');
+        size_t sep = path.rfind('/');
         if (sep == std::string::npos) continue;
 
         path = path.substr(0, sep);
@@ -366,7 +366,7 @@ bool FATStorage::ExportFile(std::string path, fs::path out)
                         err);
     }
 
-    fout = Platform::OpenFile(out.u8string().c_str(), "wb");
+    fout = Platform::OpenFile(out.string(), "wb");
     if (!fout)
     {
         f_close(&file);
@@ -414,7 +414,7 @@ void FATStorage::ExportDirectory(std::string path, std::string outbase, int leve
         if (!info.fname[0]) break;
 
         std::string fullpath = path + info.fname;
-        fs::path outpath = fs::u8path(outbase + "/" + fullpath);
+        fs::path outpath{outbase + "/" + fullpath};
 
         if (info.fattrib & AM_DIR)
         {
@@ -496,14 +496,14 @@ bool FATStorage::DeleteHostDirectory(std::string path, std::string outbase, int 
 {
     if (level >= 32) return false;
 
-    fs::path dirpath = fs::u8path(outbase + "/" + path);
+    fs::path dirpath{outbase + "/" + path};
     if (!fs::is_directory(dirpath))
         return true; // already deleted? oh well
 
     std::vector<std::string> filedeletelist;
     std::vector<std::string> dirdeletelist;
 
-    int outlen = outbase.length();
+    size_t outlen = outbase.length();
     for (auto& entry : fs::directory_iterator(dirpath))
     {
         std::string fullpath = entry.path().string();
@@ -511,7 +511,7 @@ bool FATStorage::DeleteHostDirectory(std::string path, std::string outbase, int 
         if (innerpath[0] == '/' || innerpath[0] == '\\')
             innerpath = innerpath.substr(1);
 
-        int ilen = innerpath.length();
+        size_t ilen = innerpath.length();
         for (int i = 0; i < ilen; i++)
         {
             if (innerpath[i] == '\\')
@@ -530,7 +530,7 @@ bool FATStorage::DeleteHostDirectory(std::string path, std::string outbase, int 
 
     for (const auto& key : filedeletelist)
     {
-        fs::path fullpath = fs::u8path(outbase + "/" + key);
+        fs::path fullpath{outbase + "/" + key};
         std::error_code err;
         fs::permissions(fullpath,
                         fs::perms::owner_read | fs::perms::owner_write,
@@ -549,7 +549,7 @@ bool FATStorage::DeleteHostDirectory(std::string path, std::string outbase, int 
     }
 
     {
-        fs::path fullpath = fs::u8path(outbase + "/" + path);
+        fs::path fullpath{outbase + "/" + path};
 
         std::error_code err;
         fs::permissions(fullpath,
@@ -596,7 +596,7 @@ void FATStorage::ExportChanges(std::string outbase)
 
     for (const auto& key : deletelist)
     {
-        fs::path fullpath = fs::u8path(outbase + "/" + key);
+        fs::path fullpath{outbase + "/" + key};
 
         std::error_code err;
         fs::permissions(fullpath,
@@ -668,7 +668,7 @@ bool FATStorage::DeleteDirectory(std::string path, int level)
 
     std::vector<std::string> deletelist;
     std::vector<std::string> subdirlist;
-    int survivors = 0;
+    // int survivors = 0;
 
     for (;;)
     {
@@ -738,7 +738,7 @@ void FATStorage::CleanupDirectory(std::string sourcedir, std::string path, int l
         {
             if (DirIndex.count(fullpath) < 1)
                 dirdeletelist.push_back(fullpath);
-            else if (!fs::is_directory(fs::u8path(sourcedir+"/"+fullpath)))
+            else if (!fs::is_directory({sourcedir + "/" + fullpath}))
             {
                 DirIndex.erase(fullpath);
                 dirdeletelist.push_back(fullpath);
@@ -750,7 +750,7 @@ void FATStorage::CleanupDirectory(std::string sourcedir, std::string path, int l
         {
             if (FileIndex.count(fullpath) < 1)
                 filedeletelist.push_back(fullpath);
-            else if (!fs::is_regular_file(fs::u8path(sourcedir+"/"+fullpath)))
+            else if (!fs::is_regular_file({sourcedir + "/" + fullpath}))
             {
                 FileIndex.erase(fullpath);
                 filedeletelist.push_back(fullpath);
@@ -784,7 +784,7 @@ bool FATStorage::ImportFile(std::string path, fs::path in)
     FILE* fin;
     FRESULT res;
 
-    fin = Platform::OpenFile(in.u8string().c_str(), "rb");
+    fin = Platform::OpenFile(in.string(), "rb");
     if (!fin)
         return false;
 
@@ -829,20 +829,20 @@ bool FATStorage::ImportDirectory(std::string sourcedir)
 {
     // remove whatever isn't in the index
     CleanupDirectory(sourcedir, "", 0);
-
-    int srclen = sourcedir.length();
-
+    
+    size_t srclen = sourcedir.length();
+    
     // iterate through the host directory:
     // * directories will be added if they aren't in the index
     // * files will be added if they aren't in the index, or if the size or last-modified-date don't match
-    for (auto& entry : fs::recursive_directory_iterator(fs::u8path(sourcedir)))
+    for (auto& entry : fs::recursive_directory_iterator({sourcedir}))
     {
-        std::string fullpath = entry.path().u8string();
+        std::string fullpath = entry.path().string();
         std::string innerpath = fullpath.substr(srclen);
         if (innerpath[0] == '/' || innerpath[0] == '\\')
             innerpath = innerpath.substr(1);
 
-        int ilen = innerpath.length();
+        size_t ilen = innerpath.length();
         for (int i = 0; i < ilen; i++)
         {
             if (innerpath[i] == '\\')
@@ -947,7 +947,7 @@ bool FATStorage::Load(std::string filename, u64 size, std::string sourcedir)
     bool hasdir = !sourcedir.empty();
     if (hasdir)
     {
-        if (!fs::is_directory(fs::u8path(sourcedir)))
+        if (!fs::is_directory({sourcedir}))
         {
             hasdir = false;
             SourceDir = "";
@@ -990,8 +990,8 @@ bool FATStorage::Load(std::string filename, u64 size, std::string sourcedir)
     }
 
     bool needformat = false;
-    FATFS fs;
-    FRESULT res;
+    FATFS fs{};
+    FRESULT res{};
 
     if (FileSize == 0)
     {
@@ -1020,7 +1020,7 @@ bool FATStorage::Load(std::string filename, u64 size, std::string sourcedir)
         {
             if (hasdir)
             {
-                FileSize = GetDirectorySize(fs::u8path(sourcedir));
+                FileSize = GetDirectorySize({sourcedir});
                 FileSize += 0x8000000ULL; // 128MB leeway
 
                 // make it a power of two

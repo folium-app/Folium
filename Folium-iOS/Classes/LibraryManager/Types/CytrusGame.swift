@@ -24,20 +24,20 @@ class CytrusGame : GameBase, @unchecked Sendable {
     var cheatsManager: CheatsManager
     
     init(for url: URL, core: String, fileDetails: GameBase.FileDetails, skins: [Skin]) {
-        self.icon = cytrus.information(for: url).icon
-        self.identifier = cytrus.information(for: url).identifier
-        self.coreVersion = cytrus.information(for: url).coreVersion
-        self.kernelMemoryMode = cytrus.information(for: url).kernelMemoryMode
-        self.new3DSKernelMemoryMode = cytrus.information(for: url).new3DSKernelMemoryMode
-        self.publisher = cytrus.information(for: url).publisher
-        self.regions = cytrus.information(for: url).regions
+        self.icon = cytrus.information(url).icon
+        self.identifier = cytrus.information(url).identifier
+        self.coreVersion = cytrus.information(url).coreVersion
+        self.kernelMemoryMode = cytrus.information(url).kernelMemoryMode
+        self.new3DSKernelMemoryMode = cytrus.information(url).new3DSKernelMemoryMode
+        self.publisher = cytrus.information(url).publisher
+        self.regions = cytrus.information(url).regions
         self.saves = cytrus.saves(for: identifier ?? 0)
         
         self.cheatsManager = .init(identifier: identifier ?? 0)
         self.cheatsManager.loadCheats()
         self.cheats = cheatsManager.getCheats()
         
-        super.init(core: core, fileDetails: fileDetails, skins: skins, title: cytrus.information(for: url).title)
+        super.init(core: core, fileDetails: fileDetails, skins: skins, title: cytrus.information(url).title)
     }
     
     func update() {

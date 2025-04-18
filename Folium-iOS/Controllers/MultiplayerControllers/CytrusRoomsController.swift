@@ -6,7 +6,7 @@
 //  Copyright © 2024 Jarrod Norwell. All rights reserved.
 //
 
-import Cytrus
+@preconcurrency import Cytrus
 import Foundation
 import UIKit
 

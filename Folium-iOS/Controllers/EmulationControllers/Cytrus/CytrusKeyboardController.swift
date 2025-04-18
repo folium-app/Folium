@@ -13,9 +13,9 @@ import UIKit
 class CytrusKeyboardController : UIViewController, UITextFieldDelegate {
     var bottomConstraint: NSLayoutConstraint!
     
-    var keyboardConfig: KeyboardConfig
-    init(keyboardConfig: KeyboardConfig) {
-        self.keyboardConfig = keyboardConfig
+    var buttonConfig: ButtonConfig
+    init(buttonConfig: ButtonConfig) {
+        self.buttonConfig = buttonConfig
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -40,7 +40,7 @@ class CytrusKeyboardController : UIViewController, UITextFieldDelegate {
         
         
         var buttons: [UIButton] = []
-        switch keyboardConfig.buttonConfig {
+        switch buttonConfig {
         case .single:
             var configuration = UIButton.Configuration.filled()
             configuration.attributedTitle = .init("Okay", attributes: .init([

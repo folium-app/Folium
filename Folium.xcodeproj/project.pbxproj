@@ -385,6 +385,8 @@
 		E659157D2D8F1955007CAF88 /* cecd_ndm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E65913272D8F1955007CAF88 /* cecd_ndm.cpp */; };
 		E667C07A2C47C7F700DB0327 /* CoreHaptics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E667C0792C47C7F700DB0327 /* CoreHaptics.framework */; };
 		E667C07C2C47C81500DB0327 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E667C07B2C47C81500DB0327 /* CoreMotion.framework */; };
+		E6722ABC2DB22575005540C8 /* GameInformation.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6722ABB2DB22575005540C8 /* GameInformation.mm */; };
+		E6722AC12DB22ACD005540C8 /* SoftwareKeyboard.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6722AC02DB22ACD005540C8 /* SoftwareKeyboard.mm */; };
 		E67655942CE3D07E00222E44 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E67655932CE3D07E00222E44 /* FirebaseAuth */; };
 		E67655962CE3D07E00222E44 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = E67655952CE3D07E00222E44 /* FirebaseFirestore */; };
 		E67655982CE3D07E00222E44 /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = E67655972CE3D07E00222E44 /* FirebaseFirestoreCombine-Community */; };
@@ -470,6 +472,7 @@
 		E6ACC7682CE5E99E00C27006 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E67655A22CE49E7700222E44 /* SwiftUI.framework */; };
 		E6ACC7752CE5E9A000C27006 /* PlayTimeWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E6ACC7662CE5E99E00C27006 /* PlayTimeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E6AF131D2D357824002E6EDD /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6AF131C2D357824002E6EDD /* SettingsKit */; };
+		E6BD25D32DAB729D00186497 /* HQx in Frameworks */ = {isa = PBXBuildFile; productRef = E6BD25D22DAB729D00186497 /* HQx */; };
 		E6DFCB9E2D85641000597391 /* BuildStrings.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6DFCB9D2D85641000597391 /* BuildStrings.mm */; };
 		E6FEDAE02D8F1C06004FC62C /* coreaudio_sink 2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FEDADF2D8F1C06004FC62C /* coreaudio_sink 2.cpp */; };
 		E6FEDAE22D8F1C6D004FC62C /* scm_rev.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FEDAE12D8F1C6D004FC62C /* scm_rev.cpp */; };
@@ -938,6 +941,11 @@
 		E666166F2C410E130065B363 /* libCytrus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCytrus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E667C0792C47C7F700DB0327 /* CoreHaptics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreHaptics.framework; path = System/Library/Frameworks/CoreHaptics.framework; sourceTree = SDKROOT; };
 		E667C07B2C47C81500DB0327 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		E6722ABA2DB22575005540C8 /* GameInformation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameInformation.h; sourceTree = "<group>"; };
+		E6722ABB2DB22575005540C8 /* GameInformation.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = GameInformation.mm; sourceTree = "<group>"; };
+		E6722ABF2DB22ACD005540C8 /* SoftwareKeyboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoftwareKeyboard.h; sourceTree = "<group>"; };
+		E6722AC02DB22ACD005540C8 /* SoftwareKeyboard.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SoftwareKeyboard.mm; sourceTree = "<group>"; };
+		E6722AC42DB23612005540C8 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		E676559F2CE49E7600222E44 /* LastPlayedWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LastPlayedWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E67655A02CE49E7600222E44 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		E67655A22CE49E7700222E44 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -1363,6 +1371,7 @@
 				E626CA342C58A65A00CA2B9F /* SDL in Frameworks */,
 				E648EB842D79895D0001106D /* OpenSSL in Frameworks */,
 				E626CA312C58A52C00CA2B9F /* libCytrus.a in Frameworks */,
+				E6BD25D32DAB729D00186497 /* HQx in Frameworks */,
 				E667C07A2C47C7F700DB0327 /* CoreHaptics.framework in Frameworks */,
 				E67655982CE3D07E00222E44 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				E68336BB2D76E7C8009B918E /* libNewGrape.a in Frameworks */,
@@ -2514,6 +2523,42 @@
 			path = web_service;
 			sourceTree = "<group>";
 		};
+		E6722AB92DB2254C005540C8 /* GameInformation */ = {
+			isa = PBXGroup;
+			children = (
+				E6722ABA2DB22575005540C8 /* GameInformation.h */,
+				E6722ABB2DB22575005540C8 /* GameInformation.mm */,
+			);
+			path = GameInformation;
+			sourceTree = "<group>";
+		};
+		E6722ABE2DB22AB4005540C8 /* SoftwareKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				E6722ABF2DB22ACD005540C8 /* SoftwareKeyboard.h */,
+				E6722AC02DB22ACD005540C8 /* SoftwareKeyboard.mm */,
+			);
+			path = SoftwareKeyboard;
+			sourceTree = "<group>";
+		};
+		E6722AC22DB22D53005540C8 /* MultiplayerManager */ = {
+			isa = PBXGroup;
+			children = (
+				E6833B1B2D76EA6A009B918E /* MultiplayerManager.h */,
+				E6833B1C2D76EA6A009B918E /* MultiplayerManager.mm */,
+			);
+			path = MultiplayerManager;
+			sourceTree = "<group>";
+		};
+		E6722AC32DB22D69005540C8 /* BuildStrings */ = {
+			isa = PBXGroup;
+			children = (
+				E6DFCB9C2D85641000597391 /* BuildStrings.h */,
+				E6DFCB9D2D85641000597391 /* BuildStrings.mm */,
+			);
+			path = BuildStrings;
+			sourceTree = "<group>";
+		};
 		E682B1CC2D8C817B000E9D3C /* dolphin */ = {
 			isa = PBXGroup;
 			children = (
@@ -2711,18 +2756,19 @@
 		E6833B1D2D76EA6A009B918E /* CytrusObjC */ = {
 			isa = PBXGroup;
 			children = (
+				E6722AC32DB22D69005540C8 /* BuildStrings */,
 				E6833B062D76EA6A009B918E /* Camera */,
 				E6833B092D76EA6A009B918E /* CheatsManager */,
 				E6833B0D2D76EA6A009B918E /* Configuration */,
 				E6833B142D76EA6A009B918E /* EmulationWindow */,
+				E6722AB92DB2254C005540C8 /* GameInformation */,
 				E6833B172D76EA6A009B918E /* InputManager */,
+				E6722AC22DB22D53005540C8 /* MultiplayerManager */,
+				E6722ABE2DB22AB4005540C8 /* SoftwareKeyboard */,
 				E6833B182D76EA6A009B918E /* Cytrus-Bridging-Header.h */,
 				E6833B192D76EA6A009B918E /* CytrusObjC.h */,
 				E6833B1A2D76EA6A009B918E /* CytrusObjC.mm */,
-				E6833B1B2D76EA6A009B918E /* MultiplayerManager.h */,
-				E6833B1C2D76EA6A009B918E /* MultiplayerManager.mm */,
-				E6DFCB9C2D85641000597391 /* BuildStrings.h */,
-				E6DFCB9D2D85641000597391 /* BuildStrings.mm */,
+				E6722AC42DB23612005540C8 /* Common.h */,
 			);
 			path = CytrusObjC;
 			sourceTree = "<group>";
@@ -3244,6 +3290,7 @@
 				E690F39E2D6F078500731AEA /* ContentTypeManager */,
 				E65552B12D6F99B700EE094E /* Tomato */,
 				E648EB832D79895D0001106D /* OpenSSL */,
+				E6BD25D22DAB729D00186497 /* HQx */,
 			);
 			productName = Folium;
 			productReference = E690A6A82C33B09E00652203 /* Folium-iOS.app */;
@@ -3313,6 +3360,7 @@
 				E67655922CE3D07E00222E44 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				E648EB7D2D79889D0001106D /* XCRemoteSwiftPackageReference "zstd" */,
 				E648EB802D7988D40001106D /* XCRemoteSwiftPackageReference "OpenSSL" */,
+				E6BD25D12DAB729D00186497 /* XCRemoteSwiftPackageReference "HQx" */,
 			);
 			preferredProjectObjectVersion = 60;
 			productRefGroup = E690A6A92C33B09E00652203 /* Products */;
@@ -3512,6 +3560,7 @@
 				E659148E2D8F1955007CAF88 /* session.cpp in Sources */,
 				E659148F2D8F1955007CAF88 /* news_s.cpp in Sources */,
 				E65914902D8F1955007CAF88 /* arm_exclusive_monitor.cpp in Sources */,
+				E6722AC12DB22ACD005540C8 /* SoftwareKeyboard.mm in Sources */,
 				E65914912D8F1955007CAF88 /* seed_db.cpp in Sources */,
 				E65914922D8F1955007CAF88 /* plgldr.cpp in Sources */,
 				E65914932D8F1955007CAF88 /* dev.cpp in Sources */,
@@ -3712,6 +3761,7 @@
 				E65915552D8F1955007CAF88 /* vk_rasterizer_cache.cpp in Sources */,
 				E65915562D8F1955007CAF88 /* frd_a.cpp in Sources */,
 				E65915572D8F1955007CAF88 /* ncch_container.cpp in Sources */,
+				E6722ABC2DB22575005540C8 /* GameInformation.mm in Sources */,
 				E65915582D8F1955007CAF88 /* text_formatter.cpp in Sources */,
 				E65915592D8F1955007CAF88 /* archive_sdmcwriteonly.cpp in Sources */,
 				E659155A2D8F1955007CAF88 /* dlp_clnt.cpp in Sources */,
@@ -3870,14 +3920,12 @@
 		E66616732C410E130065B363 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++23";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				CODE_SIGN_STYLE = Automatic;
-				EXCLUDED_SOURCE_FILE_NAMES = (
-					"$(SRCROOT)/Cores/Sudachi/*",
-					"$(SRCROOT)/Cores/Sudachi/**/*.h",
-				);
+				EXCLUDED_SOURCE_FILE_NAMES = "";
+				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					CPPHTTPLIB_OPENSSL_SUPPORT,
@@ -3928,14 +3976,12 @@
 		E66616742C410E130065B363 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++23";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				CODE_SIGN_STYLE = Automatic;
-				EXCLUDED_SOURCE_FILE_NAMES = (
-					"$(SRCROOT)/Cores/Sudachi/*",
-					"$(SRCROOT)/Cores/Sudachi/**/*.h",
-				);
+				EXCLUDED_SOURCE_FILE_NAMES = "";
+				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					CPPHTTPLIB_OPENSSL_SUPPORT,
 					ENABLE_VULKAN,
@@ -4000,7 +4046,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.19;
+				MARKETING_VERSION = 1.20;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.LastPlayedWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -4032,7 +4078,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.19;
+				MARKETING_VERSION = 1.20;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.LastPlayedWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -4049,9 +4095,9 @@
 		E68335ED2D76E4D7009B918E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4080,9 +4126,9 @@
 		E68335EE2D76E4D7009B918E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4115,7 +4161,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -4147,7 +4193,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4161,7 +4207,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -4182,7 +4228,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -4214,7 +4260,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -4222,7 +4268,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -4241,14 +4287,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Folium-iOS/Info.plist";
@@ -4273,7 +4320,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.19;
+				MARKETING_VERSION = 1.20;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
@@ -4297,14 +4344,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = "Folium-iOS/Folium.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Folium-iOS/Info.plist";
@@ -4329,7 +4377,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.19;
+				MARKETING_VERSION = 1.20;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
@@ -4365,7 +4413,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.19;
+				MARKETING_VERSION = 1.20;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.PlayTimeWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -4397,7 +4445,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.19;
+				MARKETING_VERSION = 1.20;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS.PlayTimeWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -4503,6 +4551,14 @@
 				kind = branch;
 			};
 		};
+		E6BD25D12DAB729D00186497 /* XCRemoteSwiftPackageReference "HQx" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jarrodnorwell/HQx";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -4589,6 +4645,11 @@
 		E6AF131C2D357824002E6EDD /* SettingsKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SettingsKit;
+		};
+		E6BD25D22DAB729D00186497 /* HQx */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6BD25D12DAB729D00186497 /* XCRemoteSwiftPackageReference "HQx" */;
+			productName = HQx;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

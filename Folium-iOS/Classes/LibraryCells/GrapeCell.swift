@@ -23,7 +23,7 @@ import UIKit
     func set(_ grapeGame: GrapeGame, with viewController: UIViewController) {
         set(text: grapeGame.title, image: Data(bytes: grapeGame.icon, count: 32 * 32 * MemoryLayout<UInt32>.size), with: .white)
         
-        guard let blurredImageView, let imageView, let cgImage = CGImage.cgImage(grapeGame.icon, 32, 32) else {
+        guard let blurredImageView, let imageView, let cgImage = CGImage.genericRGBA8888(grapeGame.icon, 32, 32) else {
             return
         }
         
@@ -65,9 +65,9 @@ import UIKit
         if grapeGame.skins.count > 0 {
             children.append(UIMenu(title: "Skins", children: grapeGame.skins.reduce(into: [UIAction](), { partialResult, element in
                 partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
-                    let grapeEmulationController = GrapeSkinController(game: grapeGame, skin: element)
-                    grapeEmulationController.modalPresentationStyle = .fullScreen
-                    viewController.present(grapeEmulationController, animated: true)
+                    let grapeSkinController = GrapeSkinController(game: grapeGame, skin: element)
+                    grapeSkinController.modalPresentationStyle = .fullScreen
+                    viewController.present(grapeSkinController, animated: true)
                 }))
             })))
         }

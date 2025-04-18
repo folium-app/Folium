@@ -17,7 +17,7 @@ class LycheeSkinController : SkinController {
     
     override init(game: GameBase, skin: Skin) {
         super.init(game: game, skin: skin)
-        Lychee.shared.insertCartridge(from: game.fileDetails.url)
+        Lychee.shared.insert(from: game.fileDetails.url)
     }
     
     @MainActor required init?(coder: NSCoder) {
@@ -39,23 +39,25 @@ class LycheeSkinController : SkinController {
         isRunning = true
         Thread.detachNewThread(step)
         
-        Lychee.shared.bufferBGR555 { buffer, width, height in
+        Lychee.shared.bgr555 { [weak self] pointer, displayWidth, displayHeight, _, _ in
+            guard let self, let imageView = self.imageView else { return }
+            
+            guard let cgImage = CGImage.psx_bgr555(pointer, 1024, 512),
+            let cropped = cgImage.cropping(to: .init(x: 0, y: 0, width: .init(displayWidth), height: .init(displayHeight))) else { return }
+            
             Task {
-                let convertedBGRtoRGB = UIImage.BGRtoRGB(buffer, 1024 * 512 * MemoryLayout<UInt16>.size)
-                let image = UIImage.lycheeBGRtoRGBImage(from: convertedBGRtoRGB)
-                guard let image, let cgImage = image.cgImage,
-                      let croppedImage = cgImage.cropping(to: .init(x: 0, y: 0, width: .init(width), height: .init(height))) else { return }
-                
-                imageView.image = .init(cgImage: croppedImage)
+                imageView.image = .init(cgImage: cropped)
             }
         }
         
-        Lychee.shared.bufferRGB24 { buffer, width, height in
+        Lychee.shared.rgb888 { [weak self] pointer, displayWidth, displayHeight, _, _ in
+            guard let self, let imageView = self.imageView else { return }
+            
+            guard let cgImage = CGImage.psx_rgb888(pointer, 1024, 512),
+            let cropped = cgImage.cropping(to: .init(x: 0, y: 0, width: .init(displayWidth), height: .init(displayHeight))) else { return }
+            
             Task {
-                guard let cgImage = CGImage.rgb32CGImage(buffer),
-                      let croppedImage = cgImage.cropping(to: .init(x: 0, y: 0, width: .init(width), height: .init(height))) else { return }
-                
-                imageView.image = .init(cgImage: croppedImage)
+                imageView.image = .init(cgImage: cropped)
             }
         }
         
@@ -221,13 +223,13 @@ class LycheeSkinController : SkinController {
         case .y:
             Lychee.shared.input(playerIndex.rawValue, .square, true)
         case .dpadUp:
-            Lychee.shared.input(playerIndex.rawValue, .dpadUp, true)
+            Lychee.shared.input(playerIndex.rawValue, .up, true)
         case .dpadDown:
-            Lychee.shared.input(playerIndex.rawValue, .dpadDown, true)
+            Lychee.shared.input(playerIndex.rawValue, .down, true)
         case .dpadLeft:
-            Lychee.shared.input(playerIndex.rawValue, .dpadLeft, true)
+            Lychee.shared.input(playerIndex.rawValue, .left, true)
         case .dpadRight:
-            Lychee.shared.input(playerIndex.rawValue, .dpadRight, true)
+            Lychee.shared.input(playerIndex.rawValue, .right, true)
         case .minus:
             Lychee.shared.input(playerIndex.rawValue, .select, true)
         case .plus:
@@ -263,13 +265,13 @@ class LycheeSkinController : SkinController {
         case .y:
             Lychee.shared.input(playerIndex.rawValue, .square, false)
         case .dpadUp:
-            Lychee.shared.input(playerIndex.rawValue, .dpadUp, false)
+            Lychee.shared.input(playerIndex.rawValue, .up, false)
         case .dpadDown:
-            Lychee.shared.input(playerIndex.rawValue, .dpadDown, false)
+            Lychee.shared.input(playerIndex.rawValue, .down, false)
         case .dpadLeft:
-            Lychee.shared.input(playerIndex.rawValue, .dpadLeft, false)
+            Lychee.shared.input(playerIndex.rawValue, .left, false)
         case .dpadRight:
-            Lychee.shared.input(playerIndex.rawValue, .dpadRight, false)
+            Lychee.shared.input(playerIndex.rawValue, .right, false)
         case .minus:
             Lychee.shared.input(playerIndex.rawValue, .select, false)
         case .plus:

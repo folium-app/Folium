@@ -12,7 +12,7 @@ import Foundation
 import LayoutManager
 import UIKit
 
-extension AuthDataResult : @unchecked Sendable {}
+extension AuthDataResult : @unchecked @retroactive Sendable {}
 
 class AuthenticationController : UIViewController {
     fileprivate var currentNonce: String? = nil

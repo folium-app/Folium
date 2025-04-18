@@ -44,7 +44,7 @@ import UIKit
                         imageView.image = nil
                         set(text: mangoGame.title, image: nil, with: .white)
                     }
-                case .failure(let error):
+                case .failure(_):
                     set(text: mangoGame.title, image: nil, with: .white)
                 }
             }
@@ -86,9 +86,9 @@ import UIKit
         if mangoGame.skins.count > 0 {
             children.append(UIMenu(title: "Skins", children: mangoGame.skins.reduce(into: [UIAction](), { partialResult, element in
                 partialResult.append(.init(title: element.title, subtitle: element.author.name, handler: { _ in
-                    let mangoEmulationController = MangoSkinController(game: mangoGame, skin: element)
-                    mangoEmulationController.modalPresentationStyle = .fullScreen
-                    viewController.present(mangoEmulationController, animated: true)
+                    let mangoSkinController = MangoSkinController(game: mangoGame, skin: element)
+                    mangoSkinController.modalPresentationStyle = .fullScreen
+                    viewController.present(mangoSkinController, animated: true)
                 }))
             })))
         }

@@ -100,7 +100,7 @@ class ControllerThumbstick : UIView {
             return
         }
         
-        guard let centerXConstraint, let centerYConstraint, let widthConstraint, let heightConstraint else {
+        guard let centerXConstraint, let centerYConstraint/*, let widthConstraint, let heightConstraint*/ else {
             return
         }
         

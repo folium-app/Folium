@@ -10,7 +10,7 @@ import CoreImage.CIFilterBuiltins
 import Foundation
 import UIKit
 
-extension CIImage : @unchecked Sendable {}
+extension CIImage : @unchecked @retroactive Sendable {}
 
 extension CIImage {
     @Sendable static func smoothGradientBackground(with colors: (first: CIColor, second: CIColor), for view: UIView) async -> CIImage? {

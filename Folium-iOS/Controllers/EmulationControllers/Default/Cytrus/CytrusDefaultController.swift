@@ -40,7 +40,7 @@ class CytrusDefaultController : SkinController {
     
     override init(game: GameBase, skin: Skin) {
         super.init(game: game, skin: skin)
-        cytrus.allocateVulkanLibrary()
+        cytrus.allocate()
     }
     
     @MainActor required init?(coder: NSCoder) {
@@ -49,6 +49,14 @@ class CytrusDefaultController : SkinController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let controllerView {
+            controllerView.updateFramesCallback = {
+                if let button = controllerView.button(for: .settings) {
+                    let interaction = UIContextMenuInteraction(delegate: self)
+                    button.addInteraction(interaction)
+                }
+            }
+        }
         
         Cytrus.shared.diskCacheCallback { stage, progress, maximum in
             enum LoadCallbackStage : UInt8, CustomStringConvertible {
@@ -76,6 +84,8 @@ class CytrusDefaultController : SkinController {
         topMetalCallbackView = .init(frame: .zero, device: MTLCreateSystemDefaultDevice())
         guard let topMetalCallbackView else { return }
         topMetalCallbackView.translatesAutoresizingMaskIntoConstraints = false
+        topMetalCallbackView.enableSetNeedsDisplay = false
+        topMetalCallbackView.preferredFramesPerSecond = 120
         topMetalCallbackView.callback = {
             
         }
@@ -234,7 +244,7 @@ class CytrusDefaultController : SkinController {
         }
         
         NotificationCenter.default.addObserver(forName: .init("openKeyboard"), object: nil, queue: .main) { notification in
-            guard let config = notification.object as? KeyboardConfig else {
+            guard let config = notification.object as? ButtonConfig else {
                 return
             }
             
@@ -260,7 +270,7 @@ class CytrusDefaultController : SkinController {
             
             
             
-            switch config.buttonConfig {
+            switch config {
             case .single:
                 alertController.addAction(okayButton)
             case .dual:
@@ -282,8 +292,8 @@ class CytrusDefaultController : SkinController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        cytrus.deallocateVulkanLibrary()
-        cytrus.deallocateMetalLayers()
+        cytrus.deallocate()
+        cytrus.deinitialize()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -308,114 +318,64 @@ class CytrusDefaultController : SkinController {
             isRunning = true
             
             Task {
-                guard let topMetalCallbackView else { return }
-                cytrus.allocateMetalLayer(for: topMetalCallbackView.layer as! CAMetalLayer, with: topMetalCallbackView.bounds.size)
+                guard let topMetalCallbackView, let layer = topMetalCallbackView.layer as? CAMetalLayer else { return }
+                cytrus.initialize(layer, layer.frame.size)
             }
+            
+            // let displayLink: CADisplayLink = .init(target: self, selector: #selector(run))
+            // displayLink.preferredFrameRateRange = .init(minimum: 60, maximum: 120)
+            // displayLink.add(to: .main, forMode: .common)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 Thread.setThreadPriority(1.0)
-                Thread.detachNewThread {
-                    self.cytrus.insertCartridgeAndBoot(with: self.game.fileDetails.url)
+                Thread.detachNewThread { [ weak self] in
+                    guard let self else { return }
+                    self.cytrus.insert(self.game.fileDetails.url)
                 }
             }
+        }
+    }
+    
+    @objc func run() {
+        DispatchQueue(label: "com.antique.Folium-iOS.renderQueue", qos: .userInteractive).async { [weak self] in
+            guard let self else { return }
+            self.cytrus.insert(self.game.fileDetails.url)
         }
     }
     
     static func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
-        switch type {
-        case .a:
-            Cytrus.shared.virtualControllerButtonDown(.A)
-        case .b:
-            Cytrus.shared.virtualControllerButtonDown(.B)
-        case .x:
-            Cytrus.shared.virtualControllerButtonDown(.X)
-        case .y:
-            Cytrus.shared.virtualControllerButtonDown(.Y)
-            
-        case .dpadUp:
-            Cytrus.shared.virtualControllerButtonDown(.directionalPadUp)
-        case .dpadDown:
-            Cytrus.shared.virtualControllerButtonDown(.directionalPadDown)
-        case .dpadLeft:
-            Cytrus.shared.virtualControllerButtonDown(.directionalPadLeft)
-        case .dpadRight:
-            Cytrus.shared.virtualControllerButtonDown(.directionalPadRight)
-            
-        case .l:
-            Cytrus.shared.virtualControllerButtonDown(.triggerL)
-        case .r:
-            Cytrus.shared.virtualControllerButtonDown(.triggerR)
-            
-        case .zl:
-            Cytrus.shared.virtualControllerButtonDown(.triggerZL)
-        case .zr:
-            Cytrus.shared.virtualControllerButtonDown(.triggerZR)
-            
-        case .home:
-            Cytrus.shared.virtualControllerButtonDown(.home)
-        case .minus:
-            Cytrus.shared.virtualControllerButtonDown(.select)
-        case .plus:
-            Cytrus.shared.virtualControllerButtonDown(.start)
-            
-        case .loadState:
-            Cytrus.shared.loadState { result in
-                UINotificationFeedbackGenerator().notificationOccurred(result ? .success : .error)
-            }
-        case .saveState:
-            Cytrus.shared.saveState { result in
-                UINotificationFeedbackGenerator().notificationOccurred(result ? .success : .error)
-            }
-            
-            if let viewController = UIApplication.shared.viewController as? CytrusDefaultController {
-                if let game = viewController.game as? CytrusGame {
-                    game.update()
+        guard let buttonType = CytrusButtonType.type(type.rawValue) else {
+            // not a normal button, try custom ones
+            switch type {
+            case .loadState:
+                Cytrus.shared.loadState { result in
+                    UINotificationFeedbackGenerator().notificationOccurred(result ? .success : .error)
                 }
+            case .saveState:
+                Cytrus.shared.saveState { result in
+                    UINotificationFeedbackGenerator().notificationOccurred(result ? .success : .error)
+                }
+                
+                if let viewController = UIApplication.shared.viewController as? CytrusDefaultController {
+                    if let game = viewController.game as? CytrusGame {
+                        game.update()
+                    }
+                }
+            default:
+                break
             }
-        default:
-            break
+            
+            return
         }
+        
+        print(buttonType.rawValue)
+        
+        Cytrus.shared.input(playerIndex.rawValue, buttonType, true)
     }
     
     static func touchEnded(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
-        switch type {
-        case .a:
-            Cytrus.shared.virtualControllerButtonUp(.A)
-        case .b:
-            Cytrus.shared.virtualControllerButtonUp(.B)
-        case .x:
-            Cytrus.shared.virtualControllerButtonUp(.X)
-        case .y:
-            Cytrus.shared.virtualControllerButtonUp(.Y)
-            
-        case .dpadUp:
-            Cytrus.shared.virtualControllerButtonUp(.directionalPadUp)
-        case .dpadDown:
-            Cytrus.shared.virtualControllerButtonUp(.directionalPadDown)
-        case .dpadLeft:
-            Cytrus.shared.virtualControllerButtonUp(.directionalPadLeft)
-        case .dpadRight:
-            Cytrus.shared.virtualControllerButtonUp(.directionalPadRight)
-            
-        case .l:
-            Cytrus.shared.virtualControllerButtonUp(.triggerL)
-        case .r:
-            Cytrus.shared.virtualControllerButtonUp(.triggerR)
-            
-        case .zl:
-            Cytrus.shared.virtualControllerButtonUp(.triggerZL)
-        case .zr:
-            Cytrus.shared.virtualControllerButtonUp(.triggerZR)
-            
-        case .home:
-            Cytrus.shared.virtualControllerButtonUp(.home)
-        case .minus:
-            Cytrus.shared.virtualControllerButtonUp(.select)
-        case .plus:
-            Cytrus.shared.virtualControllerButtonUp(.start)
-        default:
-            break
-        }
+        guard let buttonType = CytrusButtonType.type(type.rawValue) else { return }
+        Cytrus.shared.input(playerIndex.rawValue, buttonType, false)
     }
     
     static func touchMoved(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {}
