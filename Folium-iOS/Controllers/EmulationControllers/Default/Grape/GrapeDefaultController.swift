@@ -7,11 +7,11 @@
 //
 
 import Foundation
+import GameController
 import Grape
 import HQx
 import SDL
 import UIKit
-import GameController
 
 typealias GrapeAudioCallback = @convention(c)(UnsafeMutableRawPointer?, UnsafeMutablePointer<UInt8>?, Int32) -> Void
 class GrapeDefaultController : SkinController {
@@ -41,6 +41,11 @@ class GrapeDefaultController : SkinController {
                     button.addInteraction(interaction)
                 }
             }
+        }
+        
+        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
+            let interaction = UIContextMenuInteraction(delegate: self)
+            button.addInteraction(interaction)
         }
         
         topBlurredImageView = .init()
@@ -221,132 +226,6 @@ class GrapeDefaultController : SkinController {
         }
         
         Grape.shared.start()
-        
-        Task {
-            await GCController.startWirelessControllerDiscovery()
-        }
-        
-        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
-            let interaction = UIContextMenuInteraction(delegate: self)
-            button.addInteraction(interaction)
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidConnect, object: nil, queue: .main) { notification in
-            guard let controller = notification.object as? GCController, let extendedGamepad = controller.extendedGamepad else {
-                return
-            }
-            
-            if let controllerView = self.controllerView { controllerView.hide() }
-            
-            extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .b, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .b, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .a, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .a, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonX.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .y, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .y, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonY.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .x, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .x, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadUp, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadUp, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadDown, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadDown, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadLeft, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadLeft, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadRight, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadRight, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.leftShoulder.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .l, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .l, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.rightShoulder.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .r, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .r, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .minus, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .minus, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .plus, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .plus, playerIndex: .index1)
-                }
-            }
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidDisconnect, object: nil, queue: .main) { _ in
-            if let controllerView = self.controllerView { controllerView.show() }
-        }
-        
-        NotificationCenter.default.addObserver(forName: .init("applicationStateDidChange"), object: nil, queue: .main) { notification in
-            guard let _ = notification.object as? ApplicationState else {
-                return
-            }
-            
-            Task { Grape.shared.pause() }
-            SDL_PauseAudioDevice(self.audioDeviceID, Grape.shared.running() ? 1 : 0)
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -417,15 +296,95 @@ class GrapeDefaultController : SkinController {
         SDL_PauseAudioDevice(audioDeviceID, 0)
     }
     
+    override func controllerDidConnect(_ notification: Notification) {
+        guard let controller = notification.object as? GCController,
+              let extendedGamepad = controller.extendedGamepad else { return }
+        
+        if let controllerView = self.controllerView { controllerView.hide() }
+        
+        extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
+            let handler: GrapeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.a, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
+            let handler: GrapeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.b, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonX.pressedChangedHandler = { element, value, pressed in
+            let handler: GrapeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.x, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonY.pressedChangedHandler = { element, value, pressed in
+            let handler: GrapeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.y, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
+            let handler: GrapeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.up, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
+            let handler: GrapeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.down, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
+            let handler: GrapeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.left, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
+            let handler: GrapeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.right, controller.playerIndex)
+        }
+        
+        extendedGamepad.leftShoulder.pressedChangedHandler = { element, value, pressed in
+            let handler: GrapeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.l, controller.playerIndex)
+        }
+        
+        extendedGamepad.rightShoulder.pressedChangedHandler = { element, value, pressed in
+            let handler: GrapeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.r, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
+            let handler: GrapeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.minus, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
+            let handler: GrapeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.plus, controller.playerIndex)
+        }
+    }
+    
+    override func controllerDidDisconnect(_ notification: Notification) {
+        if let controllerView = self.controllerView { controllerView.show() }
+    }
+    
+    override func applicationStateDidChange(_ notification: Notification) {
+        guard let applicationState = notification.object as? ApplicationState else {
+            return
+        }
+        
+        Task { Grape.shared.pause() }
+        SDL_PauseAudioDevice(self.audioDeviceID, applicationState.shouldPause ? 1 : 0)
+    }
+    
     static func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
-        case .dpadUp:
+        case .up:
             Grape.shared.input(6, true)
-        case .dpadDown:
+        case .down:
             Grape.shared.input(7, true)
-        case .dpadLeft:
+        case .left:
             Grape.shared.input(5, true)
-        case .dpadRight:
+        case .right:
             Grape.shared.input(4, true)
         case .minus:
             Grape.shared.input(2, true)
@@ -458,13 +417,13 @@ class GrapeDefaultController : SkinController {
     
     static func touchEnded(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
-        case .dpadUp:
+        case .up:
             Grape.shared.input(6, false)
-        case .dpadDown:
+        case .down:
             Grape.shared.input(7, false)
-        case .dpadLeft:
+        case .left:
             Grape.shared.input(5, false)
-        case .dpadRight:
+        case .right:
             Grape.shared.input(4, false)
         case .minus:
             Grape.shared.input(2, false)

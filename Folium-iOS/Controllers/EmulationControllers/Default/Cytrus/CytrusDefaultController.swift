@@ -11,26 +11,6 @@ import GameController
 import Metal
 import UIKit
 
-class MTKCallbackView : MTKView {
-    var callback: (() -> Void)? = nil
-    
-    override init(frame frameRect: CGRect, device: (any MTLDevice)?) {
-        super.init(frame: frameRect, device: device)
-    }
-    
-    required init(coder: NSCoder) {
-        super.init(coder: coder)
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func draw() {
-        super.draw()
-        if let callback {
-            callback()
-        }
-    }
-}
-
 class CytrusDefaultController : SkinController {
     let cytrus: Cytrus = .shared
     var isRunning: Bool = false
@@ -58,22 +38,22 @@ class CytrusDefaultController : SkinController {
             }
         }
         
+        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
+            let interaction = UIContextMenuInteraction(delegate: self)
+            button.addInteraction(interaction)
+        }
+        
         Cytrus.shared.diskCacheCallback { stage, progress, maximum in
             enum LoadCallbackStage : UInt8, CustomStringConvertible {
                 case prepare, preload, decompile, build, complete
                 
                 var description: String {
                     switch self {
-                    case .prepare:
-                        "Prepare"
-                    case .preload:
-                        "Preload"
-                    case .decompile:
-                        "Decompile"
-                    case .build:
-                        "Build"
-                    case .complete:
-                        "Complete"
+                    case .prepare: "Prepare"
+                    case .preload: "Preload"
+                    case .decompile: "Decompile"
+                    case .build: "Build"
+                    case .complete: "Complete"
                     }
                 }
             }
@@ -86,9 +66,7 @@ class CytrusDefaultController : SkinController {
         topMetalCallbackView.translatesAutoresizingMaskIntoConstraints = false
         topMetalCallbackView.enableSetNeedsDisplay = false
         topMetalCallbackView.preferredFramesPerSecond = 120
-        topMetalCallbackView.callback = {
-            
-        }
+        topMetalCallbackView.callback = {}
         if let controllerView {
             view.insertSubview(topMetalCallbackView, belowSubview: controllerView)
         }
@@ -98,153 +76,8 @@ class CytrusDefaultController : SkinController {
         topMetalCallbackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         topMetalCallbackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
-        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
-            let interaction = UIContextMenuInteraction(delegate: self)
-            button.addInteraction(interaction)
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidConnect, object: nil, queue: .main) { notification in
-            guard let controller = notification.object as? GCController, let extendedGamepad = controller.extendedGamepad else {
-                return
-            }
-            
-            if let controllerView = self.controllerView { controllerView.hide() }
-            
-            extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .b, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .b, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .a, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .a, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonX.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .y, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .y, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonY.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .x, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .x, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadUp, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadUp, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadDown, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadDown, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadLeft, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadLeft, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadRight, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadRight, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.leftThumbstick.valueChangedHandler = { element, x, y in
-                self.touchMoved(with: .left, position: (x, y), playerIndex: .index1)
-            }
-            
-            extendedGamepad.rightThumbstick.valueChangedHandler = { element, x, y in
-                self.touchMoved(with: .right, position: (x, y), playerIndex: .index1)
-            }
-            
-            extendedGamepad.leftShoulder.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .l, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .l, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.rightShoulder.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .r, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .r, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.leftTrigger.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .zl, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .zl, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.rightTrigger.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .zr, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .zr, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .minus, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .minus, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .plus, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .plus, playerIndex: .index1)
-                }
-            }
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidDisconnect, object: nil, queue: .main) { _ in
-            if let controllerView = self.controllerView { controllerView.show() }
-        }
-        
-        NotificationCenter.default.addObserver(forName: .init("applicationStateDidChange"), object: nil, queue: .main) { notification in
-            guard let applicationState = notification.object as? ApplicationState else {
-                return
-            }
-            
-            self.cytrus.pausePlay(applicationState == .foregrounded)
-        }
-        
         NotificationCenter.default.addObserver(forName: .init("openKeyboard"), object: nil, queue: .main) { notification in
-            guard let config = notification.object as? ButtonConfig else {
+            guard let config = notification.object as? KeyboardButtonConfig else {
                 return
             }
             
@@ -267,8 +100,6 @@ class CytrusDefaultController : SkinController {
                     "keyboardText" : textField.text ?? ""
                 ])
             }
-            
-            
             
             switch config {
             case .single:
@@ -322,10 +153,6 @@ class CytrusDefaultController : SkinController {
                 cytrus.initialize(layer, layer.frame.size)
             }
             
-            // let displayLink: CADisplayLink = .init(target: self, selector: #selector(run))
-            // displayLink.preferredFrameRateRange = .init(minimum: 60, maximum: 120)
-            // displayLink.add(to: .main, forMode: .common)
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 Thread.setThreadPriority(1.0)
                 Thread.detachNewThread { [ weak self] in
@@ -343,6 +170,105 @@ class CytrusDefaultController : SkinController {
         }
     }
     
+    override func controllerDidConnect(_ notification: Notification) {
+        guard let controller = notification.object as? GCController,
+              let extendedGamepad = controller.extendedGamepad else { return }
+        
+        if let controllerView = self.controllerView { controllerView.hide() }
+        
+        extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.a, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.b, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonX.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.x, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonY.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.y, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.up, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.down, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.left, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.right, controller.playerIndex)
+        }
+        
+        extendedGamepad.leftThumbstick.valueChangedHandler = { element, x, y in
+            self.touchMoved(with: .left, position: (x, y), playerIndex: .index1)
+        }
+        
+        extendedGamepad.rightThumbstick.valueChangedHandler = { element, x, y in
+            self.touchMoved(with: .right, position: (x, y), playerIndex: .index1)
+        }
+        
+        extendedGamepad.leftShoulder.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.l, controller.playerIndex)
+        }
+        
+        extendedGamepad.rightShoulder.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.r, controller.playerIndex)
+        }
+        
+        extendedGamepad.leftTrigger.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.zl, controller.playerIndex)
+        }
+        
+        extendedGamepad.rightTrigger.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.zr, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonHome?.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.home, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.minus, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
+            let handler: CytrusButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.plus, controller.playerIndex)
+        }
+    }
+    
+    override func controllerDidDisconnect(_ notification: Notification) {
+        if let controllerView = self.controllerView { controllerView.show() }
+    }
+    
+    override func applicationStateDidChange(_ notification: Notification) {
+        guard let applicationState = notification.object as? ApplicationState else { return }
+        cytrus.pause(applicationState.shouldPause)
+    }
+    
     static func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         guard let buttonType = CytrusButtonType.type(type.rawValue) else {
             // not a normal button, try custom ones
@@ -357,9 +283,7 @@ class CytrusDefaultController : SkinController {
                 }
                 
                 if let viewController = UIApplication.shared.viewController as? CytrusDefaultController {
-                    if let game = viewController.game as? CytrusGame {
-                        game.update()
-                    }
+                    if let game = viewController.game as? CytrusGame { game.update() }
                 }
             default:
                 break
@@ -367,8 +291,6 @@ class CytrusDefaultController : SkinController {
             
             return
         }
-        
-        print(buttonType.rawValue)
         
         Cytrus.shared.input(playerIndex.rawValue, buttonType, true)
     }
@@ -443,7 +365,7 @@ extension CytrusDefaultController : UIContextMenuInteractionDelegate {
                         self.present(cytrusSettingsController, animated: true)
                     }),
                     UIAction(title: "Toggle Play/Pause", handler: { _ in
-                        self.cytrus.pausePlay(self.cytrus.isPaused())
+                        self.cytrus.pause(!self.cytrus.isPaused())
                     }),
                     UIAction(title: "Stop & Exit", attributes: [.destructive], handler: { _ in
                         let alertController = UIAlertController(title: "Stop & Exit", message: "Are you sure?", preferredStyle: .alert)

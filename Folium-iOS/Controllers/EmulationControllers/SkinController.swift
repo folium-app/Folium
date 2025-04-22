@@ -37,6 +37,12 @@ class SkinController : LastPlayedPlayTimeController {
         controllerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         controllerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         controllerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        
+        Task { await GCController.startWirelessControllerDiscovery() }
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.GCControllerDidConnect, object: nil, queue: .main, using: controllerDidConnect(_:))
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.GCControllerDidDisconnect, object: nil, queue: .main, using: controllerDidDisconnect(_:))
+        NotificationCenter.default.addObserver(forName: .init("applicationStateDidChange"), object: nil, queue: .main, using: applicationStateDidChange(_:))
     }
     
     override var prefersHomeIndicatorAutoHidden: Bool { true }
@@ -70,6 +76,11 @@ class SkinController : LastPlayedPlayTimeController {
             controllerView.updateFrames(for: orientation, controllerDisconnected: GCController.controllers().isEmpty)
         }
     }
+    
+    func controllerDidConnect(_ notification: Notification) {}
+    func controllerDidDisconnect(_ notification: Notification) {}
+    
+    func applicationStateDidChange(_ notification: Notification) {}
 }
 
 extension SkinController : ControllerButtonDelegate {

@@ -282,33 +282,33 @@ class GrapeSkinController : UIViewController {
             
             extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadUp, playerIndex: .index1)
+                    self.touchBegan(with: .up, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadUp, playerIndex: .index1)
+                    self.touchEnded(with: .up, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadDown, playerIndex: .index1)
+                    self.touchBegan(with: .down, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadDown, playerIndex: .index1)
+                    self.touchEnded(with: .down, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadLeft, playerIndex: .index1)
+                    self.touchBegan(with: .left, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadLeft, playerIndex: .index1)
+                    self.touchEnded(with: .left, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadRight, playerIndex: .index1)
+                    self.touchBegan(with: .right, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadRight, playerIndex: .index1)
+                    self.touchEnded(with: .right, playerIndex: .index1)
                 }
             }
             
@@ -478,13 +478,13 @@ extension GrapeSkinController {
 extension GrapeSkinController : ControllerButtonDelegate {
     func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
-        case .dpadUp:
+        case .up:
             Grape.shared.input(6, true)
-        case .dpadDown:
+        case .down:
             Grape.shared.input(7, true)
-        case .dpadLeft:
+        case .left:
             Grape.shared.input(5, true)
-        case .dpadRight:
+        case .right:
             Grape.shared.input(4, true)
         case .minus:
             Grape.shared.input(2, true)
@@ -509,13 +509,13 @@ extension GrapeSkinController : ControllerButtonDelegate {
     
     func touchEnded(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
-        case .dpadUp:
+        case .up:
             Grape.shared.input(6, false)
-        case .dpadDown:
+        case .down:
             Grape.shared.input(7, false)
-        case .dpadLeft:
+        case .left:
             Grape.shared.input(5, false)
-        case .dpadRight:
+        case .right:
             Grape.shared.input(4, false)
         case .minus:
             Grape.shared.input(2, false)

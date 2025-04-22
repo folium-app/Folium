@@ -10,30 +10,544 @@ import Foundation
 import SettingsKit
 import UIKit
 
-enum CytrusSettingsHeaders : Int, CaseIterable {
-    case core, systemSaveGame, debugging, layoutCustom, layoutDefault, rendering, audio, networking
+enum CytrusSettingsHeaders : String, CaseIterable {
+    case core = "Core"
+    case debugging = "Debugging"
+    case system = "System"
+    case systemSaveGame = "System Save Game"
+    case renderer = "Renderer"
+    case defaultLayout = "Default Layout"
+    case customLayout = "Custom Layout"
+    case audio = "Audio"
+    case miscellaneous = "Miscellaneous"
     
     var header: SettingHeader {
         switch self {
-        case .core: .init(text: "Core")
-        case .systemSaveGame: .init(text: "System Save Game")
-        case .debugging: .init(text: "Debugging")
-        case .layoutCustom: .init(text: "Layout (Custom)")
-        case .layoutDefault: .init(text: "Layout (Default)", secondaryText: "Disable Custom Layout")
-        case .rendering: .init(text: "Rendering")
-        case .audio: .init(text: "Audio")
-        case .networking: .init(text: "Networking")
+        case .core,
+                .debugging,
+                .system,
+                .systemSaveGame,
+                .renderer,
+                .defaultLayout,
+                .audio,
+                .miscellaneous: .init(text: rawValue)
+        case .customLayout: .init(text: rawValue,
+                                  secondaryText: "Set Default Layout to Custom Layout")
         }
     }
     
     static var allHeaders: [SettingHeader] { allCases.map { $0.header } }
 }
 
+enum CytrusSettingsItems : String, CaseIterable {
+    // Core
+    case cpuJIT = "cytrus.cpuJIT"
+    case cpuClockPercentage = "cytrus.cpuClockPercentage"
+    case new3DS = "cytrus.new3DS"
+    case lleApplets = "cytrus.lleApplets"
+    case deterministicAsyncOperations = "cytrus.deterministicAsyncOperations"
+    case enableRequiredOnlineLLEModules = "cytrus.enableRequiredOnlineLLEModules"
+
+    // System
+    case regionValue = "cytrus.regionValue"
+    case pluginLoader = "cytrus.pluginLoader"
+    case allowPluginLoader = "cytrus.allowPluginLoader"
+    case stepsPerHour = "cytrus.stepsPerHour"
+
+    // Renderer
+    case spirvShaderGeneration = "cytrus.spirvShaderGeneration"
+    case useAsyncShaderCompilation = "cytrus.useAsyncShaderCompilation"
+    case useAsyncPresentation = "cytrus.useAsyncPresentation"
+    case useHardwareShaders = "cytrus.useHardwareShaders"
+    case useDiskShaderCache = "cytrus.useDiskShaderCache"
+    case useShadersAccurateMul = "cytrus.useShadersAccurateMul"
+    case useNewVSync = "cytrus.useNewVSync"
+    case useShaderJIT = "cytrus.useShaderJIT"
+    case resolutionFactor = "cytrus.resolutionFactor"
+    case textureFilter = "cytrus.textureFilter"
+    case textureSampling = "cytrus.textureSampling"
+    case delayGameRenderThreadUS = "cytrus.delayGameRenderThreadUS"
+    case layoutOption = "cytrus.layoutOption"
+    case customTopX = "cytrus.customTopX"
+    case customTopY = "cytrus.customTopY"
+    case customTopWidth = "cytrus.customTopWidth"
+    case customTopHeight = "cytrus.customTopHeight"
+    case customBottomX = "cytrus.customBottomX"
+    case customBottomY = "cytrus.customBottomY"
+    case customBottomWidth = "cytrus.customBottomWidth"
+    case customBottomHeight = "cytrus.customBottomHeight"
+    case customSecondLayerOpacity = "cytrus.customSecondLayerOpacity"
+    case render3D = "cytrus.render3D"
+    case factor3D = "cytrus.factor3D"
+    case monoRender = "cytrus.monoRender"
+    case filterMode = "cytrus.filterMode"
+    case ppShaderName = "cytrus.ppShaderName"
+    case anaglyphShaderName = "cytrus.anaglyphShaderName"
+    case dumpTextures = "cytrus.dumpTextures"
+    case customTextures = "cytrus.customTextures"
+    case preloadTextures = "cytrus.preloadTextures"
+    case asyncCustomLoading = "cytrus.asyncCustomLoading"
+    case disableRightEyeRender = "cytrus.disableRightEyeRender"
+
+    // Audio
+    case audioMuted = "cytrus.audioMuted"
+    case audioEmulation = "cytrus.audioEmulation"
+    case audioStretching = "cytrus.audioStretching"
+    case realtimeAudio = "cytrus.realtimeAudio"
+    case volume = "cytrus.volume"
+    case outputType = "cytrus.outputType"
+    case inputType = "cytrus.inputType"
+
+    // Miscellaneous
+    case logLevel = "cytrus.logLevel"
+    case webAPIURL = "cytrus.webAPIURL"
+    
+    case systemLanguage = "cytrus.systemLanguage"
+    case username = "cytrus.username"
+    
+    var title: String {
+        switch self {
+        case .cpuJIT: "CPU JIT"
+        case .cpuClockPercentage: "CPU Clock Percentage"
+        case .new3DS: "New 3DS"
+        case .lleApplets: "LLE Applets"
+        case .deterministicAsyncOperations: "Deterministic Async Operations"
+        case .enableRequiredOnlineLLEModules: "Required Online LLE Modules"
+        case .regionValue: "Region Value"
+        case .pluginLoader: "Plugin Loader"
+        case .allowPluginLoader: "Allow Plugin Loader"
+        case .stepsPerHour: "Steps Per Hour"
+        case .spirvShaderGeneration: "SPIR-V Shader Generation"
+        case .useAsyncShaderCompilation: "Async Shader Compilation"
+        case .useAsyncPresentation: "Async Presentation"
+        case .useHardwareShaders: "Hardware Shaders"
+        case .useDiskShaderCache: "Disk Shader Cache"
+        case .useShadersAccurateMul: "Shaders Accurate Mul"
+        case .useNewVSync: "New VSync"
+        case .useShaderJIT: "Shader JIT"
+        case .resolutionFactor: "Resolution Factor"
+        case .textureFilter: "Texture Filter"
+        case .textureSampling: "Texture Sampling"
+        case .delayGameRenderThreadUS: "Delay Game Render Thread US"
+        case .layoutOption: "Layout Option"
+        case .customTopX: "Custom Top X"
+        case .customTopY: "Custom Top Y"
+        case .customTopWidth: "Custom Top Width"
+        case .customTopHeight: "Custom Top Height"
+        case .customBottomX: "Custom Bottom X"
+        case .customBottomY: "Custom Bottom Y"
+        case .customBottomWidth: "Custom Bottom Width"
+        case .customBottomHeight: "Custom Bottom Height"
+        case .customSecondLayerOpacity: "Custom Second Layer Opacity"
+        case .render3D: "Render 3D"
+        case .factor3D: "Factor 3D"
+        case .monoRender: "Mono Render"
+        case .filterMode: "Filter Mode"
+        case .ppShaderName: "PP Shader Name"
+        case .anaglyphShaderName: "Anaglyph Shader Name"
+        case .dumpTextures: "Dump Textures"
+        case .customTextures: "Custom Textures"
+        case .preloadTextures: "Preload Textures"
+        case .asyncCustomLoading: "Async Custom Loading"
+        case .disableRightEyeRender: "Disable Right Eye Render"
+        case .audioMuted: "Audio Muted"
+        case .audioEmulation: "Audio Emulation"
+        case .audioStretching: "Audio Stretching"
+        case .realtimeAudio: "Realtime Audio"
+        case .volume: "Volume"
+        case .outputType: "Output Type"
+        case .inputType: "Input Type"
+        case .logLevel: "Log Level"
+        case .webAPIURL: "Web API URL"
+        case .systemLanguage: "System Language"
+        case .username: "Username"
+        }
+    }
+    
+    func setting(_ delegate: SettingDelegate? = nil) -> BaseSetting {
+        switch self {
+        case .cpuJIT,
+                .new3DS,
+                .lleApplets,
+                .deterministicAsyncOperations,
+                .enableRequiredOnlineLLEModules,
+                .pluginLoader,
+                .allowPluginLoader,
+                .spirvShaderGeneration,
+                .useAsyncShaderCompilation,
+                .useAsyncPresentation,
+                .useHardwareShaders,
+                .useDiskShaderCache,
+                .useShadersAccurateMul,
+                .useNewVSync,
+                .useShaderJIT,
+                .filterMode,
+                .dumpTextures,
+                .customTextures,
+                .preloadTextures,
+                .asyncCustomLoading,
+                .disableRightEyeRender,
+                .audioMuted,
+                .audioStretching,
+                .realtimeAudio:
+            BoolSetting(key: rawValue,
+                        title: title,
+                        details: nil,
+                        value: UserDefaults.standard.bool(forKey: rawValue),
+                        delegate: delegate)
+        case .cpuClockPercentage:
+            InputNumberSetting(key: rawValue,
+                               title: title,
+                               details: nil,
+                               min: 5, max: 400,
+                               value: UserDefaults.standard.double(forKey: rawValue),
+                               delegate: delegate)
+        case .regionValue:
+            SelectionSetting(key: rawValue,
+                             title: title,
+                             details: nil,
+                             values: [
+                                "Automatic" : -1,
+                                "Japan" : 0,
+                                "USA" : 1,
+                                "Europe" : 2,
+                                "Australia" : 3,
+                                "China" : 4,
+                                "Korea" : 5,
+                                "Taiwan" : 6
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: rawValue),
+                             action: {},
+                             delegate: delegate)
+        case .stepsPerHour:
+            InputNumberSetting(key: rawValue,
+                               title: title,
+                               details: nil,
+                               min: 0, max: 9999,
+                               value: UserDefaults.standard.double(forKey: rawValue),
+                               delegate: delegate)
+        case .resolutionFactor:
+            StepperSetting(key: rawValue,
+                                title: title,
+                                details: nil,
+                                min: 0,
+                                max: 10,
+                                value: UserDefaults.standard.double(forKey: rawValue),
+                                delegate: delegate)
+        case .textureFilter:
+            SelectionSetting(key: rawValue,
+                             title: title,
+                             details: nil,
+                             values: [
+                               "None" : 0,
+                               "Anime4K" : 1,
+                               "Bicubic" : 2,
+                               "ScaleForce" : 3,
+                               "xBRZ" : 4,
+                               "MMPX" : 5
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: rawValue),
+                             action: {},
+                             delegate: delegate)
+        case .textureSampling:
+            SelectionSetting(key: rawValue,
+                             title: title,
+                             values: [
+                               "Game Controlled" : 0,
+                               "Nearest Neighbor" : 1,
+                               "Linear" : 2
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: rawValue),
+                             action: {},
+                             delegate: delegate)
+        case .delayGameRenderThreadUS:
+            InputNumberSetting(key: rawValue,
+                               title: title,
+                               details: nil,
+                               min: 0, max: 16000,
+                               value: UserDefaults.standard.double(forKey: rawValue),
+                               delegate: delegate)
+        case .layoutOption:
+            SelectionSetting(key: rawValue,
+                             title: title,
+                             details: nil,
+                             values: [
+                               "Default" : 0,
+                               "Single Screen" : 1,
+                               "Large Screen" : 2,
+                               "Side Screen" : 3,
+                               "Hybrid Screen" : 5,
+                               "Custom Layout" : 6
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: rawValue),
+                             action: {},
+                             delegate: delegate)
+        case .customTopX,
+                .customTopY,
+                .customTopWidth,
+                .customTopHeight,
+                .customBottomX,
+                .customBottomY,
+                .customBottomWidth,
+                .customBottomHeight:
+            InputNumberSetting(key: rawValue,
+                               title: title,
+                               details: nil,
+                               min: 0, max: 9999,
+                               value: UserDefaults.standard.double(forKey: rawValue),
+                               delegate: delegate)
+        case .customSecondLayerOpacity:
+            InputNumberSetting(key: rawValue,
+                               title: title,
+                               details: nil,
+                               min: 0, max: 100,
+                               value: UserDefaults.standard.double(forKey: rawValue),
+                               delegate: delegate)
+        case .render3D:
+            SelectionSetting(key: rawValue,
+                             title: title,
+                             details: nil,
+                             values: [
+                               "Off" : 0,
+                               "Side by Side" : 1,
+                               "Anaglyph" : 2,
+                               "Interlaced" : 3,
+                               "ReverseInterlaced" : 4,
+                               "CardboardVR" : 5
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: rawValue),
+                             action: {},
+                             delegate: delegate)
+        case .factor3D:
+            StepperSetting(key: rawValue,
+                           title: title,
+                           details: nil,
+                           min: 0,
+                           max: 100,
+                           value: UserDefaults.standard.double(forKey: rawValue),
+                           delegate: delegate)
+        case .monoRender:
+            SelectionSetting(key: rawValue,
+                             title: title,
+                             details: nil,
+                             values: [
+                               "Left Eye" : 0,
+                               "Right Eye" : 1
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: rawValue),
+                             action: {},
+                             delegate: delegate)
+        case .ppShaderName:
+            InputStringSetting(key: rawValue,
+                               title: title,
+                               placeholder: "none (builtin)",
+                               value: UserDefaults.standard.string(forKey: rawValue),
+                               action: {},
+                               delegate: delegate)
+        case .anaglyphShaderName:
+            InputStringSetting(key: rawValue,
+                               title: title,
+                               placeholder: "dubois (builtin)",
+                               value: UserDefaults.standard.string(forKey: rawValue),
+                               action: {},
+                               delegate: delegate)
+        case .audioEmulation:
+            SelectionSetting(key: rawValue,
+                             title: title,
+                             values: [
+                               "HLE" : 0,
+                               "LLE" : 1,
+                               "LLE (Multithreaded)" : 2
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: rawValue),
+                             action: {},
+                             delegate: delegate)
+        case .volume:
+            StepperSetting(key: rawValue,
+                           title: title,
+                           details: nil,
+                           min: 0,
+                           max: 1,
+                           value: UserDefaults.standard.double(forKey: rawValue),
+                           delegate: delegate)
+        case .outputType:
+            SelectionSetting(key: rawValue,
+                             title: title,
+                             values: [
+                               "Automatic" : 0,
+                               "None" : 1,
+                               "CoreAudio" : 2,
+                               "OpenAL" : 3,
+                               "SDL3" : 4
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: rawValue),
+                             action: {},
+                             delegate: delegate)
+        case .inputType:
+            SelectionSetting(key: rawValue,
+                             title: title,
+                             values: [
+                               "Automatic" : 0,
+                               "None" : 1,
+                               "Static" : 2,
+                               "OpenAL" : 3
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: rawValue),
+                             action: {},
+                             delegate: delegate)
+        case .logLevel:
+            SelectionSetting(key: rawValue,
+                             title: title,
+                             details: nil,
+                             values: [
+                               "Trace" : 0,
+                               "Debug" : 1,
+                               "Info" : 2,
+                               "Warning" : 3,
+                               "Error" : 4,
+                               "Critical" : 5
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: rawValue),
+                             action: {},
+                             delegate: delegate)
+        case .webAPIURL:
+            InputStringSetting(key: rawValue,
+                               title: title,
+                               details: nil,
+                               placeholder: "http(s)://address:port",
+                               value: UserDefaults.standard.string(forKey: rawValue),
+                               action: {
+                                   MultiplayerManager.shared().updateWebAPIURL()
+                               },
+                               delegate: delegate)
+        case .systemLanguage:
+            SelectionSetting(key: rawValue,
+                             title: title,
+                             values: [
+                               "Japanese" : 0,
+                               "English" : 1,
+                               "French" : 2,
+                               "German" : 3,
+                               "Italian" : 4,
+                               "Spanish" : 5,
+                               "Simplified Chinese" : 6,
+                               "Korean" : 7,
+                               "Dutch" : 8,
+                               "Portuguese" : 9,
+                               "Russian" : 10,
+                               "Traditional Chinese" : 11
+                             ],
+                             selectedValue: UserDefaults.standard.value(forKey: rawValue),
+                             action: {
+                                 guard let systemLanguage = UserDefaults.standard.value(forKey: rawValue) as? Int else { return }
+                                 SystemSaveGame.shared.set(systemLanguage)
+                             },
+                             delegate: delegate)
+        case .username:
+            InputStringSetting(key: rawValue,
+                               title: title,
+                               placeholder: "Cytrus",
+                               value: UserDefaults.standard.string(forKey: rawValue),
+                               action: {
+                                   guard let username = UserDefaults.standard.string(forKey: rawValue) else { return }
+                                   SystemSaveGame.shared.set(username)
+                               },
+                               delegate: delegate)
+        }
+    }
+    
+    static func settings(_ header: CytrusSettingsHeaders) -> [CytrusSettingsItems] {
+        var debugging: [CytrusSettingsItems] = [.logLevel]
+        if AppStoreCheck.shared.debugging {
+            debugging.insert(.cpuJIT, at: 0)
+        }
+        
+        return switch header {
+        case .core:
+            [
+                .cpuClockPercentage,
+                .new3DS,
+                .lleApplets,
+                .deterministicAsyncOperations,
+                .enableRequiredOnlineLLEModules
+            ]
+        case .debugging:
+            debugging
+        case .system:
+            [
+                .regionValue,
+                .pluginLoader,
+                .allowPluginLoader,
+                .stepsPerHour
+            ]
+        case .systemSaveGame:
+            [
+                .systemLanguage,
+                .username
+            ]
+        case .renderer:
+            [
+                .spirvShaderGeneration,
+                .useAsyncShaderCompilation,
+                .useAsyncPresentation,
+                .useHardwareShaders,
+                .useDiskShaderCache,
+                .useShadersAccurateMul,
+                .useNewVSync,
+                .useShaderJIT,
+                .resolutionFactor,
+                .textureFilter,
+                .textureSampling,
+                .delayGameRenderThreadUS,
+                .render3D,
+                .factor3D,
+                .monoRender,
+                .filterMode,
+                .ppShaderName,
+                .anaglyphShaderName,
+                .dumpTextures,
+                .customTextures,
+                .preloadTextures,
+                .asyncCustomLoading,
+                .disableRightEyeRender
+            ]
+        case .defaultLayout:
+            [
+                .layoutOption
+            ]
+        case .customLayout:
+            [
+                .customTopX,
+                .customTopY,
+                .customTopWidth,
+                .customTopHeight,
+                .customBottomX,
+                .customBottomY,
+                .customBottomWidth,
+                .customBottomHeight,
+                .customSecondLayerOpacity
+            ]
+        case .audio:
+            [
+                .audioMuted,
+                .audioEmulation,
+                .audioStretching,
+                .realtimeAudio,
+                .volume,
+                .outputType,
+                .inputType
+            ]
+        case .miscellaneous:
+            [
+                .webAPIURL
+            ]
+        }
+    }
+}
+
 class CytrusSettingsController : UICollectionViewController {
     var dataSource: UICollectionViewDiffableDataSource<CytrusSettingsHeaders, AHS>! = nil
     var snapshot: NSDiffableDataSourceSnapshot<CytrusSettingsHeaders, AHS>! = nil
-    
-    let settingsKit = SettingsKit.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -257,352 +771,11 @@ class CytrusSettingsController : UICollectionViewController {
         
         snapshot = .init()
         snapshot.appendSections(CytrusSettingsHeaders.allCases)
-        
-        snapshot.appendItems([
-            settingsKit.inputNumber(key: "cytrus.cpuClockPercentage",
-                                    title: "CPU Clock Percentage",
-                                    details: "Change the Clock Frequency of the emulated 3DS CPU\n\nUnderclocking can increase the performance of the game at the risk of freezing\n\nOverclocking may fix lag that happens on console, but also comes with the risk of freezing",
-                                    min: 5,
-                                    max: 200,
-                                    value: UserDefaults.standard.double(forKey: "cytrus.cpuClockPercentage"),
-                                    delegate: self),
-            settingsKit.bool(key: "cytrus.new3DS",
-                             title: "New 3DS",
-                             details: "The system model that Cytrus will try to emulate",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.new3DS"),
-                             delegate: self),
-            settingsKit.bool(key: "cytrus.lleApplets",
-                             title: "LLE Applets",
-                             details: "Whether to use LLE system applets, if installed",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.lleApplets"),
-                             delegate: self),
-            settingsKit.selection(key: "cytrus.regionValue",
-                                  title: "Console Region",
-                                  details: "The system region that Cytrus will use during emulation",
-                                  values: [
-                                    "Automatic" : -1,
-                                    "Japan" : 0,
-                                    "USA" : 1,
-                                    "Europe" : 2,
-                                    "Australia" : 3,
-                                    "China" : 4,
-                                    "Korea" : 5,
-                                    "Taiwan" : 6
-                                  ],
-                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.regionValue"),
-                                  action: {},
-                                  delegate: self)
-        ], toSection: CytrusSettingsHeaders.core)
-        
-        snapshot.appendItems([
-            settingsKit.selection(key: "cytrus.systemLanguage",
-                                  title: "System Language",
-                                  values: [
-                                    "Japanese" : 0,
-                                    "English" : 1,
-                                    "French" : 2,
-                                    "German" : 3,
-                                    "Italian" : 4,
-                                    "Spanish" : 5,
-                                    "Simplified Chinese" : 6,
-                                    "Korean" : 7,
-                                    "Dutch" : 8,
-                                    "Portuguese" : 9,
-                                    "Russian" : 10,
-                                    "Traditional Chinese" : 11
-                                  ],
-                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.systemLanguage"),
-                                  action: {
-                                      guard let systemLanguage = UserDefaults.standard.value(forKey: "cytrus.systemLanguage") as? Int else { return }
-                                      SystemSaveGame.shared.set(systemLanguage)
-                                  },
-                                  delegate: self),
-            settingsKit.inputString(key: "cytrus.username",
-                                    title: "Username",
-                                    placeholder: "Cytrus",
-                                    value: UserDefaults.standard.string(forKey: "cytrus.username"),
-                                    action: {
-                                        guard let username = UserDefaults.standard.string(forKey: "cytrus.username") else { return }
-                                        SystemSaveGame.shared.set(username)
-                                    },
-                                    delegate: self)
-        ], toSection: .systemSaveGame)
-        
-        var debuggingItems: [AHS] = [
-            settingsKit.selection(key: "cytrus.logLevel",
-                                  title: "Log Level",
-                                  details: "Select the level of the information to be logged",
-                                  values: [
-                                    "Trace" : 0,
-                                    "Debug" : 1,
-                                    "Info" : 2,
-                                    "Warning" : 3,
-                                    "Error" : 4,
-                                    "Critical" : 5
-                                  ],
-                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.logLevel"),
-                                  action: {},
-                                  delegate: self)
-        ]
-        
-        if AppStoreCheck.shared.debugging {
-            debuggingItems.insert(settingsKit.bool(key: "cytrus.cpuJIT",
-                                         title: "CPU JIT",
-                                         value: UserDefaults.standard.bool(forKey: "cytrus.cpuJIT"),
-                                         delegate: self), at: 0)
+        snapshot.sectionIdentifiers.forEach { header in
+            snapshot.appendItems(CytrusSettingsItems.settings(header).map { $0.setting(self) }, toSection: header)
         }
         
-        snapshot.appendItems(debuggingItems, toSection: CytrusSettingsHeaders.debugging)
-        
-        snapshot.appendItems([
-            settingsKit.bool(key: "cytrus.customLayout",
-                                         title: "Custom Layout",
-                                         details: "Enabled the below custom layout values",
-                                         value: UserDefaults.standard.bool(forKey: "cytrus.customLayout"),
-                                         delegate: self),
-            settingsKit.inputNumber(key: "cytrus.customTopLeft",
-                                    title: "Custom Top Left",
-                                    min: 0,
-                                    max: 9999,
-                                    value: UserDefaults.standard.double(forKey: "cytrus.customTopLeft"),
-                                    delegate: self),
-            settingsKit.inputNumber(key: "cytrus.customTopTop",
-                                    title: "Custom Top Top",
-                                    min: 0,
-                                    max: 9999,
-                                    value: UserDefaults.standard.double(forKey: "cytrus.customTopTop"),
-                                    delegate: self),
-            settingsKit.inputNumber(key: "cytrus.customTopRight",
-                                    title: "Custom Top Right",
-                                    min: 0,
-                                    max: 9999,
-                                    value: UserDefaults.standard.double(forKey: "cytrus.customTopRight"),
-                                    delegate: self),
-            settingsKit.inputNumber(key: "cytrus.customTopBottom",
-                                    title: "Custom Top Bottom",
-                                    min: 0,
-                                    max: 9999,
-                                    value: UserDefaults.standard.double(forKey: "cytrus.customTopBottom"),
-                                    delegate: self),
-            settingsKit.inputNumber(key: "cytrus.customBottomLeft",
-                                    title: "Custom Bottom Left",
-                                    min: 0,
-                                    max: 9999,
-                                    value: UserDefaults.standard.double(forKey: "cytrus.customBottomLeft"),
-                                    delegate: self),
-            settingsKit.inputNumber(key: "cytrus.customBottomTop",
-                                    title: "Custom Bottom Top",
-                                    min: 0,
-                                    max: 9999,
-                                    value: UserDefaults.standard.double(forKey: "cytrus.customBottomTop"),
-                                    delegate: self),
-            settingsKit.inputNumber(key: "cytrus.customBottomRight",
-                                    title: "Custom Bottom Right",
-                                    min: 0,
-                                    max: 9999,
-                                    value: UserDefaults.standard.double(forKey: "cytrus.customBottomRight"),
-                                    delegate: self),
-            settingsKit.inputNumber(key: "cytrus.customBottomBottom",
-                                    title: "Custom Bottom Bottom",
-                                    min: 0,
-                                    max: 9999,
-                                    value: UserDefaults.standard.double(forKey: "cytrus.customBottomBottom"),
-                                    delegate: self)
-        ], toSection: CytrusSettingsHeaders.layoutCustom)
-        
-        snapshot.appendItems([
-            settingsKit.selection(key: "cytrus.layoutOption",
-                                  title: "Layout Option",
-                                  values: [
-                                    "Default" : 0,
-                                    "Single Screen" : 1,
-                                    "Large Screen" : 2,
-                                    "Side Screen" : 3,
-                                    "Hybrid Screen" : 5,
-                                    "Mobile Portrait" : 6,
-                                    "Mobile Landscape" : 7
-                                  ],
-                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.layoutOption"),
-                                  action: {},
-                                  delegate: self)
-        ], toSection: CytrusSettingsHeaders.layoutDefault)
-        
-        snapshot.appendItems([
-            settingsKit.bool(key: "cytrus.spirvShaderGeneration",
-                             title: "SPIRV Shader Generation",
-                             details: "Emits the fragment shader used to emulate PICA using SPIR-V instead of GLSL",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.spirvShaderGeneration"),
-                             delegate: self),
-            settingsKit.bool(key: "cytrus.useAsyncShaderCompilation",
-                             title: "Asynchronous Shader Compilation",
-                             details: "Compiles shaders in the background to reduce stuttering during gameplay. When enabled expect temporary graphical glitches",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.useAsyncShaderCompilation"),
-                             delegate: self),
-            settingsKit.bool(key: "cytrus.useAsyncPresentation",
-                             title: "Asynchronous Presentation",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.useAsyncPresentation"),
-                             delegate: self),
-            settingsKit.bool(key: "cytrus.useHardwareShaders",
-                             title: "Hardware Shaders",
-                             details: "Uses hardware to emulate 3DS shaders. When enabled, game performance will be significantly improved",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.useHardwareShaders"),
-                             delegate: self),
-            settingsKit.bool(key: "cytrus.useDiskShaderCache",
-                             title: "Disk Shader Cache",
-                             details: "Reduce stuttering by storing and loading generated shaders to disk. It cannot be used without Enabling Hardware Shader",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.useDiskShaderCache"),
-                             delegate: self),
-            settingsKit.bool(key: "cytrus.useShadersAccurateMul",
-                             title: "Accurate Shader Multiplication",
-                             details: "Uses more accurate multiplication in hardware shaders, which may fix some graphical bugs. When enabled, performance will be reduced",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.useShadersAccurateMul"),
-                             delegate: self),
-            settingsKit.bool(key: "cytrus.useNewVSync",
-                             title: "New Vertical Sync",
-                             details: "Synchronizes the game frame rate to the refresh rate of your device",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.useNewVSync"),
-                             delegate: self),
-            settingsKit.bool(key: "cytrus.useShaderJIT",
-                             title: "Shader JIT",
-                             details: "Whether to use the Just-In-Time (JIT) compiler for shader emulation",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.useShaderJIT"),
-                             delegate: self),
-            settingsKit.stepper(key: "cytrus.resolutionFactor",
-                                title: "Resolution Factor",
-                                details: "Factor for the 3DS resolution",
-                                min: 0,
-                                max: 10,
-                                value: UserDefaults.standard.double(forKey: "cytrus.resolutionFactor"),
-                                delegate: self),
-            settingsKit.selection(key: "cytrus.textureFilter",
-                                  title: "Texture Filter",
-                                  details: "Enhances the visuals of games by applying a filter to textures. The supported filters are Anime4K Ultrafast, Bicubic, ScaleForce, and xBRZ freescale",
-                                  values: [
-                                    "None" : 0,
-                                    "Anime4K" : 1,
-                                    "Bicubic" : 2,
-                                    "ScaleForce" : 3,
-                                    "xBRZ" : 4,
-                                    "MMPX" : 5
-                                  ],
-                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.textureFilter"),
-                                  action: {},
-                                  delegate: self),
-            settingsKit.selection(key: "cytrus.textureSampling",
-                                  title: "Texture Sampling",
-                                  values: [
-                                    "Game Controlled" : 0,
-                                    "Nearest Neighbor" : 1,
-                                    "Linear" : 2
-                                  ],
-                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.textureSampling"),
-                                  action: {},
-                                  delegate: self),
-            settingsKit.selection(key: "cytrus.render3D",
-                                  title: "Render 3D",
-                                  details: "Whether and how Stereoscopic 3D should be rendered",
-                                  values: [
-                                    "Off" : 0,
-                                    "Side by Side" : 1,
-                                    "Anaglyph" : 2,
-                                    "Interlaced" : 3,
-                                    "ReverseInterlaced" : 4,
-                                    "CardboardVR" : 5
-                                  ],
-                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.render3D"),
-                                  action: {},
-                                  delegate: self),
-            settingsKit.stepper(key: "cytrus.factor3D",
-                                title: "3D Factor",
-                                details: "Specifies the value of the 3D slider. This should be set to higher than 0% when Stereoscopic 3D is enabled",
-                                min: 0,
-                                max: 100,
-                                value: UserDefaults.standard.double(forKey: "cytrus.factor3D"),
-                                delegate: self),
-            settingsKit.selection(key: "cytrus.monoRender",
-                                  title: "Mono Render",
-                                  details: "Change Default Eye to Render When in Monoscopic Mode",
-                                  values: [
-                                    "Left Eye" : 0,
-                                    "Right Eye" : 1
-                                  ],
-                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.monoRender"),
-                                  action: {},
-                                  delegate: self),
-            settingsKit.bool(key: "cytrus.preloadTextures",
-                             title: "Preload Textures",
-                             details: "Loads all custom textures into memory. This feature can use a lot of memory",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.preloadTextures"),
-                             delegate: self),
-            // TODO: add this back when it isn't bad
-            // settingsKit.bool(key: "cytrus.redEyeRender",
-            //                  title: "Red Eye Render",
-            //                  details: "Greatly improves performance in some games when disabled, but can cause flickering in others",
-            //                  value: UserDefaults.standard.bool(forKey: "cytrus.redEyeRender"),
-            //                  delegate: self)
-        ], toSection: CytrusSettingsHeaders.rendering)
-        
-        snapshot.appendItems([
-            settingsKit.bool(key: "cytrus.audioMuted",
-                             title: "Audio Muted",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.audioMuted")),
-            settingsKit.selection(key: "cytrus.audioEmulation",
-                                  title: "Audio Emulation",
-                                  values: [
-                                    "HLE" : 0,
-                                    "LLE" : 1,
-                                    "LLE (Multithreaded)" : 2
-                                  ],
-                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.audioEmulation"),
-                                  action: {},
-                                  delegate: self),
-            settingsKit.bool(key: "cytrus.audioStretching",
-                             title: "Audio Stretching",
-                             details: "Stretches audio to reduce stuttering. When enabled, increases audio latency and slightly reduces performance",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.audioStretching")),
-            settingsKit.bool(key: "cytrus.realtimeAudio",
-                             title: "Realtime Audio",
-                             value: UserDefaults.standard.bool(forKey: "cytrus.realtimeAudio")),
-            settingsKit.selection(key: "cytrus.outputType",
-                                  title: "Output Type",
-                                  values: [
-                                    "Automatic" : 0,
-                                    "None" : 1,
-                                    "CoreAudio" : 2,
-                                    "OpenAL" : 3,
-                                    "SDL3" : 4
-                                  ],
-                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.outputType"),
-                                  action: {},
-                                  delegate: self),
-            settingsKit.selection(key: "cytrus.inputType",
-                                  title: "Input Type",
-                                  values: [
-                                    "Automatic" : 0,
-                                    "None" : 1,
-                                    "Static" : 2,
-                                    "OpenAL" : 3
-                                  ],
-                                  selectedValue: UserDefaults.standard.value(forKey: "cytrus.inputType"),
-                                  action: {},
-                                  delegate: self)
-        ], toSection: CytrusSettingsHeaders.audio)
-        
-        snapshot.appendItems([
-            settingsKit.inputString(key: "cytrus.webAPIURL",
-                                    title: "Web API URL",
-                                    details: "Enter the Web API URL that Cytrus will use when searching for rooms",
-                                    placeholder: "http(s)://address:port",
-                                    value: UserDefaults.standard.string(forKey: "cytrus.webAPIURL"),
-                                    action: {
-                                        MultiplayerManager.shared().updateWebAPIURL()
-                                    },
-                                    delegate: self)
-        ], toSection: CytrusSettingsHeaders.networking)
-        
-        Task {
-            await dataSource.apply(snapshot)
-        }
+        Task { await dataSource.apply(snapshot) }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

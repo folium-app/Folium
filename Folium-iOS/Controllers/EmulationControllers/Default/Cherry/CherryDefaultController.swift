@@ -159,33 +159,33 @@ class CherryDefaultController : SkinController {
             
             extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadUp, playerIndex: .index1)
+                    self.touchBegan(with: .up, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadUp, playerIndex: .index1)
+                    self.touchEnded(with: .up, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadDown, playerIndex: .index1)
+                    self.touchBegan(with: .down, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadDown, playerIndex: .index1)
+                    self.touchEnded(with: .down, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadLeft, playerIndex: .index1)
+                    self.touchBegan(with: .left, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadLeft, playerIndex: .index1)
+                    self.touchEnded(with: .left, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadRight, playerIndex: .index1)
+                    self.touchBegan(with: .right, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadRight, playerIndex: .index1)
+                    self.touchEnded(with: .right, playerIndex: .index1)
                 }
             }
             
@@ -279,14 +279,14 @@ class CherryDefaultController : SkinController {
             Lychee.shared.input(playerIndex.rawValue, .triangle, true)
         case .y:
             Lychee.shared.input(playerIndex.rawValue, .square, true)
-        case .dpadUp:
-            Lychee.shared.input(playerIndex.rawValue, .dpadUp, true)
-        case .dpadDown:
-            Lychee.shared.input(playerIndex.rawValue, .dpadDown, true)
-        case .dpadLeft:
-            Lychee.shared.input(playerIndex.rawValue, .dpadLeft, true)
-        case .dpadRight:
-            Lychee.shared.input(playerIndex.rawValue, .dpadRight, true)
+        case .up:
+            Lychee.shared.input(playerIndex.rawValue, .up, true)
+        case .down:
+            Lychee.shared.input(playerIndex.rawValue, .down, true)
+        case .left:
+            Lychee.shared.input(playerIndex.rawValue, .left, true)
+        case .right:
+            Lychee.shared.input(playerIndex.rawValue, .right, true)
         case .minus:
             Lychee.shared.input(playerIndex.rawValue, .select, true)
         case .plus:
@@ -323,14 +323,14 @@ class CherryDefaultController : SkinController {
             Lychee.shared.input(playerIndex.rawValue, .triangle, false)
         case .y:
             Lychee.shared.input(playerIndex.rawValue, .square, false)
-        case .dpadUp:
-            Lychee.shared.input(playerIndex.rawValue, .dpadUp, false)
-        case .dpadDown:
-            Lychee.shared.input(playerIndex.rawValue, .dpadDown, false)
-        case .dpadLeft:
-            Lychee.shared.input(playerIndex.rawValue, .dpadLeft, false)
-        case .dpadRight:
-            Lychee.shared.input(playerIndex.rawValue, .dpadRight, false)
+        case .up:
+            Lychee.shared.input(playerIndex.rawValue, .up, false)
+        case .down:
+            Lychee.shared.input(playerIndex.rawValue, .down, false)
+        case .left:
+            Lychee.shared.input(playerIndex.rawValue, .left, false)
+        case .right:
+            Lychee.shared.input(playerIndex.rawValue, .right, false)
         case .minus:
             Lychee.shared.input(playerIndex.rawValue, .select, false)
         case .plus:

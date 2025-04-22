@@ -15,10 +15,10 @@ struct Button : Codable, Hashable {
         case x = "x"
         case y = "y"
         
-        case dpadUp = "dpadUp"
-        case dpadDown = "dpadDown"
-        case dpadLeft = "dpadLeft"
-        case dpadRight = "dpadRight"
+        case up = "up"
+        case down = "down"
+        case left = "left"
+        case right = "right"
         
         case l = "l"
         case r = "r"
@@ -30,26 +30,37 @@ struct Button : Codable, Hashable {
         case minus = "minus"
         case plus = "plus"
         
-        case fastForward = "fastForward"
         case settings = "settings"
         
         case loadState = "loadState"
         case saveState = "saveState"
         
-        enum CodingKeys : String, CodingKey {
-            case a = "circle"
-            case b = "cross"
-            case x = "triangle"
-            case y = "square"
-            
-            case l = "l1"
-            case r = "r1"
-            
-            case zl = "l2"
-            case zr = "r2"
-            
-            case minus = "select"
-            case plus = "start"
+        init(rawValue: String) {
+            switch rawValue {
+            case "a", "circle": self = .a
+            case "b", "cross": self = .b
+            case "x", "triangle": self = .x
+            case "y", "square": self = .y
+                
+            case "up", "dpadUp": self = .up
+            case "down", "dpadDown": self = .down
+            case "left", "dpadLeft": self = .left
+            case "right", "dpadRight": self = .right
+                
+            case "l", "l1": self = .l
+            case "r", "r1": self = .r
+            case "zl", "l2": self = .zl
+            case "zr", "r2": self = .zr
+                
+            case "home": self = .home
+            case "minus", "select": self = .minus
+            case "plus", "start": self = .plus
+                
+            case "settings": self = .settings
+            case "loadState": self = .loadState
+            case "saveState": self = .saveState
+            default: self = .a
+            }
         }
     }
     
@@ -109,40 +120,20 @@ struct Button : Codable, Hashable {
         case .y:
             return .init(systemName: core.isNintendo ? "y.circle.fill" : "square.circle.fill")
             
-        case .dpadUp:
+        case .up:
             return .init(systemName: "arrowtriangle.up.circle.fill")
-        case .dpadDown:
+        case .down:
             return .init(systemName: "arrowtriangle.down.circle.fill")
-        case .dpadLeft:
+        case .left:
             return .init(systemName: "arrowtriangle.left.circle.fill")
-        case .dpadRight:
+        case .right:
             return .init(systemName: "arrowtriangle.right.circle.fill")
             
         case .l: return nil
-            // if #available(iOS 17, *) {
-            //     .init(systemName: core.isNintendo ? "l.button.roundedbottom.horizontal.fill" : "l1.button.roundedbottom.horizontal.fill")
-            // } else {
-            //     .init(systemName: core.isNintendo ? "l.rectangle.roundedbottom.fill" : "l1.rectangle.roundedbottom.fill")
-            // }
         case .r: return nil
-            // if #available(iOS 17, *) {
-            //     .init(systemName: core.isNintendo ? "r.button.roundedbottom.horizontal.fill" : "r1.button.roundedbottom.horizontal.fill")
-            // } else {
-            //     .init(systemName: core.isNintendo ? "r.rectangle.roundedbottom.fill" : "r1.rectangle.roundedbottom.fill")
-            // }
             
         case .zl: return nil
-            // if #available(iOS 17, *) {
-            //     .init(systemName: core.isNintendo ? "zl.button.roundedtop.horizontal.fill" : "l2.button.roundedtop.horizontal.fill")
-            // } else {
-            //     .init(systemName: core.isNintendo ? "zl.rectangle.roundedtop.fill" :"l2.rectangle.roundedtop.fill")
-            // }
         case .zr: return nil
-            // if #available(iOS 17, *) {
-            //     .init(systemName: core.isNintendo ? "zr.button.roundedtop.horizontal.fill" : "r2.button.roundedtop.horizontal.fill")
-            // } else {
-            //     .init(systemName: core.isNintendo ? "zr.rectangle.roundedtop.fill" :"r2.rectangle.roundedtop.fill")
-            // }
             
         case .home:
             return .init(systemName: "house.circle.fill")
@@ -151,8 +142,6 @@ struct Button : Codable, Hashable {
         case .plus:
             return .init(systemName: "plus.circle.fill")
             
-        case .fastForward:
-            return .init(systemName: "forward.fill")
         case .settings:
             return .init(systemName: "gearshape.circle.fill")
             

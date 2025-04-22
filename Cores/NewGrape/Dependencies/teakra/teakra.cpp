@@ -1,17 +1,17 @@
 #include <array>
 #include <atomic>
-#include "ahbm.h"
-#include "apbp.h"
-#include "btdmp.h"
-#include "core_timing.h"
-#include "dma.h"
-#include "icu.h"
-#include "memory_interface.h"
-#include "mmio.h"
-#include "processor.h"
-#include "shared_memory.h"
+#include "teakra/ahbm.h"
+#include "teakra/apbp.h"
+#include "teakra/btdmp.h"
+#include "teakra/core_timing.h"
+#include "teakra/dma.h"
+#include "teakra/icu.h"
+#include "teakra/memory_interface.h"
+#include "teakra/mmio.h"
+#include "teakra/processor.h"
+#include "teakra/shared_memory.h"
 #include "teakra/teakra.h"
-#include "timer.h"
+#include "teakra/timer.h"
 
 namespace Teakra {
 

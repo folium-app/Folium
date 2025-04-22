@@ -43,6 +43,11 @@ class MangoDefaultController : SkinController {
             }
         }
         
+        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
+            let interaction = UIContextMenuInteraction(delegate: self)
+            button.addInteraction(interaction)
+        }
+        
         blurredImageView = .init()
         guard let blurredImageView else { return }
         blurredImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -124,123 +129,6 @@ class MangoDefaultController : SkinController {
         displayLink = CADisplayLink(target: self, selector: #selector(step))
         displayLink.preferredFrameRateRange = .init(minimum: 30, maximum: mango.type() == .PAL ? 50 : 60)
         displayLink.add(to: .main, forMode: .common)
-        
-        Task {
-            await GCController.startWirelessControllerDiscovery()
-        }
-        
-        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
-            let interaction = UIContextMenuInteraction(delegate: self)
-            button.addInteraction(interaction)
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidConnect, object: nil, queue: .main) { notification in
-            guard let controller = notification.object as? GCController, let extendedGamepad = controller.extendedGamepad else {
-                return
-            }
-            
-            if let controllerView = self.controllerView { controllerView.hide() }
-            
-            extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .a, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .a, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .b, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .b, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonX.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .x, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .x, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonY.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .y, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .y, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadUp, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadUp, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadDown, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadDown, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadLeft, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadLeft, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadRight, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadRight, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.leftShoulder.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .l, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .l, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.rightShoulder.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .r, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .r, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .minus, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .minus, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .plus, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .plus, playerIndex: .index1)
-                }
-            }
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidDisconnect, object: nil, queue: .main) { _ in
-            if let controllerView = self.controllerView { controllerView.show() }
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -286,6 +174,77 @@ class MangoDefaultController : SkinController {
         }
     }
     
+    override func controllerDidConnect(_ notification: Notification) {
+        guard let controller = notification.object as? GCController,
+              let extendedGamepad = controller.extendedGamepad else { return }
+        
+        if let controllerView = self.controllerView { controllerView.hide() }
+        
+        extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.a, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.b, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonX.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.x, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonY.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.y, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.up, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.down, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.left, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.right, controller.playerIndex)
+        }
+        
+        extendedGamepad.leftShoulder.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.l, controller.playerIndex)
+        }
+        
+        extendedGamepad.rightShoulder.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.r, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.minus, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.plus, controller.playerIndex)
+        }
+    }
+    
+    override func controllerDidDisconnect(_ notification: Notification) {
+        if let controllerView = self.controllerView { controllerView.show() }
+    }
+    
     static func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
         case .a:
@@ -296,13 +255,13 @@ class MangoDefaultController : SkinController {
             Mango.shared.button(button: SNESControllerButton.x.rawValue, player: playerIndex.rawValue, pressed: true)
         case .y:
             Mango.shared.button(button: SNESControllerButton.y.rawValue, player: playerIndex.rawValue, pressed: true)
-        case .dpadUp:
+        case .up:
             Mango.shared.button(button: SNESControllerButton.up.rawValue, player: playerIndex.rawValue, pressed: true)
-        case .dpadDown:
+        case .down:
             Mango.shared.button(button: SNESControllerButton.down.rawValue, player: playerIndex.rawValue, pressed: true)
-        case .dpadLeft:
+        case .left:
             Mango.shared.button(button: SNESControllerButton.left.rawValue, player: playerIndex.rawValue, pressed: true)
-        case .dpadRight:
+        case .right:
             Mango.shared.button(button: SNESControllerButton.right.rawValue, player: playerIndex.rawValue, pressed: true)
         case .minus:
             Mango.shared.button(button: SNESControllerButton.select.rawValue, player: playerIndex.rawValue, pressed: true)
@@ -327,13 +286,13 @@ class MangoDefaultController : SkinController {
             Mango.shared.button(button: SNESControllerButton.x.rawValue, player: playerIndex.rawValue, pressed: false)
         case .y:
             Mango.shared.button(button: SNESControllerButton.y.rawValue, player: playerIndex.rawValue, pressed: false)
-        case .dpadUp:
+        case .up:
             Mango.shared.button(button: SNESControllerButton.up.rawValue, player: playerIndex.rawValue, pressed: false)
-        case .dpadDown:
+        case .down:
             Mango.shared.button(button: SNESControllerButton.down.rawValue, player: playerIndex.rawValue, pressed: false)
-        case .dpadLeft:
+        case .left:
             Mango.shared.button(button: SNESControllerButton.left.rawValue, player: playerIndex.rawValue, pressed: false)
-        case .dpadRight:
+        case .right:
             Mango.shared.button(button: SNESControllerButton.right.rawValue, player: playerIndex.rawValue, pressed: false)
         case .minus:
             Mango.shared.button(button: SNESControllerButton.select.rawValue, player: playerIndex.rawValue, pressed: false)

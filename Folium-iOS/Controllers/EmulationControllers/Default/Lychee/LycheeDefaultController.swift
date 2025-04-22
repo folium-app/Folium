@@ -6,9 +6,9 @@
 //
 
 import Foundation
+import GameController
 import Lychee
 import UIKit
-import GameController
 
 class LycheeDefaultController : SkinController {
     var imageView: UIImageView? = nil, blurredImageView: UIImageView? = nil
@@ -36,6 +36,11 @@ class LycheeDefaultController : SkinController {
                     button.addInteraction(interaction)
                 }
             }
+        }
+        
+        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
+            let interaction = UIContextMenuInteraction(delegate: self)
+            button.addInteraction(interaction)
         }
         
         blurredImageView = .init()
@@ -128,139 +133,6 @@ class LycheeDefaultController : SkinController {
                 blurredImageView.image = .init(cgImage: cropped)
             }
         }
-        
-        Task {
-            await GCController.startWirelessControllerDiscovery()
-        }
-        
-        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
-            let interaction = UIContextMenuInteraction(delegate: self)
-            button.addInteraction(interaction)
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidConnect, object: nil, queue: .main) { notification in
-            guard let controller = notification.object as? GCController, let extendedGamepad = controller.extendedGamepad else {
-                return
-            }
-            
-            if let controllerView = self.controllerView { controllerView.hide() }
-            
-            extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .b, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .b, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .a, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .a, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonX.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .y, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .y, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonY.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .x, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .x, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadUp, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadUp, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadDown, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadDown, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadLeft, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadLeft, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadRight, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadRight, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.leftShoulder.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .l, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .l, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.rightShoulder.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .r, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .r, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.leftTrigger.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .zl, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .zl, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.rightTrigger.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .zr, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .zr, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .minus, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .minus, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .plus, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .plus, playerIndex: .index1)
-                }
-            }
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidDisconnect, object: nil, queue: .main) { _ in
-            if let controllerView = self.controllerView { controllerView.show() }
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -288,6 +160,83 @@ class LycheeDefaultController : SkinController {
         while isRunning { Lychee.shared.step() }
     }
     
+    override func controllerDidConnect(_ notification: Notification) {
+        guard let controller = notification.object as? GCController,
+              let extendedGamepad = controller.extendedGamepad else { return }
+        
+        if let controllerView = self.controllerView { controllerView.hide() }
+        
+        extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.a, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.b, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonX.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.x, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonY.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.y, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.up, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.down, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.left, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.right, controller.playerIndex)
+        }
+        
+        extendedGamepad.leftShoulder.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.l, controller.playerIndex)
+        }
+        
+        extendedGamepad.rightShoulder.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.r, controller.playerIndex)
+        }
+        
+        extendedGamepad.leftTrigger.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.zl, controller.playerIndex)
+        }
+        
+        extendedGamepad.rightTrigger.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.zr, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.minus, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
+            let handler: LycheeButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.plus, controller.playerIndex)
+        }
+    }
+    
     static func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
         case .a:
@@ -298,13 +247,13 @@ class LycheeDefaultController : SkinController {
             Lychee.shared.input(playerIndex.rawValue, .triangle, true)
         case .y:
             Lychee.shared.input(playerIndex.rawValue, .square, true)
-        case .dpadUp:
+        case .up:
             Lychee.shared.input(playerIndex.rawValue, .up, true)
-        case .dpadDown:
+        case .down:
             Lychee.shared.input(playerIndex.rawValue, .down, true)
-        case .dpadLeft:
+        case .left:
             Lychee.shared.input(playerIndex.rawValue, .left, true)
-        case .dpadRight:
+        case .right:
             Lychee.shared.input(playerIndex.rawValue, .right, true)
         case .minus:
             Lychee.shared.input(playerIndex.rawValue, .select, true)
@@ -333,13 +282,13 @@ class LycheeDefaultController : SkinController {
             Lychee.shared.input(playerIndex.rawValue, .triangle, false)
         case .y:
             Lychee.shared.input(playerIndex.rawValue, .square, false)
-        case .dpadUp:
+        case .up:
             Lychee.shared.input(playerIndex.rawValue, .up, false)
-        case .dpadDown:
+        case .down:
             Lychee.shared.input(playerIndex.rawValue, .down, false)
-        case .dpadLeft:
+        case .left:
             Lychee.shared.input(playerIndex.rawValue, .left, false)
-        case .dpadRight:
+        case .right:
             Lychee.shared.input(playerIndex.rawValue, .right, false)
         case .minus:
             Lychee.shared.input(playerIndex.rawValue, .select, false)

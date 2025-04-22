@@ -49,10 +49,10 @@ enum Core : String, Codable, Comparable, CaseIterable, CustomStringConvertible, 
             let isNew3DS = UserDefaults.standard.bool(forKey: "cytrus.new3DS")
             
             return [
-                .dpadUp : (.black, .white),
-                .dpadDown : (.black, .white),
-                .dpadLeft : (.black, .white),
-                .dpadRight : (.black, .white),
+                .up : (.black, .white),
+                .down : (.black, .white),
+                .left : (.black, .white),
+                .right : (.black, .white),
                 .a : isNew3DS ? (.white, .systemRed) : (.black, .white),
                 .b : isNew3DS ? (.white, .systemYellow) : (.black, .white),
                 .x : isNew3DS ? (.white, .systemBlue) : (.black, .white),

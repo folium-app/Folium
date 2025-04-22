@@ -41,6 +41,11 @@ class PeachDefaultController : SkinController {
             }
         }
         
+        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
+            let interaction = UIContextMenuInteraction(delegate: self)
+            button.addInteraction(interaction)
+        }
+        
         blurredImageView = .init()
         guard let blurredImageView else { return }
         blurredImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -108,91 +113,6 @@ class PeachDefaultController : SkinController {
         displayLink = CADisplayLink(target: self, selector: #selector(step))
         displayLink.preferredFrameRateRange = .init(minimum: 30, maximum: 60)
         displayLink.add(to: .main, forMode: .common)
-        
-        Task {
-            await GCController.startWirelessControllerDiscovery()
-        }
-        
-        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
-            let interaction = UIContextMenuInteraction(delegate: self)
-            button.addInteraction(interaction)
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidConnect, object: nil, queue: .main) { notification in
-            guard let controller = notification.object as? GCController, let extendedGamepad = controller.extendedGamepad else {
-                return
-            }
-            
-            if let controllerView = self.controllerView { controllerView.hide() }
-            
-            extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .a, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .a, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .b, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .b, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadUp, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadUp, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadDown, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadDown, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadLeft, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadLeft, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadRight, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadRight, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .minus, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .minus, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .plus, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .plus, playerIndex: .index1)
-                }
-            }
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidDisconnect, object: nil, queue: .main) { _ in
-            if let controllerView = self.controllerView { controllerView.show() }
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -231,19 +151,80 @@ class PeachDefaultController : SkinController {
         }
     }
     
+    override func controllerDidConnect(_ notification: Notification) {
+        guard let controller = notification.object as? GCController,
+              let extendedGamepad = controller.extendedGamepad else { return }
+        
+        if let controllerView = self.controllerView { controllerView.hide() }
+        
+        extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
+            let handler: PeachButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.a, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.b, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.up, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.down, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.left, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.right, controller.playerIndex)
+        }
+        
+        extendedGamepad.leftShoulder.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.l, controller.playerIndex)
+        }
+        
+        extendedGamepad.rightShoulder.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.r, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.minus, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
+            let handler: MangoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.plus, controller.playerIndex)
+        }
+    }
+    
+    override func controllerDidDisconnect(_ notification: Notification) {
+        if let controllerView = self.controllerView { controllerView.show() }
+    }
+    
     static func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
         case .a:
             Peach.shared.button(button: .a, player: playerIndex.rawValue, pressed: true)
         case .b:
             Peach.shared.button(button: .b, player: playerIndex.rawValue, pressed: true)
-        case .dpadUp:
+        case .up:
             Peach.shared.button(button: .up, player: playerIndex.rawValue, pressed: true)
-        case .dpadDown:
+        case .down:
             Peach.shared.button(button: .down, player: playerIndex.rawValue, pressed: true)
-        case .dpadLeft:
+        case .left:
             Peach.shared.button(button: .left, player: playerIndex.rawValue, pressed: true)
-        case .dpadRight:
+        case .right:
             Peach.shared.button(button: .right, player: playerIndex.rawValue, pressed: true)
         case .minus:
             Peach.shared.button(button: .select, player: playerIndex.rawValue, pressed: true)
@@ -260,13 +241,13 @@ class PeachDefaultController : SkinController {
             Peach.shared.button(button: .a, player: playerIndex.rawValue, pressed: false)
         case .b:
             Peach.shared.button(button: .b, player: playerIndex.rawValue, pressed: false)
-        case .dpadUp:
+        case .up:
             Peach.shared.button(button: .up, player: playerIndex.rawValue, pressed: false)
-        case .dpadDown:
+        case .down:
             Peach.shared.button(button: .down, player: playerIndex.rawValue, pressed: false)
-        case .dpadLeft:
+        case .left:
             Peach.shared.button(button: .left, player: playerIndex.rawValue, pressed: false)
-        case .dpadRight:
+        case .right:
             Peach.shared.button(button: .right, player: playerIndex.rawValue, pressed: false)
         case .minus:
             Peach.shared.button(button: .select, player: playerIndex.rawValue, pressed: false)

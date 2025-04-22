@@ -119,33 +119,33 @@ class MangoSkinController : SkinController {
             
             extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadUp, playerIndex: .index1)
+                    self.touchBegan(with: .up, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadUp, playerIndex: .index1)
+                    self.touchEnded(with: .up, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadDown, playerIndex: .index1)
+                    self.touchBegan(with: .down, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadDown, playerIndex: .index1)
+                    self.touchEnded(with: .down, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadLeft, playerIndex: .index1)
+                    self.touchBegan(with: .left, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadLeft, playerIndex: .index1)
+                    self.touchEnded(with: .left, playerIndex: .index1)
                 }
             }
             
             extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
                 if pressed {
-                    self.touchBegan(with: .dpadRight, playerIndex: .index1)
+                    self.touchBegan(with: .right, playerIndex: .index1)
                 } else {
-                    self.touchEnded(with: .dpadRight, playerIndex: .index1)
+                    self.touchEnded(with: .right, playerIndex: .index1)
                 }
             }
             
@@ -237,13 +237,13 @@ extension MangoSkinController {
             Mango.shared.button(button: SNESControllerButton.x.rawValue, player: playerIndex.rawValue, pressed: true)
         case .y:
             Mango.shared.button(button: SNESControllerButton.y.rawValue, player: playerIndex.rawValue, pressed: true)
-        case .dpadUp:
+        case .up:
             Mango.shared.button(button: SNESControllerButton.up.rawValue, player: playerIndex.rawValue, pressed: true)
-        case .dpadDown:
+        case .down:
             Mango.shared.button(button: SNESControllerButton.down.rawValue, player: playerIndex.rawValue, pressed: true)
-        case .dpadLeft:
+        case .left:
             Mango.shared.button(button: SNESControllerButton.left.rawValue, player: playerIndex.rawValue, pressed: true)
-        case .dpadRight:
+        case .right:
             Mango.shared.button(button: SNESControllerButton.right.rawValue, player: playerIndex.rawValue, pressed: true)
         case .minus:
             Mango.shared.button(button: SNESControllerButton.select.rawValue, player: playerIndex.rawValue, pressed: true)
@@ -268,13 +268,13 @@ extension MangoSkinController {
             Mango.shared.button(button: SNESControllerButton.x.rawValue, player: playerIndex.rawValue, pressed: false)
         case .y:
             Mango.shared.button(button: SNESControllerButton.y.rawValue, player: playerIndex.rawValue, pressed: false)
-        case .dpadUp:
+        case .up:
             Mango.shared.button(button: SNESControllerButton.up.rawValue, player: playerIndex.rawValue, pressed: false)
-        case .dpadDown:
+        case .down:
             Mango.shared.button(button: SNESControllerButton.down.rawValue, player: playerIndex.rawValue, pressed: false)
-        case .dpadLeft:
+        case .left:
             Mango.shared.button(button: SNESControllerButton.left.rawValue, player: playerIndex.rawValue, pressed: false)
-        case .dpadRight:
+        case .right:
             Mango.shared.button(button: SNESControllerButton.right.rawValue, player: playerIndex.rawValue, pressed: false)
         case .minus:
             Mango.shared.button(button: SNESControllerButton.select.rawValue, player: playerIndex.rawValue, pressed: false)

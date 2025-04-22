@@ -6,11 +6,11 @@
 //  Copyright © 2024 Jarrod Norwell. All rights reserved.
 //
 
+import AVFAudio
 import Foundation
+import GameController
 import Tomato
 import UIKit
-import GameController
-import AVFAudio
 
 class TomatoDefaultController : SkinController {
     var imageView: UIImageView? = nil, blurredImageView: UIImageView? = nil
@@ -37,6 +37,11 @@ class TomatoDefaultController : SkinController {
                     button.addInteraction(interaction)
                 }
             }
+        }
+        
+        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
+            let interaction = UIContextMenuInteraction(delegate: self)
+            button.addInteraction(interaction)
         }
         
         blurredImageView = .init()
@@ -139,115 +144,6 @@ class TomatoDefaultController : SkinController {
         }
         
         Thread.detachNewThread { Tomato.shared.start() }
-        
-        Task {
-            await GCController.startWirelessControllerDiscovery()
-        }
-        
-        if let controllerView = controllerView, let button = controllerView.button(for: .settings) {
-            let interaction = UIContextMenuInteraction(delegate: self)
-            button.addInteraction(interaction)
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidConnect, object: nil, queue: .main) { notification in
-            guard let controller = notification.object as? GCController, let extendedGamepad = controller.extendedGamepad else {
-                return
-            }
-            
-            if let controllerView = self.controllerView { controllerView.hide() }
-            
-            extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .b, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .b, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .a, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .a, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadUp, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadUp, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadDown, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadDown, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadLeft, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadLeft, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .dpadRight, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .dpadRight, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.leftShoulder.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .l, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .l, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.rightShoulder.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .r, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .r, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .minus, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .minus, playerIndex: .index1)
-                }
-            }
-            
-            extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
-                if pressed {
-                    self.touchBegan(with: .plus, playerIndex: .index1)
-                } else {
-                    self.touchEnded(with: .plus, playerIndex: .index1)
-                }
-            }
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.GCControllerDidDisconnect, object: nil, queue: .main) { _ in
-            if let controllerView = self.controllerView { controllerView.show() }
-        }
-        
-        NotificationCenter.default.addObserver(forName: .init("applicationStateDidChange"), object: nil, queue: .main) { notification in
-            guard let applicationState = notification.object as? ApplicationState else {
-                return
-            }
-            
-            Tomato.shared.pause(applicationState == .backgrounded)
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -271,19 +167,88 @@ class TomatoDefaultController : SkinController {
         }
     }
     
+    override func controllerDidConnect(_ notification: Notification) {
+        guard let controller = notification.object as? GCController,
+              let extendedGamepad = controller.extendedGamepad else { return }
+        
+        if let controllerView = self.controllerView { controllerView.hide() }
+        
+        extendedGamepad.buttonA.pressedChangedHandler = { element, value, pressed in
+            let handler: TomatoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.a, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonB.pressedChangedHandler = { element, value, pressed in
+            let handler: TomatoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.b, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.up.pressedChangedHandler = { element, value, pressed in
+            let handler: TomatoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.up, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.down.pressedChangedHandler = { element, value, pressed in
+            let handler: TomatoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.down, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.left.pressedChangedHandler = { element, value, pressed in
+            let handler: TomatoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.left, controller.playerIndex)
+        }
+        
+        extendedGamepad.dpad.right.pressedChangedHandler = { element, value, pressed in
+            let handler: TomatoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.right, controller.playerIndex)
+        }
+        
+        extendedGamepad.leftShoulder.pressedChangedHandler = { element, value, pressed in
+            let handler: TomatoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.l, controller.playerIndex)
+        }
+        
+        extendedGamepad.rightShoulder.pressedChangedHandler = { element, value, pressed in
+            let handler: TomatoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.r, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonOptions?.pressedChangedHandler = { element, value, pressed in
+            let handler: TomatoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.minus, controller.playerIndex)
+        }
+        
+        extendedGamepad.buttonMenu.pressedChangedHandler = { element, value, pressed in
+            let handler: TomatoButtonHandler = pressed ? self.touchBegan : self.touchEnded
+            handler(.plus, controller.playerIndex)
+        }
+    }
+    
+    override func controllerDidDisconnect(_ notification: Notification) {
+        if let controllerView = self.controllerView { controllerView.show() }
+    }
+    
+    override func applicationStateDidChange(_ notification: Notification) {
+        guard let applicationState = notification.object as? ApplicationState else {
+            return
+        }
+        
+        Tomato.shared.pause(applicationState.shouldPause)
+    }
+    
     static func touchBegan(with type: Button.`Type`, playerIndex: GCControllerPlayerIndex) {
         switch type {
         case .a:
             Tomato.shared.button(button: .a, player: playerIndex.rawValue, pressed: true)
         case .b:
             Tomato.shared.button(button: .b, player: playerIndex.rawValue, pressed: true)
-        case .dpadUp:
+        case .up:
             Tomato.shared.button(button: .up, player: playerIndex.rawValue, pressed: true)
-        case .dpadDown:
+        case .down:
             Tomato.shared.button(button: .down, player: playerIndex.rawValue, pressed: true)
-        case .dpadLeft:
+        case .left:
             Tomato.shared.button(button: .left, player: playerIndex.rawValue, pressed: true)
-        case .dpadRight:
+        case .right:
             Tomato.shared.button(button: .right, player: playerIndex.rawValue, pressed: true)
         case .minus:
             Tomato.shared.button(button: .select, player: playerIndex.rawValue, pressed: true)
@@ -306,13 +271,13 @@ class TomatoDefaultController : SkinController {
             Tomato.shared.button(button: .a, player: playerIndex.rawValue, pressed: false)
         case .b:
             Tomato.shared.button(button: .b, player: playerIndex.rawValue, pressed: false)
-        case .dpadUp:
+        case .up:
             Tomato.shared.button(button: .up, player: playerIndex.rawValue, pressed: false)
-        case .dpadDown:
+        case .down:
             Tomato.shared.button(button: .down, player: playerIndex.rawValue, pressed: false)
-        case .dpadLeft:
+        case .left:
             Tomato.shared.button(button: .left, player: playerIndex.rawValue, pressed: false)
-        case .dpadRight:
+        case .right:
             Tomato.shared.button(button: .right, player: playerIndex.rawValue, pressed: false)
         case .minus:
             Tomato.shared.button(button: .select, player: playerIndex.rawValue, pressed: false)

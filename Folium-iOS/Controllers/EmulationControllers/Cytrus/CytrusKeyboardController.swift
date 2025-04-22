@@ -13,8 +13,8 @@ import UIKit
 class CytrusKeyboardController : UIViewController, UITextFieldDelegate {
     var bottomConstraint: NSLayoutConstraint!
     
-    var buttonConfig: ButtonConfig
-    init(buttonConfig: ButtonConfig) {
+    var buttonConfig: KeyboardButtonConfig
+    init(buttonConfig: KeyboardButtonConfig) {
         self.buttonConfig = buttonConfig
         super.init(nibName: nil, bundle: nil)
     }

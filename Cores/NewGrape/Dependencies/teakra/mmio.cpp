@@ -2,13 +2,13 @@
 #include <string>
 #include <type_traits>
 #include <vector>
-#include "ahbm.h"
-#include "apbp.h"
-#include "btdmp.h"
-#include "dma.h"
-#include "memory_interface.h"
-#include "mmio.h"
-#include "timer.h"
+#include "teakra/ahbm.h"
+#include "teakra/apbp.h"
+#include "teakra/btdmp.h"
+#include "teakra/dma.h"
+#include "teakra/memory_interface.h"
+#include "teakra/mmio.h"
+#include "teakra/timer.h"
 
 namespace Teakra {
 

@@ -22,6 +22,16 @@ enum ApplicationState : Int {
     case backgrounded = 0
     case foregrounded = 1
     case disconnected = 2
+    
+    var shouldPause: Bool {
+        switch self {
+        case .backgrounded,
+                .disconnected:
+            true
+        case .foregrounded:
+            false
+        }
+    }
 }
 
 @_silgen_name("csops")
@@ -191,50 +201,97 @@ extension SceneDelegate {
     fileprivate func configureDefaultUserDefaults() {
         let defaults: [String : [String : Any]] = [
             "Cytrus" : [
+                // Core
+                "cpuJIT" : false,
                 "cpuClockPercentage" : 100,
                 "new3DS" : true,
-                "lleApplets" : false,
+                "lleApplets" : true,
+                "deterministicAsyncOperations" : false,
+                "enableRequiredOnlineLLEModules" : false,
+                
+                // System
                 "regionValue" : -1,
+                "pluginLoader" : false,
+                "allowPluginLoader" : true,
+                "stepsPerHour" : 0,
                 
-                "systemLanguage" : 1,
-                "username" : "Cytrus",
-                
-                "layoutOption" : 6,
-                
-                "customLayout" : false,
-                "customTopLeft" : 0,
-                "customTopTop" : 0,
-                "customTopRight" : 400,
-                "customTopBottom" : 240,
-                "customBottomLeft" : 40,
-                "customBottomTop" : 240,
-                "customBottomRight" : 360,
-                "customBottomBottom" : 480,
+                // Renderer
                 "spirvShaderGeneration" : true,
                 "useAsyncShaderCompilation" : false,
                 "useAsyncPresentation" : true,
                 "useHardwareShaders" : true,
                 "useDiskShaderCache" : true,
-                "useShadersAccurateMul" : false,
+                "useShadersAccurateMul" : true,
                 "useNewVSync" : true,
-                "useShaderJIT" : false,
+                "useShaderJIT" : true,
                 "resolutionFactor" : 1,
+                // frame_limit
+                // turbo_speed
                 "textureFilter" : 0,
                 "textureSampling" : 0,
+                "delayGameRenderThreadUS" : 0,
+                "layoutOption" : 0,
+                // swap_screen
+                // upright_screen
+                // large_screen_proportion
+                // screen_gap
+                // small_screen_position
+                "customTopX" : 0,
+                "customTopY" : 0,
+                "customTopWidth" : 800,
+                "customTopHeight" : 480,
+                "customBottomX" : 80,
+                "customBottomY" : 500,
+                "customBottomWidth" : 640,
+                "customBottomHeight" : 480,
+                "customSecondLayerOpacity" : 100,
+                // screen_top_stretch
+                // screen_top_leftright_padding
+                // screen_top_topbottom_padding
+                // screen_bottom_stretch
+                // screen_bottom_leftright_padding
+                // screen_bottom_topbottom_padding
+                // portrait_layout_option
+                // custom_portrait_top_x
+                // custom_portrait_top_y
+                // custom_portrait_top_width
+                // custom_portrait_top_height
+                // custom_portrait_bottom_x
+                // custom_portrait_bottom_y
+                // custom_portrait_bottom_width
+                // custom_portrait_bottom_height
+                // bg_red
+                // bg_green
+                // bg_blue
                 "render3D" : 0,
                 "factor3D" : 0,
                 "monoRender" : 0,
+                // cardboard_screen_size
+                // cardboard_x_shift
+                // cardboard_y_shift
+                "filterMode" : true,
+                "ppShaderName" : "none (builtin)",
+                "anaglyphShaderName" : "dubois (builtin)",
+                "dumpTextures" : false,
+                "customTextures" : false,
                 "preloadTextures" : false,
-                "redEyeRender" : true,
+                "asyncCustomLoading" : true,
+                "disableRightEyeRender" : false,
                 
                 "audioMuted" : false,
                 "audioEmulation" : 0,
                 "audioStretching" : true,
+                "realtimeAudio" : false,
+                "volume" : 1,
                 "outputType" : 0,
                 "inputType" : 0,
                 
+                // Miscellaneous
                 "logLevel" : 2,
-                "webAPIURL" : "http://88.198.47.46:5000"
+                "webAPIURL" : "http://88.198.47.46:5000",
+                
+                "systemLanguage" : 1,
+                "username" : "Cytrus"
             ],
             "Folium" : [
                 "showBetaConsoles" : false,
