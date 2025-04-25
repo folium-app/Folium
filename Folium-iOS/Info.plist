@@ -23,7 +23,7 @@
 		</dict>
 	</array>
 	<key>GIT_REV</key>
-	<string>b74f53b79e74155b8659b82eb1782ecb010bc0f8</string>
+	<string>cfe093ba1e4362d9e2aac78b96d61a95c54d58e6</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -32,7 +32,7 @@
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
-		<false/>
+		<true/>
 		<key>UISceneConfigurations</key>
 		<dict>
 			<key>UIWindowSceneSessionRoleApplication</key>

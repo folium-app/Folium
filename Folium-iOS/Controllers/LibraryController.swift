@@ -249,18 +249,20 @@ class LibraryController : UICollectionViewController {
     
     func setSettingsButton() {
         var children: [UIMenuElement] = [
-            UIAction(title: "App Settings", image: .init(systemName: "leaf"), handler: { [weak self] _ in
-                guard let self else { return }
-                
-                var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-                configuration.headerMode = .supplementary
-                let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
-                
-                let foliumSettingsController = UINavigationController(rootViewController: FoliumSettingsController(collectionViewLayout: listCollectionViewLayout))
-                foliumSettingsController.modalPresentationStyle = .fullScreen
-                self.present(foliumSettingsController, animated: true)
-            }),
-            UIMenu(options: .displayInline, children: [
+            UIMenu(title: "Application Settings", options: .displayInline, children: [
+                UIAction(title: "Folium", image: .init(systemName: "leaf"), handler: { [weak self] _ in
+                    guard let self else { return }
+                    
+                    var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+                    configuration.headerMode = .supplementary
+                    let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
+                    
+                    let foliumSettingsController = UINavigationController(rootViewController: FoliumSettingsController(collectionViewLayout: listCollectionViewLayout))
+                    foliumSettingsController.modalPresentationStyle = .fullScreen
+                    self.present(foliumSettingsController, animated: true)
+                })
+            ]),
+            UIMenu(title: "Core Settings", options: .displayInline, children: [
                 UIMenu(title: "Cytrus", children: [
                     UIAction(title: "Browse Rooms", image: .init(systemName: "magnifyingglass"), handler: { [weak self] _ in
                         guard let self else { return }
@@ -285,92 +287,97 @@ class LibraryController : UICollectionViewController {
                         self.present(cytrusSettingsController, animated: true)
                     }),
                 ]),
-                UIAction(title: "Grape", handler: { [weak self] _ in
+                UIMenu(title: "Grape", children: [
+                    UIAction(title: "Settings", image: .init(systemName: "gearshape"), handler: { [weak self] _ in
+                        guard let self else { return }
+                        
+                        var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+                        configuration.headerMode = .supplementary
+                        let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
+                        
+                        let grapeSettingsController = UINavigationController(rootViewController: GrapeSettingsController(collectionViewLayout: listCollectionViewLayout))
+                        grapeSettingsController.modalPresentationStyle = .fullScreen
+                        self.present(grapeSettingsController, animated: true)
+                    })
+                ])
+            ])
+        ]
+        
+        if DirectoryManager.shared.hasMissingFiles {
+            children.append(UIMenu(options: .displayInline, children: [
+                UIAction(title: "Missing Files", image: .init(systemName: "doc"), handler: { [weak self] _ in
                     guard let self else { return }
                     
                     var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
                     configuration.headerMode = .supplementary
                     let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
                     
-                    let grapeSettingsController = UINavigationController(rootViewController: GrapeSettingsController(collectionViewLayout: listCollectionViewLayout))
-                    grapeSettingsController.modalPresentationStyle = .fullScreen
-                    self.present(grapeSettingsController, animated: true)
+                    let missingFilesController = UINavigationController(rootViewController: MissingFilesController(collectionViewLayout: listCollectionViewLayout))
+                    missingFilesController.modalPresentationStyle = .fullScreen
+                    self.present(missingFilesController, animated: true)
                 })
-            ])
-        ]
-        
-        children.append(UIMenu(options: .displayInline, children: [
-            UIAction(title: "Missing Files", image: .init(systemName: "doc"), handler: { [weak self] _ in
-                guard let self else { return }
-                
-                var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-                configuration.headerMode = .supplementary
-                let listCollectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
-                
-                let missingFilesController = UINavigationController(rootViewController: MissingFilesController(collectionViewLayout: listCollectionViewLayout))
-                missingFilesController.modalPresentationStyle = .fullScreen
-                self.present(missingFilesController, animated: true)
-            })
-        ]))
-        
-        if AppStoreCheck.shared.additionalFeaturesAreAllowed {
-            if Auth.auth().currentUser == nil {
-                children.append(UIMenu(options: .displayInline, children: [
-                    UIAction(title: "Sign In", image: .init(systemName: "arrow.right"), handler: { [weak self] _ in
-                        guard let self else { return }
-                        
-                        let authenticationController = AuthenticationController()
-                        authenticationController.modalPresentationStyle = .fullScreen
-                        self.present(authenticationController, animated: true)
-                    })
-                ]))
-            } else {
-                children.append(UIMenu(options: .displayInline, children: [
-                    UIAction(title: "Delete Account", image: .init(systemName: "delete.left"), attributes: [.destructive], handler: { [weak self] _ in
-                        guard let self else { return }
-                        
-                        self.present(alert(title: "Sign In to Delete", message: "Firebase requires a recent sign in to delete your account", preferredStyle: .alert, actions: [
-                            .init(title: "Sign In", style: .destructive, handler: { _ in
-                                let nonce: String = .nonce()
-                                self.currentNonce = nonce
-                                
-                                let provider = ASAuthorizationAppleIDProvider()
-                                let request = provider.createRequest()
-                                request.requestedScopes = [.email, .fullName]
-                                request.nonce = .sha256(from: nonce)
-                                
-                                let controller = ASAuthorizationController(authorizationRequests: [request])
-                                controller.delegate = self
-                                controller.presentationContextProvider = self
-                                controller.performRequests()
-                            }),
-                            .init(title: "Cancel", style: .cancel)
-                        ]), animated: true)
-                    }),
-                    UIAction(title: "Sign Out", image: .init(systemName: "arrow.right"), attributes: [.destructive], handler: { [weak self] _ in
-                        guard let self else { return }
-                        
-                        do {
-                            try Auth.auth().signOut()
-                            
-                            let authenticationController: AuthenticationController = .init()
-                            authenticationController.modalPresentationStyle = .fullScreen
-                            self.present(authenticationController, animated: true)
-                        } catch {
-                            print(#function, error, error.localizedDescription)
-                        }
-                    })
-                ]))
-            }
+            ]))
         }
         
-        navigationItem.rightBarButtonItem = .init(image: .init(systemName: "gearshape.fill"), menu: .init(children: [
-            UIAction(title: "Import Games", image: .init(systemName: "arrow.down.document"), handler: { [weak self] _ in
+        if AppStoreCheck.shared.additionalFeaturesAreAllowed {
+            var accountSettingsChildren: [UIMenuElement] = []
+            
+            if Auth.auth().currentUser == nil {
+                accountSettingsChildren.append(UIAction(title: "Sign In", image: .init(systemName: "arrow.right"), handler: { [weak self] _ in
+                    guard let self else { return }
+                    
+                    let authenticationController = AuthenticationController()
+                    authenticationController.modalPresentationStyle = .fullScreen
+                    self.present(authenticationController, animated: true)
+                }))
+            } else {
+                accountSettingsChildren.append(UIAction(title: "Delete Account", image: .init(systemName: "delete.left"), attributes: [.destructive], handler: { [weak self] _ in
+                    guard let self else { return }
+                    
+                    self.present(alert(title: "Sign In to Delete", message: "Firebase requires a recent sign in to delete your account", preferredStyle: .alert, actions: [
+                        .init(title: "Sign In", style: .destructive, handler: { _ in
+                            let nonce: String = .nonce()
+                            self.currentNonce = nonce
+                            
+                            let provider = ASAuthorizationAppleIDProvider()
+                            let request = provider.createRequest()
+                            request.requestedScopes = [.email, .fullName]
+                            request.nonce = .sha256(from: nonce)
+                            
+                            let controller = ASAuthorizationController(authorizationRequests: [request])
+                            controller.delegate = self
+                            controller.presentationContextProvider = self
+                            controller.performRequests()
+                        }),
+                        .init(title: "Cancel", style: .cancel)
+                    ]), animated: true)
+                }))
+                accountSettingsChildren.append(UIAction(title: "Sign Out", image: .init(systemName: "arrow.right"), attributes: [.destructive], handler: { [weak self] _ in
+                    guard let self else { return }
+                    
+                    do {
+                        try Auth.auth().signOut()
+                        
+                        let authenticationController: AuthenticationController = .init()
+                        authenticationController.modalPresentationStyle = .fullScreen
+                        self.present(authenticationController, animated: true)
+                    } catch {
+                        print(#function, error, error.localizedDescription)
+                    }
+                }))
+            }
+            
+            children.append(UIMenu(title: "Account Settings", options: .displayInline, children: accountSettingsChildren))
+        }
+        
+        let arrowDownDocument = if #available(iOS 18, *) { "arrow.down.document" } else { "arrow.down.doc" }
+        navigationItem.setRightBarButtonItems([
+            .init(image: .init(systemName: "gearshape"), menu: .init(children: children)),
+            .init(image: .init(systemName: arrowDownDocument), primaryAction: .init(handler: { [weak self] _ in
                 guard let self else { return }
                 self.beginImportingGames()
-            }),
-            UIMenu(title: "Settings", image: .init(systemName: "gearshape"), children: children)
-        ]))
+            }))
+        ], animated: true)
     }
     
     func setWeeTitle() {

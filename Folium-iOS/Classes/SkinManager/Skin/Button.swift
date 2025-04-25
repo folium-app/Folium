@@ -36,30 +36,30 @@ struct Button : Codable, Hashable {
         case saveState = "saveState"
         
         init(rawValue: String) {
-            switch rawValue {
-            case "a", "circle": self = .a
-            case "b", "cross": self = .b
-            case "x", "triangle": self = .x
-            case "y", "square": self = .y
+            self = switch rawValue {
+            case "a", "circle": .a
+            case "b", "cross": .b
+            case "x", "triangle": .x
+            case "y", "square": .y
                 
-            case "up", "dpadUp": self = .up
-            case "down", "dpadDown": self = .down
-            case "left", "dpadLeft": self = .left
-            case "right", "dpadRight": self = .right
+            case "up", "dpadUp": .up
+            case "down", "dpadDown": .down
+            case "left", "dpadLeft": .left
+            case "right", "dpadRight": .right
                 
-            case "l", "l1": self = .l
-            case "r", "r1": self = .r
-            case "zl", "l2": self = .zl
-            case "zr", "r2": self = .zr
+            case "l", "l1": .l
+            case "r", "r1": .r
+            case "zl", "l2": .zl
+            case "zr", "r2": .zr
                 
-            case "home": self = .home
-            case "minus", "select": self = .minus
-            case "plus", "start": self = .plus
+            case "home": .home
+            case "minus", "select": .minus
+            case "plus", "start": .plus
                 
-            case "settings": self = .settings
-            case "loadState": self = .loadState
-            case "saveState": self = .saveState
-            default: self = .a
+            case "settings": .settings
+            case "loadState": .loadState
+            case "saveState": .saveState
+            default: .a
             }
         }
     }
