@@ -252,6 +252,7 @@ enum CytrusSettingsItems : String, CaseIterable {
         case .textureSampling:
             SelectionSetting(key: rawValue,
                              title: title,
+                             details: nil,
                              values: [
                                "Game Controlled" : 0,
                                "Nearest Neighbor" : 1,
@@ -340,6 +341,7 @@ enum CytrusSettingsItems : String, CaseIterable {
         case .ppShaderName:
             InputStringSetting(key: rawValue,
                                title: title,
+                               details: nil,
                                placeholder: "none (builtin)",
                                value: UserDefaults.standard.string(forKey: rawValue),
                                action: {},
@@ -347,6 +349,7 @@ enum CytrusSettingsItems : String, CaseIterable {
         case .anaglyphShaderName:
             InputStringSetting(key: rawValue,
                                title: title,
+                               details: nil,
                                placeholder: "dubois (builtin)",
                                value: UserDefaults.standard.string(forKey: rawValue),
                                action: {},
@@ -354,6 +357,7 @@ enum CytrusSettingsItems : String, CaseIterable {
         case .audioEmulation:
             SelectionSetting(key: rawValue,
                              title: title,
+                             details: nil,
                              values: [
                                "HLE" : 0,
                                "LLE" : 1,
@@ -373,6 +377,7 @@ enum CytrusSettingsItems : String, CaseIterable {
         case .outputType:
             SelectionSetting(key: rawValue,
                              title: title,
+                             details: nil,
                              values: [
                                "Automatic" : 0,
                                "None" : 1,
@@ -386,6 +391,7 @@ enum CytrusSettingsItems : String, CaseIterable {
         case .inputType:
             SelectionSetting(key: rawValue,
                              title: title,
+                             details: nil,
                              values: [
                                "Automatic" : 0,
                                "None" : 1,
@@ -423,6 +429,7 @@ enum CytrusSettingsItems : String, CaseIterable {
         case .systemLanguage:
             SelectionSetting(key: rawValue,
                              title: title,
+                             details: nil,
                              values: [
                                "Japanese" : 0,
                                "English" : 1,
@@ -446,6 +453,7 @@ enum CytrusSettingsItems : String, CaseIterable {
         case .username:
             InputStringSetting(key: rawValue,
                                title: title,
+                               details: nil,
                                placeholder: "Cytrus",
                                value: UserDefaults.standard.string(forKey: rawValue),
                                action: {
@@ -457,11 +465,6 @@ enum CytrusSettingsItems : String, CaseIterable {
     }
     
     static func settings(_ header: CytrusSettingsHeaders) -> [CytrusSettingsItems] {
-        var debugging: [CytrusSettingsItems] = [.logLevel]
-        if AppStoreCheck.shared.debugging {
-            debugging.insert(.cpuJIT, at: 0)
-        }
-        
         return switch header {
         case .core:
             [
@@ -472,7 +475,10 @@ enum CytrusSettingsItems : String, CaseIterable {
                 .enableRequiredOnlineLLEModules
             ]
         case .debugging:
-            debugging
+            [
+                .cpuJIT,
+                .logLevel
+            ]
         case .system:
             [
                 .regionValue,

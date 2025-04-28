@@ -12,18 +12,85 @@ import NewGrape
 import SettingsKit
 import UIKit
 
-enum GrapeSettingsHeaders : Int, CaseIterable {
-    case global, noods, melonds
+enum GrapeSettingsHeaders : String, CaseIterable {
+    case global = "Global"
+    case melonds = "MelonDS"
+    case noods = "NooDS"
     
     var header: SettingHeader {
         switch self {
-        case .global: .init(text: "Global", secondaryText: "Settings used for both NooDS and melonDS")
-        case .noods: .init(text: "NooDS")
-        case .melonds: .init(text: "melonDS")
+        case .melonds,
+                .noods: .init(text: rawValue)
+        case .global: .init(text: rawValue,
+                            secondaryText: "Settings used by both MelonDS and NooDS")
         }
     }
     
     static var allHeaders: [SettingHeader] { allCases.map { $0.header } }
+}
+
+enum GrapeSettingsItems : String, CaseIterable {
+    // Global
+    case directBoot = "grape.directBoot"
+    case resolutionFactor = "grape.resolutionFactor"
+    
+    // MelonDS
+    case dsiMode = "grape.dsiMode"
+    
+    // NooDS
+    case threaded2D = "grape.threaded2D"
+    case threaded3D = "grape.threaded3D"
+    
+    var title: String {
+        switch self {
+        case .directBoot: "Direct Boot"
+        case .resolutionFactor: "Resolution Factor"
+        case .dsiMode: "DSi Mode"
+        case .threaded2D: "Threaded 2D"
+        case .threaded3D: "Threaded 3D"
+        }
+    }
+    
+    func setting(_ delegate: SettingDelegate? = nil) -> BaseSetting {
+        switch self {
+        case .directBoot,
+                .dsiMode,
+                .threaded2D,
+                .threaded3D:
+            BoolSetting(key: rawValue,
+                        title: title,
+                        details: nil,
+                        value: UserDefaults.standard.bool(forKey: rawValue),
+                        delegate: delegate)
+        case .resolutionFactor:
+            StepperSetting(key: rawValue,
+                                title: title,
+                                details: nil,
+                                min: 1,
+                                max: 4,
+                                value: UserDefaults.standard.double(forKey: rawValue),
+                                delegate: delegate)
+        }
+    }
+    
+    static func settings(_ header: GrapeSettingsHeaders) -> [GrapeSettingsItems] {
+        return switch header {
+        case .global:
+            [
+                .directBoot,
+                .resolutionFactor
+            ]
+        case .melonds:
+            [
+                .dsiMode
+            ]
+        case .noods:
+            [
+                .threaded2D,
+                .threaded3D
+            ]
+        }
+    }
 }
 
 class GrapeSettingsController : UICollectionViewController {
@@ -209,39 +276,11 @@ class GrapeSettingsController : UICollectionViewController {
         
         snapshot = .init()
         snapshot.appendSections(GrapeSettingsHeaders.allCases)
-        snapshot.appendItems([
-            settingsKit.bool(key: "grape.directBoot",
-                             title: "Direct Boot",
-                             value: UserDefaults.standard.bool(forKey: "grape.directBoot"),
-                             delegate: self),
-            settingsKit.stepper(key: "grape.resolutionFactor",
-                                title: "Resolution Factor",
-                                details: "Factor for the DS and DSi resolution",
-                                min: 1,
-                                max: 4,
-                                value: UserDefaults.standard.double(forKey: "grape.resolutionFactor"),
-                                delegate: self),
-        ], toSection: .global)
-        snapshot.appendItems([
-            settingsKit.bool(key: "grape.threaded2D",
-                             title: "Threaded 2D",
-                             value: UserDefaults.standard.bool(forKey: "grape.threaded2D"),
-                             delegate: self),
-            settingsKit.bool(key: "grape.threaded3D",
-                             title: "Threaded 3D",
-                             value: UserDefaults.standard.bool(forKey: "grape.threaded3D"),
-                             delegate: self)
-        ], toSection: GrapeSettingsHeaders.noods)
-        snapshot.appendItems([
-            settingsKit.bool(key: "grape.dsiMode",
-                             title: "DSi Mode",
-                             value: UserDefaults.standard.bool(forKey: "grape.dsiMode"),
-                             delegate: self)
-        ], toSection: .melonds)
-        
-        Task {
-            await dataSource.apply(snapshot)
+        snapshot.sectionIdentifiers.forEach { header in
+            snapshot.appendItems(GrapeSettingsItems.settings(header).map { $0.setting(self) }, toSection: header)
         }
+        
+        Task { await dataSource.apply(snapshot) }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

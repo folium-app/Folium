@@ -23,7 +23,7 @@
 		</dict>
 	</array>
 	<key>GIT_REV</key>
-	<string>cfe093ba1e4362d9e2aac78b96d61a95c54d58e6</string>
+	<string>43b9f6d32526a093e49a00362c1f1c0685e0ddfe</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
