@@ -1,0 +1,438 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E65A97BD2FD059EF001DDEEE /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65A97BC2FD059EF001DDEEE /* AntiqueKit */; };
+		E65A97BF2FD059EF001DDEEE /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65A97BE2FD059EF001DDEEE /* ColourKit */; };
+		E65A97C12FD059EF001DDEEE /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65A97C02FD059EF001DDEEE /* ConstraintKit */; };
+		E65A97C32FD059EF001DDEEE /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65A97C22FD059EF001DDEEE /* FontKit */; };
+		E65A97C52FD059EF001DDEEE /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65A97C42FD059EF001DDEEE /* OnboardingKit */; };
+		E65A97C72FD059EF001DDEEE /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65A97C62FD059EF001DDEEE /* SettingsKit */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E65A97A12FD0597F001DDEEE /* Folium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Folium.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E65A97B32FD05980001DDEEE /* Exceptions for "Folium" folder in "Folium" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E65A97A02FD0597F001DDEEE /* Folium */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		E65A97A32FD0597F001DDEEE /* Folium */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E65A97B32FD05980001DDEEE /* Exceptions for "Folium" folder in "Folium" target */,
+			);
+			path = Folium;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E65A979E2FD0597F001DDEEE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E65A97BD2FD059EF001DDEEE /* AntiqueKit in Frameworks */,
+				E65A97C12FD059EF001DDEEE /* ConstraintKit in Frameworks */,
+				E65A97C52FD059EF001DDEEE /* OnboardingKit in Frameworks */,
+				E65A97C32FD059EF001DDEEE /* FontKit in Frameworks */,
+				E65A97C72FD059EF001DDEEE /* SettingsKit in Frameworks */,
+				E65A97BF2FD059EF001DDEEE /* ColourKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E65A97982FD0597F001DDEEE = {
+			isa = PBXGroup;
+			children = (
+				E65A97A32FD0597F001DDEEE /* Folium */,
+				E65A97A22FD0597F001DDEEE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E65A97A22FD0597F001DDEEE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E65A97A12FD0597F001DDEEE /* Folium.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E65A97A02FD0597F001DDEEE /* Folium */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E65A97B42FD05980001DDEEE /* Build configuration list for PBXNativeTarget "Folium" */;
+			buildPhases = (
+				E65A979D2FD0597F001DDEEE /* Sources */,
+				E65A979E2FD0597F001DDEEE /* Frameworks */,
+				E65A979F2FD0597F001DDEEE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E65A97A32FD0597F001DDEEE /* Folium */,
+			);
+			name = Folium;
+			packageProductDependencies = (
+				E65A97BC2FD059EF001DDEEE /* AntiqueKit */,
+				E65A97BE2FD059EF001DDEEE /* ColourKit */,
+				E65A97C02FD059EF001DDEEE /* ConstraintKit */,
+				E65A97C22FD059EF001DDEEE /* FontKit */,
+				E65A97C42FD059EF001DDEEE /* OnboardingKit */,
+				E65A97C62FD059EF001DDEEE /* SettingsKit */,
+			);
+			productName = Folium;
+			productReference = E65A97A12FD0597F001DDEEE /* Folium.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E65A97992FD0597F001DDEEE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2650;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					E65A97A02FD0597F001DDEEE = {
+						CreatedOnToolsVersion = 26.5;
+					};
+				};
+			};
+			buildConfigurationList = E65A979C2FD0597F001DDEEE /* Build configuration list for PBXProject "Folium" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E65A97982FD0597F001DDEEE;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E65A97BB2FD059EF001DDEEE /* XCRemoteSwiftPackageReference "AntiqueKit" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = E65A97A22FD0597F001DDEEE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E65A97A02FD0597F001DDEEE /* Folium */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E65A979F2FD0597F001DDEEE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E65A979D2FD0597F001DDEEE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		E65A97B52FD05980001DDEEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Folium/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Folium may require access to your Camera where it is used for game and system functionality";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		E65A97B62FD05980001DDEEE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Folium/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Folium may require access to your Camera where it is used for game and system functionality";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		E65A97B72FD05980001DDEEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E65A97B82FD05980001DDEEE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E65A979C2FD0597F001DDEEE /* Build configuration list for PBXProject "Folium" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E65A97B72FD05980001DDEEE /* Debug */,
+				E65A97B82FD05980001DDEEE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E65A97B42FD05980001DDEEE /* Build configuration list for PBXNativeTarget "Folium" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E65A97B52FD05980001DDEEE /* Debug */,
+				E65A97B62FD05980001DDEEE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E65A97BB2FD059EF001DDEEE /* XCRemoteSwiftPackageReference "AntiqueKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jarrodnorwell/AntiqueKit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E65A97BC2FD059EF001DDEEE /* AntiqueKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E65A97BB2FD059EF001DDEEE /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = AntiqueKit;
+		};
+		E65A97BE2FD059EF001DDEEE /* ColourKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E65A97BB2FD059EF001DDEEE /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = ColourKit;
+		};
+		E65A97C02FD059EF001DDEEE /* ConstraintKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E65A97BB2FD059EF001DDEEE /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = ConstraintKit;
+		};
+		E65A97C22FD059EF001DDEEE /* FontKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E65A97BB2FD059EF001DDEEE /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = FontKit;
+		};
+		E65A97C42FD059EF001DDEEE /* OnboardingKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E65A97BB2FD059EF001DDEEE /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = OnboardingKit;
+		};
+		E65A97C62FD059EF001DDEEE /* SettingsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E65A97BB2FD059EF001DDEEE /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = SettingsKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = E65A97992FD0597F001DDEEE /* Project object */;
+}
