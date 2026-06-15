@@ -10,7 +10,7 @@ import Foundation
 actor GamesManager {
     private var empty: [URL] = []
     
-    func cytrus() async -> [URL] {
+    func mandarine() async -> [URL] {
         guard let documentDirectoryURL: URL = await .documentDirectoryURL else {
             return empty
         }

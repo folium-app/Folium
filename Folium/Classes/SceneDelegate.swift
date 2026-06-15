@@ -11,10 +11,15 @@ import FontKit
 import OnboardingKit
 import UIKit
 
+import Mandarine
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow? = nil
     
+    var directoryManager: DirectoryManager = DirectoryManager()
     var onboardingModel: OnboardingModel = OnboardingModel()
+    
+    var mandarineSystem: MandarineSystem = MandarineSystem()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else {
@@ -71,6 +76,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window.tintColor = .systemGreen
         window.makeKeyAndVisible()
+        
+        let task: Task = Task {
+            try await directoryManager.initializeSystemDirectoriesForInitialLaunch()
+        }
+        
+        Task {
+            switch await task.result {
+            case .success(_):
+                break
+            case .failure(let failure):
+                print(failure, failure.localizedDescription)
+            }
+        }
+        
+        mandarineSystem.printAbout()
+        mandarineSystem.initializePaths()
+        mandarineSystem.initializeMemoryCards()
+        mandarineSystem.initializeSystem()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {}

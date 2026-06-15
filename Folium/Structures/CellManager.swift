@@ -70,6 +70,70 @@ struct CellManager {
             }
         }
         
+        static var selectionCell: UICollectionView.CellRegistration<UICollectionViewListCell, SelectionSetting> {
+            UICollectionView.CellRegistration<UICollectionViewListCell, SelectionSetting> { cell, indexPath, itemIdentifier in
+                var contentConfiguration = UIListContentConfiguration.cell()
+                contentConfiguration.text = itemIdentifier.title
+                cell.contentConfiguration = contentConfiguration
+                
+                let children: [UIMenuElement] = switch itemIdentifier.values {
+                case let stringInt as [String : Int]:
+                    stringInt.reduce(into: [UIAction](), { partialResult, element in
+                        var state: UIMenuElement.State = .off
+                        if let selectedValue = itemIdentifier.selectedValue as? Int {
+                            state = element.value == selectedValue ? .on : .off
+                        }
+                        
+                        partialResult.append(.init(title: element.key, state: state, handler: { _ in
+                            UserDefaults.standard.set(element.value, forKey: itemIdentifier.key)
+                            if let delegate = itemIdentifier.delegate {
+                                delegate.didChangeSetting(at: indexPath)
+                            }
+                        }))
+                    })
+                case let stringString as [String : String]:
+                    stringString.reduce(into: [UIAction](), { partialResult, element in
+                        var state: UIMenuElement.State = .off
+                        if let selectedValue = itemIdentifier.selectedValue as? String {
+                            state = element.value == selectedValue ? .on : .off
+                        }
+                        
+                        partialResult.append(.init(title: element.key, state: state, handler: { _ in
+                            UserDefaults.standard.set(element.value, forKey: itemIdentifier.key)
+                            if let delegate = itemIdentifier.delegate {
+                                delegate.didChangeSetting(at: indexPath)
+                            }
+                        }))
+                    })
+                default:
+                    []
+                }
+                
+                var title = "Automatic"
+                if let selectedValue = itemIdentifier.selectedValue {
+                    switch selectedValue {
+                    case let intValue as Int:
+                        if let values = itemIdentifier.values as? [String : Int] {
+                            title = values.first(where: { $0.value == intValue })?.key ?? title
+                        }
+                    case let stringValue as String:
+                        if let values = itemIdentifier.values as? [String : String] {
+                            title = values.first(where: { $0.value == stringValue })?.key ?? title
+                        }
+                    default:
+                        break
+                    }
+                }
+                
+                cell.accessories = [
+                    UICellAccessory.label(text: title),
+                    UICellAccessory.popUpMenu(UIMenu(children: children.sorted(by: { lhs, rhs in
+                        lhs.title.localizedCaseInsensitiveCompare(rhs.title) == .orderedAscending
+                    })))
+                ]
+            }
+        }
+        
         static func segmentedCell(_ controller: UIViewController) -> UICollectionView.CellRegistration<UICollectionViewListCell, SegmentedSetting> {
             UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
                 var contentConfiguration = UIListContentConfiguration.valueCell()

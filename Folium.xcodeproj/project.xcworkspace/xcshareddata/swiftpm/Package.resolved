@@ -1,5 +1,5 @@
 {
-  "originHash" : "394da46602cb9448321816eace61d4dfeef1c51afa9aa392686caab149937b20",
+  "originHash" : "96a3eefb2a497b9b03fc5268dac63b4305a86e0ba4bf676393b10a0dbd209c6d",
   "pins" : [
     {
       "identity" : "antiquekit",
@@ -8,6 +8,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "7a0911fe47800cf5fe23c3b00e21cf0ad80a1c69"
+      }
+    },
+    {
+      "identity" : "plzmasdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jarrodnorwell/PLzmaSDK",
+      "state" : {
+        "branch" : "master",
+        "revision" : "c69ff6acb4df788885cc4865d46e1a442e6f50a5"
       }
     }
   ],

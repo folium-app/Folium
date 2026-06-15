@@ -129,72 +129,26 @@ class SettingsController : UIViewController {
         collectionView.topEdgeEffect.style = .soft
         view.addSubview(collectionView)
         
+        if let navigationController {
+            let containerInteraction: UIScrollEdgeElementContainerInteraction = UIScrollEdgeElementContainerInteraction()
+            containerInteraction.edge = .top
+            containerInteraction.scrollView = collectionView
+            
+            navigationController.navigationBar.addInteraction(containerInteraction)
+        }
+        
+        if let tabBarController {
+            let containerInteraction: UIScrollEdgeElementContainerInteraction = UIScrollEdgeElementContainerInteraction()
+            containerInteraction.edge = .bottom
+            containerInteraction.scrollView = collectionView
+            
+            tabBarController.tabBar.addInteraction(containerInteraction)
+        }
+        
         collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        
-        let selectionCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, SelectionSetting> { cell, indexPath, itemIdentifier in
-            var contentConfiguration = UIListContentConfiguration.cell()
-            contentConfiguration.text = itemIdentifier.title
-            cell.contentConfiguration = contentConfiguration
-            
-            let children: [UIMenuElement] = switch itemIdentifier.values {
-            case let stringInt as [String : Int]:
-                stringInt.reduce(into: [UIAction](), { partialResult, element in
-                    var state: UIMenuElement.State = .off
-                    if let selectedValue = itemIdentifier.selectedValue as? Int {
-                        state = element.value == selectedValue ? .on : .off
-                    }
-                    
-                    partialResult.append(.init(title: element.key, state: state, handler: { _ in
-                        UserDefaults.standard.set(element.value, forKey: itemIdentifier.key)
-                        if let delegate = itemIdentifier.delegate {
-                            delegate.didChangeSetting(at: indexPath)
-                        }
-                    }))
-                })
-            case let stringString as [String : String]:
-                stringString.reduce(into: [UIAction](), { partialResult, element in
-                    var state: UIMenuElement.State = .off
-                    if let selectedValue = itemIdentifier.selectedValue as? String {
-                        state = element.value == selectedValue ? .on : .off
-                    }
-                    
-                    partialResult.append(.init(title: element.key, state: state, handler: { _ in
-                        UserDefaults.standard.set(element.value, forKey: itemIdentifier.key)
-                        if let delegate = itemIdentifier.delegate {
-                            delegate.didChangeSetting(at: indexPath)
-                        }
-                    }))
-                })
-            default:
-                []
-            }
-            
-            var title = "Automatic"
-            if let selectedValue = itemIdentifier.selectedValue {
-                switch selectedValue {
-                case let intValue as Int:
-                    if let values = itemIdentifier.values as? [String : Int] {
-                        title = values.first(where: { $0.value == intValue })?.key ?? title
-                    }
-                case let stringValue as String:
-                    if let values = itemIdentifier.values as? [String : String] {
-                        title = values.first(where: { $0.value == stringValue })?.key ?? title
-                    }
-                default:
-                    break
-                }
-            }
-            
-            cell.accessories = [
-                UICellAccessory.label(text: title),
-                UICellAccessory.popUpMenu(UIMenu(children: children.sorted(by: { lhs, rhs in
-                    lhs.title.localizedCaseInsensitiveCompare(rhs.title) == .orderedAscending
-                })))
-            ]
-        }
         
         let blankSettingsCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, BlankSetting> { cell, indexPath, itemIdentifier in
             cell.contentConfiguration = UIListContentConfiguration.cell()
@@ -218,6 +172,7 @@ class SettingsController : UIViewController {
         let inputNumberCell: UICollectionView.CellRegistration<UICollectionViewListCell, InputNumberSetting> = CellManager.Settings.inputNumberCell
         let inputStringCell: UICollectionView.CellRegistration<UICollectionViewListCell, InputStringSetting> = CellManager.Settings.inputStringCell
         let segmentedCell: UICollectionView.CellRegistration<UICollectionViewListCell, SegmentedSetting> = CellManager.Settings.segmentedCell(self)
+        let selectionCell: UICollectionView.CellRegistration<UICollectionViewListCell, SelectionSetting> = CellManager.Settings.selectionCell
         let stepperCell: UICollectionView.CellRegistration<UICollectionViewListCell, StepperSetting> = CellManager.Settings.stepperCell
         
         dataSource = UICollectionViewDiffableDataSource<SettingsHeaders, BaseSetting>(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
@@ -235,7 +190,7 @@ class SettingsController : UIViewController {
             case let stepperSetting as StepperSetting:
                 collectionView.dequeueConfiguredReusableCell(using: stepperCell, for: indexPath, item: stepperSetting)
             case let selectionSetting as SelectionSetting:
-                collectionView.dequeueConfiguredReusableCell(using: selectionCellRegistration, for: indexPath, item: selectionSetting)
+                collectionView.dequeueConfiguredReusableCell(using: selectionCell, for: indexPath, item: selectionSetting)
             default:
                 nil
             }

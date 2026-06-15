@@ -13,10 +13,36 @@
 		E65A97C32FD059EF001DDEEE /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65A97C22FD059EF001DDEEE /* FontKit */; };
 		E65A97C52FD059EF001DDEEE /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65A97C42FD059EF001DDEEE /* OnboardingKit */; };
 		E65A97C72FD059EF001DDEEE /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E65A97C62FD059EF001DDEEE /* SettingsKit */; };
+		E661E2C62FDFB4A200EE254D /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E661E2C52FDFB4A200EE254D /* SharedDependencies */; };
+		E69CAA1E2FDC9FC200BCD2F9 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E69CAA1D2FDC9FC200BCD2F9 /* SharedDependencies */; };
+		E69CAA202FDC9FDD00BCD2F9 /* libMandarine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E69CAA212FDC9FDD00BCD2F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E69CA8F42FDC9EAF00BCD2F9;
+			remoteInfo = Mandarine;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E69CA8F32FDC9EAF00BCD2F9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		E65A97A12FD0597F001DDEEE /* Folium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Folium.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMandarine.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -38,6 +64,11 @@
 			path = Folium;
 			sourceTree = "<group>";
 		};
+		E69CA8F62FDC9EAF00BCD2F9 /* Mandarine */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Mandarine;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,12 +76,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E661E2C62FDFB4A200EE254D /* SharedDependencies in Frameworks */,
 				E65A97BD2FD059EF001DDEEE /* AntiqueKit in Frameworks */,
 				E65A97C12FD059EF001DDEEE /* ConstraintKit in Frameworks */,
 				E65A97C52FD059EF001DDEEE /* OnboardingKit in Frameworks */,
 				E65A97C32FD059EF001DDEEE /* FontKit in Frameworks */,
+				E69CAA202FDC9FDD00BCD2F9 /* libMandarine.a in Frameworks */,
 				E65A97C72FD059EF001DDEEE /* SettingsKit in Frameworks */,
 				E65A97BF2FD059EF001DDEEE /* ColourKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E69CA8F22FDC9EAF00BCD2F9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E69CAA1E2FDC9FC200BCD2F9 /* SharedDependencies in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +102,8 @@
 			isa = PBXGroup;
 			children = (
 				E65A97A32FD0597F001DDEEE /* Folium */,
+				E69CA8F62FDC9EAF00BCD2F9 /* Mandarine */,
+				E69CAA1F2FDC9FDD00BCD2F9 /* Frameworks */,
 				E65A97A22FD0597F001DDEEE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -69,8 +112,16 @@
 			isa = PBXGroup;
 			children = (
 				E65A97A12FD0597F001DDEEE /* Folium.app */,
+				E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E69CAA1F2FDC9FDD00BCD2F9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,6 +138,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E69CAA222FDC9FDD00BCD2F9 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E65A97A32FD0597F001DDEEE /* Folium */,
@@ -99,10 +151,34 @@
 				E65A97C22FD059EF001DDEEE /* FontKit */,
 				E65A97C42FD059EF001DDEEE /* OnboardingKit */,
 				E65A97C62FD059EF001DDEEE /* SettingsKit */,
+				E661E2C52FDFB4A200EE254D /* SharedDependencies */,
 			);
 			productName = Folium;
 			productReference = E65A97A12FD0597F001DDEEE /* Folium.app */;
 			productType = "com.apple.product-type.application";
+		};
+		E69CA8F42FDC9EAF00BCD2F9 /* Mandarine */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E69CA8FB2FDC9EAF00BCD2F9 /* Build configuration list for PBXNativeTarget "Mandarine" */;
+			buildPhases = (
+				E69CA8F12FDC9EAF00BCD2F9 /* Sources */,
+				E69CA8F22FDC9EAF00BCD2F9 /* Frameworks */,
+				E69CA8F32FDC9EAF00BCD2F9 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E69CA8F62FDC9EAF00BCD2F9 /* Mandarine */,
+			);
+			name = Mandarine;
+			packageProductDependencies = (
+				E69CAA1D2FDC9FC200BCD2F9 /* SharedDependencies */,
+			);
+			productName = Mandarine;
+			productReference = E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -111,11 +187,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2650;
+				LastSwiftUpdateCheck = 2700;
 				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					E65A97A02FD0597F001DDEEE = {
 						CreatedOnToolsVersion = 26.5;
+					};
+					E69CA8F42FDC9EAF00BCD2F9 = {
+						CreatedOnToolsVersion = 27.0;
 					};
 				};
 			};
@@ -130,6 +209,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				E65A97BB2FD059EF001DDEEE /* XCRemoteSwiftPackageReference "AntiqueKit" */,
+				E69CAA1C2FDC9FC200BCD2F9 /* XCLocalSwiftPackageReference "SharedDependencies" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E65A97A22FD0597F001DDEEE /* Products */;
@@ -137,6 +217,7 @@
 			projectRoot = "";
 			targets = (
 				E65A97A02FD0597F001DDEEE /* Folium */,
+				E69CA8F42FDC9EAF00BCD2F9 /* Mandarine */,
 			);
 		};
 /* End PBXProject section */
@@ -159,7 +240,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E69CA8F12FDC9EAF00BCD2F9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E69CAA222FDC9FDD00BCD2F9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E69CA8F42FDC9EAF00BCD2F9 /* Mandarine */;
+			targetProxy = E69CAA212FDC9FDD00BCD2F9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		E65A97B52FD05980001DDEEE /* Debug */ = {
@@ -175,6 +271,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folium/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Folium may require access to your Camera where it is used for game and system functionality";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -216,6 +313,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folium/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Folium may require access to your Camera where it is used for game and system functionality";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -367,6 +465,68 @@
 			};
 			name = Release;
 		};
+		E69CA8F92FDC9EAF00BCD2F9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-Wno-shorten-64-to-32",
+					"-Wno-unused-function",
+					"-Wno-unused-variable",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Mandarine/System/include/avocado/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Mandarine/System/include";
+			};
+			name = Debug;
+		};
+		E69CA8FA2FDC9EAF00BCD2F9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-Wno-shorten-64-to-32",
+					"-Wno-unused-function",
+					"-Wno-unused-variable",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Mandarine/System/include/avocado/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Mandarine/System/include";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -388,7 +548,23 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		E69CA8FB2FDC9EAF00BCD2F9 /* Build configuration list for PBXNativeTarget "Mandarine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E69CA8F92FDC9EAF00BCD2F9 /* Debug */,
+				E69CA8FA2FDC9EAF00BCD2F9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		E69CAA1C2FDC9FC200BCD2F9 /* XCLocalSwiftPackageReference "SharedDependencies" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = SharedDependencies;
+		};
+/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
 		E65A97BB2FD059EF001DDEEE /* XCRemoteSwiftPackageReference "AntiqueKit" */ = {
@@ -431,6 +607,15 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E65A97BB2FD059EF001DDEEE /* XCRemoteSwiftPackageReference "AntiqueKit" */;
 			productName = SettingsKit;
+		};
+		E661E2C52FDFB4A200EE254D /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E69CAA1C2FDC9FC200BCD2F9 /* XCLocalSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E69CAA1D2FDC9FC200BCD2F9 /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SharedDependencies;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
