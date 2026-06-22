@@ -8,41 +8,21 @@
 import Foundation
 import UIKit
 
-struct SystemFile {
-    enum SystemFileType : Int {
-        case optional = 0
-        case required = 1
-        
-        var string: String {
-            switch self {
-            case .optional:
-                "Optional"
-            case .required:
-                "Required"
-            }
-        }
-        
-        var tintColor: UIColor {
-            switch self {
-            case .optional:
-                UIColor.systemOrange
-            case .required:
-                UIColor.systemRed
-            }
-        }
-    }
-    
-    let path: String
-    let system: String
-    let systemFileType: SystemFileType
-    let title: String
-}
-
 actor DirectoryManager {
-    private let fileManager: FileManager = FileManager.default
+    private let fileManager: FileManager = .default
     
     func initializeSystemDirectoriesForInitialLaunch() async throws {
-        let systemNames: [String] = ["Cytrus", "Grape", "Guava", "Kiwi", "Mandarine", "Mango", "Plum", "Tomato"].sorted()
+        let systemNames: [String] = [
+            "Cytrus",
+            "Grape",
+            "Guava",
+            "Kiwi",
+            "Mandarine",
+            "Mango",
+            "Plum",
+            "Tomato"
+        ].sorted()
+        
         let subfoldersForSystemNames: [String : [String : [String : SystemFile]]] = [
             "Mandarine" : [
                 "artworks" : [:],
@@ -51,7 +31,18 @@ actor DirectoryManager {
                 "save_states" : [:],
                 "system_data" : [
                     "bios.bin" : SystemFile(path: "system_data",
-                                            system: "Mandarine",
+                                            system: .mandarine,
+                                            systemFileType: .required,
+                                            title: "bios.bin")
+                ]
+            ],
+            "Tomato" : [
+                "artworks" : [:],
+                "games" : [:],
+                "save_states" : [:],
+                "system_data" : [
+                    "bios.bin" : SystemFile(path: "system_data",
+                                            system: .tomato,
                                             systemFileType: .required,
                                             title: "bios.bin")
                 ]
@@ -62,12 +53,10 @@ actor DirectoryManager {
             return
         }
         
-        let contents: [String] = try fileManager.contentsOfDirectory(atPath: documentDirectoryURL.path).sorted()
+        // let contents: [String] = try fileManager.contentsOfDirectory(atPath: documentDirectoryURL.path).sorted()
         for systemName in systemNames {
             let systemSubdirectoryURL: URL = documentDirectoryURL.appending(component: systemName)
-            if contents != systemNames {
-                try createDirectoryIfNeeded(from: systemSubdirectoryURL)
-            }
+            try createDirectoryIfNeeded(from: systemSubdirectoryURL)
             
             if let subfoldersForSystemName: [String : [String : SystemFile]] = subfoldersForSystemNames[systemName] {
                 try loop(subfolders: subfoldersForSystemName, for: systemSubdirectoryURL) { subfolderName in

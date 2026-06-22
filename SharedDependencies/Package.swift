@@ -27,6 +27,7 @@ let package = Package(
     targets: [
         .target(name: "SharedDependencies", dependencies: [
             "lib_fmt",
+            "lib_sdl3",
             "cereal",
             "eventbus",
             "glib",
@@ -70,6 +71,9 @@ let package = Package(
         .binaryTarget(name: "lib_fmt",
                       url: url(for: "lib_fmt", with: "1.0.0"),
                       checksum: "f0fc2466368ff0f69c88bb8a7d69496c2063c1198448a8059ff7696e464451d2"),
+        .binaryTarget(name: "lib_sdl3",
+                      url: url(for: "lib_sdl3", with: "0.0.7"),
+                      checksum: "157266698caea1dc10eff355d2d500eb15f994f17f52f16e8cee20f15cc99a9b"),
         
         .binaryTarget(name: "FLAC",
                       url: "https://github.com/sbooth/flac-binary-xcframework/releases/download/0.2.0/FLAC.xcframework.zip",

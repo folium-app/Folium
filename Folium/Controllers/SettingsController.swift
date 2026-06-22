@@ -5,10 +5,57 @@
 //  Created by Jarrod Norwell on 3/6/2026.
 //
 
+import Mandarine
 import SettingsKit
 import UIKit
 
-class SettingsController : UIViewController {
+class SettingsController : UICollectionViewController {
+    var selectedSnapshot: SelectedSnapshot = .application {
+        didSet {
+            guard let dataSource: UICollectionViewDiffableDataSource<SettingsHeaders, BaseSetting> else {
+                return
+            }
+            
+            navigationItem.largeSubtitle = selectedSnapshot.string
+            navigationItem.subtitle = navigationItem.largeSubtitle
+            
+            Task {
+                switch selectedSnapshot {
+                case .application:
+                    guard let applicationSnapshot else {
+                        return
+                    }
+                    
+                    await dataSource.apply(applicationSnapshot)
+                case .cytrus:
+                    guard let cytrusSnapshot else {
+                        return
+                    }
+                    
+                    await dataSource.apply(cytrusSnapshot)
+                case .grape:
+                    guard let grapeSnapshot else {
+                        return
+                    }
+                    
+                    await dataSource.apply(grapeSnapshot)
+                case .mandarine:
+                    guard let mandarineSnapshot else {
+                        return
+                    }
+                    
+                    await dataSource.apply(mandarineSnapshot)
+                case .tomato:
+                    guard let tomatoSnapshot else {
+                        return
+                    }
+                    
+                    await dataSource.apply(tomatoSnapshot)
+                }
+            }
+        }
+    }
+    
     var dataSource: UICollectionViewDiffableDataSource<SettingsHeaders, BaseSetting>? = nil
     
     var applicationSnapshot: NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>? = nil
@@ -27,15 +74,7 @@ class SettingsController : UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: UIMenu(children: [
             UIMenu(options: .displayInline, children: [
                 UIAction(title: "Application", image: UIImage(systemName: "app.grid")) { action in
-                    guard let dataSource = self.dataSource, let applicationSnapshot = self.applicationSnapshot else {
-                        return
-                    }
-                    
-                    self.navigationItem.largeSubtitle = action.title
-                    self.navigationItem.subtitle = self.navigationItem.largeSubtitle
-                    Task {
-                        await dataSource.apply(applicationSnapshot)
-                    }
+                    self.selectedSnapshot = .application
                 }
             ]),
             UIMenu(title: "Coleco", image: UIImage(systemName: "cpu"), children: [
@@ -43,52 +82,20 @@ class SettingsController : UIViewController {
             ]),
             UIMenu(title: "Nintendo", image: UIImage(systemName: "cpu"), children: [
                 UIAction(title: "3DS", subtitle: "Nintendo 3DS") { action in
-                    guard let dataSource = self.dataSource, let cytrusSnapshot = self.cytrusSnapshot else {
-                        return
-                    }
-                    
-                    self.navigationItem.largeSubtitle = action.subtitle
-                    self.navigationItem.subtitle = self.navigationItem.largeSubtitle
-                    Task {
-                        await dataSource.apply(cytrusSnapshot)
-                    }
+                    self.selectedSnapshot = .cytrus
                 },
                 UIAction(title: "DS/DSi", subtitle: "Nintendo DS/DSi") { action in
-                    guard let dataSource = self.dataSource, let grapeSnapshot = self.grapeSnapshot else {
-                        return
-                    }
-                    
-                    self.navigationItem.largeSubtitle = action.subtitle
-                    self.navigationItem.subtitle = self.navigationItem.largeSubtitle
-                    Task {
-                        await dataSource.apply(grapeSnapshot)
-                    }
+                    self.selectedSnapshot = .grape
                 },
                 UIAction(title: "GBA", subtitle: "Game Boy Advance") { action in
-                    guard let dataSource = self.dataSource, let tomatoSnapshot = self.tomatoSnapshot else {
-                        return
-                    }
-                    
-                    self.navigationItem.largeSubtitle = action.subtitle
-                    self.navigationItem.subtitle = self.navigationItem.largeSubtitle
-                    Task {
-                        await dataSource.apply(tomatoSnapshot)
-                    }
+                    self.selectedSnapshot = .tomato
                 },
                 UIAction(title: "NES", subtitle: "Nintendo Entertainment System", attributes: .disabled) { action in },
                 UIAction(title: "SNES", subtitle: "Super Nintendo Entertainment System", attributes: .disabled) { action in }
             ]),
             UIMenu(title: "PlayStation", image: UIImage(systemName: "cpu"), children: [
                 UIAction(title: "PS1", subtitle: "PlayStation 1") { action in
-                    guard let dataSource = self.dataSource, let mandarineSnapshot = self.mandarineSnapshot else {
-                        return
-                    }
-                    
-                    self.navigationItem.largeSubtitle = action.subtitle
-                    self.navigationItem.subtitle = self.navigationItem.largeSubtitle
-                    Task {
-                        await dataSource.apply(mandarineSnapshot)
-                    }
+                    self.selectedSnapshot = .mandarine
                 }
             ]),
             UIMenu(title: "SEGA", image: UIImage(systemName: "cpu"), children: [
@@ -121,34 +128,7 @@ class SettingsController : UIViewController {
             ])
         }
         
-        let collectionView: UICollectionView = UICollectionView(frame: .zero,
-                                                                collectionViewLayout: UICollectionViewCompositionalLayout.list(using: configuration))
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.delegate = self
-        collectionView.bottomEdgeEffect.style = .soft
-        collectionView.topEdgeEffect.style = .soft
-        view.addSubview(collectionView)
-        
-        if let navigationController {
-            let containerInteraction: UIScrollEdgeElementContainerInteraction = UIScrollEdgeElementContainerInteraction()
-            containerInteraction.edge = .top
-            containerInteraction.scrollView = collectionView
-            
-            navigationController.navigationBar.addInteraction(containerInteraction)
-        }
-        
-        if let tabBarController {
-            let containerInteraction: UIScrollEdgeElementContainerInteraction = UIScrollEdgeElementContainerInteraction()
-            containerInteraction.edge = .bottom
-            containerInteraction.scrollView = collectionView
-            
-            tabBarController.tabBar.addInteraction(containerInteraction)
-        }
-        
-        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        collectionView.collectionViewLayout = UICollectionViewCompositionalLayout.list(using: configuration)
         
         let blankSettingsCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, BlankSetting> { cell, indexPath, itemIdentifier in
             cell.contentConfiguration = UIListContentConfiguration.cell()
@@ -248,10 +228,29 @@ class SettingsController : UIViewController {
         ], type: TomatoSettingsItems.self)
         self.tomatoSnapshot = tomatoSnapshot
         
-        navigationItem.largeSubtitle = "Application"
-        navigationItem.subtitle = self.navigationItem.largeSubtitle
         Task {
-            await dataSource.apply(applicationSnapshot)
+            navigationItem.largeSubtitle = selectedSnapshot.string
+            navigationItem.subtitle = navigationItem.largeSubtitle
+            
+            switch selectedSnapshot {
+            case .application:
+                await dataSource.apply(applicationSnapshot)
+            case .cytrus:
+                await dataSource.apply(cytrusSnapshot)
+            case .grape:
+                await dataSource.apply(grapeSnapshot)
+            case .mandarine:
+                await dataSource.apply(mandarineSnapshot)
+            case .tomato:
+                await dataSource.apply(tomatoSnapshot)
+            }
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let tabBarController {
+            tabBarController.setTabBarHidden(false, animated: true)
         }
     }
     
@@ -287,8 +286,8 @@ class SettingsController : UIViewController {
     }
 }
 
-extension SettingsController : UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+extension SettingsController {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         guard let dataSource else {
             return
@@ -296,6 +295,10 @@ extension SettingsController : UICollectionViewDelegate {
         
         switch dataSource.itemIdentifier(for: indexPath) {
         case let inputSetting as InputNumberSetting:
+            if !inputSetting.isEnabled {
+                return
+            }
+            
             let alertController = UIAlertController(title: inputSetting.title,
                                                     message: "Min: \(Int(inputSetting.min)), Max: \(Int(inputSetting.max))",
                                                     preferredStyle: .alert)
@@ -342,5 +345,50 @@ extension SettingsController : UICollectionViewDelegate {
 }
 
 extension SettingsController : SettingDelegate {
-    func didChangeSetting(at indexPath: IndexPath) {}
+    func didChangeSetting(at indexPath: IndexPath) {
+        guard let dataSource: UICollectionViewDiffableDataSource<SettingsHeaders, BaseSetting> else {
+            return
+        }
+        
+        guard let sectionIdentifier: SettingsHeaders = dataSource.sectionIdentifier(for: indexPath.section) else {
+            return
+        }
+        
+        var snapshot = dataSource.snapshot()
+        let item = snapshot.itemIdentifiers(inSection: sectionIdentifier)[indexPath.item]
+        
+        guard let tabController: TabController = tabBarController as? TabController else {
+            return
+        }
+        
+        switch selectedSnapshot {
+        case .application:
+            break
+        case .cytrus:
+            break
+        case .grape:
+            break
+        case .mandarine:
+            guard let mandarineGame: MandarineGame = tabController.game as? MandarineGame else {
+                return
+            }
+            
+            Task {
+                switch item {
+                case let boolSetting as BoolSetting:
+                    boolSetting.value = UserDefaults.standard.bool(forKey: boolSetting.key)
+                    await mandarineGame.mandarineSystem.setSetting(setting: mandarine.SETTING.SOUND_ENABLED, value: boolSetting.value)
+                default:
+                    break
+                }
+            }
+        case .tomato:
+            break
+        }
+        
+        snapshot.reloadItems([item])
+        Task {
+            await dataSource.apply(snapshot)
+        }
+    }
 }

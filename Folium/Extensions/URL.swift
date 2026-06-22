@@ -11,4 +11,8 @@ extension URL {
     static var documentDirectoryURL: URL? {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
     }
+    
+    nonisolated var lowercasedPathExtension: String {
+        pathExtension.lowercased()
+    }
 }

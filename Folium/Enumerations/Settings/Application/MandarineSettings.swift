@@ -84,8 +84,8 @@ enum MandarineSettingsItems : String, CaseIterable {
             BoolSetting(key: rawValue,
                         title: title,
                         details: details,
-                        secondaryTitle: nil,
-                        isEnabled: true,
+                        secondaryTitle: self == .soundEnabled ? nil : "Unavailable for now",
+                        isEnabled: self == .soundEnabled,
                         value: UserDefaults.standard.bool(forKey: rawValue),
                         delegate: delegate)
         
@@ -94,8 +94,8 @@ enum MandarineSettingsItems : String, CaseIterable {
             InputNumberSetting(key: rawValue,
                                title: title,
                                details: details,
-                               secondaryTitle: nil,
-                               isEnabled: true,
+                               secondaryTitle: self == .soundEnabled ? nil : "Unavailable for now",
+                               isEnabled: false,
                                min: self == .height ? 480 : 640,
                                max: self == .height ? 960 : 1280,
                                value: UserDefaults.standard.double(forKey: rawValue),

@@ -12,10 +12,15 @@ import OnboardingKit
 import UIKit
 
 actor OnboardingModel {
+    var gamesManager: GamesManager
+    init(gamesManager: GamesManager) {
+        self.gamesManager = gamesManager
+    }
+    
     @MainActor
     func camera(controller: UIViewController) async {
-        var fontPackageController: OBController {
-            let textFont: UIFont = UIFont.regular(from: .extraLargeTitle)
+        var viewController: OBController {
+            let textFont: UIFont = .regular(from: .extraLargeTitle)
             
             let image: UIImage? = UIImage(systemName: "camera.fill")
             
@@ -26,7 +31,7 @@ actor OnboardingModel {
             
             let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                                     color: .secondaryLabel,
-                                                                                    font: UIFont.regular(from: .body),
+                                                                                    font: .regular(from: .body),
                                                                                     text: "Folium may require access to your Camera where it is used for game and system functionality")
             
             let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
@@ -39,21 +44,22 @@ actor OnboardingModel {
                                                                                      textConfiguration: textConfiguration,
                                                                                      secondaryConfiguration: secondaryTextConfiguration,
                                                                                      tertiaryConfiguration: nil,
-                                                                                     buttons: buttons, colors: Colour.vibrantGreens)
+                                                                                     buttons: buttons,
+                                                                                     colors: Colour.vibrantGreens)
             
             let obController: OBController = OBController(configuration: configuration)
             obController.modalPresentationStyle = .fullScreen
             return obController
         }
         
-        controller.present(fontPackageController, animated: true)
+        controller.present(viewController, animated: true)
     }
     
     // TODO: change this
     @MainActor
-    func microphone(controller: UIViewController) async {
-        var fontPackageController: OBController {
-            let textFont: UIFont = UIFont.regular(from: .extraLargeTitle)
+    private func microphone(controller: UIViewController) async {
+        var viewController: OBController {
+            let textFont: UIFont = .regular(from: .extraLargeTitle)
             
             let image: UIImage? = UIImage(systemName: "microphone.fill")
             
@@ -64,7 +70,7 @@ actor OnboardingModel {
             
             let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                                     color: .secondaryLabel,
-                                                                                    font: UIFont.regular(from: .body),
+                                                                                    font: .regular(from: .body),
                                                                                     text: "Folium may require access to your Microphone where it is used for game and system functionality")
             
             let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
@@ -77,21 +83,22 @@ actor OnboardingModel {
                                                                                      textConfiguration: textConfiguration,
                                                                                      secondaryConfiguration: secondaryTextConfiguration,
                                                                                      tertiaryConfiguration: nil,
-                                                                                     buttons: buttons, colors: Colour.vibrantOranges)
+                                                                                     buttons: buttons,
+                                                                                     colors: Colour.vibrantOranges)
             
             let obController: OBController = OBController(configuration: configuration)
             obController.modalPresentationStyle = .fullScreen
             return obController
         }
         
-        controller.present(fontPackageController, animated: true)
+        controller.present(viewController, animated: true)
     }
     
     // TODO: change this
     @MainActor
-    func motion(controller: UIViewController) async {
-        var fontPackageController: OBController {
-            let textFont: UIFont = UIFont.regular(from: .extraLargeTitle)
+    private func motion(controller: UIViewController) async {
+        var viewController: OBController {
+            let textFont: UIFont = .regular(from: .extraLargeTitle)
             
             let image: UIImage? = UIImage(systemName: "figure.walk.motion")
             
@@ -102,7 +109,7 @@ actor OnboardingModel {
             
             let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                                     color: .secondaryLabel,
-                                                                                    font: UIFont.regular(from: .body),
+                                                                                    font: .regular(from: .body),
                                                                                     text: "Folium may require access to Motion where it is used for game and system functionality")
             
             let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
@@ -110,7 +117,7 @@ actor OnboardingModel {
                     UserDefaults.standard.set(true, forKey: "folium.onboardingComplete")
                     
                     DispatchQueue.main.async {
-                        let viewController: TabController = TabController()
+                        let viewController: TabController = TabController(gamesManager: self.gamesManager)
                         viewController.modalPresentationStyle = .fullScreen
                         controller.present(viewController, animated: true)
                     }
@@ -121,13 +128,14 @@ actor OnboardingModel {
                                                                                      textConfiguration: textConfiguration,
                                                                                      secondaryConfiguration: secondaryTextConfiguration,
                                                                                      tertiaryConfiguration: nil,
-                                                                                     buttons: buttons, colors: Colour.vibrantGreens)
+                                                                                     buttons: buttons,
+                                                                                     colors: Colour.vibrantGreens)
             
             let obController: OBController = OBController(configuration: configuration)
             obController.modalPresentationStyle = .fullScreen
             return obController
         }
         
-        controller.present(fontPackageController, animated: true)
+        controller.present(viewController, animated: true)
     }
 }

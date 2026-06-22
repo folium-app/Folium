@@ -12,19 +12,24 @@ import OnboardingKit
 import UIKit
 
 import Mandarine
+import Tomato
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow? = nil
     
     var directoryManager: DirectoryManager = DirectoryManager()
-    var onboardingModel: OnboardingModel = OnboardingModel()
     
     var mandarineSystem: MandarineSystem = MandarineSystem()
+    var tomatoSystem: TomatoSystem = TomatoSystem()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else {
             return
         }
+        
+        let gamesManager: GamesManager = GamesManager(mandarineSystem: mandarineSystem,
+                                                      tomatoSystem: tomatoSystem)
+        let onboardingModel: OnboardingModel = OnboardingModel(gamesManager: gamesManager)
         
         window = UIWindow(windowScene: windowScene)
         guard let window else {
@@ -55,7 +60,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
                 (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
-                    await self.onboardingModel.camera(controller: controller)
+                    await onboardingModel.camera(controller: controller)
                 })
             ]
             
@@ -69,7 +74,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         window.rootViewController = if onboardingComplete {
-            TabController()
+            TabController(gamesManager: gamesManager)
         } else {
             onboardingController
         }
@@ -84,16 +89,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         Task {
             switch await task.result {
             case .success(_):
-                break
+                await mandarineSystem.initializePaths()
+                await mandarineSystem.initializeMemoryCards()
+                await mandarineSystem.initializeSystem()
+                
+                // reversed because the system needs to be created firat
+                await tomatoSystem.initializeSystem()
+                await tomatoSystem.initializePaths()
             case .failure(let failure):
                 print(failure, failure.localizedDescription)
             }
         }
         
-        mandarineSystem.printAbout()
-        mandarineSystem.initializePaths()
-        mandarineSystem.initializeMemoryCards()
-        mandarineSystem.initializeSystem()
+        initializeUserDefaultsWithDefaultValues()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {}
@@ -108,5 +116,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         // resume, if enabled
+    }
+    
+    private func initializeUserDefaultsWithDefaultValues() {
+        let systemsWithValues: [System : [String : Any]] = [
+            .mandarine : [
+                "widescreen" : false,
+                "forceWidescreen" : false,
+                "vsync" : false,
+                "forceNTSC" : false,
+                "height" : 480,
+                "width" : 640,
+                "soundEnabled" : true,
+                "extendedMemory" : false
+            ]
+        ]
+        
+        let userDefaults: UserDefaults = .standard
+        for (system, values) in systemsWithValues {
+            for (key, value) in values {
+                if userDefaults.value(forKey: "\(system.string.localizedLowercase).\(key)") == nil {
+                    userDefaults.set(value, forKey: "\(system.string.localizedLowercase).\(key)")
+                }
+            }
+        }
     }
 }

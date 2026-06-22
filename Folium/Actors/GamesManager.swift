@@ -2,30 +2,75 @@
 //  GamesManager.swift
 //  Folium
 //
-//  Created by Jarrod Norwell on 3/6/2026.
+//  Created by Jarrod Norwell on 17/6/2026.
 //
 
 import Foundation
 
+import Mandarine
+import Tomato
+
 actor GamesManager {
-    private var empty: [URL] = []
+    private let fileManager: FileManager = .default
     
-    func mandarine() async -> [URL] {
+    private var mandarineSystem: MandarineSystem
+    private var tomatoSystem: TomatoSystem
+    init(mandarineSystem: MandarineSystem, tomatoSystem: TomatoSystem) {
+        self.mandarineSystem = mandarineSystem
+        self.tomatoSystem = tomatoSystem
+    }
+    
+    func games<T>(for system: System) async -> [T] {
         guard let documentDirectoryURL: URL = await .documentDirectoryURL else {
-            return empty
+            return []
         }
         
-        let cytrusDirectoryURL: URL = documentDirectoryURL.appending(component: "Cytrus")
+        let gamesDirectoryURL: URL = documentDirectoryURL
+            .appending(component: await system.string)
+            .appending(component: "games")
         
-        guard let directoryEnumerator: FileManager.DirectoryEnumerator = FileManager.default.enumerator(atPath: cytrusDirectoryURL.path) else {
-            return empty
+        guard let directoryEnumerator: FileManager.DirectoryEnumerator = fileManager.enumerator(at: gamesDirectoryURL,
+                                                                                                includingPropertiesForKeys: [.fileSizeKey]) else {
+            return []
         }
         
-        let direcoryEnumeratorURLs: [NSEnumerator.Element] = directoryEnumerator.filter { element in element is URL }
+        let urls: [NSEnumerator.Element] = directoryEnumerator.filter { element in element is URL }
+        guard let urls: [URL] = urls as? [URL] else {
+            return []
+        }
         
-        let games: [URL] = [] // TODO: Change to actual games class
-        for case _ as URL in direcoryEnumeratorURLs {
-            
+        let extensions: [Extension] = system.extensions
+        let extensionsStrings: [String] = extensions.map(\.string)
+        
+        var games: [T] = []
+        games.reserveCapacity(games.underestimatedCount)
+        
+        let filteredURLs: [URL] = urls.filter { url in extensionsStrings.contains(url.lowercasedPathExtension) }
+        
+        for url in filteredURLs {
+            switch T.self {
+            case is MandarineGame.Type:
+                let game: MandarineGame = MandarineGame(details: Details(url: url),
+                                                        mandarineSystem: mandarineSystem,
+                                                        system: system,
+                                                        boxartURLString: mandarineSystem.boxartURLString(for: url))
+                game.details.updateSize(with: mandarineSystem.totalSizeOfFiles(for: url))
+                
+                if let game: T = game as? T {
+                    games.append(game)
+                }
+            case is TomatoGame.Type:
+                let game: TomatoGame = TomatoGame(details: Details(url: url),
+                                                  tomatoSystem: tomatoSystem,
+                                                  system: system,
+                                                  boxartURLString: tomatoSystem.boxartURLString(for: url))
+                
+                if let game: T = game as? T {
+                    games.append(game)
+                }
+            default:
+                break
+            }
         }
         
         return games

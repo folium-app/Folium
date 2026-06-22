@@ -10,6 +10,20 @@ import SettingsKit
 import UIKit
 
 struct CellManager {
+    struct Library {
+        static func mandarineCell(viewController: GamesController) -> UICollectionView.CellRegistration<MandarineCell, MandarineGame> {
+            UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
+                cell.configureCell(with: itemIdentifier, controller: viewController)
+            }
+        }
+        
+        static func tomatoCell(viewController: GamesController) -> UICollectionView.CellRegistration<TomatoCell, TomatoGame> {
+            UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
+                cell.configureCell(with: itemIdentifier, controller: viewController)
+            }
+        }
+    }
+    
     struct Settings {
         static var boolCell: UICollectionView.CellRegistration<UICollectionViewListCell, BoolSetting> {
             UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
