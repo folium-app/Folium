@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 22/6/2026.
 //
 
+import ColourKit
 import ConstraintKit
 import ExtensionsKit
 import FontKit
@@ -22,7 +23,7 @@ class GameCell : UICollectionViewCell {
         imageView: UIImageView? = nil,
         backgroundImageView: UIImageView? = nil
     
-    var averageImageColour: UIColor? = nil
+    var averageImageColour: UIColour? = nil
     var button: UIButton? = nil
     
     var label: UILabel? = nil,

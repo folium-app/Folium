@@ -12,27 +12,23 @@ import OnboardingKit
 import UIKit
 
 actor OnboardingModel {
-    var gamesManager: GamesManager
+    private let gamesManager: GamesManager
+    
     init(gamesManager: GamesManager) {
         self.gamesManager = gamesManager
     }
     
-    @MainActor
     func camera(controller: UIViewController) async {
         var viewController: OBController {
-            let textFont: UIFont = .regular(from: .extraLargeTitle)
-            
-            let image: UIImage? = UIImage(systemName: "camera.fill")
-            
             let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                            color: .label,
-                                                                           font: textFont,
+                                                                           font: .regular(from: .extraLargeTitle),
                                                                            text: "Camera")
             
             let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                                     color: .secondaryLabel,
                                                                                     font: .regular(from: .body),
-                                                                                    text: "Folium may require access to your Camera where it is used for game and system functionality")
+                                                                                    text: "Folium may require access to Camera where it is used for game and system functionality")
             
             let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
                 (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
@@ -40,7 +36,7 @@ actor OnboardingModel {
                 })
             ]
             
-            let configuration: OBControllerConfiguration = OBControllerConfiguration(image: image,
+            let configuration: OBControllerConfiguration = OBControllerConfiguration(image: UIImage(systemName: "camera.fill"),
                                                                                      textConfiguration: textConfiguration,
                                                                                      secondaryConfiguration: secondaryTextConfiguration,
                                                                                      tertiaryConfiguration: nil,
@@ -52,26 +48,20 @@ actor OnboardingModel {
             return obController
         }
         
-        controller.present(viewController, animated: true)
+        await controller.present(viewController, animated: true)
     }
     
-    // TODO: change this
-    @MainActor
     private func microphone(controller: UIViewController) async {
         var viewController: OBController {
-            let textFont: UIFont = .regular(from: .extraLargeTitle)
-            
-            let image: UIImage? = UIImage(systemName: "microphone.fill")
-            
             let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                            color: .label,
-                                                                           font: textFont,
+                                                                           font: .regular(from: .extraLargeTitle),
                                                                            text: "Microphone")
             
             let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                                     color: .secondaryLabel,
                                                                                     font: .regular(from: .body),
-                                                                                    text: "Folium may require access to your Microphone where it is used for game and system functionality")
+                                                                                    text: "Folium may require access to Microphone where it is used for game and system functionality")
             
             let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
                 (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
@@ -79,7 +69,7 @@ actor OnboardingModel {
                 })
             ]
             
-            let configuration: OBControllerConfiguration = OBControllerConfiguration(image: image,
+            let configuration: OBControllerConfiguration = OBControllerConfiguration(image: UIImage(systemName: "microphone.and.signal.meter.fill"),
                                                                                      textConfiguration: textConfiguration,
                                                                                      secondaryConfiguration: secondaryTextConfiguration,
                                                                                      tertiaryConfiguration: nil,
@@ -91,20 +81,14 @@ actor OnboardingModel {
             return obController
         }
         
-        controller.present(viewController, animated: true)
+        await controller.present(viewController, animated: true)
     }
     
-    // TODO: change this
-    @MainActor
     private func motion(controller: UIViewController) async {
         var viewController: OBController {
-            let textFont: UIFont = .regular(from: .extraLargeTitle)
-            
-            let image: UIImage? = UIImage(systemName: "figure.walk.motion")
-            
             let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                            color: .label,
-                                                                           font: textFont,
+                                                                           font: .regular(from: .extraLargeTitle),
                                                                            text: "Motion")
             
             let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
@@ -116,7 +100,7 @@ actor OnboardingModel {
                 (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
                     UserDefaults.standard.set(true, forKey: "folium.onboardingComplete")
                     
-                    DispatchQueue.main.async {
+                    onMainThread {
                         let viewController: TabController = TabController(gamesManager: self.gamesManager)
                         viewController.modalPresentationStyle = .fullScreen
                         controller.present(viewController, animated: true)
@@ -124,7 +108,7 @@ actor OnboardingModel {
                 })
             ]
             
-            let configuration: OBControllerConfiguration = OBControllerConfiguration(image: image,
+            let configuration: OBControllerConfiguration = OBControllerConfiguration(image: UIImage(systemName: "figure.walk.motion"),
                                                                                      textConfiguration: textConfiguration,
                                                                                      secondaryConfiguration: secondaryTextConfiguration,
                                                                                      tertiaryConfiguration: nil,
@@ -136,6 +120,6 @@ actor OnboardingModel {
             return obController
         }
         
-        controller.present(viewController, animated: true)
+        await controller.present(viewController, animated: true)
     }
 }

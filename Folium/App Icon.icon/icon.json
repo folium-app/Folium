@@ -1,18 +1,43 @@
 {
   "fill" : {
-    "automatic-gradient" : "extended-srgb:0.20392,0.78039,0.34902,1.00000"
+    "automatic-gradient" : "srgb:0.42745,0.48627,1.00000,1.00000"
   },
   "groups" : [
     {
-      "blend-mode" : "normal",
-      "blur-material" : 0.5,
+      "blur-material" : null,
+      "hidden" : false,
+      "layers" : [
+        {
+          "image-name" : "moonphase.full.moon.png",
+          "name" : "moonphase.full.moon",
+          "position" : {
+            "scale" : 1.1,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "lighting" : "individual",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.6
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.2
+      }
+    },
+    {
+      "blur-material" : null,
       "hidden" : false,
       "layers" : [
         {
           "image-name" : "leaf.circle.fill.png",
           "name" : "leaf.circle.fill",
           "position" : {
-            "scale" : 1,
+            "scale" : 1.1,
             "translation-in-points" : [
               0,
               0
@@ -20,13 +45,6 @@
           }
         }
       ],
-      "position" : {
-        "scale" : 0.9,
-        "translation-in-points" : [
-          0,
-          0
-        ]
-      },
       "shadow" : {
         "kind" : "neutral",
         "opacity" : 0.6
@@ -39,89 +57,12 @@
     {
       "blend-mode" : "multiply",
       "blur-material" : 0.5,
-      "hidden" : true,
       "layers" : [
         {
-          "image-name" : "circle.png",
-          "name" : "circle"
-        }
-      ],
-      "position" : {
-        "scale" : 1.1,
-        "translation-in-points" : [
-          0,
-          0
-        ]
-      },
-      "shadow" : {
-        "kind" : "neutral",
-        "opacity" : 0.6
-      },
-      "specular" : true,
-      "translucency" : {
-        "enabled" : true,
-        "value" : 0.2
-      }
-    },
-    {
-      "blend-mode" : "multiply",
-      "blur-material" : 0.5,
-      "hidden" : false,
-      "layers" : [
-        {
-          "blend-mode" : "normal",
           "image-name" : "circle.fill.png",
-          "name" : "circle.fill",
-          "position" : {
-            "scale" : 1,
-            "translation-in-points" : [
-              0,
-              0
-            ]
-          }
+          "name" : "circle.fill"
         }
       ],
-      "lighting" : "individual",
-      "position" : {
-        "scale" : 1.1,
-        "translation-in-points" : [
-          0,
-          0
-        ]
-      },
-      "refractivity" : {
-        "depth" : 0,
-        "enabled" : false,
-        "strength" : 0.5
-      },
-      "shadow" : {
-        "kind" : "neutral",
-        "opacity" : 0.6
-      },
-      "specular" : true,
-      "translucency" : {
-        "enabled" : true,
-        "value" : 0.2
-      }
-    },
-    {
-      "blend-mode" : "normal",
-      "blur-material" : null,
-      "hidden" : true,
-      "layers" : [
-        {
-          "image-name" : "lightspectrum.horizontal.png",
-          "name" : "lightspectrum.horizontal"
-        }
-      ],
-      "lighting" : "individual",
-      "position" : {
-        "scale" : 2,
-        "translation-in-points" : [
-          0,
-          0
-        ]
-      },
       "shadow" : {
         "kind" : "neutral",
         "opacity" : 0.6
@@ -133,7 +74,6 @@
     },
     {
       "blend-mode" : "multiply",
-      "hidden" : false,
       "layers" : [
         {
           "image-name" : "opticaldisc.fill.png",
@@ -151,6 +91,7 @@
         "kind" : "neutral",
         "opacity" : 0.6
       },
+      "specular" : true,
       "translucency" : {
         "enabled" : true,
         "value" : 0.2

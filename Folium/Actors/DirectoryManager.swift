@@ -5,26 +5,20 @@
 //  Created by Jarrod Norwell on 11/6/2026.
 //
 
-import Foundation
-import UIKit
+import Foundation.NSURL
 
 actor DirectoryManager {
     private let fileManager: FileManager = .default
     
+    private var unavailableSystemFiles: [SystemFile] = []
+    
     func initializeSystemDirectoriesForInitialLaunch() async throws {
-        let systemNames: [String] = [
-            "Cytrus",
-            "Grape",
-            "Guava",
-            "Kiwi",
-            "Mandarine",
-            "Mango",
-            "Plum",
-            "Tomato"
-        ].sorted()
+        guard let documentDirectoryURL: URL = await .documentDirectoryURL else {
+            return
+        }
         
-        let subfoldersForSystemNames: [String : [String : [String : SystemFile]]] = [
-            "Mandarine" : [
+        let subfoldersForSystems: [System : [String : [String : SystemFile]]] = [
+            .mandarine : [
                 "artworks" : [:],
                 "memory_cards" : [:],
                 "games" : [:],
@@ -36,7 +30,7 @@ actor DirectoryManager {
                                             title: "bios.bin")
                 ]
             ],
-            "Tomato" : [
+            .tomato : [
                 "artworks" : [:],
                 "games" : [:],
                 "save_states" : [:],
@@ -49,19 +43,14 @@ actor DirectoryManager {
             ]
         ]
         
-        guard let documentDirectoryURL: URL = await .documentDirectoryURL else {
-            return
-        }
-        
-        // let contents: [String] = try fileManager.contentsOfDirectory(atPath: documentDirectoryURL.path).sorted()
-        for systemName in systemNames {
-            let systemSubdirectoryURL: URL = documentDirectoryURL.appending(component: systemName)
-            try createDirectoryIfNeeded(from: systemSubdirectoryURL)
+        for system in await SystemNames.array {
+            let systemDirectoryURL: URL = documentDirectoryURL.appending(component: await system.string)
+            try createDirectoryIfNeeded(from: systemDirectoryURL)
             
-            if let subfoldersForSystemName: [String : [String : SystemFile]] = subfoldersForSystemNames[systemName] {
-                try loop(subfolders: subfoldersForSystemName, for: systemSubdirectoryURL) { subfolderName in
-                    let subfolderSubdirectoryURL: URL = systemSubdirectoryURL.appending(component: subfolderName)
-                    try createDirectoryIfNeeded(from: subfolderSubdirectoryURL)
+            if let subfoldersForSystem: [String : [String : SystemFile]] = subfoldersForSystems[system] {
+                try loop(subfolders: subfoldersForSystem, for: systemDirectoryURL) { subfolderName in
+                    let subfolderDirectoryURL: URL = systemDirectoryURL.appending(component: subfolderName)
+                    try createDirectoryIfNeeded(from: subfolderDirectoryURL)
                 }
             }
         }
@@ -73,11 +62,13 @@ actor DirectoryManager {
         }
     }
     
-    private func loop(subfolders: [String : [String : SystemFile]], for systemSubdirectoryURL: URL, handler: (String) throws -> Void) throws {
+    private func loop(subfolders: [String : [String : SystemFile]], for systemDirectoryURL: URL, using handler: (String) throws -> Void) throws {
         for subfolderName in subfolders.keys {
             if let subfiles: [String : SystemFile] = subfolders[subfolderName] {
-                for _ in subfiles.values {
-                    // print(systemSubdirectoryURL.lastPathComponent, subfile)
+                for subfile in subfiles.values {
+                    if !fileManager.fileExists(atPath: systemDirectoryURL.appending(component: subfile.path).appending(component: subfile.title).path) {
+                        unavailableSystemFiles.append(subfile)
+                    }
                 }
             }
             

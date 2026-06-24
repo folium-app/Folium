@@ -9,8 +9,8 @@ import ColourKit
 import UIKit
 
 enum SystemFileType : Int {
-    case optional = 0
-    case required = 1
+    case optional = 0,
+         required = 1
     
     var string: String {
         switch self {

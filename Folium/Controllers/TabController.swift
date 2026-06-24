@@ -10,7 +10,8 @@ import UIKit
 class TabController : UITabBarController {
     var game: Game? = nil
     
-    var gamesManager: GamesManager
+    let gamesManager: GamesManager
+    
     init(gamesManager: GamesManager) {
         self.gamesManager = gamesManager
         super.init(nibName: nil, bundle: nil)
@@ -38,7 +39,7 @@ class TabController : UITabBarController {
     }
     
     func switchEmulationController(with controller: UIViewController) {
-        var old = tabs
+        var old: [UITab] = tabs
         old[.emulationController] = UITab(title: "Emulation", image: UIImage(systemName: "gamecontroller.fill"), identifier: "emulation") { tab in
             controller
         }

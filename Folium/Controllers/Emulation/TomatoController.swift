@@ -66,34 +66,36 @@ class TomatoController : ControlsController {
         settingsButton = .button(with: settingsConfiguration,
                                  actions: ({ _ in }, { _ in }), UIMenu(preferredElementSize: .medium, children: [
                                     UIDeferredMenuElement.uncached { completion in
-                                        completion([
-                                            UIAction(title: "Pause",
-                                                     image: UIImage(systemName: "pause.fill")) { action in
-                                                
-                                            },
-                                            UIAction(title: "Stop & Exit", image: UIImage(systemName: "stop.fill"), attributes: .destructive) { action in
-                                                if let game: Game = self.game {
-                                                    Task {
-                                                        switch game {
-                                                        case let tomatoGame as TomatoGame:
-                                                            await tomatoGame.tomatoSystem.stop()
-                                                        default:
-                                                            break
-                                                        }
+                                        guard let tomatoGame: TomatoGame = self.game as? TomatoGame else {
+                                            completion([])
+                                            return
+                                        }
+                                        
+                                        Task {
+                                            completion([
+                                                UIAction.async(title: await tomatoGame.tomatoSystem.paused ? "Resume" : "Pause",
+                                                               image: UIImage(systemName: await tomatoGame.tomatoSystem.paused ? "play.fill" : "pause.fill")) { action in
+                                                                   if await tomatoGame.tomatoSystem.paused {
+                                                                       await tomatoGame.tomatoSystem.set(change: true, isPaused: false)
+                                                                   } else {
+                                                                       await tomatoGame.tomatoSystem.set(change: true, isPaused: true)
+                                                                   }
+                                                },
+                                                UIAction.async(title: "Stop & Exit", image: UIImage(systemName: "stop.fill"), attributes: .destructive) { action in
+                                                    await tomatoGame.tomatoSystem.stop()
+                                                    
+                                                    self.game = nil
+                                                    
+                                                    if let tabController: TabController = self.tabBarController as? TabController {
+                                                        tabController.game = nil
+                                                        
+                                                        tabController.selectedIndex = .gamesController
+                                                        tabController.switchEmulationController(with: NoEmulationController())
+                                                        tabController.switchSettingsSnapshot(for: .application)
                                                     }
                                                 }
-                                                
-                                                self.game = nil
-                                                
-                                                if let tabController: TabController = self.tabBarController as? TabController {
-                                                    tabController.game = nil
-                                                    
-                                                    tabController.selectedIndex = 0
-                                                    tabController.switchEmulationController(with: NoEmulationController())
-                                                    tabController.switchSettingsSnapshot(for: .application)
-                                                }
-                                            }
-                                         ])
+                                             ])
+                                        }
                                     }
                                  ]))
         guard let settingsButton else {

@@ -5,6 +5,9 @@
 //  Created by Jarrod Norwell on 18/6/2026.
 //
 
+import ColourKit
+import ConstraintKit
+import FontKit
 import UIKit
 
 enum ThumbstickPlacement : Int {
@@ -14,15 +17,14 @@ enum ThumbstickPlacement : Int {
 class ThumbstickView : UIView, UIGestureRecognizerDelegate {
     var label: UILabel? = nil
     
-    var deadZone: CGFloat = 0.05
+    private var deadZone: Double = 0.05
+    private var touchMoved: Bool = false
     
-    var didDrag: (((x: UInt8, y: UInt8)) -> Void)?
-    var didUndrag: (() -> Void)?
+    var didClick: (() -> Void)? = nil
+    var didUnclick: (() -> Void)? = nil
     
-    var didClick: (() -> Void)?
-    var didUnclick: (() -> Void)?
-    
-    private var touchMoved = false
+    var didDrag: (((x: UInt8, y: UInt8)) -> Void)? = nil
+    var didUndrag: (() -> Void)? = nil
     
     private(set) var normalizedPoint: (UInt8, UInt8) = (0, 0) {
         didSet {
@@ -32,30 +34,29 @@ class ThumbstickView : UIView, UIGestureRecognizerDelegate {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        let isSmallScreen: Bool = false
+        let symbolConfiguration: UIImage.SymbolConfiguration = UIImage.SymbolConfiguration(hierarchicalColor: .secondarySystemBackground)
         
         let imageView: UIImageView = UIImageView(image: UIImage(systemName: "app.background.dotted")?
-            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(hierarchicalColor: .secondarySystemBackground)))
+            .applyingSymbolConfiguration(symbolConfiguration))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         insertSubview(imageView, belowSubview: self)
+        
+        imageView.top.constraint(equalTo: salg.top).isActive = true
+        imageView.left.constraint(equalTo: salg.left).isActive = true
+        imageView.bottom.constraint(equalTo: salg.bottom).isActive = true
+        imageView.right.constraint(equalTo: salg.right).isActive = true
         
         label = UILabel()
         guard let label else {
             return
         }
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.preferredFont(forTextStyle: isSmallScreen ? .body : .title3)
+        label.font = .regular(from: .title3)
         label.textColor = .label
         addSubview(label)
         
-        imageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        imageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        imageView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        imageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        
-        label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        label.centerX.constraint(equalTo: salg.centerX).isActive = true
+        label.centerY.constraint(equalTo: salg.centerY).isActive = true
         
         let gestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPress(_:)))
         gestureRecognizer.delegate = self
@@ -70,11 +71,9 @@ class ThumbstickView : UIView, UIGestureRecognizerDelegate {
     @objc func longPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
         switch gestureRecognizer.state {
         case .began:
-            guard !touchMoved else {
-                return
+            if !touchMoved {
+                didClick?()
             }
-            
-            didClick?()
         default:
             touchMoved = false
             didUnclick?()
@@ -87,14 +86,14 @@ class ThumbstickView : UIView, UIGestureRecognizerDelegate {
         let gradient = CAGradientLayer()
         gradient.type = .radial
         gradient.colors = [
-            UIColor.white.cgColor,
-            UIColor.white.cgColor,
-            UIColor.clear.cgColor
+            UIColour.white.cgColor,
+            UIColour.white.cgColor,
+            UIColour.clear.cgColor
         ]
-        gradient.locations = [0.0, 2 / 3, 1.0] as [NSNumber]
+        gradient.locations = [0.0, 0.33, 1.0]
         gradient.startPoint = CGPoint(x: 0.5, y: 0.5)
         gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
-        gradient.frame = bounds
+        gradient.frame = frame
 
         layer.mask = gradient
     }
@@ -130,7 +129,7 @@ class ThumbstickView : UIView, UIGestureRecognizerDelegate {
     }
     
     private func update(with touches: Set<UITouch>) {
-        guard let touch = touches.first else {
+        guard let touch: UITouch = touches.first else {
             return
         }
         
@@ -144,31 +143,28 @@ class ThumbstickView : UIView, UIGestureRecognizerDelegate {
             return (0, 0)
         }
 
-        let clampedX = min(max(location.x, 0), w)
-        let clampedY = min(max(location.y, 0), h)
+        let clampedX: Double = min(max(location.x, 0), w)
+        let clampedY: Double = min(max(location.y, 0), h)
 
-        var x = (clampedX - w / 2) / (w / 2)
-        var y = (clampedY - h / 2) / (h / 2)
+        var x: Double = (clampedX - w / 2) / (w / 2)
+        var y: Double = (clampedY - h / 2) / (h / 2)
 
-        let magnitude = sqrt(x * x + y * y)
+        let magnitude: Double = sqrt(x * x + y * y)
         guard magnitude > deadZone else {
             return (0, 0)
         }
 
-        let scaled = (magnitude - deadZone) / (1 - deadZone)
-        let scale = scaled / magnitude
+        let scaled: Double = (magnitude - deadZone) / (1 - deadZone)
+        let scale: Double = scaled / magnitude
 
         x *= scale
         y *= scale
 
-        return (
-            toUInt8(clamp(x)),
-            toUInt8(clamp(y))
-        )
+        return (toUInt8(clamp(x)), toUInt8(clamp(y)))
     }
 
-    private func clamp(_ value: CGFloat) -> Int {
-        let scaled = Int(round(value * 127))
+    private func clamp(_ value: Double) -> Int {
+        let scaled: Int = Int(round(value * 127))
         return min(max(scaled, -127), 127)
     }
     

@@ -9,26 +9,28 @@ import ColourKit
 import ExtensionsKit
 import FontKit
 import OnboardingKit
+import SwiftUI
 import UIKit
 
 import Mandarine
 import Tomato
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    private let userDefaults: UserDefaults = .standard
+    
     var window: UIWindow? = nil
     
-    var directoryManager: DirectoryManager = DirectoryManager()
+    private var directoryManager: DirectoryManager = DirectoryManager()
     
-    var mandarineSystem: MandarineSystem = MandarineSystem()
-    var tomatoSystem: TomatoSystem = TomatoSystem()
+    private var mandarineSystem: MandarineSystem = MandarineSystem()
+    private var tomatoSystem: TomatoSystem = TomatoSystem()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else {
             return
         }
         
-        let gamesManager: GamesManager = GamesManager(mandarineSystem: mandarineSystem,
-                                                      tomatoSystem: tomatoSystem)
+        let gamesManager: GamesManager = GamesManager(mandarineSystem: mandarineSystem, tomatoSystem: tomatoSystem)
         let onboardingModel: OnboardingModel = OnboardingModel(gamesManager: gamesManager)
         
         window = UIWindow(windowScene: windowScene)
@@ -39,23 +41,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let onboardingComplete: Bool = UserDefaults.standard.bool(forKey: "folium.onboardingComplete")
         
         var onboardingController: OBController {
-            let textFont: UIFont =  UIFont.regular(from: .extraLargeTitle)
-            
-            let image: UIImage? = UIImage(systemName: "leaf.fill")
-            
             let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                            color: .label,
-                                                                           font: textFont,
+                                                                           font: .regular(from: .extraLargeTitle),
                                                                            text: "Folium")
             
             let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                                     color: .secondaryLabel,
-                                                                                    font: UIFont.regular(from: .body),
-                                                                                    text: "Multi-system emulation in the palm of your hands")
+                                                                                    font: .regular(from: .body),
+                                                                                    text: "Generations of gaming in the palm of your hands")
             
             let tertiaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                                    color: .tertiaryLabel,
-                                                                                   font: UIFont.regular(from: .callout),
+                                                                                   font: .regular(from: .callout),
                                                                                    text: "Developed by Jarrod Norwell\nLicensed under GPLv3")
             
             let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
@@ -64,11 +62,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 })
             ]
             
-            let configuration: OBControllerConfiguration = OBControllerConfiguration(image: image,
+            let configuration: OBControllerConfiguration = OBControllerConfiguration(image: UIImage(systemName: "leaf.fill"),
                                                                                      textConfiguration: textConfiguration,
                                                                                      secondaryConfiguration: secondaryTextConfiguration,
                                                                                      tertiaryConfiguration: tertiaryTextConfiguration,
-                                                                                     buttons: buttons, colors: Colour.vibrantGreens)
+                                                                                     buttons: buttons,
+                                                                                     colors: [
+                                                                                        Colour(red: 0.90, green: 0.90, blue: 1.00),
+                                                                                        Colour(red: 0.80, green: 0.80, blue: 1.00),
+                                                                                        Colour(red: 0.70, green: 0.70, blue: 1.00),
+                                                                                        Colour(red: 0.55, green: 0.55, blue: 0.95),
+                                                                                        Colour(red: 0.45, green: 0.45, blue: 0.90),
+                                                                                        Colour(red: 0.35, green: 0.35, blue: 0.84), // iOS systemIndigo
+                                                                                        Colour(red: 0.30, green: 0.30, blue: 0.72),
+                                                                                        Colour(red: 0.25, green: 0.25, blue: 0.60),
+                                                                                        Colour(red: 0.20, green: 0.20, blue: 0.48)
+                                                                                     ])
             
             return OBController(configuration: configuration)
         }
@@ -79,7 +88,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             onboardingController
         }
         
-        window.tintColor = .systemGreen
+        window.tintColor = .systemIndigo
         window.makeKeyAndVisible()
         
         let task: Task = Task {
@@ -93,7 +102,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 await mandarineSystem.initializeMemoryCards()
                 await mandarineSystem.initializeSystem()
                 
-                // reversed because the system needs to be created firat
                 await tomatoSystem.initializeSystem()
                 await tomatoSystem.initializePaths()
             case .failure(let failure):
@@ -119,7 +127,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func initializeUserDefaultsWithDefaultValues() {
-        let systemsWithValues: [System : [String : Any]] = [
+        let systemsWithDefaultValues: [System : [String : Any]] = [
             .mandarine : [
                 "widescreen" : false,
                 "forceWidescreen" : false,
@@ -132,9 +140,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             ]
         ]
         
-        let userDefaults: UserDefaults = .standard
-        for (system, values) in systemsWithValues {
-            for (key, value) in values {
+        for (system, defaultValues) in systemsWithDefaultValues {
+            for (key, value) in defaultValues {
                 if userDefaults.value(forKey: "\(system.string.localizedLowercase).\(key)") == nil {
                     userDefaults.set(value, forKey: "\(system.string.localizedLowercase).\(key)")
                 }

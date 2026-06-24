@@ -73,34 +73,36 @@ class MandarineController : ControlsController {
         settingsButton = .button(with: settingsConfiguration,
                                  actions: ({ _ in }, { _ in }), UIMenu(preferredElementSize: .medium, children: [
                                     UIDeferredMenuElement.uncached { completion in
-                                        completion([
-                                            UIAction(title: "Pause",
-                                                     image: UIImage(systemName: "pause.fill")) { action in
-                                                
-                                            },
-                                            UIAction(title: "Stop & Exit", image: UIImage(systemName: "stop.fill"), attributes: .destructive) { action in
-                                                if let game: Game = self.game {
-                                                    Task {
-                                                        switch game {
-                                                        case let mandarineGame as MandarineGame:
-                                                            await mandarineGame.mandarineSystem.stop()
-                                                        default:
-                                                            break
-                                                        }
+                                        guard let mandarineGame: MandarineGame = self.game as? MandarineGame else {
+                                            completion([])
+                                            return
+                                        }
+                                        
+                                        Task {
+                                            completion([
+                                                UIAction.async(title: await mandarineGame.mandarineSystem.paused ? "Resume" : "Pause",
+                                                               image: UIImage(systemName: await mandarineGame.mandarineSystem.paused ? "play.fill" : "pause.fill")) { action in
+                                                                   if await mandarineGame.mandarineSystem.paused {
+                                                                       await mandarineGame.mandarineSystem.set(change: true, isPaused: false)
+                                                                   } else {
+                                                                       await mandarineGame.mandarineSystem.set(change: true, isPaused: true)
+                                                                   }
+                                                },
+                                                UIAction.async(title: "Stop & Exit", image: UIImage(systemName: "stop.fill"), attributes: .destructive) { action in
+                                                    await mandarineGame.mandarineSystem.stop()
+                                                    
+                                                    self.game = nil
+                                                    
+                                                    if let tabController: TabController = self.tabBarController as? TabController {
+                                                        tabController.game = nil
+                                                        
+                                                        tabController.selectedIndex = .gamesController
+                                                        tabController.switchEmulationController(with: NoEmulationController())
+                                                        tabController.switchSettingsSnapshot(for: .application)
                                                     }
                                                 }
-                                                
-                                                self.game = nil
-                                                
-                                                if let tabController: TabController = self.tabBarController as? TabController {
-                                                    tabController.game = nil
-                                                    
-                                                    tabController.selectedIndex = 0
-                                                    tabController.switchEmulationController(with: NoEmulationController())
-                                                    tabController.switchSettingsSnapshot(for: .application)
-                                                }
-                                            }
-                                         ])
+                                             ])
+                                        }
                                     }
                                  ]))
         guard let settingsButton else {

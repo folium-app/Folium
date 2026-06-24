@@ -102,35 +102,37 @@ class MandarineCell : GameCell {
                     completion(elements)
                 }
             ]),
-            UIAction(title: "Delete", image: UIImage(systemName: "minus.circle"), attributes: .destructive) { action in
-                let parentDirectoryURL: URL = game.details.url.deletingLastPathComponent()
-                
-                let alertController: UIAlertController = UIAlertController(title: "Delete Game?",
-                                                                           message: "Deleting this game is destructive and cannot be undone",
-                                                                           preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-                alertController.addAction(UIAlertAction(title: "Delete", style: .destructive) { action in
-                    _ = Task {
-                        do {
-                            for file in game.mandarineSystem.files(from: game.details.url) {
-                                try self.fileManager.removeItem(at: parentDirectoryURL.appending(component: file))
+            UIMenu(options: .displayInline, children: [
+                UIAction(title: "Delete", image: UIImage(systemName: "minus.circle"), attributes: .destructive) { action in
+                    let parentDirectoryURL: URL = game.details.url.deletingLastPathComponent()
+                    
+                    let alertController: UIAlertController = UIAlertController(title: "Delete Game?",
+                                                                               message: "Deleting this game is destructive and cannot be undone",
+                                                                               preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                    alertController.addAction(UIAlertAction(title: "Delete", style: .destructive) { action in
+                        _ = Task {
+                            do {
+                                for file in game.mandarineSystem.files(from: game.details.url) {
+                                    try self.fileManager.removeItem(at: parentDirectoryURL.appending(component: file))
+                                }
+                                
+                                try self.fileManager.removeItem(at: game.details.url)
+                                
+                                if parentDirectoryURL.lastPathComponent != "games" {
+                                    try self.fileManager.removeItem(at: parentDirectoryURL)
+                                }
+                                
+                                await controller.populateGames()
+                            } catch {
+                                print(error, error.localizedDescription)
                             }
-                            
-                            try self.fileManager.removeItem(at: game.details.url)
-                            
-                            if parentDirectoryURL.lastPathComponent != "games" {
-                                try self.fileManager.removeItem(at: parentDirectoryURL)
-                            }
-                            
-                            await controller.populateGames()
-                        } catch {
-                            print(error, error.localizedDescription)
                         }
-                    }
-                })
-                alertController.preferredAction = alertController.actions.last
-                controller.present(alertController, animated: true)
-            }
+                    })
+                    alertController.preferredAction = alertController.actions.last
+                    controller.present(alertController, animated: true)
+                }
+            ])
         ])
     }
 }

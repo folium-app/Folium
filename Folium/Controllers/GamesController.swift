@@ -9,6 +9,7 @@ import ColourKit
 import ExtensionsKit
 import FontKit
 import OnboardingKit
+import UniformTypeIdentifiers
 import UIKit
 
 class GamesController : UICollectionViewController {
@@ -61,9 +62,26 @@ class GamesController : UICollectionViewController {
             UIBarButtonItem(image: UIImage(systemName: "plus"), menu: UIMenu(children: [
                 UIMenu(options: .displayInline, preferredElementSize: .medium, children: [
                     UIAction(title: "Game", image: UIImage(systemName: "opticaldisc")) { action in
+                        var types: [UTType] = []
+                        switch self.selectedSnapshot {
+                        case .mandarine:
+                            if let bin: UTType = .bin, let cue: UTType = .cue {
+                                types.append(contentsOf: [bin, cue])
+                            }
+                        case .tomato:
+                            if let gba: UTType = .gba {
+                                types.append(gba)
+                            }
+                        default:
+                            break
+                        }
                         
+                        let documentPickerController: UIDocumentPickerViewController = UIDocumentPickerViewController(forOpeningContentTypes: types, asCopy: true)
+                        documentPickerController.allowsMultipleSelection = [.mandarine, .tomato].contains(self.selectedSnapshot)
+                        documentPickerController.delegate = self
+                        self.present(documentPickerController, animated: true)
                     },
-                    UIAction(title: "System File", image: UIImage(systemName: "document")) { action in
+                    UIAction(title: "System File", image: UIImage(systemName: "document"), attributes: .disabled) { action in
                         
                     }
                 ])
@@ -299,5 +317,39 @@ class GamesController : UICollectionViewController {
                 }
             }
         }
+    }
+}
+
+extension GamesController : UIDocumentPickerDelegate, UINavigationControllerDelegate {
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        controller.dismiss(animated: true)
+    }
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let documentDirectoryURL: URL = .documentDirectoryURL else {
+            return
+        }
+        
+        var gamesDirectoryURL: URL = documentDirectoryURL
+        switch selectedSnapshot {
+        case .mandarine,
+                .tomato:
+            gamesDirectoryURL.append(component: selectedSnapshot.string)
+        default:
+            break
+        }
+        
+        gamesDirectoryURL.append(component: "games")
+        
+        for url in urls {
+            let toURL: URL = gamesDirectoryURL.appending(component: url.lastPathComponent)
+            do {
+                try FileManager.default.copyItem(at: url, to: toURL)
+            } catch {
+                print(error, error.localizedDescription)
+            }
+        }
+        
+        controller.dismiss(animated: true)
     }
 }

@@ -8,33 +8,37 @@
 import ColourKit
 import FontKit
 import OnboardingKit
+import SwiftUI
 import UIKit
 
 class NoEmulationController : OBController {
     init() {
-        let textFont: UIFont = if #available(iOS 17.0, *) {
-            UIFont.regular(from: .extraLargeTitle)
-        } else {
-            UIFont.regular(from: .largeTitle)
-        }
-        
-        let image: UIImage? = UIImage(systemName: "opticaldisc.fill")
-        
         let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                        color: .label,
-                                                                       font: textFont,
+                                                                       font: .regular(from: .extraLargeTitle),
                                                                        text: "Select a Game")
         
         let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                                 color: .secondaryLabel,
-                                                                                font: UIFont.regular(from: .body),
+                                                                                font: .regular(from: .body),
                                                                                 text: "Select a game from the Games screen")
         
-        let configuration: OBControllerConfiguration = OBControllerConfiguration(image: image,
+        let configuration: OBControllerConfiguration = OBControllerConfiguration(image: UIImage(systemName: "opticaldisc.fill"),
                                                                                  textConfiguration: textConfiguration,
                                                                                  secondaryConfiguration: secondaryTextConfiguration,
                                                                                  tertiaryConfiguration: nil,
-                                                                                 buttons: [], colors: Colour.vibrantGreens)
+                                                                                 buttons: [],
+                                                                                 colors: [
+                                                                                    Colour(red: 0.90, green: 0.90, blue: 1.00),
+                                                                                    Colour(red: 0.80, green: 0.80, blue: 1.00),
+                                                                                    Colour(red: 0.70, green: 0.70, blue: 1.00),
+                                                                                    Colour(red: 0.55, green: 0.55, blue: 0.95),
+                                                                                    Colour(red: 0.45, green: 0.45, blue: 0.90),
+                                                                                    Colour(red: 0.35, green: 0.35, blue: 0.84), // iOS systemIndigo
+                                                                                    Colour(red: 0.30, green: 0.30, blue: 0.72),
+                                                                                    Colour(red: 0.25, green: 0.25, blue: 0.60),
+                                                                                    Colour(red: 0.20, green: 0.20, blue: 0.48)
+                                                                                 ])
         super.init(configuration: configuration)
     }
     
