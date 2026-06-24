@@ -1,10 +1,11 @@
 {
   "fill" : {
-    "automatic-gradient" : "srgb:0.42745,0.48627,1.00000,1.00000"
+    "automatic-gradient" : "extended-srgb:0.38039,0.33333,0.96078,1.00000"
   },
   "groups" : [
     {
-      "blur-material" : null,
+      "blend-mode" : "multiply",
+      "blur-material" : 0.5,
       "hidden" : false,
       "layers" : [
         {
@@ -24,6 +25,7 @@
         "kind" : "neutral",
         "opacity" : 0.6
       },
+      "specular" : true,
       "translucency" : {
         "enabled" : true,
         "value" : 0.2
@@ -34,6 +36,18 @@
       "hidden" : false,
       "layers" : [
         {
+          "image-name" : "leaf.fill.png",
+          "name" : "leaf.fill",
+          "position" : {
+            "scale" : 0.52,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
+        },
+        {
+          "hidden" : true,
           "image-name" : "leaf.circle.fill.png",
           "name" : "leaf.circle.fill",
           "position" : {
@@ -57,12 +71,14 @@
     {
       "blend-mode" : "multiply",
       "blur-material" : 0.5,
+      "hidden" : false,
       "layers" : [
         {
           "image-name" : "circle.fill.png",
           "name" : "circle.fill"
         }
       ],
+      "lighting" : "individual",
       "shadow" : {
         "kind" : "neutral",
         "opacity" : 0.6
