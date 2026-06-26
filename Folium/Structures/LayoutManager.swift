@@ -27,7 +27,7 @@ struct LayoutManager {
     }
     
     func iPadLibrary(layoutEnvironment: NSCollectionLayoutEnvironment, sectionIndex: Int) -> NSCollectionLayoutSection? {
-        let itemCount: Int = layoutEnvironment.container.effectiveContentSize.width < layoutEnvironment.container.effectiveContentSize.height ? 4 : 5
+        let itemCount: Int = layoutEnvironment.container.effectiveContentSize.width < layoutEnvironment.container.effectiveContentSize.height ? 5 : 6
         
         let boundaryItemFullWidthSize: NSCollectionLayoutSize = NSCollectionLayoutSize(widthDimension: NSCollectionLayoutDimension.fractionalWidth(1.0),
                                                                                        heightDimension: NSCollectionLayoutDimension.estimated(44.0))

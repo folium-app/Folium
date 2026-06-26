@@ -13,32 +13,6 @@ import UIKit
 import Mandarine
 
 class MandarineController : ControlsController {
-    var visualEffectView: UIVisualEffectView? = nil
-    
-    var settingsButton: UIButton? = nil,
-        selectButton: UIButton? = nil,
-        startButton: UIButton? = nil
-    
-    var leftThumbstickView: ThumbstickView? = nil,
-        rightThumbstickView: ThumbstickView? = nil
-    
-    var stackView: UIStackView? = nil
-    
-    var upButton: UIButton? = nil,
-        downButton: UIButton? = nil,
-        leftButton: UIButton? = nil,
-        rightButton: UIButton? = nil
-    
-    var crossButton: UIButton? = nil,
-        circleButton: UIButton? = nil,
-        triangleButton: UIButton? = nil,
-        squareButton: UIButton? = nil
-    
-    var l1Button: UIButton? = nil,
-        r1Button: UIButton? = nil,
-        l2Button: UIButton? = nil,
-        r2Button: UIButton? = nil
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,27 +23,16 @@ class MandarineController : ControlsController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.alignment = .center
         stackView.axis = .horizontal
-        stackView.clipsToBounds = false
         stackView.distribution = .equalSpacing
-        stackView.spacing = 20
+        stackView.spacing = 20.0
+        view.addSubview(stackView)
         
-        if #available(iOS 26.0, *) {
-            let effect: UIGlassContainerEffect = UIGlassContainerEffect()
-            effect.spacing = 20
-            
-            visualEffectView = UIVisualEffectView(effect: effect)
-            guard let visualEffectView else {
-                return
-            }
-            visualEffectView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(visualEffectView)
-            
-            visualEffectView.contentView.addSubview(stackView)
-        } else {
-            view.addSubview(stackView)
-        }
+        var settingsConfiguration: UIButton.Configuration = UIButton.Configuration.glass()
+        settingsConfiguration.buttonSize = .medium
+        settingsConfiguration.cornerStyle = .capsule
+        settingsConfiguration.image = UIImage(systemName: "ellipsis")?
+            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
         
-        let settingsConfiguration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "ellipsis"), nil, .medium)
         settingsButton = .button(with: settingsConfiguration,
                                  actions: ({ _ in }, { _ in }), UIMenu(preferredElementSize: .medium, children: [
                                     UIDeferredMenuElement.uncached { completion in
@@ -108,11 +71,13 @@ class MandarineController : ControlsController {
         guard let settingsButton else {
             return
         }
-        if visualEffectView == nil {
-            view.addSubview(settingsButton)
-        }
         
-        let selectConfiguration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "minus"), nil, .medium)
+        var selectConfiguration: UIButton.Configuration = UIButton.Configuration.glass()
+        selectConfiguration.buttonSize = .medium
+        selectConfiguration.cornerStyle = .capsule
+        selectConfiguration.image = UIImage(systemName: "minus")?
+            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
+        
         selectButton = .button(with: selectConfiguration, actions: ({ _ in
             self.press(button: .select)
         }, { _ in
@@ -121,11 +86,13 @@ class MandarineController : ControlsController {
         guard let selectButton else {
             return
         }
-        if visualEffectView == nil {
-            view.addSubview(selectButton)
-        }
         
-        let startConfiguration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "plus"), nil, .medium)
+        var startConfiguration: UIButton.Configuration = UIButton.Configuration.glass()
+        startConfiguration.buttonSize = .medium
+        startConfiguration.cornerStyle = .capsule
+        startConfiguration.image = UIImage(systemName: "plus")?
+            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
+        
         startButton = .button(with: startConfiguration, actions: ({ _ in
             self.press(button: .start)
         }, { _ in
@@ -133,9 +100,6 @@ class MandarineController : ControlsController {
         }))
         guard let startButton else {
             return
-        }
-        if visualEffectView == nil {
-            view.addSubview(startButton)
         }
         
         leftThumbstickView = ThumbstickView()
@@ -222,53 +186,53 @@ class MandarineController : ControlsController {
         }
         view.addSubview(rightButton)
         
-        var crossConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "xmark"), nil, .large, .systemBlue)
-        crossConfiguration.baseForegroundColor = .systemBlue
-        crossButton = .button(with: crossConfiguration, actions: ({ _ in
+        var southConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "xmark"), nil, .large, .systemBlue)
+        southConfiguration.baseForegroundColor = .systemBlue
+        southButton = .button(with: southConfiguration, actions: ({ _ in
             self.press(button: .cross)
         }, { _ in
             self.release(button: .cross)
         }))
-        guard let crossButton else {
+        guard let southButton else {
             return
         }
-        view.addSubview(crossButton)
+        view.addSubview(southButton)
         
-        var circleConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "circle"), nil, .large, .systemOrange)
-        circleConfiguration.baseForegroundColor = .systemOrange
-        circleButton = .button(with: circleConfiguration, actions: ({ _ in
+        var eastConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "circle"), nil, .large, .systemOrange)
+        eastConfiguration.baseForegroundColor = .systemOrange
+        eastButton = .button(with: eastConfiguration, actions: ({ _ in
             self.press(button: .circle)
         }, { _ in
             self.release(button: .circle)
         }))
-        guard let circleButton else {
+        guard let eastButton else {
             return
         }
-        view.addSubview(circleButton)
+        view.addSubview(eastButton)
         
-        var triangleConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "triangle"), nil, .large, .systemGreen)
-        triangleConfiguration.baseForegroundColor = .systemGreen
-        triangleButton = .button(with: triangleConfiguration, actions: ({ _ in
+        var northConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "triangle"), nil, .large, .systemGreen)
+        northConfiguration.baseForegroundColor = .systemGreen
+        northButton = .button(with: northConfiguration, actions: ({ _ in
             self.press(button: .triangle)
         }, { _ in
             self.release(button: .triangle)
         }))
-        guard let triangleButton else {
+        guard let northButton else {
             return
         }
-        view.addSubview(triangleButton)
+        view.addSubview(northButton)
         
-        var squareConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "square"), nil, .large, .systemPink)
-        squareConfiguration.baseForegroundColor = .systemPink
-        squareButton = .button(with: squareConfiguration, actions: ({ _ in
+        var westConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "square"), nil, .large, .systemPink)
+        westConfiguration.baseForegroundColor = .systemPink
+        westButton = .button(with: westConfiguration, actions: ({ _ in
             self.press(button: .square)
         }, { _ in
             self.release(button: .square)
         }))
-        guard let squareButton else {
+        guard let westButton else {
             return
         }
-        view.addSubview(squareButton)
+        view.addSubview(westButton)
         
         let l1Configuration: UIButton.Configuration = .configuration(.large, .capsule, nil, "L1", .large)
         l1Button = .button(with: l1Configuration, actions: ({ _ in
@@ -314,11 +278,9 @@ class MandarineController : ControlsController {
         }
         view.addSubview(r2Button)
         
-        if visualEffectView != nil {
-            stackView.addArrangedSubview(selectButton)
-            stackView.addArrangedSubview(settingsButton)
-            stackView.addArrangedSubview(startButton)
-        }
+        stackView.addArrangedSubview(selectButton)
+        stackView.addArrangedSubview(settingsButton)
+        stackView.addArrangedSubview(startButton)
         
         switch system {
         case .mandarine:
@@ -330,7 +292,7 @@ class MandarineController : ControlsController {
         
         let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
 #if targetEnvironment(simulator)
-        view.addConstraints(constraints.phone.portrait)
+        view.addConstraints(isPad ? constraints.pad.portrait : constraints.phone.portrait)
 #else
         guard let windowScene: UIWindowScene else {
             view.addConstraints(isPad ? constraints.pad.portrait : constraints.phone.portrait)
@@ -369,6 +331,7 @@ class MandarineController : ControlsController {
                 let viewController: MandarineController = Unmanaged<MandarineController>.fromOpaque(context).takeUnretainedValue()
                 
                 guard let imageView: UIImageView = viewController.primaryRenderingView as? UIImageView,
+                      let secondaryImageView: UIImageView = viewController.primaryBackgroundRenderingView as? UIImageView,
                       let game: MandarineGame = viewController.game as? MandarineGame else {
                     return
                 }
@@ -388,6 +351,7 @@ class MandarineController : ControlsController {
                     }
                     
                     imageView.image = UIImage(cgImage: cropped)
+                    secondaryImageView.image = imageView.image
                 }
             }
             
@@ -399,6 +363,7 @@ class MandarineController : ControlsController {
                 let viewController: MandarineController = Unmanaged<MandarineController>.fromOpaque(context).takeUnretainedValue()
                 
                 guard let imageView: UIImageView = viewController.primaryRenderingView as? UIImageView,
+                      let secondaryImageView: UIImageView = viewController.primaryBackgroundRenderingView as? UIImageView,
                       let game: MandarineGame = viewController.game as? MandarineGame else {
                     return
                 }
@@ -418,6 +383,7 @@ class MandarineController : ControlsController {
                     }
                     
                     imageView.image = UIImage(cgImage: cropped)
+                    secondaryImageView.image = imageView.image
                 }
             }
             
@@ -530,7 +496,7 @@ extension MandarineController {
               let settingsButton: UIButton, let selectButton: UIButton, let startButton: UIButton,
               let leftThumbstickView: ThumbstickView, let rightThumbstickView: ThumbstickView,
               let upButton: UIButton, let downButton: UIButton, let leftButton: UIButton, let rightButton: UIButton,
-              let crossButton: UIButton, let circleButton: UIButton, let triangleButton: UIButton, let squareButton: UIButton,
+              let southButton: UIButton, let eastButton: UIButton, let northButton: UIButton, let westButton: UIButton,
               let l1Button: UIButton, let r1Button: UIButton, let l2Button: UIButton, let r2Button: UIButton else {
             return
         }
@@ -538,30 +504,22 @@ extension MandarineController {
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             constraints.pad.portrait.append(contentsOf: [
+                southButton.bottom.constraint(equalTo: startButton.salg.top),
+                southButton.right.constraint(equalTo: eastButton.salg.left),
                 
-            ])
-            
-            constraints.pad.landscape.append(contentsOf: [
+                eastButton.bottom.constraint(equalTo: southButton.salg.top),
+                eastButton.right.constraint(equalTo: view.salg.right, constant: -20.0),
                 
-            ])
-        } else {
-            constraints.phone.portrait.append(contentsOf: [
-                crossButton.bottom.constraint(equalTo: startButton.salg.top),
-                crossButton.right.constraint(equalTo: circleButton.salg.left),
+                northButton.bottom.constraint(equalTo: eastButton.salg.top),
+                northButton.right.constraint(equalTo: eastButton.salg.left),
                 
-                circleButton.bottom.constraint(equalTo: crossButton.salg.top),
-                circleButton.right.constraint(equalTo: view.salg.right, constant: -20.0),
+                westButton.bottom.constraint(equalTo: southButton.salg.top),
+                westButton.right.constraint(equalTo: southButton.salg.left),
                 
-                triangleButton.bottom.constraint(equalTo: circleButton.salg.top),
-                triangleButton.right.constraint(equalTo: circleButton.salg.left),
-                
-                squareButton.bottom.constraint(equalTo: crossButton.salg.top),
-                squareButton.right.constraint(equalTo: crossButton.salg.left),
-                
-                rightThumbstickView.top.constraint(equalTo: triangleButton.salg.top),
-                rightThumbstickView.left.constraint(equalTo: squareButton.salg.left),
-                rightThumbstickView.bottom.constraint(equalTo: crossButton.salg.bottom),
-                rightThumbstickView.right.constraint(equalTo: circleButton.salg.right),
+                rightThumbstickView.top.constraint(equalTo: northButton.salg.top),
+                rightThumbstickView.left.constraint(equalTo: westButton.salg.left),
+                rightThumbstickView.bottom.constraint(equalTo: southButton.salg.bottom),
+                rightThumbstickView.right.constraint(equalTo: eastButton.salg.right),
                 
                 upButton.left.constraint(equalTo: leftButton.salg.right),
                 upButton.bottom.constraint(equalTo: leftButton.salg.top),
@@ -594,55 +552,29 @@ extension MandarineController {
                 
                 r2Button.right.constraint(equalTo: r1Button.salg.left, constant: -20.0),
                 r2Button.centerY.constraint(equalTo: r1Button.salg.centerY),
-                r2Button.width.constraint(equalTo: r2Button.salg.height, multiplier: 3.0 / 2.0)
+                r2Button.width.constraint(equalTo: r2Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
+                stackView.centerX.constraint(equalTo: view.salg.centerX)
             ])
             
-            if let visualEffectView {
-                constraints.phone.portrait.append(contentsOf: [
-                    stackView.centerX.constraint(equalTo: view.salg.centerX),
-                    stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    
-                    visualEffectView.top.constraint(equalTo: stackView.salg.top),
-                    visualEffectView.left.constraint(equalTo: stackView.salg.left),
-                    visualEffectView.bottom.constraint(equalTo: stackView.salg.bottom),
-                    visualEffectView.right.constraint(equalTo: stackView.salg.right)
-                ])
-            } else {
-                constraints.phone.portrait.append(contentsOf: [
-                    settingsButton.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    settingsButton.centerX.constraint(equalTo: view.salg.centerX),
-                    
-                    selectButton.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    selectButton.right.constraint(equalTo: settingsButton.salg.left, constant: -20.0),
-                    
-                    startButton.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    startButton.left.constraint(equalTo: settingsButton.salg.right, constant: 20.0)
-                ])
-            }
-            
-            let landscapeBottomConstraint: NSLayoutAnchor = if let visualEffectView {
-                visualEffectView.salg.bottom
-            } else {
-                startButton.salg.top
-            }
-            
-            constraints.phone.landscape.append(contentsOf: [
-                crossButton.bottom.constraint(equalTo: landscapeBottomConstraint, constant: visualEffectView == nil ? -30.0 : 0.0),
-                crossButton.right.constraint(equalTo: circleButton.salg.left),
+            constraints.pad.landscape.append(contentsOf: [
+                southButton.bottom.constraint(equalTo: stackView.salg.bottom),
+                southButton.right.constraint(equalTo: eastButton.salg.left),
                 
-                circleButton.bottom.constraint(equalTo: crossButton.salg.top),
-                circleButton.right.constraint(equalTo: view.salg.right, constant: -20.0),
+                eastButton.bottom.constraint(equalTo: southButton.salg.top),
+                eastButton.right.constraint(equalTo: view.salg.right, constant: -20.0),
                 
-                triangleButton.bottom.constraint(equalTo: circleButton.salg.top),
-                triangleButton.right.constraint(equalTo: circleButton.salg.left),
+                northButton.bottom.constraint(equalTo: eastButton.salg.top),
+                northButton.right.constraint(equalTo: eastButton.salg.left),
                 
-                squareButton.bottom.constraint(equalTo: crossButton.salg.top),
-                squareButton.right.constraint(equalTo: crossButton.salg.left),
+                westButton.bottom.constraint(equalTo: southButton.salg.top),
+                westButton.right.constraint(equalTo: southButton.salg.left),
                 
-                rightThumbstickView.top.constraint(equalTo: triangleButton.salg.top),
-                rightThumbstickView.left.constraint(equalTo: squareButton.salg.left),
-                rightThumbstickView.bottom.constraint(equalTo: crossButton.salg.bottom),
-                rightThumbstickView.right.constraint(equalTo: circleButton.salg.right),
+                rightThumbstickView.top.constraint(equalTo: northButton.salg.top),
+                rightThumbstickView.left.constraint(equalTo: westButton.salg.left),
+                rightThumbstickView.bottom.constraint(equalTo: southButton.salg.bottom),
+                rightThumbstickView.right.constraint(equalTo: eastButton.salg.right),
                 
                 upButton.left.constraint(equalTo: leftButton.salg.right),
                 upButton.bottom.constraint(equalTo: leftButton.salg.top),
@@ -651,7 +583,121 @@ extension MandarineController {
                 leftButton.bottom.constraint(equalTo: downButton.salg.top),
                 
                 downButton.left.constraint(equalTo: leftButton.salg.right),
-                downButton.bottom.constraint(equalTo: landscapeBottomConstraint, constant: visualEffectView == nil ? -30.0 : 0.0),
+                downButton.bottom.constraint(equalTo: stackView.salg.bottom),
+                
+                rightButton.left.constraint(equalTo: downButton.salg.right),
+                rightButton.bottom.constraint(equalTo: downButton.salg.top),
+                
+                leftThumbstickView.top.constraint(equalTo: upButton.salg.top),
+                leftThumbstickView.left.constraint(equalTo: leftButton.salg.left),
+                leftThumbstickView.bottom.constraint(equalTo: downButton.salg.bottom),
+                leftThumbstickView.right.constraint(equalTo: rightButton.salg.right),
+                
+                l1Button.bottom.constraint(equalTo: upButton.salg.top, constant: -20.0),
+                l1Button.left.constraint(equalTo: view.salg.left, constant: 20.0),
+                l1Button.width.constraint(equalTo: l1Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                l2Button.left.constraint(equalTo: l1Button.salg.right, constant: 20.0),
+                l2Button.centerY.constraint(equalTo: l1Button.salg.centerY),
+                l2Button.width.constraint(equalTo: l2Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                r1Button.bottom.constraint(equalTo: northButton.salg.top, constant: -20.0),
+                r1Button.right.constraint(equalTo: view.salg.right, constant: -20.0),
+                r1Button.width.constraint(equalTo: r1Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                r2Button.right.constraint(equalTo: r1Button.salg.left, constant: -20.0),
+                r2Button.centerY.constraint(equalTo: r1Button.salg.centerY),
+                r2Button.width.constraint(equalTo: r2Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
+                stackView.centerX.constraint(equalTo: view.salg.centerX)
+            ])
+        } else {
+            constraints.phone.portrait.append(contentsOf: [
+                southButton.bottom.constraint(equalTo: startButton.salg.top),
+                southButton.right.constraint(equalTo: eastButton.salg.left),
+                
+                eastButton.bottom.constraint(equalTo: southButton.salg.top),
+                eastButton.right.constraint(equalTo: view.salg.right, constant: -20.0),
+                
+                northButton.bottom.constraint(equalTo: eastButton.salg.top),
+                northButton.right.constraint(equalTo: eastButton.salg.left),
+                
+                westButton.bottom.constraint(equalTo: southButton.salg.top),
+                westButton.right.constraint(equalTo: southButton.salg.left),
+                
+                rightThumbstickView.top.constraint(equalTo: northButton.salg.top),
+                rightThumbstickView.left.constraint(equalTo: westButton.salg.left),
+                rightThumbstickView.bottom.constraint(equalTo: southButton.salg.bottom),
+                rightThumbstickView.right.constraint(equalTo: eastButton.salg.right),
+                
+                upButton.left.constraint(equalTo: leftButton.salg.right),
+                upButton.bottom.constraint(equalTo: leftButton.salg.top),
+                
+                leftButton.left.constraint(equalTo: view.salg.left, constant: 20.0),
+                leftButton.bottom.constraint(equalTo: downButton.salg.top),
+                
+                downButton.left.constraint(equalTo: leftButton.salg.right),
+                downButton.bottom.constraint(equalTo: selectButton.salg.top),
+                
+                rightButton.left.constraint(equalTo: downButton.salg.right),
+                rightButton.bottom.constraint(equalTo: downButton.salg.top),
+                
+                leftThumbstickView.top.constraint(equalTo: upButton.salg.top),
+                leftThumbstickView.left.constraint(equalTo: leftButton.salg.left),
+                leftThumbstickView.bottom.constraint(equalTo: downButton.salg.bottom),
+                leftThumbstickView.right.constraint(equalTo: rightButton.salg.right),
+                
+                l1Button.left.constraint(equalTo: view.salg.left, constant: 20.0),
+                l1Button.bottom.constraint(equalTo: upButton.salg.top, constant: -20.0),
+                l1Button.width.constraint(equalTo: l1Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                l2Button.left.constraint(equalTo: l1Button.salg.right, constant: 20.0),
+                l2Button.centerY.constraint(equalTo: l1Button.salg.centerY),
+                l2Button.width.constraint(equalTo: l2Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                r1Button.right.constraint(equalTo: view.salg.right, constant: -20.0),
+                r1Button.bottom.constraint(equalTo: upButton.salg.top, constant: -20.0),
+                r1Button.width.constraint(equalTo: r1Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                r2Button.right.constraint(equalTo: r1Button.salg.left, constant: -20.0),
+                r2Button.centerY.constraint(equalTo: r1Button.salg.centerY),
+                r2Button.width.constraint(equalTo: r2Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
+                stackView.centerX.constraint(equalTo: view.salg.centerX)
+            ])
+            
+            guard let primaryRenderingView: UIView else {
+                return
+            }
+            
+            constraints.phone.landscape.append(contentsOf: [
+                southButton.bottom.constraint(equalTo: stackView.salg.bottom),
+                southButton.right.constraint(equalTo: eastButton.salg.left),
+                
+                eastButton.bottom.constraint(equalTo: southButton.salg.top),
+                eastButton.right.constraint(equalTo: view.salg.right, constant: -20.0),
+                
+                northButton.bottom.constraint(equalTo: eastButton.salg.top),
+                northButton.right.constraint(equalTo: eastButton.salg.left),
+                
+                westButton.bottom.constraint(equalTo: southButton.salg.top),
+                westButton.right.constraint(equalTo: southButton.salg.left),
+                
+                rightThumbstickView.top.constraint(equalTo: northButton.salg.top),
+                rightThumbstickView.left.constraint(equalTo: westButton.salg.left),
+                rightThumbstickView.bottom.constraint(equalTo: southButton.salg.bottom),
+                rightThumbstickView.right.constraint(equalTo: eastButton.salg.right),
+                
+                upButton.left.constraint(equalTo: leftButton.salg.right),
+                upButton.bottom.constraint(equalTo: leftButton.salg.top),
+                
+                leftButton.left.constraint(equalTo: view.salg.left, constant: 20.0),
+                leftButton.bottom.constraint(equalTo: downButton.salg.top),
+                
+                downButton.left.constraint(equalTo: leftButton.salg.right),
+                downButton.bottom.constraint(equalTo: stackView.salg.bottom),
                 
                 rightButton.left.constraint(equalTo: downButton.salg.right),
                 rightButton.bottom.constraint(equalTo: downButton.salg.top),
@@ -675,35 +721,11 @@ extension MandarineController {
                 
                 r2Button.right.constraint(equalTo: r1Button.salg.left, constant: -20.0),
                 r2Button.centerY.constraint(equalTo: r1Button.salg.centerY),
-                r2Button.width.constraint(equalTo: r2Button.salg.height, multiplier: 3.0 / 2.0)
-            ])
-            
-            if let visualEffectView {
-                constraints.phone.landscape.append(contentsOf: [
-                    stackView.centerX.constraint(equalTo: view.salg.centerX),
-                    stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    
-                    visualEffectView.top.constraint(equalTo: stackView.salg.top),
-                    visualEffectView.left.constraint(equalTo: stackView.salg.left),
-                    visualEffectView.bottom.constraint(equalTo: stackView.salg.bottom),
-                    visualEffectView.right.constraint(equalTo: stackView.salg.right)
-                ])
-            } else {
-                guard let primaryRenderingView: UIView else {
-                    return
-                }
+                r2Button.width.constraint(equalTo: r2Button.salg.height, multiplier: 3.0 / 2.0),
                 
-                constraints.phone.landscape.append(contentsOf: [
-                    settingsButton.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    settingsButton.centerX.constraint(equalTo: view.salg.centerX),
-                    
-                    startButton.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    startButton.left.constraint(equalTo: primaryRenderingView.salg.trailingAnchor, constant: 20.0),
-                    
-                    selectButton.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    selectButton.right.constraint(equalTo: primaryRenderingView.salg.left, constant: -20.0)
-                ])
-            }
+                stackView.centerY.constraint(equalTo: primaryRenderingView.salg.bottom),
+                stackView.centerX.constraint(equalTo: view.salg.centerX)
+            ])
         }
     }
 }

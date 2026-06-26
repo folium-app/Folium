@@ -13,25 +13,6 @@ import UIKit
 import Tomato
 
 class TomatoController : ControlsController {
-    var visualEffectView: UIVisualEffectView? = nil
-    
-    var settingsButton: UIButton? = nil,
-        selectButton: UIButton? = nil,
-        startButton: UIButton? = nil
-    
-    var stackView: UIStackView? = nil
-    
-    var upButton: UIButton? = nil,
-        downButton: UIButton? = nil,
-        leftButton: UIButton? = nil,
-        rightButton: UIButton? = nil
-    
-    var bButton: UIButton? = nil,
-        aButton: UIButton? = nil
-    
-    var l1Button: UIButton? = nil,
-        r1Button: UIButton? = nil
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -45,24 +26,14 @@ class TomatoController : ControlsController {
         stackView.clipsToBounds = false
         stackView.distribution = .equalSpacing
         stackView.spacing = 20
+        view.addSubview(stackView)
         
-        if #available(iOS 26.0, *) {
-            let effect: UIGlassContainerEffect = UIGlassContainerEffect()
-            effect.spacing = 20
-            
-            visualEffectView = UIVisualEffectView(effect: effect)
-            guard let visualEffectView else {
-                return
-            }
-            visualEffectView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(visualEffectView)
-            
-            visualEffectView.contentView.addSubview(stackView)
-        } else {
-            view.addSubview(stackView)
-        }
+        var settingsConfiguration: UIButton.Configuration = UIButton.Configuration.glass()
+        settingsConfiguration.buttonSize = .medium
+        settingsConfiguration.cornerStyle = .capsule
+        settingsConfiguration.image = UIImage(systemName: "ellipsis")?
+            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
         
-        let settingsConfiguration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "ellipsis"), nil, .medium)
         settingsButton = .button(with: settingsConfiguration,
                                  actions: ({ _ in }, { _ in }), UIMenu(preferredElementSize: .medium, children: [
                                     UIDeferredMenuElement.uncached { completion in
@@ -101,11 +72,13 @@ class TomatoController : ControlsController {
         guard let settingsButton else {
             return
         }
-        if visualEffectView == nil {
-            view.addSubview(settingsButton)
-        }
         
-        let selectConfiguration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "minus"), nil, .medium)
+        var selectConfiguration: UIButton.Configuration = UIButton.Configuration.glass()
+        selectConfiguration.buttonSize = .medium
+        selectConfiguration.cornerStyle = .capsule
+        selectConfiguration.image = UIImage(systemName: "minus")?
+            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
+        
         selectButton = .button(with: selectConfiguration, actions: ({ _ in
             self.press(button: .select)
         }, { _ in
@@ -114,11 +87,13 @@ class TomatoController : ControlsController {
         guard let selectButton else {
             return
         }
-        if visualEffectView == nil {
-            view.addSubview(selectButton)
-        }
         
-        let startConfiguration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "plus"), nil, .medium)
+        var startConfiguration: UIButton.Configuration = UIButton.Configuration.glass()
+        startConfiguration.buttonSize = .medium
+        startConfiguration.cornerStyle = .capsule
+        startConfiguration.image = UIImage(systemName: "plus")?
+            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
+        
         startButton = .button(with: startConfiguration, actions: ({ _ in
             self.press(button: .start)
         }, { _ in
@@ -126,9 +101,6 @@ class TomatoController : ControlsController {
         }))
         guard let startButton else {
             return
-        }
-        if visualEffectView == nil {
-            view.addSubview(startButton)
         }
         
         let upConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "arrowtriangle.up"), nil, .large)
@@ -175,27 +147,27 @@ class TomatoController : ControlsController {
         }
         view.addSubview(rightButton)
         
-        let bConfiguration: UIButton.Configuration = .configuration(.large, .capsule, nil, "B", .large)
-        bButton = .button(with: bConfiguration, actions: ({ _ in
+        let southConfiguration: UIButton.Configuration = .configuration(.large, .capsule, nil, "B", .large)
+        southButton = .button(with: southConfiguration, actions: ({ _ in
             self.press(button: .b)
         }, { _ in
             self.release(button: .b)
         }))
-        guard let bButton else {
+        guard let southButton else {
             return
         }
-        view.addSubview(bButton)
+        view.addSubview(southButton)
         
-        let aConfiguration: UIButton.Configuration = .configuration(.large, .capsule, nil, "A", .large)
-        aButton = .button(with: aConfiguration, actions: ({ _ in
+        let eastConfiguration: UIButton.Configuration = .configuration(.large, .capsule, nil, "A", .large)
+        eastButton = .button(with: eastConfiguration, actions: ({ _ in
             self.press(button: .a)
         }, { _ in
             self.release(button: .a)
         }))
-        guard let aButton else {
+        guard let eastButton else {
             return
         }
-        view.addSubview(aButton)
+        view.addSubview(eastButton)
         
         let l1Configuration: UIButton.Configuration = .configuration(.large, .capsule, nil, "L", .large)
         l1Button = .button(with: l1Configuration, actions: ({ _ in
@@ -219,11 +191,9 @@ class TomatoController : ControlsController {
         }
         view.addSubview(r1Button)
         
-        if visualEffectView != nil {
-            stackView.addArrangedSubview(selectButton)
-            stackView.addArrangedSubview(settingsButton)
-            stackView.addArrangedSubview(startButton)
-        }
+        stackView.addArrangedSubview(selectButton)
+        stackView.addArrangedSubview(settingsButton)
+        stackView.addArrangedSubview(startButton)
         
         switch system {
         case .mandarine:
@@ -236,7 +206,7 @@ class TomatoController : ControlsController {
         
         let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
 #if targetEnvironment(simulator)
-        view.addConstraints(constraints.phone.portrait)
+        view.addConstraints(isPad ? constraints.pad.portrait : constraints.phone.portrait)
 #else
         guard let windowScene: UIWindowScene else {
             view.addConstraints(isPad ? constraints.pad.portrait : constraints.phone.portrait)
@@ -275,6 +245,7 @@ class TomatoController : ControlsController {
                 let viewController: TomatoController = Unmanaged<TomatoController>.fromOpaque(context).takeUnretainedValue()
                 
                 guard let imageView: UIImageView = viewController.primaryRenderingView as? UIImageView,
+                      let secondaryImageView: UIImageView = viewController.primaryBackgroundRenderingView as? UIImageView,
                       let game: TomatoGame = viewController.game as? TomatoGame else {
                     return
                 }
@@ -290,6 +261,7 @@ class TomatoController : ControlsController {
                     }
                     
                     imageView.image = UIImage(cgImage: cgImage)
+                    secondaryImageView.image = imageView.image
                 }
             }
             
@@ -319,7 +291,7 @@ extension TomatoController {
         guard let stackView: UIStackView,
               let settingsButton: UIButton, let selectButton: UIButton, let startButton: UIButton,
               let upButton: UIButton, let downButton: UIButton, let leftButton: UIButton, let rightButton: UIButton,
-              let bButton: UIButton, let aButton: UIButton,
+              let southButton: UIButton, let eastButton: UIButton,
               let l1Button: UIButton, let r1Button: UIButton else {
             return
         }
@@ -327,19 +299,11 @@ extension TomatoController {
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             constraints.pad.portrait.append(contentsOf: [
+                southButton.bottom.constraint(equalTo: startButton.salg.top),
+                southButton.right.constraint(equalTo: eastButton.salg.left),
                 
-            ])
-            
-            constraints.pad.landscape.append(contentsOf: [
-                
-            ])
-        } else {
-            constraints.phone.portrait.append(contentsOf: [
-                bButton.bottom.constraint(equalTo: startButton.salg.top),
-                bButton.right.constraint(equalTo: aButton.salg.left),
-                
-                aButton.bottom.constraint(equalTo: bButton.salg.top),
-                aButton.right.constraint(equalTo: view.salg.right, constant: -20.0),
+                eastButton.bottom.constraint(equalTo: southButton.salg.top),
+                eastButton.right.constraint(equalTo: view.salg.right, constant: -20.0),
                 
                 upButton.left.constraint(equalTo: leftButton.salg.right),
                 upButton.bottom.constraint(equalTo: leftButton.salg.top),
@@ -360,43 +324,17 @@ extension TomatoController {
                 r1Button.right.constraint(equalTo: view.salg.right, constant: -20.0),
                 r1Button.bottom.constraint(equalTo: upButton.salg.top, constant: -20.0),
                 r1Button.width.constraint(equalTo: r1Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
+                stackView.centerX.constraint(equalTo: view.salg.centerX)
             ])
             
-            if let visualEffectView {
-                constraints.phone.portrait.append(contentsOf: [
-                    stackView.centerX.constraint(equalTo: view.salg.centerX),
-                    stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    
-                    visualEffectView.top.constraint(equalTo: stackView.salg.top),
-                    visualEffectView.left.constraint(equalTo: stackView.salg.left),
-                    visualEffectView.bottom.constraint(equalTo: stackView.salg.bottom),
-                    visualEffectView.right.constraint(equalTo: stackView.salg.right)
-                ])
-            } else {
-                constraints.phone.portrait.append(contentsOf: [
-                    settingsButton.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    settingsButton.centerX.constraint(equalTo: view.salg.centerX),
-                    
-                    selectButton.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    selectButton.right.constraint(equalTo: settingsButton.salg.left, constant: -20.0),
-                    
-                    startButton.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    startButton.left.constraint(equalTo: settingsButton.salg.right, constant: 20.0)
-                ])
-            }
-            
-            let landscapeBottomConstraint: NSLayoutAnchor = if let visualEffectView {
-                visualEffectView.salg.bottom
-            } else {
-                startButton.salg.top
-            }
-            
-            constraints.phone.landscape.append(contentsOf: [
-                bButton.bottom.constraint(equalTo: landscapeBottomConstraint, constant: visualEffectView == nil ? -30.0 : 0.0),
-                bButton.right.constraint(equalTo: aButton.salg.left),
+            constraints.pad.landscape.append(contentsOf: [
+                southButton.bottom.constraint(equalTo: stackView.salg.bottom),
+                southButton.right.constraint(equalTo: eastButton.salg.left),
                 
-                aButton.bottom.constraint(equalTo: bButton.salg.top),
-                aButton.right.constraint(equalTo: view.salg.right, constant: -20.0),
+                eastButton.bottom.constraint(equalTo: southButton.salg.top),
+                eastButton.right.constraint(equalTo: view.salg.right, constant: -20.0),
                 
                 upButton.left.constraint(equalTo: leftButton.salg.right),
                 upButton.bottom.constraint(equalTo: leftButton.salg.top),
@@ -405,7 +343,73 @@ extension TomatoController {
                 leftButton.bottom.constraint(equalTo: downButton.salg.top),
                 
                 downButton.left.constraint(equalTo: leftButton.salg.right),
-                downButton.bottom.constraint(equalTo: landscapeBottomConstraint, constant: visualEffectView == nil ? -30.0 : 0.0),
+                downButton.bottom.constraint(equalTo: stackView.salg.bottom),
+                
+                rightButton.left.constraint(equalTo: downButton.salg.right),
+                rightButton.bottom.constraint(equalTo: downButton.salg.top),
+                
+                l1Button.bottom.constraint(equalTo: upButton.salg.top, constant: -20.0),
+                l1Button.left.constraint(equalTo: view.salg.left, constant: 20.0),
+                l1Button.width.constraint(equalTo: l1Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                r1Button.bottom.constraint(equalTo: upButton.salg.top, constant: -20.0),
+                r1Button.right.constraint(equalTo: view.salg.right, constant: -20.0),
+                r1Button.width.constraint(equalTo: r1Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
+                stackView.centerX.constraint(equalTo: view.salg.centerX)
+            ])
+        } else {
+            constraints.phone.portrait.append(contentsOf: [
+                southButton.bottom.constraint(equalTo: startButton.salg.top),
+                southButton.right.constraint(equalTo: eastButton.salg.left),
+                
+                eastButton.bottom.constraint(equalTo: southButton.salg.top),
+                eastButton.right.constraint(equalTo: view.salg.right, constant: -20.0),
+                
+                upButton.left.constraint(equalTo: leftButton.salg.right),
+                upButton.bottom.constraint(equalTo: leftButton.salg.top),
+                
+                leftButton.left.constraint(equalTo: view.salg.left, constant: 20.0),
+                leftButton.bottom.constraint(equalTo: downButton.salg.top),
+                
+                downButton.left.constraint(equalTo: leftButton.salg.right),
+                downButton.bottom.constraint(equalTo: selectButton.salg.top),
+                
+                rightButton.left.constraint(equalTo: downButton.salg.right),
+                rightButton.bottom.constraint(equalTo: downButton.salg.top),
+                
+                l1Button.left.constraint(equalTo: view.salg.left, constant: 20.0),
+                l1Button.bottom.constraint(equalTo: upButton.salg.top, constant: -20.0),
+                l1Button.width.constraint(equalTo: l1Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                r1Button.right.constraint(equalTo: view.salg.right, constant: -20.0),
+                r1Button.bottom.constraint(equalTo: upButton.salg.top, constant: -20.0),
+                r1Button.width.constraint(equalTo: r1Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
+                stackView.centerX.constraint(equalTo: view.salg.centerX)
+            ])
+            
+            guard let primaryRenderingView: UIView else {
+                return
+            }
+            
+            constraints.phone.landscape.append(contentsOf: [
+                southButton.bottom.constraint(equalTo: stackView.salg.bottom),
+                southButton.right.constraint(equalTo: eastButton.salg.left),
+                
+                eastButton.bottom.constraint(equalTo: southButton.salg.top),
+                eastButton.right.constraint(equalTo: view.salg.right, constant: -20.0),
+                
+                upButton.left.constraint(equalTo: leftButton.salg.right),
+                upButton.bottom.constraint(equalTo: leftButton.salg.top),
+                
+                leftButton.left.constraint(equalTo: view.salg.left, constant: 20.0),
+                leftButton.bottom.constraint(equalTo: downButton.salg.top),
+                
+                downButton.left.constraint(equalTo: leftButton.salg.right),
+                downButton.bottom.constraint(equalTo: stackView.salg.bottom),
                 
                 rightButton.left.constraint(equalTo: downButton.salg.right),
                 rightButton.bottom.constraint(equalTo: downButton.salg.top),
@@ -417,34 +421,10 @@ extension TomatoController {
                 r1Button.top.constraint(equalTo: view.top, constant: 30.0),
                 r1Button.right.constraint(equalTo: view.right, constant: -30.0),
                 r1Button.width.constraint(equalTo: r1Button.salg.height, multiplier: 3.0 / 2.0),
-            ])
-            
-            if let visualEffectView {
-                constraints.phone.landscape.append(contentsOf: [
-                    stackView.centerX.constraint(equalTo: view.salg.centerX),
-                    stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    
-                    visualEffectView.top.constraint(equalTo: stackView.salg.top),
-                    visualEffectView.left.constraint(equalTo: stackView.salg.left),
-                    visualEffectView.bottom.constraint(equalTo: stackView.salg.bottom),
-                    visualEffectView.right.constraint(equalTo: stackView.salg.right)
-                ])
-            } else {
-                guard let primaryRenderingView: UIView else {
-                    return
-                }
                 
-                constraints.phone.landscape.append(contentsOf: [
-                    settingsButton.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    settingsButton.centerX.constraint(equalTo: view.salg.centerX),
-                    
-                    startButton.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    startButton.left.constraint(equalTo: primaryRenderingView.salg.trailingAnchor, constant: 20.0),
-                    
-                    selectButton.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
-                    selectButton.right.constraint(equalTo: primaryRenderingView.salg.left, constant: -20.0)
-                ])
-            }
+                stackView.centerY.constraint(equalTo: primaryRenderingView.salg.bottom),
+                stackView.centerX.constraint(equalTo: view.salg.centerX)
+            ])
         }
     }
 }

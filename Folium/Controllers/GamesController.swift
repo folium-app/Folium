@@ -8,11 +8,13 @@
 import ColourKit
 import ExtensionsKit
 import FontKit
+import MultipeerConnectivity
 import OnboardingKit
 import UniformTypeIdentifiers
 import UIKit
 
 class GamesController : UICollectionViewController {
+    var importFileType: ImportFileType = .game
     var selectedSnapshot: SelectedSnapshot = .mandarine {
         didSet {
             guard let dataSource: UICollectionViewDiffableDataSource<String, Game> else {
@@ -51,6 +53,10 @@ class GamesController : UICollectionViewController {
     var mandarineSnapshot: NSDiffableDataSourceSnapshot<String, Game>? = nil
     var tomatoSnapshot: NSDiffableDataSourceSnapshot<String, Game>? = nil
     
+    nonisolated(unsafe) var advertiser: MCNearbyServiceAdvertiser? = nil
+    nonisolated(unsafe) var browser: MCNearbyServiceBrowser? = nil
+    nonisolated(unsafe) var session: MCSession? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if let navigationController {
@@ -58,57 +64,121 @@ class GamesController : UICollectionViewController {
         }
         navigationItem.largeTitle = "Games"
         
-        navigationItem.pinnedTrailingGroup = UIBarButtonItemGroup(barButtonItems: [
-            UIBarButtonItem(image: UIImage(systemName: "plus"), menu: UIMenu(children: [
-                UIMenu(options: .displayInline, preferredElementSize: .medium, children: [
-                    UIAction(title: "Game", image: UIImage(systemName: "opticaldisc")) { action in
-                        var types: [UTType] = []
-                        switch self.selectedSnapshot {
-                        case .mandarine:
-                            if let bin: UTType = .bin, let cue: UTType = .cue {
-                                types.append(contentsOf: [bin, cue])
+        navigationItem.trailingItemGroups = [
+            UIBarButtonItemGroup(barButtonItems: [
+                UIBarButtonItem(image: UIImage(systemName: "plus"), menu: UIMenu(children: [
+                    UIMenu(options: .displayInline, preferredElementSize: .medium, children: [
+                        UIAction(title: "Game", image: UIImage(systemName: "opticaldisc")) { action in
+                            self.importFileType = .game
+                            var types: [UTType] = []
+                            switch self.selectedSnapshot {
+                            case .mandarine:
+                                if let bin: UTType = .bin, let cue: UTType = .cue {
+                                    types.append(contentsOf: [bin, cue])
+                                }
+                            case .tomato:
+                                if let gba: UTType = .gba {
+                                    types.append(gba)
+                                }
+                            default:
+                                break
                             }
-                        case .tomato:
-                            if let gba: UTType = .gba {
-                                types.append(gba)
+                            
+                            let documentPickerController: UIDocumentPickerViewController = UIDocumentPickerViewController(forOpeningContentTypes: types, asCopy: true)
+                            documentPickerController.allowsMultipleSelection = [.mandarine, .tomato].contains(self.selectedSnapshot)
+                            documentPickerController.delegate = self
+                            self.present(documentPickerController, animated: true)
+                        },
+                        UIAction(title: "System File", image: UIImage(systemName: "document"), attributes: .disabled) { action in
+                            self.importFileType = .systemFile
+                            var types: [UTType] = []
+                            switch self.selectedSnapshot {
+                            case .mandarine,
+                                    .tomato:
+                                if let bin: UTType = .bin {
+                                    types.append(bin)
+                                }
+                            default:
+                                break
                             }
-                        default:
-                            break
+                            
+                            let documentPickerController: UIDocumentPickerViewController = UIDocumentPickerViewController(forOpeningContentTypes: types, asCopy: true)
+                            documentPickerController.allowsMultipleSelection = [.mandarine, .tomato].contains(self.selectedSnapshot)
+                            documentPickerController.delegate = self
+                            self.present(documentPickerController, animated: true)
+                        }
+                    ])
+                ])),
+                UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: UIMenu(children: [
+                    UIMenu(title: "Coleco", image: UIImage(systemName: "cpu"), children: [
+                        UIAction(title: "CV", subtitle: "ColecoVision", attributes: .disabled) { action in }
+                    ]),
+                    UIMenu(title: "Nintendo", image: UIImage(systemName: "cpu"), children: [
+                        UIAction(title: "3DS", subtitle: "Nintendo 3DS", attributes: .disabled) { action in },
+                        UIAction(title: "DS/DSi", subtitle: "Nintendo DS/DSi", attributes: .disabled) { action in },
+                        UIAction(title: "GBA", subtitle: "Game Boy Advance") { action in
+                            self.selectedSnapshot = .tomato
+                        },
+                        UIAction(title: "NES", subtitle: "Nintendo Entertainment System", attributes: .disabled) { action in },
+                        UIAction(title: "SNES", subtitle: "Super Nintendo Entertainment System", attributes: .disabled) { action in }
+                    ]),
+                    UIMenu(title: "PlayStation", image: UIImage(systemName: "cpu"), children: [
+                        UIAction(title: "PS1", subtitle: "PlayStation 1") { action in
+                            self.selectedSnapshot = .mandarine
+                        }
+                    ]),
+                    UIMenu(title: "SEGA", image: UIImage(systemName: "cpu"), children: [
+                        UIAction(title: "GEN/MD", subtitle: "SEGA Genesis/Mega Drive", attributes: .disabled) { action in }
+                    ])
+                ]))
+            ], representativeItem: nil),
+            UIBarButtonItemGroup(barButtonItems: [
+                UIBarButtonItem(image: UIImage(systemName: "network"), menu: UIMenu(options: .displayInline, preferredElementSize: .medium, children: [
+                    UIDeferredMenuElement.uncached { completion in
+                        guard let advertiser: MCNearbyServiceAdvertiser = self.advertiser,
+                              let browser: MCNearbyServiceBrowser = self.browser,
+                              let session: MCSession = self.session else {
+                                  completion([])
+                                  return
+                              }
+                        
+                        let barButtonItem: UIBarButtonItem? = self.navigationItem.trailingItemGroups.last?.barButtonItems.first
+                        
+                        let hostingOrJoined: Bool = session.connectedPeers.count > 0
+                        
+                        let leaveAction: UIAction = UIAction(title: "Leave", image: UIImage(systemName: "network.slash"), attributes: hostingOrJoined ? .destructive : [.destructive, .disabled]) { handler in
+                            advertiser.stopAdvertisingPeer()
+                            browser.stopBrowsingForPeers()
+                            session.disconnect()
+                            if let barButtonItem: UIBarButtonItem {
+                                barButtonItem.tintColor = nil
+                            }
                         }
                         
-                        let documentPickerController: UIDocumentPickerViewController = UIDocumentPickerViewController(forOpeningContentTypes: types, asCopy: true)
-                        documentPickerController.allowsMultipleSelection = [.mandarine, .tomato].contains(self.selectedSnapshot)
-                        documentPickerController.delegate = self
-                        self.present(documentPickerController, animated: true)
-                    },
-                    UIAction(title: "System File", image: UIImage(systemName: "document"), attributes: .disabled) { action in
+                        let hostAction: UIAction = UIAction(title: hostingOrJoined ? "Hosting" : "Host", image: UIImage(systemName: "wave.3.up"), attributes: hostingOrJoined ? .disabled : []) { handler in
+                            advertiser.startAdvertisingPeer()
+                            if let barButtonItem: UIBarButtonItem {
+                                barButtonItem.tintColor = .tintColor
+                            }
+                        }
                         
+                        let joinAction: UIAction = UIAction(title: hostingOrJoined ? "Joined" : "Join", image: UIImage(systemName: "wave.3.down"), attributes: hostingOrJoined ? .disabled : []) { handler in
+                            browser.startBrowsingForPeers()
+                            if let barButtonItem: UIBarButtonItem {
+                                barButtonItem.tintColor = .tintColor
+                            }
+                        }
+                        
+                        var children: [UIMenuElement] = [hostAction, joinAction]
+                        if hostingOrJoined {
+                            children.prepend(element: leaveAction)
+                        }
+                        
+                        completion(children)
                     }
-                ])
-            ])),
-            UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: UIMenu(children: [
-                UIMenu(title: "Coleco", image: UIImage(systemName: "cpu"), children: [
-                    UIAction(title: "CV", subtitle: "ColecoVision", attributes: .disabled) { action in }
-                ]),
-                UIMenu(title: "Nintendo", image: UIImage(systemName: "cpu"), children: [
-                    UIAction(title: "3DS", subtitle: "Nintendo 3DS", attributes: .disabled) { action in },
-                    UIAction(title: "DS/DSi", subtitle: "Nintendo DS/DSi", attributes: .disabled) { action in },
-                    UIAction(title: "GBA", subtitle: "Game Boy Advance") { action in
-                        self.selectedSnapshot = .tomato
-                    },
-                    UIAction(title: "NES", subtitle: "Nintendo Entertainment System", attributes: .disabled) { action in },
-                    UIAction(title: "SNES", subtitle: "Super Nintendo Entertainment System", attributes: .disabled) { action in }
-                ]),
-                UIMenu(title: "PlayStation", image: UIImage(systemName: "cpu"), children: [
-                    UIAction(title: "PS1", subtitle: "PlayStation 1") { action in
-                        self.selectedSnapshot = .mandarine
-                    }
-                ]),
-                UIMenu(title: "SEGA", image: UIImage(systemName: "cpu"), children: [
-                    UIAction(title: "GEN/MD", subtitle: "SEGA Genesis/Mega Drive", attributes: .disabled) { action in }
-                ])
-            ]))
-        ], representativeItem: nil)
+                ]))
+            ], representativeItem: nil)
+        ]
         navigationItem.title = navigationItem.largeTitle
         navigationItem.style = .browser
         view.backgroundColor = .systemBackground
@@ -170,7 +240,7 @@ class GamesController : UICollectionViewController {
                 (UIButton.Configuration.glassConfiguration(.large, .capsule, nil, "Continue"), { controller in
                     UserDefaults.standard.set(true, forKey: "folium.2.0.whatsNewComplete")
                     
-                    DispatchQueue.main.async {
+                    onMainThread {
                         controller.dismiss(animated: true)
                     }
                 })
@@ -223,6 +293,17 @@ class GamesController : UICollectionViewController {
         
         if !UserDefaults.standard.bool(forKey: "folium.2.0.whatsNewComplete") {
             present(whatsNewController, animated: true)
+        }
+        
+        let peerID: MCPeerID = MCPeerID(displayName: UIDevice.current.name)
+        advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: "foliumlink")
+        browser = MCNearbyServiceBrowser(peer: peerID, serviceType: "foliumlink")
+        session = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
+        
+        if let advertiser: MCNearbyServiceAdvertiser, let browser: MCNearbyServiceBrowser, let session: MCSession {
+            advertiser.delegate = self
+            browser.delegate = self
+            session.delegate = self
         }
     }
     
@@ -351,5 +432,59 @@ extension GamesController : UIDocumentPickerDelegate, UINavigationControllerDele
         }
         
         controller.dismiss(animated: true)
+    }
+}
+
+extension GamesController : MCNearbyServiceAdvertiserDelegate {
+    nonisolated func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+        if let session: MCSession {
+            invitationHandler(true, session)
+        }
+    }
+}
+
+extension GamesController : MCNearbyServiceBrowserDelegate {
+    nonisolated func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        if let session: MCSession {
+            browser.invitePeer(peerID, to: session, withContext: nil, timeout: 30.0)
+        }
+    }
+    
+    nonisolated func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+        
+    }
+}
+
+extension GamesController : MCSessionDelegate {
+    nonisolated func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        guard let notificationType: UINotificationFeedbackGenerator.FeedbackType = switch state {
+        case .notConnected: .error
+        case .connecting: nil
+        case .connected: .success
+        default:
+            nil
+        } else {
+            return
+        }
+        
+        Task { @MainActor in
+            UINotificationFeedbackGenerator(view: view).notificationOccurred(notificationType)
+        }
+    }
+    
+    nonisolated func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        
+    }
+    
+    nonisolated func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
+        
+    }
+    
+    nonisolated func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
+        
+    }
+    
+    nonisolated func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: (any Error)?) {
+        
     }
 }

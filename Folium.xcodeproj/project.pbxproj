@@ -393,7 +393,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -403,6 +403,7 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Folium may require access to Bluetooth where it is used for game and system functionality";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Folium may require access to Camera where it is used for game and system functionality";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Folium may require access to Local Network where it is used for game and system functionality";
 				INFOPLIST_KEY_NSMotionUsageDescription = "Folium may require access to Motion where it is used for game and system functionality";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -438,7 +439,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -448,6 +449,7 @@
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Folium may require access to Bluetooth where it is used for game and system functionality";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Folium may require access to Camera where it is used for game and system functionality";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Folium may require access to Local Network where it is used for game and system functionality";
 				INFOPLIST_KEY_NSMotionUsageDescription = "Folium may require access to Motion where it is used for game and system functionality";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;

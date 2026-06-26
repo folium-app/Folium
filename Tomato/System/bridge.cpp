@@ -708,7 +708,6 @@ void tomato::initialize_paths(void) {
         
         cppTomato.tomato_path = tomato_path;
         cppTomato.system_data_path = tomato_path / "system_data";
-        printf("%s\n", tomato_path.string().c_str());
     }
     
     auto bios = cppTomato.system_data_path / "bios.bin";

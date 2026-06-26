@@ -44,7 +44,9 @@ actor OnboardingModel {
                                                                                      colors: Colour.vibrantGreens)
             
             let obController: OBController = OBController(configuration: configuration)
-            obController.modalPresentationStyle = .fullScreen
+            onMainThread {
+                obController.modalPresentationStyle = .fullScreen
+            }
             return obController
         }
         
@@ -77,7 +79,9 @@ actor OnboardingModel {
                                                                                      colors: Colour.vibrantOranges)
             
             let obController: OBController = OBController(configuration: configuration)
-            obController.modalPresentationStyle = .fullScreen
+            onMainThread {
+                obController.modalPresentationStyle = .fullScreen
+            }
             return obController
         }
         
@@ -116,7 +120,9 @@ actor OnboardingModel {
                                                                                      colors: Colour.vibrantGreens)
             
             let obController: OBController = OBController(configuration: configuration)
-            obController.modalPresentationStyle = .fullScreen
+            onMainThread {
+                obController.modalPresentationStyle = .fullScreen
+            }
             return obController
         }
         

@@ -4,61 +4,20 @@
   },
   "groups" : [
     {
-      "blend-mode" : "multiply",
-      "blur-material" : 0.5,
-      "hidden" : false,
-      "layers" : [
-        {
-          "image-name" : "moonphase.full.moon.png",
-          "name" : "moonphase.full.moon",
-          "position" : {
-            "scale" : 1.1,
-            "translation-in-points" : [
-              0,
-              0
-            ]
-          }
-        }
-      ],
-      "lighting" : "individual",
-      "shadow" : {
-        "kind" : "neutral",
-        "opacity" : 0.6
-      },
-      "specular" : true,
-      "translucency" : {
-        "enabled" : true,
-        "value" : 0.2
-      }
-    },
-    {
       "blur-material" : null,
-      "hidden" : false,
       "layers" : [
         {
-          "image-name" : "leaf.fill.png",
-          "name" : "leaf.fill",
-          "position" : {
-            "scale" : 0.52,
-            "translation-in-points" : [
-              0,
-              0
-            ]
-          }
-        },
-        {
-          "hidden" : true,
-          "image-name" : "leaf.circle.fill.png",
-          "name" : "leaf.circle.fill",
-          "position" : {
-            "scale" : 1.1,
-            "translation-in-points" : [
-              0,
-              0
-            ]
-          }
+          "image-name" : "leaf.circle.png",
+          "name" : "leaf.circle"
         }
       ],
+      "position" : {
+        "scale" : 1.1,
+        "translation-in-points" : [
+          0,
+          0
+        ]
+      },
       "shadow" : {
         "kind" : "neutral",
         "opacity" : 0.6
@@ -79,6 +38,13 @@
         }
       ],
       "lighting" : "individual",
+      "position" : {
+        "scale" : 1.1,
+        "translation-in-points" : [
+          0,
+          0
+        ]
+      },
       "shadow" : {
         "kind" : "neutral",
         "opacity" : 0.6

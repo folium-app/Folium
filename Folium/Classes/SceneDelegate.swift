@@ -137,6 +137,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 "width" : 640,
                 "soundEnabled" : true,
                 "extendedMemory" : false
+            ],
+            .tomato : [
+                "backupType" : 0,
+                "forceRTC" : 0,
+                "forceSolarSensor" : 0,
+                "solarSensorLevel" : 100,
+                "skipBIOS" : 0,
+                "colourCorrection" : 0,
+                "filter" : 0,
+                "lcdGhosting" : 0,
+                "interpolation" : 1,
+                "volume" : 100
             ]
         ]
         
