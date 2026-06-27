@@ -11,4 +11,5 @@ extension UTType {
     static let bin: UTType? = UTType(filenameExtension: "bin")
     static let cue: UTType? = UTType(filenameExtension: "cue")
     static let gba: UTType? = UTType(filenameExtension: "gba")
+    static let nds: UTType? = UTType(filenameExtension: "nds")
 }

@@ -18,6 +18,45 @@ actor DirectoryManager {
         }
         
         let subfoldersForSystems: [System : [String : [String : SystemFile]]] = [
+            .grape : [
+                "artworks" : [:],
+                "games" : [:],
+                "save_states" : [:],
+                "system_data" : [
+                    "gba_bios.bin" : SystemFile(path: "system_data",
+                                            system: .grape,
+                                            systemFileType: .optional,
+                                            title: "gba_bios.bin"),
+                    "bios7.bin" : SystemFile(path: "system_data",
+                                            system: .grape,
+                                            systemFileType: .required,
+                                            title: "bios7.bin"),
+                    "bios9.bin" : SystemFile(path: "system_data",
+                                            system: .grape,
+                                            systemFileType: .required,
+                                            title: "bios9.bin"),
+                    "firmware.bin" : SystemFile(path: "system_data",
+                                            system: .grape,
+                                            systemFileType: .required,
+                                            title: "firmware.bin"),
+                    "bios7i.bin" : SystemFile(path: "system_data",
+                                            system: .grape,
+                                            systemFileType: .optional,
+                                            title: "bios7i.bin"),
+                    "bios9i.bin" : SystemFile(path: "system_data",
+                                            system: .grape,
+                                            systemFileType: .optional,
+                                            title: "bios9i.bin"),
+                    "firmwarei.bin" : SystemFile(path: "system_data",
+                                            system: .grape,
+                                            systemFileType: .optional,
+                                            title: "firmwarei.bin"),
+                    "nandi.bin" : SystemFile(path: "system_data",
+                                            system: .grape,
+                                            systemFileType: .optional,
+                                            title: "nandi.bin")
+                ]
+            ],
             .mandarine : [
                 "artworks" : [:],
                 "memory_cards" : [:],

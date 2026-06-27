@@ -103,7 +103,7 @@ class TomatoController : ControlsController {
             return
         }
         
-        let upConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "arrowtriangle.up"), nil, .large)
+        let upConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "chevron.up"), nil, .large)
         upButton = .button(with: upConfiguration, actions: ({ _ in
             self.press(button: .up)
         }, { _ in
@@ -114,7 +114,7 @@ class TomatoController : ControlsController {
         }
         view.addSubview(upButton)
         
-        let downConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "arrowtriangle.down"), nil, .large)
+        let downConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "chevron.down"), nil, .large)
         downButton = .button(with: downConfiguration, actions: ({ _ in
             self.press(button: .down)
         }, { _ in
@@ -125,7 +125,7 @@ class TomatoController : ControlsController {
         }
         view.addSubview(downButton)
         
-        let leftConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "arrowtriangle.left"), nil, .large)
+        let leftConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "chevron.left"), nil, .large)
         leftButton = .button(with: leftConfiguration, actions: ({ _ in
             self.press(button: .left)
         }, { _ in
@@ -136,7 +136,7 @@ class TomatoController : ControlsController {
         }
         view.addSubview(leftButton)
         
-        let rightConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "arrowtriangle.right"), nil, .large)
+        let rightConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "chevron.right"), nil, .large)
         rightButton = .button(with: rightConfiguration, actions: ({ _ in
             self.press(button: .right)
         }, { _ in
@@ -202,6 +202,8 @@ class TomatoController : ControlsController {
         case .tomato:
             configureConstraintsForTomato()
             reconfigureConstraintsForTomato()
+        default:
+            break
         }
         
         let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad

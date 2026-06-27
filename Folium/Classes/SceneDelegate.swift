@@ -12,6 +12,7 @@ import OnboardingKit
 import SwiftUI
 import UIKit
 
+import Grape
 import Mandarine
 import Tomato
 
@@ -22,15 +23,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private var directoryManager: DirectoryManager = DirectoryManager()
     
-    private var mandarineSystem: MandarineSystem = MandarineSystem()
-    private var tomatoSystem: TomatoSystem = TomatoSystem()
+    private let grapeSystem: GrapeSystem = GrapeSystem()
+    private let mandarineSystem: MandarineSystem = MandarineSystem()
+    private let tomatoSystem: TomatoSystem = TomatoSystem()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else {
             return
         }
         
-        let gamesManager: GamesManager = GamesManager(mandarineSystem: mandarineSystem, tomatoSystem: tomatoSystem)
+        let gamesManager: GamesManager = GamesManager(grapeSystem: grapeSystem, mandarineSystem: mandarineSystem, tomatoSystem: tomatoSystem)
         let onboardingModel: OnboardingModel = OnboardingModel(gamesManager: gamesManager)
         
         window = UIWindow(windowScene: windowScene)
@@ -98,6 +100,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         Task {
             switch await task.result {
             case .success(_):
+                await grapeSystem.printAbout()
+                
                 await mandarineSystem.initializePaths()
                 await mandarineSystem.initializeMemoryCards()
                 await mandarineSystem.initializeSystem()

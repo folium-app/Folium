@@ -28,6 +28,8 @@ let package = Package(
         .target(name: "SharedDependencies", dependencies: [
             "lib_fmt",
             "lib_sdl3",
+            "libslirp",
+            "lib_teakra",
             "cereal",
             "eventbus",
             "glib",
@@ -74,6 +76,9 @@ let package = Package(
         .binaryTarget(name: "lib_sdl3",
                       url: url(for: "lib_sdl3", with: "0.0.7"),
                       checksum: "157266698caea1dc10eff355d2d500eb15f994f17f52f16e8cee20f15cc99a9b"),
+        .binaryTarget(name: "lib_teakra",
+                      url: url(for: "lib_teakra", with: "1.0.0"),
+                      checksum: "1b1ee7e240c5b025f0c2a2a6e3116c8bc040169350f4d0bfef7a67d42fd229ea"),
         
         .binaryTarget(name: "FLAC",
                       url: "https://github.com/sbooth/flac-binary-xcframework/releases/download/0.2.0/FLAC.xcframework.zip",

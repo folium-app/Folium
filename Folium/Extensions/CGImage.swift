@@ -9,6 +9,29 @@ import CoreGraphics
 import Foundation
 
 extension CGImage {
+    static func grapeIcon(_ pointer: UnsafeMutablePointer<UInt32>, _ width: Int, _ height: Int) -> CGImage? {
+        let colorSpaceRef = CGColorSpaceCreateDeviceRGB()
+                
+        let bitsPerComponent = 8
+        let bytesPerPixel = 4
+        let bitsPerPixel = bytesPerPixel * bitsPerComponent
+        let bytesPerRow = bytesPerPixel * width
+        let totalBytes = height * bytesPerRow
+        
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue).union(.byteOrderDefault)
+        guard let providerRef = CGDataProvider(dataInfo: nil, data: pointer, size: totalBytes,
+            releaseData: { _, _, _  in }) else {
+            return nil
+        }
+        
+        var imageRef: CGImage? = nil
+        imageRef = CGImage(width: width, height: height, bitsPerComponent: bitsPerComponent, bitsPerPixel: bitsPerPixel,
+            bytesPerRow: bytesPerRow, space: colorSpaceRef, bitmapInfo: bitmapInfo, provider: providerRef,
+            decode: nil, shouldInterpolate: false, intent: .defaultIntent)
+        
+        return imageRef
+    }
+    
     static func mandarine15Bit(_ pointer: UnsafeMutableRawPointer, _ width: Int, _ height: Int) -> CGImage? {
         let pixelCount = width * height
         let pixels = pointer.bindMemory(to: UInt16.self, capacity: pixelCount)

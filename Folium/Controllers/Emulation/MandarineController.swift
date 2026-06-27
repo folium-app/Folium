@@ -142,7 +142,7 @@ class MandarineController : ControlsController {
         }
         view.addSubview(rightThumbstickView)
         
-        let upConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "arrowtriangle.up"), nil, .large)
+        let upConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "chevron.up"), nil, .large)
         upButton = .button(with: upConfiguration, actions: ({ _ in
             self.press(button: .up)
         }, { _ in
@@ -153,7 +153,7 @@ class MandarineController : ControlsController {
         }
         view.addSubview(upButton)
         
-        let downConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "arrowtriangle.down"), nil, .large)
+        let downConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "chevron.down"), nil, .large)
         downButton = .button(with: downConfiguration, actions: ({ _ in
             self.press(button: .down)
         }, { _ in
@@ -164,7 +164,7 @@ class MandarineController : ControlsController {
         }
         view.addSubview(downButton)
         
-        let leftConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "arrowtriangle.left"), nil, .large)
+        let leftConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "chevron.left"), nil, .large)
         leftButton = .button(with: leftConfiguration, actions: ({ _ in
             self.press(button: .left)
         }, { _ in
@@ -175,7 +175,7 @@ class MandarineController : ControlsController {
         }
         view.addSubview(leftButton)
         
-        let rightConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "arrowtriangle.right"), nil, .large)
+        let rightConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "chevron.right"), nil, .large)
         rightButton = .button(with: rightConfiguration, actions: ({ _ in
             self.press(button: .right)
         }, { _ in
@@ -186,8 +186,7 @@ class MandarineController : ControlsController {
         }
         view.addSubview(rightButton)
         
-        var southConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "xmark"), nil, .large, .systemBlue)
-        southConfiguration.baseForegroundColor = .systemBlue
+        let southConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "xmark"), nil, .large, .systemBlue)
         southButton = .button(with: southConfiguration, actions: ({ _ in
             self.press(button: .cross)
         }, { _ in
@@ -198,8 +197,7 @@ class MandarineController : ControlsController {
         }
         view.addSubview(southButton)
         
-        var eastConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "circle"), nil, .large, .systemOrange)
-        eastConfiguration.baseForegroundColor = .systemOrange
+        let eastConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "circle"), nil, .large, .systemOrange)
         eastButton = .button(with: eastConfiguration, actions: ({ _ in
             self.press(button: .circle)
         }, { _ in
@@ -210,8 +208,7 @@ class MandarineController : ControlsController {
         }
         view.addSubview(eastButton)
         
-        var northConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "triangle"), nil, .large, .systemGreen)
-        northConfiguration.baseForegroundColor = .systemGreen
+        let northConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "triangle"), nil, .large, .systemGreen)
         northButton = .button(with: northConfiguration, actions: ({ _ in
             self.press(button: .triangle)
         }, { _ in
@@ -222,8 +219,7 @@ class MandarineController : ControlsController {
         }
         view.addSubview(northButton)
         
-        var westConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "square"), nil, .large, .systemPink)
-        westConfiguration.baseForegroundColor = .systemPink
+        let westConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "square"), nil, .large, .systemPink)
         westButton = .button(with: westConfiguration, actions: ({ _ in
             self.press(button: .square)
         }, { _ in
@@ -288,6 +284,8 @@ class MandarineController : ControlsController {
             reconfigureConstraintsForMandarine()
         case .tomato:
             configureConstraintsForTomato()
+        default:
+            break
         }
         
         let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad

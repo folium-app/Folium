@@ -10,6 +10,7 @@ import Foundation
 enum Extension : String, @unchecked Sendable {
     case cue = "cue"
     case gba = "gba"
+    case nds = "nds"
     
     nonisolated var string: String { rawValue }
 }

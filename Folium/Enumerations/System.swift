@@ -8,11 +8,14 @@
 import Foundation
 
 enum System : String, CaseIterable, Hashable, Sendable {
+    case grape = "Grape"
     case mandarine = "Mandarine"
     case tomato = "Tomato"
     
     var console: String {
         switch self {
+        case .grape:
+            "Nintendo DS/DSi"
         case .mandarine:
             "PlayStation 1"
         case .tomato:
@@ -22,6 +25,8 @@ enum System : String, CaseIterable, Hashable, Sendable {
     
     var consoleShort: String {
         switch self {
+        case .grape:
+            "DS/DSi"
         case .mandarine:
             "PS1"
         case .tomato:
@@ -31,6 +36,10 @@ enum System : String, CaseIterable, Hashable, Sendable {
     
     nonisolated var extensions: [Extension] {
         switch self {
+        case .grape:
+            [
+                .nds
+            ]
         case .mandarine:
             [
                 .cue
@@ -44,7 +53,8 @@ enum System : String, CaseIterable, Hashable, Sendable {
     
     var features: [Feature] {
         switch self {
-        case .mandarine,
+        case .grape,
+                .mandarine,
                 .tomato:
             [
                 .gameController
@@ -56,7 +66,8 @@ enum System : String, CaseIterable, Hashable, Sendable {
         switch self {
         case .mandarine:
             false
-        case .tomato:
+        case .grape,
+                .tomato:
             true
         }
     }

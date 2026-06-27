@@ -11,6 +11,11 @@ import UIKit
 
 struct CellManager {
     struct Library {
+        static func grapeCell(viewController: GamesController) -> UICollectionView.CellRegistration<GrapeCell, GrapeGame> {
+            UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
+                cell.configureCell(with: itemIdentifier, controller: viewController)
+            }
+        }
         static func mandarineCell(viewController: GamesController) -> UICollectionView.CellRegistration<MandarineCell, MandarineGame> {
             UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
                 cell.configureCell(with: itemIdentifier, controller: viewController)

@@ -8,16 +8,19 @@
 import Foundation.NSFileManager
 import Foundation.NSURL
 
+import Grape
 import Mandarine
 import Tomato
 
 actor GamesManager {
     private let fileManager: FileManager = .default
     
+    private let grapeSystem: GrapeSystem
     private let mandarineSystem: MandarineSystem
     private let tomatoSystem: TomatoSystem
     
-    init(mandarineSystem: MandarineSystem, tomatoSystem: TomatoSystem) {
+    init(grapeSystem: GrapeSystem, mandarineSystem: MandarineSystem, tomatoSystem: TomatoSystem) {
+        self.grapeSystem = grapeSystem
         self.mandarineSystem = mandarineSystem
         self.tomatoSystem = tomatoSystem
     }
@@ -48,6 +51,15 @@ actor GamesManager {
         let filteredURLs: [URL] = filteredAsURLs.filter { element in extensionsAsStrings.contains(element.lowercasedPathExtension) }
         for url in filteredURLs {
             switch T.self {
+            case is GrapeGame.Type:
+                let game: GrapeGame = GrapeGame(details: Details(url: url),
+                                                grapeSystem: grapeSystem,
+                                                system: system,
+                                                boxart: await grapeSystem.boxart(for: url).buffer)
+                
+                if let game: T = game as? T {
+                    games.append(game)
+                }
             case is MandarineGame.Type:
                 let game: MandarineGame = MandarineGame(details: Details(url: url),
                                                         mandarineSystem: mandarineSystem,

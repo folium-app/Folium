@@ -19,6 +19,8 @@
 		E6979A532FE6ACA10055FA9D /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A522FE6ACA10055FA9D /* OnboardingKit */; };
 		E6979A552FE6ACA10055FA9D /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A542FE6ACA10055FA9D /* SettingsKit */; };
 		E6C462C42FE4B0AA004E5B57 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6C462C32FE4B0AA004E5B57 /* SharedDependencies */; };
+		E6F139D32FF04DD100F30081 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6F139D22FF04DD100F30081 /* SharedDependencies */; };
+		E6F139D42FF04E1000F30081 /* libGrape.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F139CA2FF04DB700F30081 /* libGrape.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +37,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = E655CB792FE73488003DCE2B;
 			remoteInfo = Tomato;
+		};
+		E6F139D52FF04E1000F30081 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6F139C92FF04DB700F30081;
+			remoteInfo = Grape;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -57,12 +66,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E6F139C82FF04DB700F30081 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		E655CB7A2FE73488003DCE2B /* libTomato.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTomato.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65A97A12FD0597F001DDEEE /* Folium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Folium.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMandarine.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6F139CA2FF04DB700F30081 /* libGrape.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGrape.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -94,6 +113,11 @@
 			path = Mandarine;
 			sourceTree = "<group>";
 		};
+		E6F139CB2FF04DB700F30081 /* Grape */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Grape;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +143,7 @@
 				E6979A492FE6ACA10055FA9D /* AntiqueKit in Frameworks */,
 				E61175E92FE1D9700032DDC1 /* libMandarine.a in Frameworks */,
 				E655CB842FE734FB003DCE2B /* libTomato.a in Frameworks */,
+				E6F139D42FF04E1000F30081 /* libGrape.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +155,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E6F139C72FF04DB700F30081 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6F139D32FF04DD100F30081 /* SharedDependencies in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -137,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				E65A97A32FD0597F001DDEEE /* Folium */,
+				E6F139CB2FF04DB700F30081 /* Grape */,
 				E69CA8F62FDC9EAF00BCD2F9 /* Mandarine */,
 				E655CB7B2FE73488003DCE2B /* Tomato */,
 				E65A97A22FD0597F001DDEEE /* Products */,
@@ -149,6 +183,7 @@
 				E65A97A12FD0597F001DDEEE /* Folium.app */,
 				E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */,
 				E655CB7A2FE73488003DCE2B /* libTomato.a */,
+				E6F139CA2FF04DB700F30081 /* libGrape.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -192,6 +227,7 @@
 			dependencies = (
 				E61175EB2FE1D9700032DDC1 /* PBXTargetDependency */,
 				E655CB862FE734FB003DCE2B /* PBXTargetDependency */,
+				E6F139D62FF04E1000F30081 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E65A97A32FD0597F001DDEEE /* Folium */,
@@ -234,6 +270,29 @@
 			productReference = E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		E6F139C92FF04DB700F30081 /* Grape */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6F139D02FF04DB700F30081 /* Build configuration list for PBXNativeTarget "Grape" */;
+			buildPhases = (
+				E6F139C62FF04DB700F30081 /* Sources */,
+				E6F139C72FF04DB700F30081 /* Frameworks */,
+				E6F139C82FF04DB700F30081 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E6F139CB2FF04DB700F30081 /* Grape */,
+			);
+			name = Grape;
+			packageProductDependencies = (
+				E6F139D22FF04DD100F30081 /* SharedDependencies */,
+			);
+			productName = Grape;
+			productReference = E6F139CA2FF04DB700F30081 /* libGrape.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -251,6 +310,9 @@
 						CreatedOnToolsVersion = 26.5;
 					};
 					E69CA8F42FDC9EAF00BCD2F9 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					E6F139C92FF04DB700F30081 = {
 						CreatedOnToolsVersion = 27.0;
 					};
 				};
@@ -274,6 +336,7 @@
 			projectRoot = "";
 			targets = (
 				E65A97A02FD0597F001DDEEE /* Folium */,
+				E6F139C92FF04DB700F30081 /* Grape */,
 				E69CA8F42FDC9EAF00BCD2F9 /* Mandarine */,
 				E655CB792FE73488003DCE2B /* Tomato */,
 			);
@@ -312,6 +375,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E6F139C62FF04DB700F30081 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -324,6 +394,11 @@
 			isa = PBXTargetDependency;
 			target = E655CB792FE73488003DCE2B /* Tomato */;
 			targetProxy = E655CB852FE734FB003DCE2B /* PBXContainerItemProxy */;
+		};
+		E6F139D62FF04E1000F30081 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6F139C92FF04DB700F30081 /* Grape */;
+			targetProxy = E6F139D52FF04E1000F30081 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -393,7 +468,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -439,7 +514,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -663,6 +738,76 @@
 			};
 			name = Release;
 		};
+		E6F139CE2FF04DB700F30081 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Grape/System/include/melonDS/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/Grape/System/include/ARMJIT_A64",
+					"$(SOURCE_ROOT)/Grape/System/include/xxhash",
+					"$(SOURCE_ROOT)/Grape/System/tiny-AES-c",
+					"$(SOURCE_ROOT)/Grape/System/include/sha1",
+					"$(SOURCE_ROOT)/Grape/System/include/fatfs",
+					"$(SOURCE_ROOT)/Grape/System/include/dolphin",
+					"$(SOURCE_ROOT)/Grape/System/include/ARMJIT_x64",
+					"$(SOURCE_ROOT)/Grape/Dependencies/teakra/include",
+					"$(SOURCE_ROOT)/Grape/System/include",
+				);
+			};
+			name = Debug;
+		};
+		E6F139CF2FF04DB700F30081 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Grape/System/include/melonDS/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/Grape/System/include/ARMJIT_A64",
+					"$(SOURCE_ROOT)/Grape/System/include/xxhash",
+					"$(SOURCE_ROOT)/Grape/System/tiny-AES-c",
+					"$(SOURCE_ROOT)/Grape/System/include/sha1",
+					"$(SOURCE_ROOT)/Grape/System/include/fatfs",
+					"$(SOURCE_ROOT)/Grape/System/include/dolphin",
+					"$(SOURCE_ROOT)/Grape/System/include/ARMJIT_x64",
+					"$(SOURCE_ROOT)/Grape/Dependencies/teakra/include",
+					"$(SOURCE_ROOT)/Grape/System/include",
+				);
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -698,6 +843,15 @@
 			buildConfigurations = (
 				E69CA8F92FDC9EAF00BCD2F9 /* Debug */,
 				E69CA8FA2FDC9EAF00BCD2F9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E6F139D02FF04DB700F30081 /* Build configuration list for PBXNativeTarget "Grape" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6F139CE2FF04DB700F30081 /* Debug */,
+				E6F139CF2FF04DB700F30081 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -755,6 +909,11 @@
 		};
 		E6C462C32FE4B0AA004E5B57 /* SharedDependencies */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = SharedDependencies;
+		};
+		E6F139D22FF04DD100F30081 /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */;
 			productName = SharedDependencies;
 		};
 /* End XCSwiftPackageProductDependency section */

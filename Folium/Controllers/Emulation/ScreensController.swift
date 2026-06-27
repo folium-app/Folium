@@ -18,11 +18,13 @@ class ScreensController : UIViewController {
     var constraints: (pad: (portrait: [NSLayoutConstraint], landscape: [NSLayoutConstraint]),
                       phone: (portrait: [NSLayoutConstraint], landscape: [NSLayoutConstraint])) = (([], []), ([], []))
     
-    var visualEffectView: UIVisualEffectView? = nil
+    var primaryVisualEffectView: UIVisualEffectView? = nil
+    var secondaryVisualEffectView: UIVisualEffectView? = nil
     
     var primaryRenderingView: UIView? = nil,
         primaryBackgroundRenderingView: UIView? = nil
-    // TODO: secondary
+    var secondaryRenderingView: UIView? = nil,
+        secondaryBackgroundRenderingView: UIView? = nil
     
     var settingsButton: UIButton? = nil,
         selectButton: UIButton? = nil,
@@ -62,13 +64,22 @@ class ScreensController : UIViewController {
         }
         
         switch game {
+        case is GrapeGame:
+            primaryRenderingView = UIImageView()
+            primaryBackgroundRenderingView = UIImageView()
+            
+            secondaryRenderingView = UIImageView()
+            secondaryBackgroundRenderingView = UIImageView()
+            system = .grape
         case is MandarineGame:
             primaryRenderingView = UIImageView()
             primaryBackgroundRenderingView = UIImageView()
+            
             system = .mandarine
         case is TomatoGame:
             primaryRenderingView = UIImageView()
             primaryBackgroundRenderingView = UIImageView()
+            
             system = .tomato
         default:
             break
@@ -88,13 +99,13 @@ class ScreensController : UIViewController {
         }
         view.addSubview(primaryBackgroundRenderingView)
         
-        visualEffectView = UIVisualEffectView(effect: UIGlassEffect(style: .regular))
-        guard let visualEffectView: UIVisualEffectView else {
+        primaryVisualEffectView = UIVisualEffectView(effect: UIGlassEffect(style: .regular))
+        guard let primaryVisualEffectView: UIVisualEffectView else {
             return
         }
-        visualEffectView.translatesAutoresizingMaskIntoConstraints = false
-        visualEffectView.cornerConfiguration = .corners(radius: UICornerRadius.fixed(40.0))
-        view.addSubview(visualEffectView)
+        primaryVisualEffectView.translatesAutoresizingMaskIntoConstraints = false
+        primaryVisualEffectView.cornerConfiguration = .corners(radius: UICornerRadius.fixed(40.0))
+        view.addSubview(primaryVisualEffectView)
         
         guard let primaryRenderingView: UIView else {
             return
@@ -108,7 +119,44 @@ class ScreensController : UIViewController {
         default:
             break
         }
-        visualEffectView.contentView.addSubview(primaryRenderingView)
+        primaryVisualEffectView.contentView.addSubview(primaryRenderingView)
+        
+        // MARK: Secondary
+        guard let secondaryBackgroundRenderingView: UIView else {
+            return
+        }
+        secondaryBackgroundRenderingView.translatesAutoresizingMaskIntoConstraints = false
+        secondaryBackgroundRenderingView.backgroundColor = .secondarySystemBackground
+        secondaryBackgroundRenderingView.cornerConfiguration = .corners(radius: UICornerRadius.fixed(34.0))
+        switch type(of: secondaryBackgroundRenderingView.self) {
+        case is UIImageView.Type:
+            secondaryBackgroundRenderingView.clipsToBounds = true
+        default:
+            break
+        }
+        view.addSubview(secondaryBackgroundRenderingView)
+        
+        secondaryVisualEffectView = UIVisualEffectView(effect: UIGlassEffect(style: .regular))
+        guard let secondaryVisualEffectView: UIVisualEffectView else {
+            return
+        }
+        secondaryVisualEffectView.translatesAutoresizingMaskIntoConstraints = false
+        secondaryVisualEffectView.cornerConfiguration = .corners(radius: UICornerRadius.fixed(40.0))
+        view.addSubview(secondaryVisualEffectView)
+        
+        guard let secondaryRenderingView: UIView else {
+            return
+        }
+        secondaryRenderingView.translatesAutoresizingMaskIntoConstraints = false
+        secondaryRenderingView.backgroundColor = .secondarySystemBackground
+        secondaryRenderingView.cornerConfiguration = .corners(radius: UICornerRadius.fixed(34.0))
+        switch type(of: secondaryRenderingView.self) {
+        case is UIImageView.Type:
+            secondaryRenderingView.clipsToBounds = true
+        default:
+            break
+        }
+        secondaryVisualEffectView.contentView.addSubview(secondaryRenderingView)
     }
     
     var game: Game? = nil
@@ -157,8 +205,10 @@ class ScreensController : UIViewController {
 }
 
 extension ScreensController {
-    func configureConstraintsForMandarine() {
-        guard let visualEffectView: UIVisualEffectView, let primaryRenderingView: UIView, let primaryBackgroundRenderingView: UIView else {
+    func configureConstraintsForGrape() {
+        guard let primaryVisualEffectView: UIVisualEffectView, let secondaryVisualEffectView: UIVisualEffectView,
+              let primaryRenderingView: UIView, let primaryBackgroundRenderingView: UIView,
+              let secondaryRenderingView: UIView, let secondaryBackgroundRenderingView: UIView else {
             return
         }
         
@@ -173,15 +223,15 @@ extension ScreensController {
                 primaryBackgroundRenderingView.right.constraint(equalTo: view.salg.right, constant: -46.0),
                 primaryBackgroundRenderingView.height.constraint(equalTo: primaryBackgroundRenderingView.salg.width, multiplier: calculateAspectRatio(for: .mandarine, isPortrait: true)),
                 
-                visualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
-                visualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
-                visualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
-                visualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
+                primaryVisualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
+                primaryVisualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
+                primaryVisualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
+                primaryVisualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
                 
-                primaryRenderingView.top.constraint(equalTo: visualEffectView.contentView.salg.top, constant: 6.0),
-                primaryRenderingView.left.constraint(equalTo: visualEffectView.contentView.salg.left, constant: 6.0),
-                primaryRenderingView.bottom.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: -6.0),
-                primaryRenderingView.right.constraint(equalTo: visualEffectView.contentView.salg.right, constant: -6.0)
+                primaryRenderingView.top.constraint(equalTo: primaryVisualEffectView.contentView.salg.top, constant: 6.0),
+                primaryRenderingView.left.constraint(equalTo: primaryVisualEffectView.contentView.salg.left, constant: 6.0),
+                primaryRenderingView.bottom.constraint(equalTo: primaryVisualEffectView.contentView.salg.bottom, constant: -6.0),
+                primaryRenderingView.right.constraint(equalTo: primaryVisualEffectView.contentView.salg.right, constant: -6.0)
             ])
             
             constraints.pad.landscape.append(contentsOf: [
@@ -190,15 +240,15 @@ extension ScreensController {
                 primaryBackgroundRenderingView.width.constraint(equalTo: primaryBackgroundRenderingView.salg.height, multiplier: calculateAspectRatio(for: .mandarine, isPortrait: false)),
                 primaryBackgroundRenderingView.centerX.constraint(equalTo: view.salg.centerX),
                 
-                visualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
-                visualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
-                visualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
-                visualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
+                primaryVisualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
+                primaryVisualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
+                primaryVisualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
+                primaryVisualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
                 
-                primaryRenderingView.top.constraint(equalTo: visualEffectView.contentView.salg.top, constant: 6.0),
-                primaryRenderingView.left.constraint(equalTo: visualEffectView.contentView.salg.left, constant: 6.0),
-                primaryRenderingView.bottom.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: -6.0),
-                primaryRenderingView.right.constraint(equalTo: visualEffectView.contentView.salg.right, constant: -6.0)
+                primaryRenderingView.top.constraint(equalTo: primaryVisualEffectView.contentView.salg.top, constant: 6.0),
+                primaryRenderingView.left.constraint(equalTo: primaryVisualEffectView.contentView.salg.left, constant: 6.0),
+                primaryRenderingView.bottom.constraint(equalTo: primaryVisualEffectView.contentView.salg.bottom, constant: -6.0),
+                primaryRenderingView.right.constraint(equalTo: primaryVisualEffectView.contentView.salg.right, constant: -6.0)
             ])
         } else {
             constraints.phone.portrait.append(contentsOf: [
@@ -207,15 +257,15 @@ extension ScreensController {
                 primaryBackgroundRenderingView.right.constraint(equalTo: view.salg.right, constant: -26.0),
                 primaryBackgroundRenderingView.height.constraint(equalTo: primaryBackgroundRenderingView.salg.width, multiplier: calculateAspectRatio(for: .mandarine, isPortrait: true)),
                 
-                visualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
-                visualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
-                visualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
-                visualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
+                primaryVisualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
+                primaryVisualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
+                primaryVisualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
+                primaryVisualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
                 
-                primaryRenderingView.top.constraint(equalTo: visualEffectView.contentView.salg.top, constant: 6.0),
-                primaryRenderingView.left.constraint(equalTo: visualEffectView.contentView.salg.left, constant: 6.0),
-                primaryRenderingView.bottom.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: -6.0),
-                primaryRenderingView.right.constraint(equalTo: visualEffectView.contentView.salg.right, constant: -6.0)
+                primaryRenderingView.top.constraint(equalTo: primaryVisualEffectView.contentView.salg.top, constant: 6.0),
+                primaryRenderingView.left.constraint(equalTo: primaryVisualEffectView.contentView.salg.left, constant: 6.0),
+                primaryRenderingView.bottom.constraint(equalTo: primaryVisualEffectView.contentView.salg.bottom, constant: -6.0),
+                primaryRenderingView.right.constraint(equalTo: primaryVisualEffectView.contentView.salg.right, constant: -6.0)
             ])
             
             constraints.phone.landscape.append(contentsOf: [
@@ -224,21 +274,22 @@ extension ScreensController {
                 primaryBackgroundRenderingView.width.constraint(equalTo: primaryBackgroundRenderingView.salg.height, multiplier: calculateAspectRatio(for: .mandarine, isPortrait: false)),
                 primaryBackgroundRenderingView.centerX.constraint(equalTo: view.salg.centerX),
                 
-                visualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
-                visualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
-                visualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
-                visualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
+                primaryVisualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
+                primaryVisualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
+                primaryVisualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
+                primaryVisualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
                 
-                primaryRenderingView.top.constraint(equalTo: visualEffectView.contentView.salg.top, constant: 6.0),
-                primaryRenderingView.left.constraint(equalTo: visualEffectView.contentView.salg.left, constant: 6.0),
-                primaryRenderingView.bottom.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: -6.0),
-                primaryRenderingView.right.constraint(equalTo: visualEffectView.contentView.salg.right, constant: -6.0)
+                primaryRenderingView.top.constraint(equalTo: primaryVisualEffectView.contentView.salg.top, constant: 6.0),
+                primaryRenderingView.left.constraint(equalTo: primaryVisualEffectView.contentView.salg.left, constant: 6.0),
+                primaryRenderingView.bottom.constraint(equalTo: primaryVisualEffectView.contentView.salg.bottom, constant: -6.0),
+                primaryRenderingView.right.constraint(equalTo: primaryVisualEffectView.contentView.salg.right, constant: -6.0)
             ])
         }
     }
     
-    func configureConstraintsForTomato() {
-        guard let visualEffectView: UIVisualEffectView, let primaryRenderingView: UIView, let primaryBackgroundRenderingView: UIView else {
+    func configureConstraintsForMandarine() {
+        guard let primaryVisualEffectView: UIVisualEffectView,
+              let primaryRenderingView: UIView, let primaryBackgroundRenderingView: UIView else {
             return
         }
         
@@ -253,32 +304,32 @@ extension ScreensController {
                 primaryBackgroundRenderingView.right.constraint(equalTo: view.salg.right, constant: -46.0),
                 primaryBackgroundRenderingView.height.constraint(equalTo: primaryBackgroundRenderingView.salg.width, multiplier: calculateAspectRatio(for: .mandarine, isPortrait: true)),
                 
-                visualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
-                visualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
-                visualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
-                visualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
+                primaryVisualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
+                primaryVisualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
+                primaryVisualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
+                primaryVisualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
                 
-                primaryRenderingView.top.constraint(equalTo: visualEffectView.contentView.salg.top, constant: 6.0),
-                primaryRenderingView.left.constraint(equalTo: visualEffectView.contentView.salg.left, constant: 6.0),
-                primaryRenderingView.bottom.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: -6.0),
-                primaryRenderingView.right.constraint(equalTo: visualEffectView.contentView.salg.right, constant: -6.0)
+                primaryRenderingView.top.constraint(equalTo: primaryVisualEffectView.contentView.salg.top, constant: 6.0),
+                primaryRenderingView.left.constraint(equalTo: primaryVisualEffectView.contentView.salg.left, constant: 6.0),
+                primaryRenderingView.bottom.constraint(equalTo: primaryVisualEffectView.contentView.salg.bottom, constant: -6.0),
+                primaryRenderingView.right.constraint(equalTo: primaryVisualEffectView.contentView.salg.right, constant: -6.0)
             ])
             
             constraints.pad.landscape.append(contentsOf: [
                 primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 46.0),
-                primaryBackgroundRenderingView.bottom.constraint(equalTo: stackView.salg.top, constant: -46.0),
+                primaryBackgroundRenderingView.bottom.constraint(lessThanOrEqualTo: stackView.salg.top, constant: -46.0),
                 primaryBackgroundRenderingView.width.constraint(equalTo: primaryBackgroundRenderingView.salg.height, multiplier: calculateAspectRatio(for: .mandarine, isPortrait: false)),
                 primaryBackgroundRenderingView.centerX.constraint(equalTo: view.salg.centerX),
                 
-                visualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
-                visualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
-                visualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
-                visualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
+                primaryVisualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
+                primaryVisualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
+                primaryVisualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
+                primaryVisualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
                 
-                primaryRenderingView.top.constraint(equalTo: visualEffectView.contentView.salg.top, constant: 6.0),
-                primaryRenderingView.left.constraint(equalTo: visualEffectView.contentView.salg.left, constant: 6.0),
-                primaryRenderingView.bottom.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: -6.0),
-                primaryRenderingView.right.constraint(equalTo: visualEffectView.contentView.salg.right, constant: -6.0)
+                primaryRenderingView.top.constraint(equalTo: primaryVisualEffectView.contentView.salg.top, constant: 6.0),
+                primaryRenderingView.left.constraint(equalTo: primaryVisualEffectView.contentView.salg.left, constant: 6.0),
+                primaryRenderingView.bottom.constraint(equalTo: primaryVisualEffectView.contentView.salg.bottom, constant: -6.0),
+                primaryRenderingView.right.constraint(equalTo: primaryVisualEffectView.contentView.salg.right, constant: -6.0)
             ])
         } else {
             constraints.phone.portrait.append(contentsOf: [
@@ -287,15 +338,15 @@ extension ScreensController {
                 primaryBackgroundRenderingView.right.constraint(equalTo: view.salg.right, constant: -26.0),
                 primaryBackgroundRenderingView.height.constraint(equalTo: primaryBackgroundRenderingView.salg.width, multiplier: calculateAspectRatio(for: .mandarine, isPortrait: true)),
                 
-                visualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
-                visualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
-                visualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
-                visualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
+                primaryVisualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
+                primaryVisualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
+                primaryVisualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
+                primaryVisualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
                 
-                primaryRenderingView.top.constraint(equalTo: visualEffectView.contentView.salg.top, constant: 6.0),
-                primaryRenderingView.left.constraint(equalTo: visualEffectView.contentView.salg.left, constant: 6.0),
-                primaryRenderingView.bottom.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: -6.0),
-                primaryRenderingView.right.constraint(equalTo: visualEffectView.contentView.salg.right, constant: -6.0)
+                primaryRenderingView.top.constraint(equalTo: primaryVisualEffectView.contentView.salg.top, constant: 6.0),
+                primaryRenderingView.left.constraint(equalTo: primaryVisualEffectView.contentView.salg.left, constant: 6.0),
+                primaryRenderingView.bottom.constraint(equalTo: primaryVisualEffectView.contentView.salg.bottom, constant: -6.0),
+                primaryRenderingView.right.constraint(equalTo: primaryVisualEffectView.contentView.salg.right, constant: -6.0)
             ])
             
             constraints.phone.landscape.append(contentsOf: [
@@ -304,15 +355,96 @@ extension ScreensController {
                 primaryBackgroundRenderingView.width.constraint(equalTo: primaryBackgroundRenderingView.salg.height, multiplier: calculateAspectRatio(for: .mandarine, isPortrait: false)),
                 primaryBackgroundRenderingView.centerX.constraint(equalTo: view.salg.centerX),
                 
-                visualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
-                visualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
-                visualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
-                visualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
+                primaryVisualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
+                primaryVisualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
+                primaryVisualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
+                primaryVisualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
                 
-                primaryRenderingView.top.constraint(equalTo: visualEffectView.contentView.salg.top, constant: 6.0),
-                primaryRenderingView.left.constraint(equalTo: visualEffectView.contentView.salg.left, constant: 6.0),
-                primaryRenderingView.bottom.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: -6.0),
-                primaryRenderingView.right.constraint(equalTo: visualEffectView.contentView.salg.right, constant: -6.0)
+                primaryRenderingView.top.constraint(equalTo: primaryVisualEffectView.contentView.salg.top, constant: 6.0),
+                primaryRenderingView.left.constraint(equalTo: primaryVisualEffectView.contentView.salg.left, constant: 6.0),
+                primaryRenderingView.bottom.constraint(equalTo: primaryVisualEffectView.contentView.salg.bottom, constant: -6.0),
+                primaryRenderingView.right.constraint(equalTo: primaryVisualEffectView.contentView.salg.right, constant: -6.0)
+            ])
+        }
+    }
+    
+    func configureConstraintsForTomato() {
+        guard let primaryVisualEffectView: UIVisualEffectView,
+              let primaryRenderingView: UIView, let primaryBackgroundRenderingView: UIView else {
+            return
+        }
+        
+        guard let stackView: UIStackView else {
+            return
+        }
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            constraints.pad.portrait.append(contentsOf: [
+                primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 46.0),
+                primaryBackgroundRenderingView.left.constraint(equalTo: view.salg.left, constant: 46.0),
+                primaryBackgroundRenderingView.right.constraint(equalTo: view.salg.right, constant: -46.0),
+                primaryBackgroundRenderingView.height.constraint(equalTo: primaryBackgroundRenderingView.salg.width, multiplier: calculateAspectRatio(for: .mandarine, isPortrait: true)),
+                
+                primaryVisualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
+                primaryVisualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
+                primaryVisualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
+                primaryVisualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
+                
+                primaryRenderingView.top.constraint(equalTo: primaryVisualEffectView.contentView.salg.top, constant: 6.0),
+                primaryRenderingView.left.constraint(equalTo: primaryVisualEffectView.contentView.salg.left, constant: 6.0),
+                primaryRenderingView.bottom.constraint(equalTo: primaryVisualEffectView.contentView.salg.bottom, constant: -6.0),
+                primaryRenderingView.right.constraint(equalTo: primaryVisualEffectView.contentView.salg.right, constant: -6.0)
+            ])
+            
+            constraints.pad.landscape.append(contentsOf: [
+                primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 46.0),
+                primaryBackgroundRenderingView.bottom.constraint(equalTo: stackView.salg.top, constant: -46.0),
+                primaryBackgroundRenderingView.width.constraint(equalTo: primaryBackgroundRenderingView.salg.height, multiplier: calculateAspectRatio(for: .mandarine, isPortrait: false)),
+                primaryBackgroundRenderingView.centerX.constraint(equalTo: view.salg.centerX),
+                
+                primaryVisualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
+                primaryVisualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
+                primaryVisualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
+                primaryVisualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
+                
+                primaryRenderingView.top.constraint(equalTo: primaryVisualEffectView.contentView.salg.top, constant: 6.0),
+                primaryRenderingView.left.constraint(equalTo: primaryVisualEffectView.contentView.salg.left, constant: 6.0),
+                primaryRenderingView.bottom.constraint(equalTo: primaryVisualEffectView.contentView.salg.bottom, constant: -6.0),
+                primaryRenderingView.right.constraint(equalTo: primaryVisualEffectView.contentView.salg.right, constant: -6.0)
+            ])
+        } else {
+            constraints.phone.portrait.append(contentsOf: [
+                primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 26.0),
+                primaryBackgroundRenderingView.left.constraint(equalTo: view.salg.left, constant: 26.0),
+                primaryBackgroundRenderingView.right.constraint(equalTo: view.salg.right, constant: -26.0),
+                primaryBackgroundRenderingView.height.constraint(equalTo: primaryBackgroundRenderingView.salg.width, multiplier: calculateAspectRatio(for: .mandarine, isPortrait: true)),
+                
+                primaryVisualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
+                primaryVisualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
+                primaryVisualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
+                primaryVisualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
+                
+                primaryRenderingView.top.constraint(equalTo: primaryVisualEffectView.contentView.salg.top, constant: 6.0),
+                primaryRenderingView.left.constraint(equalTo: primaryVisualEffectView.contentView.salg.left, constant: 6.0),
+                primaryRenderingView.bottom.constraint(equalTo: primaryVisualEffectView.contentView.salg.bottom, constant: -6.0),
+                primaryRenderingView.right.constraint(equalTo: primaryVisualEffectView.contentView.salg.right, constant: -6.0)
+            ])
+            
+            constraints.phone.landscape.append(contentsOf: [
+                primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 26.0),
+                primaryBackgroundRenderingView.bottom.constraint(equalTo: view.salg.bottom, constant: -26.0),
+                primaryBackgroundRenderingView.width.constraint(equalTo: primaryBackgroundRenderingView.salg.height, multiplier: calculateAspectRatio(for: .mandarine, isPortrait: false)),
+                primaryBackgroundRenderingView.centerX.constraint(equalTo: view.salg.centerX),
+                
+                primaryVisualEffectView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.top, constant: -6.0),
+                primaryVisualEffectView.left.constraint(equalTo: primaryBackgroundRenderingView.salg.left, constant: -6.0),
+                primaryVisualEffectView.bottom.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 6.0),
+                primaryVisualEffectView.right.constraint(equalTo: primaryBackgroundRenderingView.salg.right, constant: 6.0),
+                
+                primaryRenderingView.top.constraint(equalTo: primaryVisualEffectView.contentView.salg.top, constant: 6.0),
+                primaryRenderingView.left.constraint(equalTo: primaryVisualEffectView.contentView.salg.left, constant: 6.0),
+                primaryRenderingView.bottom.constraint(equalTo: primaryVisualEffectView.contentView.salg.bottom, constant: -6.0),
+                primaryRenderingView.right.constraint(equalTo: primaryVisualEffectView.contentView.salg.right, constant: -6.0)
             ])
         }
     }

@@ -8,10 +8,19 @@
 import ConstraintKit
 import UIKit
 
+import Grape
 import Mandarine
 import Tomato
 
 class ControlsController : ScreensController {
+    func press(button: GrapeButton, using grapeSystem: GrapeSystem) {
+        grapeSystem.press(button: button)
+    }
+    
+    func release(button: GrapeButton, using grapeSystem: GrapeSystem) {
+        grapeSystem.release(button: button)
+    }
+    
     func press(button: MandarineButton, using mandarineSystem: MandarineSystem) {
         mandarineSystem.press(button: button)
     }

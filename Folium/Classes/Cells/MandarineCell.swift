@@ -163,11 +163,6 @@ extension MandarineCell : UIImagePickerControllerDelegate, UINavigationControlle
         let customArtworkURL: URL = artworkDirectoryURL.appending(component: "\(game.details.nameWithoutSpaces.lowercased())_custom.jpg")
         let defaultArtworkURL: URL = artworkDirectoryURL.appending(component: "\(game.details.nameWithoutSpaces.lowercased()).jpg")
         
-        hasCustomArtwork = fileManager.fileExists(atPath: customArtworkURL.path)
-        
-        imageView.image = UIImage(contentsOfFile: customArtworkURL.path)
-        backgroundImageView.image = imageView.image
-        
         _  = Task {
             do {
                 if fileManager.fileExists(atPath: customArtworkURL.path) {
@@ -177,6 +172,11 @@ extension MandarineCell : UIImagePickerControllerDelegate, UINavigationControlle
                 if let data: Data = image.jpegData(compressionQuality: 1.0) {
                     try data.write(to: customArtworkURL)
                 }
+                
+                hasCustomArtwork = fileManager.fileExists(atPath: customArtworkURL.path)
+                
+                imageView.image = UIImage(contentsOfFile: customArtworkURL.path)
+                backgroundImageView.image = imageView.image
             } catch {
                 imageView.image = if fileManager.fileExists(atPath: defaultArtworkURL.path) {
                     UIImage(contentsOfFile: defaultArtworkURL.path)
