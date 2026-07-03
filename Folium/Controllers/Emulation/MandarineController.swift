@@ -282,11 +282,10 @@ class MandarineController : ControlsController {
         case .mandarine:
             configureConstraintsForMandarine()
             reconfigureConstraintsForMandarine()
-        case .tomato:
-            configureConstraintsForTomato()
         default:
             break
         }
+        configureCommonConstraints()
         
         let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
 #if targetEnvironment(simulator)
@@ -303,6 +302,7 @@ class MandarineController : ControlsController {
             view.addConstraints(isPad ? constraints.pad.landscape : constraints.phone.landscape)
         }
 #endif
+        view.addConstraints(commonConstraints)
     }
     
     override func viewWillLayoutSubviews() {

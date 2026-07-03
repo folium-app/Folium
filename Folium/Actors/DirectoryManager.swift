@@ -57,6 +57,11 @@ actor DirectoryManager {
                                             title: "nandi.bin")
                 ]
             ],
+            .kiwi : [
+                "artworks" : [:],
+                "games" : [:],
+                "save_states" : [:]
+            ],
             .mandarine : [
                 "artworks" : [:],
                 "memory_cards" : [:],

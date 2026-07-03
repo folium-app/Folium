@@ -9,6 +9,7 @@ import Foundation
 
 enum System : String, CaseIterable, Hashable, Sendable {
     case grape = "Grape"
+    case kiwi = "Kiwi"
     case mandarine = "Mandarine"
     case tomato = "Tomato"
     
@@ -16,6 +17,8 @@ enum System : String, CaseIterable, Hashable, Sendable {
         switch self {
         case .grape:
             "Nintendo DS/DSi"
+        case .kiwi:
+            "Game Boy/Game Boy Color"
         case .mandarine:
             "PlayStation 1"
         case .tomato:
@@ -27,6 +30,8 @@ enum System : String, CaseIterable, Hashable, Sendable {
         switch self {
         case .grape:
             "DS/DSi"
+        case .kiwi:
+            "GB/GBC"
         case .mandarine:
             "PS1"
         case .tomato:
@@ -39,6 +44,11 @@ enum System : String, CaseIterable, Hashable, Sendable {
         case .grape:
             [
                 .nds
+            ]
+        case .kiwi:
+            [
+                .gb,
+                .gbc
             ]
         case .mandarine:
             [
@@ -54,6 +64,7 @@ enum System : String, CaseIterable, Hashable, Sendable {
     var features: [Feature] {
         switch self {
         case .grape,
+                .kiwi,
                 .mandarine,
                 .tomato:
             [
@@ -67,6 +78,7 @@ enum System : String, CaseIterable, Hashable, Sendable {
         case .mandarine:
             false
         case .grape,
+                .kiwi,
                 .tomato:
             true
         }

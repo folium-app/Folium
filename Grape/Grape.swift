@@ -27,16 +27,17 @@ public enum GrapeButton : UInt32 {
     var uint32: UInt32 { rawValue }
 }
 
-public class GrapeCommon {
-    public init() {}
+@objcMembers
+public class GrapeCommon : NSObject {
+    public override init() {}
     
     public static var documentDirectoryURL: URL? {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
     }
     
-    public static var grapeDirectoryURL: String? {
+    public static var grapeDirectoryURL: URL? {
         if let documentDirectoryURL {
-            documentDirectoryURL.appending(component: "Grape").path
+            documentDirectoryURL.appending(component: "Grape")
         } else {
             nil
         }
@@ -54,6 +55,22 @@ public actor GrapeSystem {
     
     public func printAbout() {
         grape.print_about()
+    }
+    
+    public func initializePaths() {
+        grape.initialize_paths()
+    }
+    
+    public func initializeSystem() {
+        grape.initialize_system()
+    }
+    
+    public func destroySystem() {
+        grape.destroy_system()
+    }
+    
+    public func insertDisc(at url: URL) {
+        grape.insert_disc(std.string(url.path))
     }
     
     public func set(change: Bool = false, isRunning: Bool = false) {
@@ -87,11 +104,23 @@ public actor GrapeSystem {
     }
     
     public func start() {
-        
+        grape.start()
     }
     
     public func stop() {
-        
+        grape.stop()
+    }
+    
+    public var framebufferHeight: Int32 {
+        grape.framebuffer_height()
+    }
+    
+    public var framebufferWidth: Int32 {
+        grape.framebuffer_width()
+    }
+    
+    public nonisolated func videoBuffer(callback: grape.VideoBufferCallback) {
+        grape.video_buffer_callback(callback)
     }
     
     public nonisolated func press(button: GrapeButton) {
@@ -100,6 +129,22 @@ public actor GrapeSystem {
     
     public nonisolated func release(button: GrapeButton) {
         grape.release_button(button.uint32)
+    }
+    
+    public func touchBegan(x: UInt16, y: UInt16) {
+        grape.touch_began(x, y)
+    }
+    
+    public func touchEnded() {
+        grape.touch_ended()
+    }
+    
+    public func touchMoved(x: UInt16, y: UInt16) {
+        grape.touch_moved(x, y)
+    }
+    
+    public func setContext(context: UnsafeMutableRawPointer) {
+        grape.set_context(context)
     }
     
     public func boxart(for url: URL) -> SendableBoxart {

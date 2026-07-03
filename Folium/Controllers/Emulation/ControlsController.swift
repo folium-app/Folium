@@ -5,14 +5,13 @@
 //  Created by Jarrod Norwell on 23/6/2026.
 //
 
-import ConstraintKit
-import UIKit
-
 import Grape
+import Kiwi
 import Mandarine
 import Tomato
 
 class ControlsController : ScreensController {
+    // MARK: Grape (DS/DSi)
     func press(button: GrapeButton, using grapeSystem: GrapeSystem) {
         grapeSystem.press(button: button)
     }
@@ -21,6 +20,18 @@ class ControlsController : ScreensController {
         grapeSystem.release(button: button)
     }
     
+    
+    // MARK: Kiwi (GB/GBC)
+    func press(button: KiwiButton, using kiwiSystem: KiwiSystem) {
+        kiwiSystem.press(button: button)
+    }
+    
+    func release(button: KiwiButton, using kiwiSystem: KiwiSystem) {
+        kiwiSystem.release(button: button)
+    }
+    
+    
+    // MARK: Mandarine (PS1)
     func press(button: MandarineButton, using mandarineSystem: MandarineSystem) {
         mandarineSystem.press(button: button)
     }
@@ -29,6 +40,8 @@ class ControlsController : ScreensController {
         mandarineSystem.release(button: button)
     }
     
+    
+    // MARK: Tomato (GBA)
     func press(button: TomatoButton, using tomatoSystem: TomatoSystem) {
         tomatoSystem.press(button: button)
     }

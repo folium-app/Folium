@@ -9,6 +9,29 @@ import CoreGraphics
 import Foundation
 
 extension CGImage {
+    static func grape(_ pointer: UnsafeMutablePointer<UInt32>, _ width: Int, _ height: Int) -> CGImage? {
+        let colorSpaceRef = CGColorSpaceCreateDeviceRGB()
+                
+        let bitsPerComponent = 8
+        let bytesPerPixel = 4
+        let bitsPerPixel = bytesPerPixel * bitsPerComponent
+        let bytesPerRow = bytesPerPixel * width
+        let totalBytes = height * bytesPerRow
+        
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipFirst.rawValue).union(CGBitmapInfo.byteOrder32Little)
+        guard let providerRef = CGDataProvider(dataInfo: nil, data: pointer, size: totalBytes,
+            releaseData: { _, _, _  in }) else {
+            return nil
+        }
+        
+        var imageRef: CGImage? = nil
+        imageRef = CGImage(width: width, height: height, bitsPerComponent: bitsPerComponent, bitsPerPixel: bitsPerPixel,
+            bytesPerRow: bytesPerRow, space: colorSpaceRef, bitmapInfo: bitmapInfo, provider: providerRef,
+            decode: nil, shouldInterpolate: false, intent: .defaultIntent)
+        
+        return imageRef
+    }
+    
     static func grapeIcon(_ pointer: UnsafeMutablePointer<UInt32>, _ width: Int, _ height: Int) -> CGImage? {
         let colorSpaceRef = CGColorSpaceCreateDeviceRGB()
                 
@@ -30,6 +53,32 @@ extension CGImage {
             decode: nil, shouldInterpolate: false, intent: .defaultIntent)
         
         return imageRef
+    }
+    
+    static func kiwi(_ pointer: UnsafeMutablePointer<UInt8>, _ width: Int, _ height: Int) -> CGImage? {
+        let bitsPerComponent = 8
+        let bytesPerPixel = 1
+        let bitsPerPixel = bytesPerPixel * bitsPerComponent
+        let bytesPerRow = bytesPerPixel * width
+        let size = height * bytesPerRow
+        
+        guard let provider: CGDataProvider = .init(dataInfo: nil, data: pointer, size: size, releaseData: { _, data, _ in
+            data.deallocate()
+        }) else {
+            return nil
+        }
+        
+        return .init(width: width,
+                     height: height,
+                     bitsPerComponent: bitsPerComponent,
+                     bitsPerPixel: bitsPerPixel,
+                     bytesPerRow: bytesPerRow,
+                     space: CGColorSpaceCreateDeviceRGB(),
+                     bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue).union(.byteOrder32Little),
+                     provider: provider,
+                     decode: nil,
+                     shouldInterpolate: false,
+                     intent: .defaultIntent)
     }
     
     static func mandarine15Bit(_ pointer: UnsafeMutableRawPointer, _ width: Int, _ height: Int) -> CGImage? {
@@ -132,7 +181,7 @@ extension CGImage {
         )
     }
     
-    static func gba(_ buffer: UnsafeMutablePointer<UInt32>, _ width: Int, _ height: Int) -> CGImage? {
+    static func tomato(_ buffer: UnsafeMutablePointer<UInt32>, _ width: Int, _ height: Int) -> CGImage? {
         let colorSpaceRef = CGColorSpaceCreateDeviceRGB()
                 
         let bitsPerComponent = 8

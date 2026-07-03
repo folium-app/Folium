@@ -13,6 +13,7 @@ import SwiftUI
 import UIKit
 
 import Grape
+import Kiwi
 import Mandarine
 import Tomato
 
@@ -24,6 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var directoryManager: DirectoryManager = DirectoryManager()
     
     private let grapeSystem: GrapeSystem = GrapeSystem()
+    private let kiwiSystem: KiwiSystem = KiwiSystem()
     private let mandarineSystem: MandarineSystem = MandarineSystem()
     private let tomatoSystem: TomatoSystem = TomatoSystem()
 
@@ -32,7 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         
-        let gamesManager: GamesManager = GamesManager(grapeSystem: grapeSystem, mandarineSystem: mandarineSystem, tomatoSystem: tomatoSystem)
+        let gamesManager: GamesManager = GamesManager(grapeSystem: grapeSystem, kiwiSystem: kiwiSystem, mandarineSystem: mandarineSystem, tomatoSystem: tomatoSystem)
         let onboardingModel: OnboardingModel = OnboardingModel(gamesManager: gamesManager)
         
         window = UIWindow(windowScene: windowScene)
@@ -100,7 +102,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         Task {
             switch await task.result {
             case .success(_):
-                await grapeSystem.printAbout()
+                await grapeSystem.initializePaths()
+                await grapeSystem.initializeSystem()
+                
+                await kiwiSystem.initializePaths()
+                await kiwiSystem.initializeSystem()
                 
                 await mandarineSystem.initializePaths()
                 await mandarineSystem.initializeMemoryCards()

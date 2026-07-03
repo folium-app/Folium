@@ -28,25 +28,19 @@ let package = Package(
         .target(name: "SharedDependencies", dependencies: [
             "lib_fmt",
             "lib_sdl3",
-            "libslirp",
             "lib_teakra",
             "cereal",
             "eventbus",
             "glib",
             "libchdr",
+            "libslirp",
             "magic_enum",
             "miniz",
             "stb"
         ]),
         .target(name: "cereal", publicHeadersPath: "include"),
         .target(name: "eventbus", publicHeadersPath: "include"),
-        .target(name: "glib",
-                publicHeadersPath: "include",
-                cSettings: [
-                    .unsafeFlags([
-                        "-Wno-shorten-64-to-32"
-                    ])
-                ]),
+        .target(name: "glib", publicHeadersPath: "include"),
         .target(name: "libchdr",
                 dependencies: [
                     "FLAC",

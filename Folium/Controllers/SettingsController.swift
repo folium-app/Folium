@@ -51,6 +51,8 @@ class SettingsController : UICollectionViewController {
                     }
                     
                     await dataSource.apply(tomatoSnapshot)
+                default:
+                    break
                 }
             }
         }
@@ -239,6 +241,8 @@ class SettingsController : UICollectionViewController {
                 await dataSource.apply(cytrusSnapshot)
             case .grape:
                 await dataSource.apply(grapeSnapshot)
+            case .kiwi:
+                break
             case .mandarine:
                 await dataSource.apply(mandarineSnapshot)
             case .tomato:
@@ -367,6 +371,8 @@ extension SettingsController : SettingDelegate {
         case .cytrus:
             break
         case .grape:
+            break
+        case .kiwi:
             break
         case .mandarine:
             guard let mandarineGame: MandarineGame = tabController.game as? MandarineGame else {

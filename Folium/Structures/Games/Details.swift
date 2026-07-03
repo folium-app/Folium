@@ -18,7 +18,7 @@ final class Details : Hashable, @unchecked Sendable {
         let formatter: ByteCountFormatter = ByteCountFormatter()
         formatter.countStyle = .file
         
-        `extension` = url.pathExtension.lowercased()
+        `extension` = url.pathExtension.localizedLowercase
         name = url.deletingPathExtension()
             .lastPathComponent
             .replacingOccurrences(of: #"\s*\([^)]*\)"#, with: "", options: .regularExpression)

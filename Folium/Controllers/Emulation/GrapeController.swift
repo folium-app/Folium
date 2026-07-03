@@ -223,6 +223,7 @@ class GrapeController : ControlsController {
         default:
             break
         }
+        configureCommonConstraints()
         
         let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
 #if targetEnvironment(simulator)
@@ -239,6 +240,7 @@ class GrapeController : ControlsController {
             view.addConstraints(isPad ? constraints.pad.landscape : constraints.phone.landscape)
         }
 #endif
+        view.addConstraints(commonConstraints)
     }
     
     override func viewWillLayoutSubviews() {
@@ -247,7 +249,52 @@ class GrapeController : ControlsController {
             return
         }
         
-        // TODO: emulate
+        Task {
+            if await grapeGame.grapeSystem.running {
+                return
+            }
+            
+            await grapeGame.grapeSystem.insertDisc(at: grapeGame.details.url)
+            
+            await grapeGame.grapeSystem.set(change: true, isRunning: true)
+            
+            await grapeGame.grapeSystem.setContext(context: Unmanaged.passUnretained(self).toOpaque())
+            grapeGame.grapeSystem.videoBuffer { context, primaryPointer, secondaryPointer in
+                guard let context, let primaryPointer, let secondaryPointer else {
+                    return
+                }
+                
+                let viewController: GrapeController = Unmanaged<GrapeController>.fromOpaque(context).takeUnretainedValue()
+                
+                guard let imageView: UIImageView = viewController.primaryRenderingView as? UIImageView,
+                      let secondaryImageView: UIImageView = viewController.primaryBackgroundRenderingView as? UIImageView,
+                      let tertiaryImageView: UIImageView = viewController.secondaryRenderingView as? UIImageView,
+                      let quaternaryImageView: UIImageView = viewController.secondaryBackgroundRenderingView as? UIImageView,
+                      let game: GrapeGame = viewController.game as? GrapeGame else {
+                    return
+                }
+                
+                Task { @MainActor in
+                    let height: Int32 = await game.grapeSystem.framebufferHeight
+                    let width: Int32 = await game.grapeSystem.framebufferWidth
+                    
+                    let primaryCGImage: CGImage? = CGImage.grape(primaryPointer, Int(width), Int(height))
+                    let secondaryCGImage: CGImage? = CGImage.grape(secondaryPointer, Int(width), Int(height))
+                    
+                    guard let primaryCGImage: CGImage, let secondaryCGImage: CGImage else {
+                        return
+                    }
+                    
+                    imageView.image = UIImage(cgImage: primaryCGImage)
+                    secondaryImageView.image = imageView.image
+                    
+                    tertiaryImageView.image = UIImage(cgImage: secondaryCGImage)
+                    quaternaryImageView.image = tertiaryImageView.image
+                }
+            }
+            
+            await grapeGame.grapeSystem.start()
+        }
     }
     
     func press(button: GrapeButton) {
@@ -264,6 +311,61 @@ class GrapeController : ControlsController {
         }
         
         release(button: button, using: grapeGame.grapeSystem)
+    }
+}
+
+extension GrapeController {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        guard let grapeGame: GrapeGame = game as? GrapeGame else {
+            return
+        }
+        
+        guard let secondaryRenderingView: UIView, let touch = touches.first, touch.view == secondaryRenderingView else {
+            return
+        }
+        
+        let locationInView = touch.location(in: secondaryRenderingView)
+        let viewSize = secondaryRenderingView.frame.size
+        
+        let mappedX = (locationInView.x / viewSize.width) * 256
+        let mappedY = (locationInView.y / viewSize.height) * 192
+        
+        Task {
+            await grapeGame.grapeSystem.touchBegan(x: UInt16(mappedX), y: UInt16(mappedY))
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        guard let grapeGame: GrapeGame = game as? GrapeGame else {
+            return
+        }
+        
+        Task {
+            await grapeGame.grapeSystem.touchEnded()
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
+        guard let grapeGame: GrapeGame = game as? GrapeGame else {
+            return
+        }
+        
+        guard let secondaryRenderingView: UIView, let touch = touches.first, touch.view == secondaryRenderingView else {
+            return
+        }
+        
+        let locationInView = touch.location(in: secondaryRenderingView)
+        let viewSize = secondaryRenderingView.frame.size
+        
+        let mappedX = (locationInView.x / viewSize.width) * 256
+        let mappedY = (locationInView.y / viewSize.height) * 192
+        
+        Task {
+            await grapeGame.grapeSystem.touchMoved(x: UInt16(mappedX), y: UInt16(mappedY))
+        }
     }
 }
 
@@ -390,10 +492,6 @@ extension GrapeController {
                 stackView.centerX.constraint(equalTo: view.salg.centerX)
             ])
             
-            guard let primaryRenderingView: UIView else {
-                return
-            }
-            
             constraints.phone.landscape.append(contentsOf: [
                 southButton.bottom.constraint(equalTo: stackView.salg.bottom),
                 southButton.right.constraint(equalTo: eastButton.salg.left),
@@ -427,7 +525,7 @@ extension GrapeController {
                 r1Button.right.constraint(equalTo: view.right, constant: -30.0),
                 r1Button.width.constraint(equalTo: r1Button.salg.height, multiplier: 3.0 / 2.0),
                 
-                stackView.centerY.constraint(equalTo: primaryRenderingView.salg.bottom),
+                stackView.bottom.constraint(equalTo: view.salg.bottom,constant: -20.0),
                 stackView.centerX.constraint(equalTo: view.salg.centerX)
             ])
         }

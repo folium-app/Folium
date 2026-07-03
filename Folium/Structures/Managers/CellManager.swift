@@ -16,6 +16,13 @@ struct CellManager {
                 cell.configureCell(with: itemIdentifier, controller: viewController)
             }
         }
+        
+        static func kiwiCell(viewController: GamesController) -> UICollectionView.CellRegistration<KiwiCell, KiwiGame> {
+            UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
+                cell.configureCell(with: itemIdentifier, controller: viewController)
+            }
+        }
+        
         static func mandarineCell(viewController: GamesController) -> UICollectionView.CellRegistration<MandarineCell, MandarineGame> {
             UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
                 cell.configureCell(with: itemIdentifier, controller: viewController)

@@ -12,6 +12,9 @@
 #include "nba/rom/backup/flash.hpp"
 #include "nba/rom/backup/sram.hpp"
 
+#include <SDL3/SDL_audio.h>
+#include <SDL3/SDL_main.h>
+
 #include <_printf.h>
 #include <atomic>
 #include <chrono>
@@ -182,6 +185,27 @@ private:
                              ) -> std::unique_ptr<Backup>;
     
     static auto RoundSizeToPowerOfTwo(size_t size) -> size_t;
+};
+
+void SDL3_AudioDeviceCallback(struct SDL3_AudioDevice* audio_device, SDL_AudioStream* stream, int additional_amount, int total_amount);
+
+class SDL3_AudioDevice : public AudioDevice {
+public:
+    int GetSampleRate() final;
+    int GetBlockSize() final;
+    bool Open(void* userdata, Callback callback) final;
+    void SetPause(bool value) final;
+    void Close() final;
+    
+private:
+    friend void SDL3_AudioDeviceCallback(SDL3_AudioDevice* audio_device, SDL_AudioStream* stream, int additional_amount, int total_amount);
+    
+    Callback m_callback{};
+    void* m_callback_userdata{};
+    SDL_AudioStream* m_audio_stream{};
+    bool m_opened{};
+    bool m_paused{};
+    std::vector<u8> m_tmp_buffer{};
 };
 
 struct SWVideoDevice : VideoDevice {
@@ -667,6 +691,76 @@ auto ROMLoader::RoundSizeToPowerOfTwo(size_t size) -> size_t {
 }
 }
 
+static constexpr int k_sample_rate = 48000;
+
+auto nba::SDL3_AudioDevice::GetSampleRate() -> int {
+    return k_sample_rate;
+}
+
+auto nba::SDL3_AudioDevice::GetBlockSize() -> int {
+    // TODO: we do not really have a buffer size anymore. Just remove this from the API?
+    return 4096;
+}
+
+bool nba::SDL3_AudioDevice::Open(void* userdata, Callback callback) {
+    auto want = SDL_AudioSpec{};
+    
+    SDL_SetMainReady();
+    if(SDL_Init(SDL_INIT_AUDIO) == false) {
+        Log<Error>("Audio: SDL_Init(SDL_INIT_AUDIO) failed.");
+        return false;
+    }
+    
+    want.freq = GetSampleRate();
+    want.format = SDL_AUDIO_S16;
+    want.channels = 2;
+    
+    m_callback = callback;
+    m_callback_userdata = userdata;
+    
+    m_audio_stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &want, (SDL_AudioStreamCallback)SDL3_AudioDeviceCallback, this);
+    
+    if(m_audio_stream == nullptr) {
+        Log<Error>("Audio: SDL_OpenAudioDeviceStream: failed to open audio: %s\n", SDL_GetError());
+        return false;
+    }
+    
+    m_opened = true;
+    
+    if(!m_paused) {
+        SDL_ResumeAudioStreamDevice(m_audio_stream);
+    }
+    return true;
+}
+
+void nba::SDL3_AudioDevice::SetPause(bool value) {
+    if(!m_opened) {
+        return;
+    }
+    
+    if(value) {
+        SDL_PauseAudioStreamDevice(m_audio_stream);
+    } else {
+        SDL_ResumeAudioStreamDevice(m_audio_stream);
+    }
+}
+
+void nba::SDL3_AudioDevice::Close() {
+    if(m_opened) {
+        SDL_CloseAudioDevice(SDL_GetAudioStreamDevice(m_audio_stream));
+        m_opened = false;
+    }
+}
+
+void nba::SDL3_AudioDeviceCallback(SDL3_AudioDevice* audio_device, SDL_AudioStream* stream, int additional_amount, int total_amount) {
+    (void)total_amount;
+    
+    std::vector<u8>& tmp_buffer = audio_device->m_tmp_buffer;
+    tmp_buffer.resize(additional_amount);
+    audio_device->m_callback(audio_device->m_callback_userdata, (s16*)tmp_buffer.data(), additional_amount);
+    SDL_PutAudioStreamData(stream, tmp_buffer.data(), additional_amount);
+}
+
 
 nba::SWVideoDevice::~SWVideoDevice() {}
 
@@ -694,6 +788,7 @@ void tomato::print_about(void) {
 
 void tomato::initialize_system(void) {
     cppTomato.config = std::make_shared<nba::Config>();
+    cppTomato.config->audio_dev = std::make_shared<nba::SDL3_AudioDevice>();
     cppTomato.config->video_dev = std::make_shared<nba::SWVideoDevice>();
     
     cppTomato.system = nba::CreateCore(cppTomato.config);

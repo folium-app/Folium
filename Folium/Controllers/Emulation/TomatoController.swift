@@ -196,15 +196,13 @@ class TomatoController : ControlsController {
         stackView.addArrangedSubview(startButton)
         
         switch system {
-        case .mandarine:
-            configureConstraintsForMandarine()
-            // reconfigureConstraintsForMandarine()
         case .tomato:
             configureConstraintsForTomato()
             reconfigureConstraintsForTomato()
         default:
             break
         }
+        configureCommonConstraints()
         
         let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
 #if targetEnvironment(simulator)
@@ -221,6 +219,7 @@ class TomatoController : ControlsController {
             view.addConstraints(isPad ? constraints.pad.landscape : constraints.phone.landscape)
         }
 #endif
+        view.addConstraints(commonConstraints)
     }
     
     override func viewWillLayoutSubviews() {
@@ -256,7 +255,7 @@ class TomatoController : ControlsController {
                     let height: Int32 = await game.tomatoSystem.framebufferHeight
                     let width: Int32 = await game.tomatoSystem.framebufferWidth
                     
-                    let cgImage: CGImage? = CGImage.gba(pointer, Int(width), Int(height))
+                    let cgImage: CGImage? = CGImage.tomato(pointer, Int(width), Int(height))
                     
                     guard let cgImage: CGImage else {
                         return
@@ -291,7 +290,7 @@ class TomatoController : ControlsController {
 extension TomatoController {
     func reconfigureConstraintsForTomato() {
         guard let stackView: UIStackView,
-              let settingsButton: UIButton, let selectButton: UIButton, let startButton: UIButton,
+              let selectButton: UIButton, let startButton: UIButton,
               let upButton: UIButton, let downButton: UIButton, let leftButton: UIButton, let rightButton: UIButton,
               let southButton: UIButton, let eastButton: UIButton,
               let l1Button: UIButton, let r1Button: UIButton else {
@@ -331,6 +330,11 @@ extension TomatoController {
                 stackView.centerX.constraint(equalTo: view.salg.centerX)
             ])
             
+            
+            guard let primaryRenderingView: UIView else {
+                return
+            }
+            
             constraints.pad.landscape.append(contentsOf: [
                 southButton.bottom.constraint(equalTo: stackView.salg.bottom),
                 southButton.right.constraint(equalTo: eastButton.salg.left),
@@ -358,7 +362,7 @@ extension TomatoController {
                 r1Button.right.constraint(equalTo: view.salg.right, constant: -20.0),
                 r1Button.width.constraint(equalTo: r1Button.salg.height, multiplier: 3.0 / 2.0),
                 
-                stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
+                stackView.centerY.constraint(equalTo: primaryRenderingView.salg.bottom),
                 stackView.centerX.constraint(equalTo: view.salg.centerX)
             ])
         } else {

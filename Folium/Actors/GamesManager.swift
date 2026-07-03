@@ -9,6 +9,7 @@ import Foundation.NSFileManager
 import Foundation.NSURL
 
 import Grape
+import Kiwi
 import Mandarine
 import Tomato
 
@@ -16,11 +17,13 @@ actor GamesManager {
     private let fileManager: FileManager = .default
     
     private let grapeSystem: GrapeSystem
+    private let kiwiSystem: KiwiSystem
     private let mandarineSystem: MandarineSystem
     private let tomatoSystem: TomatoSystem
     
-    init(grapeSystem: GrapeSystem, mandarineSystem: MandarineSystem, tomatoSystem: TomatoSystem) {
+    init(grapeSystem: GrapeSystem, kiwiSystem: KiwiSystem, mandarineSystem: MandarineSystem, tomatoSystem: TomatoSystem) {
         self.grapeSystem = grapeSystem
+        self.kiwiSystem = kiwiSystem
         self.mandarineSystem = mandarineSystem
         self.tomatoSystem = tomatoSystem
     }
@@ -60,6 +63,15 @@ actor GamesManager {
                 if let game: T = game as? T {
                     games.append(game)
                 }
+            case is KiwiGame.Type:
+                let game: KiwiGame = KiwiGame(details: Details(url: url),
+                                              kiwiSystem: kiwiSystem,
+                                              system: system,
+                                              boxartURLString: kiwiSystem.boxartURLString(for: url))
+                
+                if let game: T = game as? T {
+                    games.append(game)
+                }
             case is MandarineGame.Type:
                 let game: MandarineGame = MandarineGame(details: Details(url: url),
                                                         mandarineSystem: mandarineSystem,
@@ -87,72 +99,3 @@ actor GamesManager {
         return games
     }
 }
-
-/*
-actor GamesManager {
-    private let fileManager: FileManager = .default
-    
-    private var mandarineSystem: MandarineSystem
-    private var tomatoSystem: TomatoSystem
-    init(mandarineSystem: MandarineSystem, tomatoSystem: TomatoSystem) {
-        self.mandarineSystem = mandarineSystem
-        self.tomatoSystem = tomatoSystem
-    }
-    
-    func games<T>(for system: System) async -> [T] {
-        guard let documentDirectoryURL: URL = await .documentDirectoryURL else {
-            return []
-        }
-        
-        let gamesDirectoryURL: URL = documentDirectoryURL
-            .appending(component: await system.string)
-            .appending(component: "games")
-        
-        guard let directoryEnumerator: FileManager.DirectoryEnumerator = fileManager.enumerator(at: gamesDirectoryURL,
-                                                                                                includingPropertiesForKeys: [.fileSizeKey]) else {
-            return []
-        }
-        
-        let urls: [NSEnumerator.Element] = directoryEnumerator.filter { element in element is URL }
-        guard let urls: [URL] = urls as? [URL] else {
-            return []
-        }
-        
-        let extensions: [Extension] = system.extensions
-        let extensionsStrings: [String] = extensions.map(\.string)
-        
-        var games: [T] = []
-        games.reserveCapacity(games.underestimatedCount)
-        
-        let filteredURLs: [URL] = urls.filter { url in extensionsStrings.contains(url.lowercasedPathExtension) }
-        
-        for url in filteredURLs {
-            switch T.self {
-            case is MandarineGame.Type:
-                let game: MandarineGame = MandarineGame(details: Details(url: url),
-                                                        mandarineSystem: mandarineSystem,
-                                                        system: system,
-                                                        boxartURLString: mandarineSystem.boxartURLString(for: url))
-                game.details.updateSize(with: mandarineSystem.totalSizeOfFiles(for: url))
-                
-                if let game: T = game as? T {
-                    games.append(game)
-                }
-            case is TomatoGame.Type:
-                let game: TomatoGame = TomatoGame(details: Details(url: url),
-                                                  tomatoSystem: tomatoSystem,
-                                                  system: system,
-                                                  boxartURLString: tomatoSystem.boxartURLString(for: url))
-                
-                if let game: T = game as? T {
-                    games.append(game)
-                }
-            default:
-                break
-            }
-        }
-        
-        return games
-    }
-}
-*/

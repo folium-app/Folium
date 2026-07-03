@@ -9,6 +9,8 @@ import Foundation
 
 enum Extension : String, @unchecked Sendable {
     case cue = "cue"
+    case gb = "gb"
+    case gbc = "gbc"
     case gba = "gba"
     case nds = "nds"
     

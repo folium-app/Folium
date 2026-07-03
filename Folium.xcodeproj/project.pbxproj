@@ -21,6 +21,10 @@
 		E6C462C42FE4B0AA004E5B57 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6C462C32FE4B0AA004E5B57 /* SharedDependencies */; };
 		E6F139D32FF04DD100F30081 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6F139D22FF04DD100F30081 /* SharedDependencies */; };
 		E6F139D42FF04E1000F30081 /* libGrape.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F139CA2FF04DB700F30081 /* libGrape.a */; };
+		E6F48FB12FF6C0860085C59B /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6F48FB02FF6C0860085C59B /* SharedDependencies */; };
+		E6F49CDB2FF6C9F50085C59B /* libKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F48FA82FF6C0700085C59B /* libKiwi.a */; };
+		E6F49CDF2FF6CB810085C59B /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F49CDE2FF6CB7D0085C59B /* libresolv.9.tbd */; };
+		E6F49CEE2FF6E4480085C59B /* TPCircularBuffer in Frameworks */ = {isa = PBXBuildFile; productRef = E6F49CED2FF6E4480085C59B /* TPCircularBuffer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +48,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = E6F139C92FF04DB700F30081;
 			remoteInfo = Grape;
+		};
+		E6F49CDC2FF6C9F50085C59B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6F48FA72FF6C0700085C59B;
+			remoteInfo = Kiwi;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -75,6 +86,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E6F48FA62FF6C0700085C59B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +102,8 @@
 		E65A97A12FD0597F001DDEEE /* Folium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Folium.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMandarine.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6F139CA2FF04DB700F30081 /* libGrape.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGrape.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6F48FA82FF6C0700085C59B /* libKiwi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKiwi.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6F49CDE2FF6CB7D0085C59B /* libresolv.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.9.tbd; path = usr/lib/libresolv.9.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -118,6 +140,11 @@
 			path = Grape;
 			sourceTree = "<group>";
 		};
+		E6F48FA92FF6C0700085C59B /* Kiwi */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Kiwi;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,16 +161,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6979A532FE6ACA10055FA9D /* OnboardingKit in Frameworks */,
+				E6F49CDF2FF6CB810085C59B /* libresolv.9.tbd in Frameworks */,
 				E6979A552FE6ACA10055FA9D /* SettingsKit in Frameworks */,
 				E6979A4D2FE6ACA10055FA9D /* ConstraintKit in Frameworks */,
 				E6C462C42FE4B0AA004E5B57 /* SharedDependencies in Frameworks */,
 				E6979A4B2FE6ACA10055FA9D /* ColourKit in Frameworks */,
 				E6979A4F2FE6ACA10055FA9D /* ExtensionsKit in Frameworks */,
+				E6F49CEE2FF6E4480085C59B /* TPCircularBuffer in Frameworks */,
 				E6979A512FE6ACA10055FA9D /* FontKit in Frameworks */,
 				E6979A492FE6ACA10055FA9D /* AntiqueKit in Frameworks */,
 				E61175E92FE1D9700032DDC1 /* libMandarine.a in Frameworks */,
 				E655CB842FE734FB003DCE2B /* libTomato.a in Frameworks */,
 				E6F139D42FF04E1000F30081 /* libGrape.a in Frameworks */,
+				E6F49CDB2FF6C9F50085C59B /* libKiwi.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,6 +193,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E6F48FA52FF6C0700085C59B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6F48FB12FF6C0860085C59B /* SharedDependencies in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -171,8 +209,10 @@
 			children = (
 				E65A97A32FD0597F001DDEEE /* Folium */,
 				E6F139CB2FF04DB700F30081 /* Grape */,
+				E6F48FA92FF6C0700085C59B /* Kiwi */,
 				E69CA8F62FDC9EAF00BCD2F9 /* Mandarine */,
 				E655CB7B2FE73488003DCE2B /* Tomato */,
+				E6F48FAF2FF6C0860085C59B /* Frameworks */,
 				E65A97A22FD0597F001DDEEE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -184,8 +224,17 @@
 				E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */,
 				E655CB7A2FE73488003DCE2B /* libTomato.a */,
 				E6F139CA2FF04DB700F30081 /* libGrape.a */,
+				E6F48FA82FF6C0700085C59B /* libKiwi.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E6F48FAF2FF6C0860085C59B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E6F49CDE2FF6CB7D0085C59B /* libresolv.9.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -228,6 +277,7 @@
 				E61175EB2FE1D9700032DDC1 /* PBXTargetDependency */,
 				E655CB862FE734FB003DCE2B /* PBXTargetDependency */,
 				E6F139D62FF04E1000F30081 /* PBXTargetDependency */,
+				E6F49CDD2FF6C9F50085C59B /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E65A97A32FD0597F001DDEEE /* Folium */,
@@ -242,6 +292,7 @@
 				E6979A502FE6ACA10055FA9D /* FontKit */,
 				E6979A522FE6ACA10055FA9D /* OnboardingKit */,
 				E6979A542FE6ACA10055FA9D /* SettingsKit */,
+				E6F49CED2FF6E4480085C59B /* TPCircularBuffer */,
 			);
 			productName = Folium;
 			productReference = E65A97A12FD0597F001DDEEE /* Folium.app */;
@@ -293,6 +344,29 @@
 			productReference = E6F139CA2FF04DB700F30081 /* libGrape.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		E6F48FA72FF6C0700085C59B /* Kiwi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6F48FAC2FF6C0700085C59B /* Build configuration list for PBXNativeTarget "Kiwi" */;
+			buildPhases = (
+				E6F48FA42FF6C0700085C59B /* Sources */,
+				E6F48FA52FF6C0700085C59B /* Frameworks */,
+				E6F48FA62FF6C0700085C59B /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E6F48FA92FF6C0700085C59B /* Kiwi */,
+			);
+			name = Kiwi;
+			packageProductDependencies = (
+				E6F48FB02FF6C0860085C59B /* SharedDependencies */,
+			);
+			productName = Kiwi;
+			productReference = E6F48FA82FF6C0700085C59B /* libKiwi.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -315,6 +389,9 @@
 					E6F139C92FF04DB700F30081 = {
 						CreatedOnToolsVersion = 27.0;
 					};
+					E6F48FA72FF6C0700085C59B = {
+						CreatedOnToolsVersion = 27.0;
+					};
 				};
 			};
 			buildConfigurationList = E65A979C2FD0597F001DDEEE /* Build configuration list for PBXProject "Folium" */;
@@ -329,6 +406,7 @@
 			packageReferences = (
 				E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */,
 				E6979A472FE6ACA00055FA9D /* XCLocalSwiftPackageReference "../AntiqueKit" */,
+				E6F49CEC2FF6E4480085C59B /* XCLocalSwiftPackageReference "../../../Downloads/TPCircularBuffer" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E65A97A22FD0597F001DDEEE /* Products */;
@@ -337,6 +415,7 @@
 			targets = (
 				E65A97A02FD0597F001DDEEE /* Folium */,
 				E6F139C92FF04DB700F30081 /* Grape */,
+				E6F48FA72FF6C0700085C59B /* Kiwi */,
 				E69CA8F42FDC9EAF00BCD2F9 /* Mandarine */,
 				E655CB792FE73488003DCE2B /* Tomato */,
 			);
@@ -382,6 +461,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E6F48FA42FF6C0700085C59B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -399,6 +485,11 @@
 			isa = PBXTargetDependency;
 			target = E6F139C92FF04DB700F30081 /* Grape */;
 			targetProxy = E6F139D52FF04E1000F30081 /* PBXContainerItemProxy */;
+		};
+		E6F49CDD2FF6C9F50085C59B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6F48FA72FF6C0700085C59B /* Kiwi */;
+			targetProxy = E6F49CDC2FF6C9F50085C59B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -468,7 +559,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -514,7 +605,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -808,6 +899,56 @@
 			};
 			name = Release;
 		};
+		E6F48FAD2FF6C0700085C59B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Kiwi/System/include/gambatte/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Kiwi/System/include";
+			};
+			name = Debug;
+		};
+		E6F48FAE2FF6C0700085C59B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Kiwi/System/include/gambatte/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Kiwi/System/include";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -856,6 +997,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		E6F48FAC2FF6C0700085C59B /* Build configuration list for PBXNativeTarget "Kiwi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6F48FAD2FF6C0700085C59B /* Debug */,
+				E6F48FAE2FF6C0700085C59B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
@@ -866,6 +1016,10 @@
 		E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = SharedDependencies;
+		};
+		E6F49CEC2FF6E4480085C59B /* XCLocalSwiftPackageReference "../../../Downloads/TPCircularBuffer" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../../Downloads/TPCircularBuffer;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -915,6 +1069,15 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */;
 			productName = SharedDependencies;
+		};
+		E6F48FB02FF6C0860085C59B /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E6F49CED2FF6E4480085C59B /* TPCircularBuffer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TPCircularBuffer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
