@@ -8,8 +8,8 @@
 import Foundation
 
 nonisolated
-class Game : Equatable, Hashable, @unchecked Sendable {
-    let id: UUID = UUID()
+class Game : Codable, Equatable, Hashable, @unchecked Sendable {
+    var id: UUID = UUID()
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

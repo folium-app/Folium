@@ -46,6 +46,7 @@ class ScreensController : UIViewController {
         l2Button: UIButton? = nil,
         r2Button: UIButton? = nil
     
+    var usedForMultiplayer: Bool = false
     var system: System = .mandarine
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask { UIDevice.current.userInterfaceIdiom == .pad ? .portrait : .allButUpsideDown }

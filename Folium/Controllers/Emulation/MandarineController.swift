@@ -491,7 +491,7 @@ class MandarineController : ControlsController {
 extension MandarineController {
     func reconfigureConstraintsForMandarine() {
         guard let stackView: UIStackView,
-              let settingsButton: UIButton, let selectButton: UIButton, let startButton: UIButton,
+              let selectButton: UIButton, let startButton: UIButton,
               let leftThumbstickView: ThumbstickView, let rightThumbstickView: ThumbstickView,
               let upButton: UIButton, let downButton: UIButton, let leftButton: UIButton, let rightButton: UIButton,
               let southButton: UIButton, let eastButton: UIButton, let northButton: UIButton, let westButton: UIButton,

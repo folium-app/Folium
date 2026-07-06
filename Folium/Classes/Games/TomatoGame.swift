@@ -22,6 +22,11 @@ final class TomatoGame : Game, Comparable, @unchecked Sendable {
         self.system = system
         
         self.boxartURLString = boxartURLString
+        super.init()
+    }
+    
+    required init(from decoder: any Decoder) throws {
+        fatalError("init(from:) has not been implemented")
     }
     
     var prefix: String {

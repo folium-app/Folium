@@ -24,4 +24,20 @@ enum SelectedSnapshot : Int {
             "Tomato"
         }
     }
+    
+    var system: System? {
+        switch self {
+        case .application,
+                .cytrus:
+            nil
+        case .grape:
+            System.grape
+        case .kiwi:
+            System.kiwi
+        case .mandarine:
+            System.mandarine
+        case .tomato:
+            System.tomato
+        }
+    }
 }

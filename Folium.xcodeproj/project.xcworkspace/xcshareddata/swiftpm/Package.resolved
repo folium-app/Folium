@@ -1,5 +1,5 @@
 {
-  "originHash" : "ea8945cef23c7a5017fef416992af1b821ad0fb840882607f66035614fb3a87f",
+  "originHash" : "0b620f746d5a0f6dc59bebb98a0831097ee8cddab73eab32dbc78e90c99413df",
   "pins" : [
     {
       "identity" : "plzmasdk",
@@ -8,6 +8,15 @@
       "state" : {
         "branch" : "master",
         "revision" : "c69ff6acb4df788885cc4865d46e1a442e6f50a5"
+      }
+    },
+    {
+      "identity" : "zstd",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jarrodnorwell/zstd",
+      "state" : {
+        "branch" : "dev",
+        "revision" : "dfde3ff163f5be1f420f57715bcc44e28fbb233d"
       }
     }
   ],

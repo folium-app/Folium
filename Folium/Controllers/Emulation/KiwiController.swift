@@ -8,29 +8,68 @@
 import AVFoundation
 import AudioToolbox
 import CTPCircularBuffer
-import CoreAudio
-
 import ConstraintKit
+import CoreAudio
 import ExtensionsKit
 import FontKit
 import UIKit
 
 import Kiwi
 
+nonisolated extension TPCircularBuffer {
+    init(length: UInt32) {
+        self.init()
+        _TPCircularBufferInit(&self, length, MemoryLayout<TPCircularBuffer>.size)
+    }
+    
+    mutating func clear() {
+        TPCircularBufferClear(&self)
+    }
+    
+    mutating func tail() -> (UnsafeMutableRawPointer?, UInt32) {
+        var availableBytes: UInt32 = 0
+        let tail = TPCircularBufferTail(&self, &availableBytes)
+        return (tail, availableBytes)
+    }
+    
+    mutating func consume(bytes: UInt32) {
+        TPCircularBufferConsume(&self, bytes)
+    }
+    
+    @discardableResult mutating func produceBytes(from source: [UInt32], count: UInt32) -> Bool {
+        return produceBytes(from: source, length: UInt32(MemoryLayout<UInt32>.size) * count)
+    }
+    
+    @discardableResult mutating func produceBytes(from source: UnsafeRawPointer, length: UInt32) -> Bool {
+        return TPCircularBufferProduceBytes(&self, source, length)
+    }
+    
+    @discardableResult
+    mutating func produceBytes(from source: [UInt8], count: UInt32) -> Bool {
+        return produceBytes(from: source, length: UInt32(MemoryLayout<UInt8>.size) * count)
+    }
+    
+    @discardableResult
+    mutating func produceBytes(from source: UnsafePointer<UInt8>, count: UInt32) -> Bool {
+        return produceBytes(from: UnsafeRawPointer(source),
+                            length: UInt32(MemoryLayout<UInt8>.size) * count)
+    }
+    
+    mutating func cleanup() {
+        TPCircularBufferCleanup(&self)
+    }
+    
+}
+
 let bufferLength = 1024 * 1024
 
-nonisolated
-final class AudioEngine : @unchecked Sendable {
+nonisolated final class AudioEngine : @unchecked Sendable {
     private var audioUnit: AUAudioUnit
     private var renderVars = RenderVars()
 
     private final class RenderVars {
         var lastSample: UInt32 = 0
-        var circularBuffer: TPCircularBuffer = TPCircularBuffer()
-        
-        init() {
-            _TPCircularBufferInit(&circularBuffer, 1024 * 1024, MemoryLayout<TPCircularBuffer>.size)
-        }
+        var circularBuffer = TPCircularBuffer(length: 1024 * 1024)
     }
 
     init() throws {
@@ -47,7 +86,7 @@ final class AudioEngine : @unchecked Sendable {
     func startAudio() throws {
         let sampleRate = 35112 * (262144.0 / 4389.0)
         guard let format = AVAudioFormat(
-            commonFormat: .pcmFormatInt32,
+            commonFormat: .pcmFormatInt16,
             sampleRate: sampleRate,
             channels: 2,
             interleaved: true
@@ -65,16 +104,13 @@ final class AudioEngine : @unchecked Sendable {
                 return noErr
             }
 
-            var bytes: UInt32 = 0
-            let tail: UnsafeMutableRawPointer? = TPCircularBufferTail(&renderVars.circularBuffer, &bytes)
-            
-            
+            let (data, bytes) = self.renderVars.circularBuffer.tail()
             let framesToCopy = min(Int(bytes) / MemoryLayout<UInt32>.size, Int(frameCount))
             let bytesToCopy = framesToCopy * MemoryLayout<UInt32>.size
 
-            if let tail {
-                memcpy(bufferPointer, tail, bytesToCopy)
-                TPCircularBufferConsume(&renderVars.circularBuffer, UInt32(bytesToCopy))
+            if let data {
+                memcpy(bufferPointer, data, bytesToCopy)
+                self.renderVars.circularBuffer.consume(bytes: UInt32(bytesToCopy))
             }
 
             if framesToCopy > 0 {
@@ -98,16 +134,16 @@ final class AudioEngine : @unchecked Sendable {
     }
 
     func restartAudio() {
-        TPCircularBufferClear(&renderVars.circularBuffer)
+        renderVars.circularBuffer.clear()
     }
 
     func stream(_ data: [UInt32], _ count: Int) {
-        TPCircularBufferProduceBytes(&renderVars.circularBuffer, data, UInt32(MemoryLayout<UInt32>.size * count))
+        renderVars.circularBuffer.produceBytes(from: data, count: .init(count))
     }
 
     deinit {
         stopAudio()
-        TPCircularBufferCleanup(&renderVars.circularBuffer)
+        renderVars.circularBuffer.cleanup()
     }
 }
 

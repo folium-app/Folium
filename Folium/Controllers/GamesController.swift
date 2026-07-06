@@ -13,6 +13,8 @@ import OnboardingKit
 import UniformTypeIdentifiers
 import UIKit
 
+import Tomato
+
 class GamesController : UICollectionViewController {
     var importFileType: ImportFileType = .game
     var selectedSnapshot: SelectedSnapshot = .grape {
@@ -270,7 +272,7 @@ class GamesController : UICollectionViewController {
             
             let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
                 (UIButton.Configuration.glassConfiguration(.large, .capsule, nil, "Continue"), { controller in
-                    UserDefaults.standard.set(true, forKey: "folium.2.0.whatsNewComplete")
+                    UserDefaults.standard.set(true, forKey: "folium.2.0.12.whatsNewComplete")
                     
                     onMainThread {
                         controller.dismiss(animated: true)
@@ -279,35 +281,135 @@ class GamesController : UICollectionViewController {
             ]
             
             let cells: [CellConfiguration] = [
+                CellConfiguration(image: UIImage(systemName: "app.grid"), labels: (
+                    LabelConfiguration(alignment: .left,
+                                       color: .label,
+                                       font: UIFont.regular(from: .headline),
+                                       text: "New App Icon"),
+                    LabelConfiguration(alignment: .left,
+                                       color: .secondaryLabel,
+                                       font: UIFont.regular(from: .subheadline),
+                                       text: "Redesigned and changed the colour of the app icon breathing new life into it alongside the app itself")
+                )),
+                CellConfiguration(image: UIImage(systemName: "sparkles"), labels: (
+                    LabelConfiguration(alignment: .left,
+                                       color: .label,
+                                       font: UIFont.regular(from: .headline),
+                                       text: "New Onboarding"),
+                    LabelConfiguration(alignment: .left,
+                                       color: .secondaryLabel,
+                                       font: UIFont.regular(from: .subheadline),
+                                       text: "Rewrote and significantly improved the onboarding screens for both iPad and iPhone\n\nCurrently a Work in Progress")
+                )),
                 CellConfiguration(image: UIImage(systemName: "square.grid.2x2.fill"), labels: (
                     LabelConfiguration(alignment: .left,
                                        color: .label,
                                        font: UIFont.regular(from: .headline),
-                                       text: "Library, Refreshed"),
+                                       text: "New Library"),
                     LabelConfiguration(alignment: .left,
                                        color: .secondaryLabel,
                                        font: UIFont.regular(from: .subheadline),
-                                       text: "Rewrote the Library screen improving its design which in turn significantly improves user experience")
+                                       text: "Rewrote and significantly improved the library screen, refreshing the game cards, separating systems and more"),
                 )),
-                CellConfiguration(image: UIImage(systemName: "gamecontroller.fill"), labels: (
+                CellConfiguration(image: UIImage(systemName: "gearshape.fill"), labels: (
                     LabelConfiguration(alignment: .left,
                                        color: .label,
                                        font: UIFont.regular(from: .headline),
-                                       text: "Emulation, Updated"),
+                                       text: "New Settings"),
                     LabelConfiguration(alignment: .left,
                                        color: .secondaryLabel,
                                        font: UIFont.regular(from: .subheadline),
-                                       text: "Rewrote the Emulation screen improving its design and support for landscape")
+                                       text: "Rewrote and significantly improved the settings screen, adding descriptions, separating systems and more")
                 )),
-                CellConfiguration(image: UIImage(systemName: "list.bullet.badge.ellipsis"), labels: (
+                CellConfiguration(image: UIImage(systemName: "circle.grid.2x1.left.filled"), labels: (
                     LabelConfiguration(alignment: .left,
                                        color: .label,
                                        font: UIFont.regular(from: .headline),
-                                       text: "Settings, Cleaned Up"),
+                                       text: "New Tabs"),
                     LabelConfiguration(alignment: .left,
                                        color: .secondaryLabel,
                                        font: UIFont.regular(from: .subheadline),
-                                       text: "Rewrote the Settings screen separating each system's settings, added descriptions available by swiping left")
+                                       text: "Changed how library, emulation and settings screens are handled by embedding them in tabs, allowing for real-time settings changes and more")
+                )),
+                CellConfiguration(image: UIImage(systemName: "cpu.fill"), labels: (
+                    LabelConfiguration(alignment: .left,
+                                       color: .label,
+                                       font: UIFont.regular(from: .headline),
+                                       text: "New Grape"),
+                    LabelConfiguration(alignment: .left,
+                                       color: .secondaryLabel,
+                                       font: UIFont.regular(from: .subheadline),
+                                       text: "Implemented Grape using Objective-C to Swift with C++ to Swift planned for the near future")
+                )),
+                CellConfiguration(image: UIImage(systemName: "cpu.fill"), labels: (
+                    LabelConfiguration(alignment: .left,
+                                       color: .label,
+                                       font: UIFont.regular(from: .headline),
+                                       text: "New Kiwi"),
+                    LabelConfiguration(alignment: .left,
+                                       color: .secondaryLabel,
+                                       font: UIFont.regular(from: .subheadline),
+                                       text: "Reimplemented Kiwi using direct C++ to Swift, updated sections of code to C++23 and more")
+                )),
+                CellConfiguration(image: UIImage(systemName: "cpu.fill"), labels: (
+                    LabelConfiguration(alignment: .left,
+                                       color: .label,
+                                       font: UIFont.regular(from: .headline),
+                                       text: "New Mandarine"),
+                    LabelConfiguration(alignment: .left,
+                                       color: .secondaryLabel,
+                                       font: UIFont.regular(from: .subheadline),
+                                       text: "Reimplemented Mandarine using direct C++ to Swift, updated sections of code to C++23 and more")
+                )),
+                CellConfiguration(image: UIImage(systemName: "cpu.fill"), labels: (
+                    LabelConfiguration(alignment: .left,
+                                       color: .label,
+                                       font: UIFont.regular(from: .headline),
+                                       text: "New Tomato"),
+                    LabelConfiguration(alignment: .left,
+                                       color: .secondaryLabel,
+                                       font: UIFont.regular(from: .subheadline),
+                                       text: "Reimplemented Tomato using direct C++ to Swift, updated sections of code to C++23 and more")
+                )),
+                CellConfiguration(image: UIImage(systemName: "xmark.bin.fill"), labels: (
+                    LabelConfiguration(alignment: .left,
+                                       color: .label,
+                                       font: UIFont.regular(from: .headline),
+                                       text: "Delete"),
+                    LabelConfiguration(alignment: .left,
+                                       color: .secondaryLabel,
+                                       font: UIFont.regular(from: .subheadline),
+                                       text: "Improved how games are deleted now allowing for all tracks, etc. to be deleted along with the folder they are nested in, if available")
+                )),
+                CellConfiguration(image: UIImage(systemName: "photo.badge.arrow.down.fill"), labels: (
+                    LabelConfiguration(alignment: .left,
+                                       color: .label,
+                                       font: UIFont.regular(from: .headline),
+                                       text: "Boxart"),
+                    LabelConfiguration(alignment: .left,
+                                       color: .secondaryLabel,
+                                       font: UIFont.regular(from: .subheadline),
+                                       text: "Improved how boxart is handled, fixing online searching, caching from online if one is found or loading from local if one is selected")
+                )),
+                CellConfiguration(image: UIImage(systemName: "playpause.fill"), labels: (
+                    LabelConfiguration(alignment: .left,
+                                       color: .label,
+                                       font: UIFont.regular(from: .headline),
+                                       text: "Playback"),
+                    LabelConfiguration(alignment: .left,
+                                       color: .secondaryLabel,
+                                       font: UIFont.regular(from: .subheadline),
+                                       text: "Added and improved pause, play and stop and exit to all available systems and enabled support for changing tabs with ongoing playback")
+                )),
+                CellConfiguration(image: UIImage(systemName: "circle.grid.cross.up.filled"), labels: (
+                    LabelConfiguration(alignment: .left,
+                                       color: .label,
+                                       font: UIFont.regular(from: .headline),
+                                       text: "On-Screen Controls"),
+                    LabelConfiguration(alignment: .left,
+                                       color: .secondaryLabel,
+                                       font: UIFont.regular(from: .subheadline),
+                                       text: "Improved the functionality and positioning of the on-screen controls, fixing ghost holds, etc")
                 ))
             ]
             
@@ -323,7 +425,7 @@ class GamesController : UICollectionViewController {
             return controller
         }
         
-        if !UserDefaults.standard.bool(forKey: "folium.2.0.whatsNewComplete") {
+        if !UserDefaults.standard.bool(forKey: "folium.2.0.12.whatsNewComplete") {
             present(whatsNewController, animated: true)
         }
         
@@ -541,34 +643,26 @@ extension GamesController : MCNearbyServiceBrowserDelegate {
 
 extension GamesController : MCSessionDelegate {
     nonisolated func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        guard let notificationType: UINotificationFeedbackGenerator.FeedbackType = switch state {
-        case .notConnected: .error
-        case .connecting: nil
-        case .connected: .success
-        default:
-            nil
-        } else {
-            return
-        }
-        
-        Task { @MainActor in
-            UINotificationFeedbackGenerator(view: view).notificationOccurred(notificationType)
-        }
-    }
-    
-    nonisolated func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         
     }
     
-    nonisolated func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
+    nonisolated func session(_ session: MCSession, didReceive data: Data,
+                             fromPeer peerID: MCPeerID) {
         
     }
     
-    nonisolated func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
+    nonisolated func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String,
+                             fromPeer peerID: MCPeerID) {
         
     }
     
-    nonisolated func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: (any Error)?) {
+    nonisolated func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String,
+                             fromPeer peerID: MCPeerID, with progress: Progress) {
+        
+    }
+    
+    nonisolated func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String,
+                             fromPeer peerID: MCPeerID, at localURL: URL?, withError error: (any Error)?) {
         
     }
 }

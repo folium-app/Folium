@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum System : String, CaseIterable, Hashable, Sendable {
+enum System : String, CaseIterable, Codable, Hashable, Sendable {
     case grape = "Grape"
     case kiwi = "Kiwi"
     case mandarine = "Mandarine"

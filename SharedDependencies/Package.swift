@@ -30,8 +30,10 @@ let package = Package(
             "lib_sdl3",
             "lib_teakra",
             "cereal",
+            "cryptopp",
             "eventbus",
             "glib",
+            "httplib",
             "libchdr",
             "libslirp",
             "magic_enum",
@@ -39,8 +41,13 @@ let package = Package(
             "stb"
         ]),
         .target(name: "cereal", publicHeadersPath: "include"),
+        .target(name: "cryptopp", publicHeadersPath: "include", cxxSettings: [
+            .define("CRYPTOPP_DISABLE_ARM_CRC32"),
+            .headerSearchPath("include/cryptopp")
+        ]),
         .target(name: "eventbus", publicHeadersPath: "include"),
         .target(name: "glib", publicHeadersPath: "include"),
+        .target(name: "httplib", publicHeadersPath: "include"),
         .target(name: "libchdr",
                 dependencies: [
                     "FLAC",

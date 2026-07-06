@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		E61175E92FE1D9700032DDC1 /* libMandarine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */; };
 		E61859FE2FE4B17100D44932 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E69CAA1D2FDC9FC200BCD2F9 /* SharedDependencies */; };
+		E63BA5E22FF989F70062683C /* libseekable_format in Frameworks */ = {isa = PBXBuildFile; productRef = E63BA5E12FF989F70062683C /* libseekable_format */; };
+		E63BA5E42FF989F70062683C /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E63BA5E32FF989F70062683C /* libzstd */; };
+		E63BA5E62FF989F70062683C /* libzstdwrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E63BA5E52FF989F70062683C /* libzstdwrapper */; };
 		E655CB832FE7349A003DCE2B /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E655CB822FE7349A003DCE2B /* SharedDependencies */; };
 		E655CB842FE734FB003DCE2B /* libTomato.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E655CB7A2FE73488003DCE2B /* libTomato.a */; };
 		E6979A492FE6ACA10055FA9D /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A482FE6ACA10055FA9D /* AntiqueKit */; };
@@ -18,6 +21,7 @@
 		E6979A512FE6ACA10055FA9D /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A502FE6ACA10055FA9D /* FontKit */; };
 		E6979A532FE6ACA10055FA9D /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A522FE6ACA10055FA9D /* OnboardingKit */; };
 		E6979A552FE6ACA10055FA9D /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A542FE6ACA10055FA9D /* SettingsKit */; };
+		E6A0118D2FF97CCD00D2BD20 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6A0118C2FF97CCD00D2BD20 /* SharedDependencies */; };
 		E6C462C42FE4B0AA004E5B57 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6C462C32FE4B0AA004E5B57 /* SharedDependencies */; };
 		E6F139D32FF04DD100F30081 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6F139D22FF04DD100F30081 /* SharedDependencies */; };
 		E6F139D42FF04E1000F30081 /* libGrape.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F139CA2FF04DB700F30081 /* libGrape.a */; };
@@ -77,6 +81,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E6A00CC22FF967B900D2BD20 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E6F139C82FF04DB700F30081 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -101,6 +114,7 @@
 		E655CB7A2FE73488003DCE2B /* libTomato.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTomato.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65A97A12FD0597F001DDEEE /* Folium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Folium.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMandarine.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6A00CC42FF967B900D2BD20 /* libCytrus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libCytrus.a; path = "/Users/jarrodnorwell/Developer/Repositories/Folium/build/Debug-iphoneos/libCytrus.a"; sourceTree = "<absolute>"; };
 		E6F139CA2FF04DB700F30081 /* libGrape.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGrape.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6F48FA82FF6C0700085C59B /* libKiwi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKiwi.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6F49CDE2FF6CB7D0085C59B /* libresolv.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.9.tbd; path = usr/lib/libresolv.9.tbd; sourceTree = SDKROOT; };
@@ -133,6 +147,11 @@
 		E69CA8F62FDC9EAF00BCD2F9 /* Mandarine */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Mandarine;
+			sourceTree = "<group>";
+		};
+		E6A00CC52FF967B900D2BD20 /* Cytrus */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Cytrus;
 			sourceTree = "<group>";
 		};
 		E6F139CB2FF04DB700F30081 /* Grape */ = {
@@ -185,6 +204,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E6A00CC12FF967B900D2BD20 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E63BA5E42FF989F70062683C /* libzstd in Frameworks */,
+				E6A0118D2FF97CCD00D2BD20 /* SharedDependencies in Frameworks */,
+				E63BA5E22FF989F70062683C /* libseekable_format in Frameworks */,
+				E63BA5E62FF989F70062683C /* libzstdwrapper in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E6F139C72FF04DB700F30081 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -212,6 +242,7 @@
 				E6F48FA92FF6C0700085C59B /* Kiwi */,
 				E69CA8F62FDC9EAF00BCD2F9 /* Mandarine */,
 				E655CB7B2FE73488003DCE2B /* Tomato */,
+				E6A00CC52FF967B900D2BD20 /* Cytrus */,
 				E6F48FAF2FF6C0860085C59B /* Frameworks */,
 				E65A97A22FD0597F001DDEEE /* Products */,
 			);
@@ -321,6 +352,32 @@
 			productReference = E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		E6A00CC32FF967B900D2BD20 /* Cytrus */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6A00CCA2FF967B900D2BD20 /* Build configuration list for PBXNativeTarget "Cytrus" */;
+			buildPhases = (
+				E6A00CC02FF967B900D2BD20 /* Sources */,
+				E6A00CC12FF967B900D2BD20 /* Frameworks */,
+				E6A00CC22FF967B900D2BD20 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E6A00CC52FF967B900D2BD20 /* Cytrus */,
+			);
+			name = Cytrus;
+			packageProductDependencies = (
+				E6A0118C2FF97CCD00D2BD20 /* SharedDependencies */,
+				E63BA5E12FF989F70062683C /* libseekable_format */,
+				E63BA5E32FF989F70062683C /* libzstd */,
+				E63BA5E52FF989F70062683C /* libzstdwrapper */,
+			);
+			productName = Cytrus;
+			productReference = E6A00CC42FF967B900D2BD20 /* libCytrus.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		E6F139C92FF04DB700F30081 /* Grape */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6F139D02FF04DB700F30081 /* Build configuration list for PBXNativeTarget "Grape" */;
@@ -386,6 +443,9 @@
 					E69CA8F42FDC9EAF00BCD2F9 = {
 						CreatedOnToolsVersion = 27.0;
 					};
+					E6A00CC32FF967B900D2BD20 = {
+						CreatedOnToolsVersion = 27.0;
+					};
 					E6F139C92FF04DB700F30081 = {
 						CreatedOnToolsVersion = 27.0;
 					};
@@ -407,6 +467,7 @@
 				E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */,
 				E6979A472FE6ACA00055FA9D /* XCLocalSwiftPackageReference "../AntiqueKit" */,
 				E6F49CEC2FF6E4480085C59B /* XCLocalSwiftPackageReference "../../../Downloads/TPCircularBuffer" */,
+				E63BA5E02FF989F70062683C /* XCRemoteSwiftPackageReference "zstd" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E65A97A22FD0597F001DDEEE /* Products */;
@@ -414,6 +475,7 @@
 			projectRoot = "";
 			targets = (
 				E65A97A02FD0597F001DDEEE /* Folium */,
+				E6A00CC32FF967B900D2BD20 /* Cytrus */,
 				E6F139C92FF04DB700F30081 /* Grape */,
 				E6F48FA72FF6C0700085C59B /* Kiwi */,
 				E69CA8F42FDC9EAF00BCD2F9 /* Mandarine */,
@@ -448,6 +510,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		E69CA8F12FDC9EAF00BCD2F9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6A00CC02FF967B900D2BD20 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -559,7 +628,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -605,7 +674,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -829,6 +898,66 @@
 			};
 			name = Release;
 		};
+		E6A00CC82FF967B900D2BD20 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					/opt/homebrew/include,
+					/usr/local/include,
+					"\"$(HOME)/VulkanSDK/1.4.350.1/macOS/include\"",
+				);
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cytrus/System/include";
+			};
+			name = Debug;
+		};
+		E6A00CC92FF967B900D2BD20 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					/opt/homebrew/include,
+					/usr/local/include,
+					"\"$(HOME)/VulkanSDK/1.4.350.1/macOS/include\"",
+				);
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cytrus/System/include";
+			};
+			name = Release;
+		};
 		E6F139CE2FF04DB700F30081 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -988,6 +1117,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		E6A00CCA2FF967B900D2BD20 /* Build configuration list for PBXNativeTarget "Cytrus" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6A00CC82FF967B900D2BD20 /* Debug */,
+				E6A00CC92FF967B900D2BD20 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E6F139D02FF04DB700F30081 /* Build configuration list for PBXNativeTarget "Grape" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1023,7 +1161,33 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		E63BA5E02FF989F70062683C /* XCRemoteSwiftPackageReference "zstd" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jarrodnorwell/zstd";
+			requirement = {
+				branch = dev;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		E63BA5E12FF989F70062683C /* libseekable_format */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E63BA5E02FF989F70062683C /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libseekable_format;
+		};
+		E63BA5E32FF989F70062683C /* libzstd */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E63BA5E02FF989F70062683C /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstd;
+		};
+		E63BA5E52FF989F70062683C /* libzstdwrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E63BA5E02FF989F70062683C /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstdwrapper;
+		};
 		E655CB822FE7349A003DCE2B /* SharedDependencies */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */;
@@ -1059,6 +1223,11 @@
 		};
 		E69CAA1D2FDC9FC200BCD2F9 /* SharedDependencies */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = SharedDependencies;
+		};
+		E6A0118C2FF97CCD00D2BD20 /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */;
 			productName = SharedDependencies;
 		};
 		E6C462C32FE4B0AA004E5B57 /* SharedDependencies */ = {

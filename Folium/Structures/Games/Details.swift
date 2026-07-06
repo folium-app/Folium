@@ -12,7 +12,7 @@ final class Details : Hashable, @unchecked Sendable {
     let id: UUID = UUID()
     let `extension`, name: String
     var size: String
-    let url: URL
+    var url: URL
     
     init(url: URL) {
         let formatter: ByteCountFormatter = ByteCountFormatter()

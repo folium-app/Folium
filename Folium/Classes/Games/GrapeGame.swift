@@ -22,6 +22,11 @@ final class GrapeGame : Game, Comparable, @unchecked Sendable {
         self.system = system
         
         self.boxart = boxart
+        super.init()
+    }
+    
+    required init(from decoder: any Decoder) throws {
+        fatalError("init(from:) has not been implemented")
     }
     
     var prefix: String {
