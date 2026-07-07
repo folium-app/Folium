@@ -87,26 +87,43 @@ class ScreensController : UIViewController {
             break
         }
         
+        let effect: UIVisualEffect = if #available(iOS 26.0, *) {
+            UIGlassEffect(style: .regular)
+        } else {
+            UIBlurEffect(style: .systemMaterial)
+        }
+        
         guard let primaryBackgroundRenderingView: UIView else {
             return
         }
         primaryBackgroundRenderingView.translatesAutoresizingMaskIntoConstraints = false
         primaryBackgroundRenderingView.backgroundColor = .secondarySystemBackground
-        primaryBackgroundRenderingView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(32.0))
         switch type(of: primaryBackgroundRenderingView.self) {
         case is UIImageView.Type:
-            primaryBackgroundRenderingView.clipsToBounds = true
+            if #available(iOS 26.0, *) {
+                primaryBackgroundRenderingView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(32.0))
+            } else {
+                primaryBackgroundRenderingView.layer.cornerRadius = 32.0
+                primaryBackgroundRenderingView.layer.cornerCurve = .continuous
+                primaryBackgroundRenderingView.clipsToBounds = true
+            }
         default:
             break
         }
         view.addSubview(primaryBackgroundRenderingView)
         
-        primaryVisualEffectView = UIVisualEffectView(effect: UIGlassEffect(style: .regular))
+        primaryVisualEffectView = UIVisualEffectView(effect: effect)
         guard let primaryVisualEffectView: UIVisualEffectView else {
             return
         }
         primaryVisualEffectView.translatesAutoresizingMaskIntoConstraints = false
-        primaryVisualEffectView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(38.0))
+        if #available(iOS 26.0, *) {
+            primaryVisualEffectView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(38.0))
+        } else {
+            primaryVisualEffectView.layer.cornerRadius = 38.0
+            primaryVisualEffectView.layer.cornerCurve = .continuous
+            primaryVisualEffectView.clipsToBounds = true
+        }
         view.addSubview(primaryVisualEffectView)
         
         guard let primaryRenderingView: UIView else {
@@ -114,10 +131,15 @@ class ScreensController : UIViewController {
         }
         primaryRenderingView.translatesAutoresizingMaskIntoConstraints = false
         primaryRenderingView.backgroundColor = .secondarySystemBackground
-        primaryRenderingView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(32.0))
         switch type(of: primaryRenderingView.self) {
         case is UIImageView.Type:
-            primaryRenderingView.clipsToBounds = true
+            if #available(iOS 26.0, *) {
+                primaryRenderingView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(32.0))
+            } else {
+                primaryRenderingView.layer.cornerRadius = 32.0
+                primaryRenderingView.layer.cornerCurve = .continuous
+                primaryRenderingView.clipsToBounds = true
+            }
         default:
             break
         }
@@ -129,21 +151,32 @@ class ScreensController : UIViewController {
         }
         secondaryBackgroundRenderingView.translatesAutoresizingMaskIntoConstraints = false
         secondaryBackgroundRenderingView.backgroundColor = .secondarySystemBackground
-        secondaryBackgroundRenderingView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(32.0))
         switch type(of: secondaryBackgroundRenderingView.self) {
         case is UIImageView.Type:
-            secondaryBackgroundRenderingView.clipsToBounds = true
+            if #available(iOS 26.0, *) {
+                secondaryBackgroundRenderingView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(32.0))
+            } else {
+                secondaryBackgroundRenderingView.layer.cornerRadius = 32.0
+                secondaryBackgroundRenderingView.layer.cornerCurve = .continuous
+                secondaryBackgroundRenderingView.clipsToBounds = true
+            }
         default:
             break
         }
         view.addSubview(secondaryBackgroundRenderingView)
         
-        secondaryVisualEffectView = UIVisualEffectView(effect: UIGlassEffect(style: .regular))
+        secondaryVisualEffectView = UIVisualEffectView(effect: effect)
         guard let secondaryVisualEffectView: UIVisualEffectView else {
             return
         }
         secondaryVisualEffectView.translatesAutoresizingMaskIntoConstraints = false
-        secondaryVisualEffectView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(38.0))
+        if #available(iOS 26.0, *) {
+            secondaryVisualEffectView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(38.0))
+        } else {
+            secondaryVisualEffectView.layer.cornerRadius = 38.0
+            secondaryVisualEffectView.layer.cornerCurve = .continuous
+            secondaryVisualEffectView.clipsToBounds = true
+        }
         view.addSubview(secondaryVisualEffectView)
         
         guard let secondaryRenderingView: UIView else {
@@ -151,11 +184,15 @@ class ScreensController : UIViewController {
         }
         secondaryRenderingView.translatesAutoresizingMaskIntoConstraints = false
         secondaryRenderingView.backgroundColor = .secondarySystemBackground
-        secondaryRenderingView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(32.0))
         switch type(of: secondaryRenderingView.self) {
         case is UIImageView.Type:
-            secondaryRenderingView.clipsToBounds = true
-            secondaryRenderingView.isUserInteractionEnabled = true
+            if #available(iOS 26.0, *) {
+                secondaryRenderingView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(32.0))
+            } else {
+                secondaryRenderingView.layer.cornerRadius = 32.0
+                secondaryRenderingView.layer.cornerCurve = .continuous
+                secondaryRenderingView.clipsToBounds = true
+            }
         default:
             break
         }

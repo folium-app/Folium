@@ -90,6 +90,7 @@ actor DirectoryManager {
         for system in await SystemNames.array {
             let systemDirectoryURL: URL = documentDirectoryURL.appending(component: await system.string)
             try createDirectoryIfNeeded(from: systemDirectoryURL)
+            try fixSubfolders(for: systemDirectoryURL)
             
             if let subfoldersForSystem: [String : [String : SystemFile]] = subfoldersForSystems[system] {
                 try loop(subfolders: subfoldersForSystem, for: systemDirectoryURL) { subfolderName in
@@ -106,11 +107,30 @@ actor DirectoryManager {
         }
     }
     
+    private func fixSubfolders(for systemDirectoryURL: URL) throws {
+        let replacementSubfolderNames: [String : String] = [
+            "memcards" : "memory_cards",
+            "roms" : "games",
+            "states" : "save_states",
+            "sysdata" : "system_data"
+        ]
+        
+        for (key, value) in replacementSubfolderNames {
+            let oldDirectoryURL: URL = systemDirectoryURL.appending(component: key)
+            if fileManager.fileExists(atPath: oldDirectoryURL.path) {
+                try fileManager.moveItem(at: oldDirectoryURL, to: systemDirectoryURL
+                    .appending(component: value))
+            }
+        }
+    }
+    
     private func loop(subfolders: [String : [String : SystemFile]], for systemDirectoryURL: URL, using handler: (String) throws -> Void) throws {
         for subfolderName in subfolders.keys {
             if let subfiles: [String : SystemFile] = subfolders[subfolderName] {
                 for subfile in subfiles.values {
-                    if !fileManager.fileExists(atPath: systemDirectoryURL.appending(component: subfile.path).appending(component: subfile.title).path) {
+                    if !fileManager.fileExists(atPath: systemDirectoryURL
+                        .appending(component: subfile.path)
+                        .appending(component: subfile.title).path) {
                         unavailableSystemFiles.append(subfile)
                     }
                 }

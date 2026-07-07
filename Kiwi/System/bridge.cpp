@@ -61,7 +61,6 @@ void kiwi::initialize_paths(void) {
     auto kiwiDirectoryURL{cppKiwi.kiwiCommon.getKiwiDirectoryURL()};
     if (kiwiDirectoryURL.isSome()) {
         auto kiwi_path{std::filesystem::path{kiwiDirectoryURL.get()}};
-        printf("%s\n", kiwi_path.string().c_str());
         
         cppKiwi.kiwi_path = kiwi_path;
         cppKiwi.save_states_path = kiwi_path / "save_states";

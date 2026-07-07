@@ -23,8 +23,10 @@ class GamesController : UICollectionViewController {
                 return
             }
             
-            navigationItem.largeSubtitle = selectedSnapshot.string
-            navigationItem.subtitle = navigationItem.largeSubtitle
+            if #available(iOS 26.0, *) {
+                navigationItem.largeSubtitle = selectedSnapshot.string
+                navigationItem.subtitle = navigationItem.largeSubtitle
+            }
             
             Task {
                 switch selectedSnapshot {
@@ -76,7 +78,13 @@ class GamesController : UICollectionViewController {
         if let navigationController {
             navigationController.navigationBar.prefersLargeTitles = true
         }
-        navigationItem.largeTitle = "Games"
+        
+        if #available(iOS 26.0, *) {
+            navigationItem.largeTitle = "Games"
+            navigationItem.title = navigationItem.largeTitle
+        } else {
+            navigationItem.title = "Games"
+        }
         
         navigationItem.trailingItemGroups = [
             UIBarButtonItemGroup(barButtonItems: [
@@ -207,12 +215,13 @@ class GamesController : UICollectionViewController {
                 ]))
             ], representativeItem: nil)
         ]
-        navigationItem.title = navigationItem.largeTitle
         navigationItem.style = .browser
         view.backgroundColor = .systemBackground
         
-        collectionView.bottomEdgeEffect.style = .soft
-        collectionView.topEdgeEffect.style = .soft
+        if #available(iOS 26.0, *) {
+            collectionView.bottomEdgeEffect.style = .soft
+            collectionView.topEdgeEffect.style = .soft
+        }
         
         let grapeCell: UICollectionView.CellRegistration<GrapeCell, GrapeGame> = CellManager.Library.grapeCell(viewController: self)
         let kiwiCell: UICollectionView.CellRegistration<KiwiCell, KiwiGame> = CellManager.Library.kiwiCell(viewController: self)
@@ -271,8 +280,8 @@ class GamesController : UICollectionViewController {
                                                                                     text: "What's new in the latest version of Folium")
             
             let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
-                (UIButton.Configuration.glassConfiguration(.large, .capsule, nil, "Continue"), { controller in
-                    UserDefaults.standard.set(true, forKey: "folium.2.0.12.whatsNewComplete")
+                (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
+                    UserDefaults.standard.set(true, forKey: "folium.2.0.13.whatsNewComplete")
                     
                     onMainThread {
                         controller.dismiss(animated: true)
@@ -339,7 +348,7 @@ class GamesController : UICollectionViewController {
                     LabelConfiguration(alignment: .left,
                                        color: .secondaryLabel,
                                        font: UIFont.regular(from: .subheadline),
-                                       text: "Implemented Grape using Objective-C to Swift with C++ to Swift planned for the near future")
+                                       text: "Reimplemented most of Grape using direct C++ to Swift, updated sections of code to C++23 and more")
                 )),
                 CellConfiguration(image: UIImage(systemName: "cpu.fill"), labels: (
                     LabelConfiguration(alignment: .left,
@@ -410,6 +419,38 @@ class GamesController : UICollectionViewController {
                                        color: .secondaryLabel,
                                        font: UIFont.regular(from: .subheadline),
                                        text: "Improved the functionality and positioning of the on-screen controls, fixing ghost holds, etc")
+                )),
+                
+                // (13)
+                CellConfiguration(image: UIImage(systemName: "apps.iphone.badge.plus"), labels: (
+                    LabelConfiguration(alignment: .left,
+                                       color: .label,
+                                       font: UIFont.regular(from: .headline),
+                                       text: "iOS 18+ Support"),
+                    LabelConfiguration(alignment: .left,
+                                       color: .secondaryLabel,
+                                       font: UIFont.regular(from: .subheadline),
+                                       text: "Added support for iOS and iPadOS 18 and above, improving device support across the board")
+                )),
+                CellConfiguration(image: UIImage(systemName: "arrow.forward.folder.fill"), labels: (
+                    LabelConfiguration(alignment: .left,
+                                       color: .label,
+                                       font: UIFont.regular(from: .headline),
+                                       text: "Automatic Migration"),
+                    LabelConfiguration(alignment: .left,
+                                       color: .secondaryLabel,
+                                       font: UIFont.regular(from: .subheadline),
+                                       text: "Automatically renames previous folders to their new, correct names as of 2.0")
+                )),
+                CellConfiguration(image: UIImage(systemName: "rectangle.and.pencil.and.ellipsis"), labels: (
+                    LabelConfiguration(alignment: .left,
+                                       color: .label,
+                                       font: UIFont.regular(from: .headline),
+                                       text: "Grape to C++"),
+                    LabelConfiguration(alignment: .left,
+                                       color: .secondaryLabel,
+                                       font: UIFont.regular(from: .subheadline),
+                                       text: "Rewrote a large portion of Grape in C++ conforming to the new bridging system between systems and the application itself")
                 ))
             ]
             
@@ -425,7 +466,7 @@ class GamesController : UICollectionViewController {
             return controller
         }
         
-        if !UserDefaults.standard.bool(forKey: "folium.2.0.12.whatsNewComplete") {
+        if !UserDefaults.standard.bool(forKey: "folium.2.0.13.whatsNewComplete") {
             present(whatsNewController, animated: true)
         }
         
@@ -565,8 +606,10 @@ class GamesController : UICollectionViewController {
             self.tomatoSnapshot = tomatoSnapshot
             
             Task {
-                navigationItem.largeSubtitle = selectedSnapshot.string
-                navigationItem.subtitle = navigationItem.largeSubtitle
+                if #available(iOS 26.0, *) {
+                    navigationItem.largeSubtitle = selectedSnapshot.string
+                    navigationItem.subtitle = navigationItem.largeSubtitle
+                }
                 
                 switch selectedSnapshot {
                 case .grape:

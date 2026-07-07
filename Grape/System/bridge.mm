@@ -30,6 +30,13 @@ using namespace Grape;
 #include <memory>
 #include <vector>
 
+#include <array>
+#include <cstdint>
+#include <charconv>
+#include <optional>
+#include <string_view>
+#include <algorithm>
+
 // MARK: NDS Icon
 #define U8TO16(data, index) ((data)[index] | ((data)[(index) + 1] << 8))
 #define U8TO32(data, index) ((data)[index] | ((data)[(index) + 1] << 8) | ((data)[(index) + 2] << 16) | ((data)[(index) + 3] << 24))
@@ -90,7 +97,7 @@ private:
     uint32_t* buffer;
 };
 
-struct CPPGrape {
+struct Container {
     SDL_AudioDeviceID device{0};
     SDL_AudioStream* stream{nullptr};
     
@@ -100,10 +107,10 @@ struct CPPGrape {
     std::condition_variable_any cv;
     uint32_t inputs;
     
-    std::filesystem::path grape_path, save_states_path, system_data_path;
-    std::filesystem::path save_file_url;
-    std::string file_name_without_extension;
-} cppGrape;
+    
+    std::filesystem::path system_path, artworks_path, games_path, save_states_path, system_data_path;
+    std::filesystem::path file_name_without_extension, save_state_url;
+} cntnr;
 
 enum ConsoleType : int {
     DS = 0,
@@ -113,7 +120,6 @@ enum ConsoleType : int {
 void grape::print_about(void) {
     printf("Welcome to Grape\n");
     printf("Nintendo DS emulator based on melonDS\n");
-    printf("Grape Directory: %s\n", [GrapeCommon.grapeDirectoryURL.path cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 uint32_t* grape::icon_from_disc(std::string path) {
@@ -123,13 +129,14 @@ uint32_t* grape::icon_from_disc(std::string path) {
 }
 
 void grape::initialize_paths(void) {
-    auto grapeDirectoryURL{std::filesystem::path{[GrapeCommon.grapeDirectoryURL.path cStringUsingEncoding:NSUTF8StringEncoding]}};
-    if (std::filesystem::exists(grapeDirectoryURL)) {
-        auto grape_path{grapeDirectoryURL};
+    if (auto grapeDirectoryURL = [GrapeCommon.grapeDirectoryURL.path cStringUsingEncoding:NSUTF8StringEncoding]) {
+        auto grape_path{std::filesystem::path{grapeDirectoryURL}};
         
-        cppGrape.grape_path = grape_path;
-        cppGrape.save_states_path = grape_path / "save_states";
-        cppGrape.system_data_path = grape_path / "system_data";
+        cntnr.system_path = grape_path;
+        cntnr.artworks_path = grape_path / "artworks";
+        cntnr.games_path = grape_path / "games";
+        cntnr.save_states_path = grape_path / "save_states";
+        cntnr.system_data_path = grape_path / "system_data";
     }
 }
 
@@ -137,34 +144,32 @@ void grape::initialize_system(void) {
     Config::Load();
     GPU::InitRenderer(0);
     
-    NSURL *systemDataDirectory = [GrapeCommon.grapeDirectoryURL URLByAppendingPathComponent:@"system_data"];
-    
-    Config::BIOS7Path = [[systemDataDirectory URLByAppendingPathComponent:@"bios7.bin"].path UTF8String];
-    Config::BIOS9Path = [[systemDataDirectory URLByAppendingPathComponent:@"bios9.bin"].path UTF8String];
-    Config::FirmwarePath = [[systemDataDirectory URLByAppendingPathComponent:@"firmware.bin"].path UTF8String];
+    Config::BIOS7Path = cntnr.system_data_path / "bios7.bin";
+    Config::BIOS9Path = cntnr.system_data_path / "bios9.bin";
+    Config::FirmwarePath = cntnr.system_data_path / "firmware.bin";
     
     Config::DirectBoot = Config::ExternalBIOSEnable = true;
     
-    BOOL (^fileExists)(NSURL *) = ^BOOL(NSURL *url) {
-        return [[NSFileManager defaultManager] fileExistsAtPath:url.path];
+    auto file_exists = [](std::filesystem::path path) {
+        return std::filesystem::exists(path);
     };
     
-    NSURL *bios7i = [systemDataDirectory URLByAppendingPathComponent:@"bios7i.bin"];
-    NSURL *bios9i = [systemDataDirectory URLByAppendingPathComponent:@"bios9i.bin"];
-    NSURL *firmwarei = [systemDataDirectory URLByAppendingPathComponent:@"firmwarei.bin"];
-    NSURL *nandi = [systemDataDirectory URLByAppendingPathComponent:@"nandi.bin"];
+    auto bios7i = cntnr.system_data_path / "bios7i.bin";
+    auto bios9i = cntnr.system_data_path / "bios9i.bin";
+    auto firmwarei = cntnr.system_data_path / "firmwarei.bin";
+    auto nandi = cntnr.system_data_path / "nandi.bin";
     
-    if (fileExists(bios7i) && fileExists(bios9i) && fileExists(firmwarei) && fileExists(nandi)) {
+    if (file_exists(bios7i) && file_exists(bios9i) && file_exists(firmwarei) && file_exists(nandi)) {
         NDS::SetConsoleType(ConsoleType::DSi);
         
-        Config::DSiBIOS7Path = [bios7i.path UTF8String];
-        Config::DSiBIOS9Path = [bios9i.path UTF8String];
-        Config::DSiFirmwarePath = [firmwarei.path UTF8String];
-        Config::DSiNANDPath = [nandi.path UTF8String];
+        Config::DSiBIOS7Path = bios7i;
+        Config::DSiBIOS9Path = bios9i;
+        Config::DSiFirmwarePath = firmwarei;
+        Config::DSiNANDPath = nandi;
     } else
         NDS::SetConsoleType(ConsoleType::DS);
     
-    cppGrape.inputs = 0;
+    cntnr.inputs = 0;
 }
 
 void grape::destroy_system(void) {
@@ -181,29 +186,39 @@ void grape::destroy_system(void) {
 void grape::insert_disc(std::string path) {
     grape::destroy_system();
     
-    NSString *string = [NSString stringWithCString:path.c_str() encoding:NSUTF8StringEncoding];
-    NSData *data = [NSData dataWithContentsOfFile:string];
+    auto file_path{std::filesystem::path{path}};
+    cntnr.file_name_without_extension = file_path.stem();
+    cntnr.save_state_url = cntnr.save_states_path / cntnr.file_name_without_extension.append(".save");
     
-    NSURL *url = [NSURL URLWithString:string];
+    u32 game_length{0};
+    u8* game_data{nullptr};
     
-    cppGrape.file_name_without_extension = [[[url URLByDeletingPathExtension] lastPathComponent] cStringUsingEncoding:NSUTF8StringEncoding];
-    cppGrape.save_file_url = cppGrape.save_states_path / cppGrape.file_name_without_extension.append(".save");
+    FILE* game_file = fopen(path.c_str(), "rb");
+    if (game_file) {
+        fseek(game_file, 0, SEEK_END);
+        game_length = (u32)ftell(game_file);
+        
+        fseek(game_file, 0, SEEK_SET);
+        game_data = new u8[game_length];
+        fread(game_data, game_length, 1, game_file);
+        fclose(game_file);
+    }
     
     u32 save_length{0};
     u8* save_data{nullptr};
     
-    FILE* file = std::fopen(cppGrape.save_file_url.c_str(), "rb");
-    if (file) {
-        std::fseek(file, 0, SEEK_END);
-        save_length = (u32)std::ftell(file);
+    FILE* save_file = fopen(cntnr.save_state_url.c_str(), "rb");
+    if (save_file) {
+        fseek(save_file, 0, SEEK_END);
+        save_length = (u32)ftell(save_file);
         
-        std::fseek(file, 0, SEEK_SET);
+        fseek(save_file, 0, SEEK_SET);
         save_data = new u8[save_length];
-        std::fread(save_data, save_length, 1, file);
-        std::fclose(file);
+        fread(save_data, save_length, 1, save_file);
+        fclose(save_file);
     }
     
-    NDS::LoadCart((const u8*)data.bytes, (u32)data.length, save_data, save_length);
+    NDS::LoadCart(game_data, game_length, save_data, save_length);
     if (Config::DirectBoot)
         NDS::SetupDirectBoot(path);
     
@@ -218,8 +233,8 @@ void grape::insert_disc(std::string path) {
     spec.channels = 2;
     spec.freq = 32768;
     
-    cppGrape.device = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec);
-    cppGrape.stream = SDL_OpenAudioDeviceStream(cppGrape.device, &spec, [](void* data, SDL_AudioStream* stream, int add, int total) {
+    cntnr.device = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec);
+    cntnr.stream = SDL_OpenAudioDeviceStream(cntnr.device, &spec, [](void* data, SDL_AudioStream* stream, int add, int total) {
         (void)data;
         
         if (add <= 0)
@@ -235,34 +250,34 @@ void grape::insert_disc(std::string path) {
         
         SDL_PutAudioStreamData(stream, buf.data(), samples * 4);
     }, nil);
-    SDL_ResumeAudioStreamDevice(cppGrape.stream);
+    SDL_ResumeAudioStreamDevice(cntnr.stream);
 }
 
 bool grape::is_paused(bool change, bool set_paused) {
     if (change)
-        cppGrape.paused.store(set_paused);
+        cntnr.paused.store(set_paused);
     if (!set_paused)
-        cppGrape.cv.notify_all();
-    return cppGrape.paused.load();
+        cntnr.cv.notify_all();
+    return cntnr.paused.load();
 }
 
 bool grape::is_running(bool change, bool set_running) {
     if (change)
-        cppGrape.running.store(set_running);
-    return cppGrape.running.load();
+        cntnr.running.store(set_running);
+    return cntnr.running.load();
 }
 
 void grape::start(void) {
-    cppGrape.thread = std::jthread([&](std::stop_token token) {
+    cntnr.thread = std::jthread([&](std::stop_token token) {
         using namespace std::chrono;
         
         const auto frameDuration = duration<double>(1.0 / 60.0);
         
         while (!token.stop_requested()) {
             {
-                std::unique_lock lock(cppGrape.mutex);
-                cppGrape.cv.wait(lock, token, []() {
-                    return !cppGrape.paused.load();
+                std::unique_lock lock(cntnr.mutex);
+                cntnr.cv.wait(lock, token, []() {
+                    return !cntnr.paused.load();
                 });
                 
                 if (token.stop_requested())
@@ -271,7 +286,7 @@ void grape::start(void) {
             
             auto frameStart = steady_clock::now();
             
-            uint32_t _inputs = cppGrape.inputs;
+            uint32_t _inputs = cntnr.inputs;
             uint32_t inputsMask = 0xFFF;
             
             uint16_t sanitizedInputs = inputsMask ^ _inputs;
@@ -294,12 +309,12 @@ void grape::stop(void) {
     NDS::Stop();
     NDS::DeInit();
     
-    cppGrape.thread.request_stop();
-    if (cppGrape.thread.joinable())
-        cppGrape.thread.join();
+    cntnr.thread.request_stop();
+    if (cntnr.thread.joinable())
+        cntnr.thread.join();
     
-    cppGrape.paused.store(false);
-    cppGrape.running.store(false);
+    cntnr.paused.store(false);
+    cntnr.running.store(false);
 }
 
 int grape::framebuffer_height(void) {
@@ -315,11 +330,11 @@ void grape::video_buffer_callback(grape::VideoBufferCallback callback) {
 }
 
 void grape::press_button(uint32_t button) {
-    cppGrape.inputs |= button;
+    cntnr.inputs |= button;
 }
 
 void grape::release_button(uint32_t button) {
-    cppGrape.inputs &= ~button;
+    cntnr.inputs &= ~button;
 }
 
 void grape::touch_began(uint16_t x, uint16_t y) {
@@ -443,39 +458,66 @@ std::string GetConfigString(ConfigEntry entry)
     return "";
 }
 
-bool GetConfigArray(ConfigEntry entry, void* data)
-{
-    switch (entry)
-    {
-        default: break;
-        case Firm_MAC:
-        {
-            std::string& mac_in = Config::FirmwareMAC;
-            u8* mac_out = (u8*)data;
+using MacAddress = std::array<std::uint8_t, 6>;
+
+inline bool is_hex_digit(char c) noexcept {
+    return (c >= '0' && c <= '9') ||
+           (c >= 'a' && c <= 'f') ||
+           (c >= 'A' && c <= 'F');
+}
+
+inline std::optional<std::uint8_t> parse_hex_byte(std::string_view sv) {
+    if (sv.size() != 2 || !is_hex_digit(sv[0]) || !is_hex_digit(sv[1]))
+        return std::nullopt;
+    
+    unsigned value = 0;
+    auto res = std::from_chars(sv.data(), sv.data() + sv.size(), value, 16);
+    if (res.ec != std::errc{} || value > 0xFF)
+        return std::nullopt;
+    
+    return static_cast<std::uint8_t>(value);
+}
+
+inline std::optional<MacAddress> parse_mac(std::string_view mac_address) {
+    std::string digits;
+    digits.reserve(12);
+    
+    for (char c : mac_address)
+        if (is_hex_digit(c))
+            digits.push_back(c);
+    
+    if (digits.size() != 12)
+        return std::nullopt;
+
+    MacAddress out_mac_address{};
+    for (std::size_t i = 0; i < 6; ++i) {
+        auto byte = parse_hex_byte(std::string_view{digits}.substr(i * 2, 2));
+        if (!byte)
+            return std::nullopt;
+        out_mac_address[i] = *byte;
+    }
+    
+    return out_mac_address;
+}
+
+bool GetConfigArray(ConfigEntry entry, void* data) {
+    switch (entry) {
+        case Firm_MAC: {
+            auto* out_data = static_cast<std::uint8_t*>(data);
+            if (!out_data)
+                return false;
+
+            std::string_view mac = Config::FirmwareMAC;
+            auto parsed = parse_mac(mac);
+            if (!parsed)
+                return false;
+
+            std::copy(parsed->begin(), parsed->end(), out_data);
             
-            int o = 0;
-            u8 tmp = 0;
-            for (int i = 0; i < 18; i++)
-            {
-                char c = mac_in[i];
-                if (c == '\0') break;
-                
-                int n;
-                if      (c >= '0' && c <= '9') n = c - '0';
-                else if (c >= 'a' && c <= 'f') n = c - 'a' + 10;
-                else if (c >= 'A' && c <= 'F') n = c - 'A' + 10;
-                else continue;
-                
-                if (!(o & 1))
-                    tmp = n;
-                else
-                    mac_out[o >> 1] = n | (tmp << 4);
-                
-                o++;
-                if (o >= 12) return true;
-            }
+            return true;
         }
-            return false;
+        default:
+            break;
     }
     
     return false;
@@ -483,243 +525,180 @@ bool GetConfigArray(ConfigEntry entry, void* data)
 
 FILE* OpenFile(std::string path, std::string mode, bool mustexist)
 {
-    FILE* ret;
+    FILE* file{nullptr};
     
-    if (mustexist)
-    {
-        ret = fopen(path.c_str(), "rb");
-        if (ret) ret = freopen(path.c_str(), mode.c_str(), ret);
-    }
-    else
-        ret = fopen(path.c_str(), mode.c_str());
+    if (mustexist) {
+        file = fopen(path.c_str(), "rb");
+        if (file)
+            file = freopen(path.c_str(), mode.c_str(), file);
+    } else
+        file = fopen(path.c_str(), mode.c_str());
     
-    return ret;
+    return file;
 }
 
-FILE* OpenLocalFile(std::string path, std::string mode)
-{
-    NSURL *relativeURL = [GrapeCommon.grapeDirectoryURL URLByAppendingPathComponent:@(path.c_str())];
+FILE* OpenLocalFile(std::string path, std::string mode) {
+    auto relative_path = cntnr.system_path / path;
+    std::filesystem::path file_path;
     
-    NSURL *fileURL = nil;
-    if ([[NSFileManager defaultManager] fileExistsAtPath:relativeURL.path] || path.find(".bak") != std::string::npos)
-    {
-        fileURL = relativeURL;
-    }
-    else
-    {
+    if (std::filesystem::exists(relative_path) || path.find(".bak") != std::string::npos)
+        file_path = relative_path;
+    else {
         if (path.find("wfcsettings") != std::string::npos)
-            fileURL = [[GrapeCommon.grapeDirectoryURL URLByAppendingPathComponent:@"system_data"] URLByAppendingPathComponent:@(path.c_str())];
+            file_path = cntnr.system_data_path / path;
         else
-            fileURL = [NSURL fileURLWithPath:@(path.c_str())];
+            file_path = path;
     }
-    
-    return OpenFile(fileURL.fileSystemRepresentation, mode.c_str());
+     
+    return OpenFile(file_path.string(), mode);
 }
 
-Thread* Thread_Create(std::function<void()> func)
-{
-    NSThread *thread = [[NSThread alloc] initWithBlock:^{
-        func();
-    }];
+
+Thread* Thread_Create(std::function<void()> function) {
+    NSThread *nsThread = [[NSThread alloc] initWithBlock:^{ function(); }];
+    nsThread.name = @"melonDS: Rendering Thread";
+    nsThread.qualityOfService = NSQualityOfServiceUserInitiated;
+    [nsThread start];
     
-    thread.name = @"melonDS - Rendering";
-    thread.qualityOfService = NSQualityOfServiceUserInitiated;
-    
-    [thread start];
-    
-    return (Thread *)CFBridgingRetain(thread);
+    return (Thread*)CFBridgingRetain(nsThread);
 }
 
-void Thread_Free(Thread *thread)
-{
+void Thread_Free(Thread* thread) {
     NSThread *nsThread = (NSThread *)CFBridgingRelease(thread);
     [nsThread cancel];
 }
 
-void Thread_Wait(Thread *thread)
-{
+void Thread_Wait(Thread * thread) {
     NSThread *nsThread = (__bridge NSThread *)thread;
     while (nsThread.isExecuting)
-    {
         continue;
-    }
 }
 
-Semaphore *Semaphore_Create()
-{
+
+Semaphore* Semaphore_Create() {
     dispatch_semaphore_t dispatchSemaphore = dispatch_semaphore_create(0);
     return (Semaphore *)CFBridgingRetain(dispatchSemaphore);
 }
 
-void Semaphore_Free(Semaphore *semaphore)
-{
+void Semaphore_Free(Semaphore* semaphore) {
     CFRelease(semaphore);
 }
 
-void Semaphore_Reset(Semaphore *semaphore)
-{
+void Semaphore_Reset(Semaphore* semaphore) {
     dispatch_semaphore_t dispatchSemaphore = (__bridge dispatch_semaphore_t)semaphore;
     while (dispatch_semaphore_wait(dispatchSemaphore, DISPATCH_TIME_NOW) == 0)
-    {
         continue;
-    }
 }
 
-void Semaphore_Wait(Semaphore *semaphore)
-{
+void Semaphore_Wait(Semaphore* semaphore) {
     dispatch_semaphore_t dispatchSemaphore = (__bridge dispatch_semaphore_t)semaphore;
     dispatch_semaphore_wait(dispatchSemaphore, DISPATCH_TIME_FOREVER);
 }
 
-void Semaphore_Post(Semaphore *semaphore, int count)
-{
+void Semaphore_Post(Semaphore* semaphore, int count) {
     dispatch_semaphore_t dispatchSemaphore = (__bridge dispatch_semaphore_t)semaphore;
     for (int i = 0; i < count; i++)
-    {
         dispatch_semaphore_signal(dispatchSemaphore);
-    }
 }
 
-Mutex *Mutex_Create()
-{
-    // NSLock is too slow for real-time audio, so use pthread_mutex_t directly.
-    
-    pthread_mutex_t *mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-    pthread_mutex_init(mutex, NULL);
-    return (Mutex *)mutex;
+
+Mutex* Mutex_Create() {
+    pthread_mutex_t* mutex = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t));
+    pthread_mutex_init(mutex, nullptr);
+    return (Mutex*)mutex;
 }
 
-void Mutex_Free(Mutex *m)
-{
-    pthread_mutex_t *mutex = (pthread_mutex_t *)m;
-    pthread_mutex_destroy(mutex);
-    free(mutex);
+void Mutex_Free(Mutex* mutex) {
+    pthread_mutex_t *pMutex = (pthread_mutex_t*)mutex;
+    pthread_mutex_destroy(pMutex);
+    free(pMutex);
 }
 
-void Mutex_Lock(Mutex *m)
-{
-    pthread_mutex_t *mutex = (pthread_mutex_t *)m;
-    pthread_mutex_lock(mutex);
+void Mutex_Lock(Mutex* mutex) {
+    pthread_mutex_t* pMutex = (pthread_mutex_t*)mutex;
+    pthread_mutex_lock(pMutex);
 }
 
-void Mutex_Unlock(Mutex *m)
-{
-    pthread_mutex_t *mutex = (pthread_mutex_t *)m;
-    pthread_mutex_unlock(mutex);
+void Mutex_Unlock(Mutex* mutex) {
+    pthread_mutex_t* pMutex = (pthread_mutex_t*)mutex;
+    pthread_mutex_unlock(pMutex);
 }
 
-void *GL_GetProcAddress(const char* proc)
-{
+
+void* GL_GetProcAddress(const char* proc) {
     return NULL;
 }
 
-bool MP_Init()
-{
+
+bool MP_Init() {
     return false;
 }
 
-void MP_DeInit()
-{
-}
+void MP_DeInit() {}
 
-void MP_Begin()
-{
-}
+void MP_Begin() {}
 
-void MP_End()
-{
-}
+void MP_End() {}
 
-int MP_SendPacket(u8* data, int len, u64 timestamp)
-{
+int MP_SendPacket(u8* data, int length, u64 timestamp) {
     return 0;
 }
 
-int MP_RecvPacket(u8* data, u64* timestamp)
-{
+int MP_RecvPacket(u8* data, u64* timestamp) {
     return 0;
 }
 
-int MP_SendCmd(u8* data, int len, u64 timestamp)
-{
+int MP_SendCmd(u8* data, int length, u64 timestamp) {
     return 0;
 }
 
-int MP_SendReply(u8* data, int len, u64 timestamp, u16 aid)
-{
+int MP_SendReply(u8* data, int length, u64 timestamp, u16 aid) {
     return 0;
 }
 
-int MP_SendAck(u8* data, int len, u64 timestamp)
-{
+int MP_SendAck(u8* data, int length, u64 timestamp) {
     return 0;
 }
 
-int MP_RecvHostPacket(u8* data, u64* timestamp)
-{
+int MP_RecvHostPacket(u8* data, u64* timestamp) {
     return 0;
 }
 
-u16 MP_RecvReplies(u8* data, u64 timestamp, u16 aidmask)
-{
+u16 MP_RecvReplies(u8* data, u64 timestamp, u16 aidmask) {
     return 0;
 }
+
 
 bool LAN_Init() {
-    if (!LAN_Socket::Init())
-        return false;
-    return true;
+    return LAN_Socket::Init();
 }
 
-void LAN_DeInit()
-{
+void LAN_DeInit() {
     LAN_Socket::DeInit();
 }
 
-int LAN_SendPacket(u8* data, int len)
-{
-    return LAN_Socket::SendPacket(data, len);
+int LAN_SendPacket(u8* data, int length) {
+    return LAN_Socket::SendPacket(data, length);
 }
 
-int LAN_RecvPacket(u8* data)
-{
+int LAN_RecvPacket(u8* data) {
     return LAN_Socket::RecvPacket(data);
 }
 
-void Mic_Prepare()
-{
-    //if (![MelonDSEmulatorBridge.sharedBridge isMicrophoneEnabled] || [MelonDSEmulatorBridge.sharedBridge.audioEngine isRunning])
-    //{
-    //    return;
-    //}
-    
-    //NSError *error = nil;
-    //if (![MelonDSEmulatorBridge.sharedBridge.audioEngine startAndReturnError:&error])
-    //{
-    //    NSLog(@"Failed to start listening to microphone. %@", error);
-    //}
-}
+
+void Mic_Prepare() {}
 
 void WriteNDSSave(const u8* savebytes, u32 savelen, u32 writeoffset, u32 writelen) {
-    [[NSData dataWithBytes:savebytes length:savelen] writeToFile:[NSString stringWithCString:cppGrape.save_file_url.c_str() encoding:NSUTF8StringEncoding] atomically:YES];
+    [[NSData dataWithBytes:savebytes length:savelen] writeToFile:[NSString stringWithCString:cntnr.save_state_url.c_str() encoding:NSUTF8StringEncoding] atomically:YES];
 }
 
 void WriteGBASave(const u8* savebytes, u32 savelen, u32 writeoffset, u32 writelen) {
-    [[NSData dataWithBytes:savebytes length:savelen] writeToFile:[NSString stringWithCString:cppGrape.save_file_url.c_str() encoding:NSUTF8StringEncoding] atomically:YES];
+    [[NSData dataWithBytes:savebytes length:savelen] writeToFile:[NSString stringWithCString:cntnr.save_state_url.c_str() encoding:NSUTF8StringEncoding] atomically:YES];
 }
 
-void Camera_Start(int num)
-{
-    
-}
+void Camera_Start(int number) {}
 
-void Camera_Stop(int num)
-{
-    
-}
+void Camera_Stop(int number) {}
 
-void Camera_CaptureFrame(int num, u32* frame, int width, int height, bool yuv)
-{
-    
-}
+void Camera_CaptureFrame(int number, u32* frame, int width, int height, bool yuv) {}
 }

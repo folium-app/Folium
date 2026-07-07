@@ -16,8 +16,10 @@ class SettingsController : UICollectionViewController {
                 return
             }
             
-            navigationItem.largeSubtitle = selectedSnapshot.string
-            navigationItem.subtitle = navigationItem.largeSubtitle
+            if #available(iOS 26.0, *) {
+                navigationItem.largeSubtitle = selectedSnapshot.string
+                navigationItem.subtitle = navigationItem.largeSubtitle
+            }
             
             Task {
                 switch selectedSnapshot {
@@ -72,7 +74,13 @@ class SettingsController : UICollectionViewController {
             navigationController.navigationBar.prefersLargeTitles = true
         }
         
-        navigationItem.largeTitle = "Settings"
+        if #available(iOS 26.0, *) {
+            navigationItem.largeTitle = "Settings"
+            navigationItem.title = navigationItem.largeTitle
+        } else {
+            navigationItem.title = "Settings"
+        }
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: UIMenu(children: [
             UIMenu(options: .displayInline, children: [
                 UIAction(title: "Application", image: UIImage(systemName: "app.grid")) { action in
@@ -104,7 +112,6 @@ class SettingsController : UICollectionViewController {
                 UIAction(title: "GEN/MD", subtitle: "SEGA Genesis/Mega Drive", attributes: .disabled) { action in }
             ])
         ]))
-        navigationItem.title = navigationItem.largeTitle
         navigationItem.style = .browser
         view.backgroundColor = .systemBackground
         
@@ -231,8 +238,10 @@ class SettingsController : UICollectionViewController {
         self.tomatoSnapshot = tomatoSnapshot
         
         Task {
-            navigationItem.largeSubtitle = selectedSnapshot.string
-            navigationItem.subtitle = navigationItem.largeSubtitle
+            if #available(iOS 26.0, *) {
+                navigationItem.largeSubtitle = selectedSnapshot.string
+                navigationItem.subtitle = navigationItem.largeSubtitle
+            }
             
             switch selectedSnapshot {
             case .application:

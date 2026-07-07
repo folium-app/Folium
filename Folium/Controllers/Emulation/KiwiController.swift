@@ -166,12 +166,13 @@ class KiwiController : ControlsController {
         stackView.spacing = 20
         view.addSubview(stackView)
         
-        var settingsConfiguration: UIButton.Configuration = UIButton.Configuration.glass()
-        settingsConfiguration.buttonSize = .medium
-        settingsConfiguration.cornerStyle = .capsule
-        settingsConfiguration.image = UIImage(systemName: "ellipsis")?
-            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
+        // var settingsConfiguration: UIButton.Configuration = UIButton.Configuration.glass()
+        // settingsConfiguration.buttonSize = .medium
+        // settingsConfiguration.cornerStyle = .capsule
+        // settingsConfiguration.image = UIImage(systemName: "ellipsis")?
+        //     .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
         
+        let settingsConfiguration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "ellipsis"), nil, .medium)
         settingsButton = .button(with: settingsConfiguration,
                                  actions: ({ _ in }, { _ in }), UIMenu(preferredElementSize: .medium, children: [
                                     UIDeferredMenuElement.uncached { completion in
@@ -211,12 +212,13 @@ class KiwiController : ControlsController {
             return
         }
         
-        var selectConfiguration: UIButton.Configuration = UIButton.Configuration.glass()
-        selectConfiguration.buttonSize = .medium
-        selectConfiguration.cornerStyle = .capsule
-        selectConfiguration.image = UIImage(systemName: "minus")?
-            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
+        // var selectConfiguration: UIButton.Configuration = UIButton.Configuration.glass()
+        // selectConfiguration.buttonSize = .medium
+        // selectConfiguration.cornerStyle = .capsule
+        // selectConfiguration.image = UIImage(systemName: "minus")?
+        //     .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
         
+        let selectConfiguration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "minus"), nil, .medium)
         selectButton = .button(with: selectConfiguration, actions: ({ _ in
             self.press(button: .select)
         }, { _ in
@@ -226,12 +228,13 @@ class KiwiController : ControlsController {
             return
         }
         
-        var startConfiguration: UIButton.Configuration = UIButton.Configuration.glass()
-        startConfiguration.buttonSize = .medium
-        startConfiguration.cornerStyle = .capsule
-        startConfiguration.image = UIImage(systemName: "plus")?
-            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
+        // var startConfiguration: UIButton.Configuration = UIButton.Configuration.glass()
+        // startConfiguration.buttonSize = .medium
+        // startConfiguration.cornerStyle = .capsule
+        // startConfiguration.image = UIImage(systemName: "plus")?
+        //     .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
         
+        let startConfiguration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "plus"), nil, .medium)
         startButton = .button(with: startConfiguration, actions: ({ _ in
             self.press(button: .start)
         }, { _ in

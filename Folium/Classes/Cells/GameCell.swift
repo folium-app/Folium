@@ -32,7 +32,11 @@ class GameCell : UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        visualEffectView = UIVisualEffectView(effect: UIGlassEffect(style: .regular))
+        visualEffectView = if #available(iOS 26.0, *) {
+            UIVisualEffectView(effect: UIGlassEffect(style: .regular))
+        } else {
+            UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
+        }
         guard let visualEffectView: UIVisualEffectView else {
             return
         }
@@ -83,13 +87,7 @@ class GameCell : UICollectionViewCell {
         imageView.bottom.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: -4.0).isActive = true
         imageView.right.constraint(equalTo: visualEffectView.contentView.salg.right, constant: -4.0).isActive = true
         
-        // let configuration: UIButton.Configuration = .glassConfiguration(.medium, .capsule, UIImage(systemName: "ellipsis"), nil, .medium)
-        
-        var configuration: UIButton.Configuration = .glass()
-        configuration.buttonSize = .medium
-        configuration.cornerStyle = .capsule
-        configuration.image = UIImage(systemName: "ellipsis")?
-            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
+        let configuration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "ellipsis"), nil, .medium)
         
         button = UIButton(configuration: configuration)
         guard let button: UIButton else {
@@ -142,9 +140,15 @@ class GameCell : UICollectionViewCell {
             return
         }
         
-        visualEffectView.cornerConfiguration = .corners(radius: UICornerRadius.fixed(40.0))
-        imageView.cornerConfiguration = .corners(radius: .fixed(36.0))
-        backgroundImageView.cornerConfiguration = imageView.cornerConfiguration
+        if #available(iOS 26.0, *) {
+            visualEffectView.cornerConfiguration = .corners(radius: UICornerRadius.fixed(40.0))
+            imageView.cornerConfiguration = .corners(radius: .fixed(36.0))
+            backgroundImageView.cornerConfiguration = imageView.cornerConfiguration
+        } else {
+            visualEffectView.layer.cornerRadius = 40.0
+            imageView.layer.cornerRadius = 36.0
+            backgroundImageView.layer.cornerRadius = imageView.layer.cornerRadius
+        }
         visualEffectView.layoutIfNeeded()
         imageView.layoutIfNeeded()
         backgroundImageView.layoutIfNeeded()
