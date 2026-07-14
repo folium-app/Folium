@@ -25,37 +25,77 @@ class TabController : UITabBarController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        tabs = [
-            UITab(title: "Games", image: UIImage(systemName: "opticaldisc.fill"), identifier: "games") { tab in
-                UINavigationController(rootViewController: GamesController(collectionViewLayout: LayoutManager.shared.library))
-            },
-            UITab(title: "Emulation", image: UIImage(systemName: "gamecontroller.fill"), identifier: "emulation") { tab in
-                NoEmulationController()
-            },
-            UITab(title: "Settings", image: UIImage(systemName: "gearshape.fill"), identifier: "settings") { tab in
-                UINavigationController(rootViewController: SettingsController(collectionViewLayout: UICollectionViewLayout()))
-            }
-        ]
+        if #available(iOS 18.0, *) {
+            tabs = [
+                UITab(title: "Games", image: UIImage(systemName: "opticaldisc.fill"), identifier: "games") { tab in
+                    UINavigationController(rootViewController: GamesController(collectionViewLayout: LayoutManager.shared.library))
+                },
+                UITab(title: "Emulation", image: UIImage(systemName: "gamecontroller.fill"), identifier: "emulation") { tab in
+                    NoEmulationController()
+                },
+                UITab(title: "Settings", image: UIImage(systemName: "gearshape.fill"), identifier: "settings") { tab in
+                    UINavigationController(rootViewController: SettingsController(collectionViewLayout: UICollectionViewLayout()))
+                }
+            ]
+        } else {
+            let gamesController: UINavigationController = UINavigationController(rootViewController: GamesController(collectionViewLayout: LayoutManager.shared.library))
+            gamesController.tabBarItem = UITabBarItem(title: "Games", image: UIImage(systemName: "opticaldisc.fill"), tag: .gamesController)
+            
+            let emulationController: NoEmulationController = NoEmulationController()
+            emulationController.tabBarItem = UITabBarItem(title: "Emulation", image: UIImage(systemName: "gamecontroller.fill"), tag: .emulationController)
+            
+            let settingsController: UINavigationController = UINavigationController(rootViewController: SettingsController(collectionViewLayout: UICollectionViewLayout()))
+            settingsController.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape.fill"), tag: .settingsController)
+            
+            viewControllers = [
+                gamesController,
+                emulationController,
+                settingsController
+            ]
+        }
     }
     
     func switchEmulationController(with controller: UIViewController) {
-        var old: [UITab] = tabs
-        old[.emulationController] = UITab(title: "Emulation", image: UIImage(systemName: "gamecontroller.fill"), identifier: "emulation") { tab in
-            controller
+        if #available(iOS 18.0, *) {
+            var old: [UITab] = tabs
+            old[.emulationController] = UITab(title: "Emulation", image: UIImage(systemName: "gamecontroller.fill"), identifier: "emulation") { tab in
+                controller
+            }
+            
+            if controller is ScreensController {
+                old[.emulationController].badgeValue = "1"
+            }
+            
+            tabs = old
+        } else {
+            var viewControllers: [UIViewController]? = viewControllers
+            if var viewControllers {
+                viewControllers[.emulationController] = controller
+                
+                if controller is ScreensController {
+                    viewControllers[.emulationController].tabBarItem.badgeValue = "1"
+                }
+            }
+            
+            self.viewControllers = viewControllers
         }
-        
-        if controller is ScreensController {
-            old[.emulationController].badgeValue = "1"
-        }
-        
-        tabs = old
     }
     
     func switchSettingsSnapshot(for selectedSnapshot: SelectedSnapshot) {
-        if let tab: UITab = tabs.last {
-            if let navigationController: UINavigationController = tab.viewController as? UINavigationController {
-                if let settingsController: SettingsController = navigationController.viewControllers.first as? SettingsController {
-                    settingsController.selectedSnapshot = selectedSnapshot
+        if #available(iOS 18.0, *) {
+            if let tab: UITab = tabs.last {
+                if let navigationController: UINavigationController = tab.viewController as? UINavigationController {
+                    if let settingsController: SettingsController = navigationController.viewControllers.first as? SettingsController {
+                        settingsController.selectedSnapshot = selectedSnapshot
+                    }
+                }
+            }
+        } else {
+            if let viewControllers: [UIViewController], let viewController: UIViewController = viewControllers.last {
+                if let navigationController: UINavigationController = viewController as? UINavigationController {
+                    if let settingsController: SettingsController = navigationController.viewControllers.first as? SettingsController {
+                        settingsController.selectedSnapshot = selectedSnapshot
+                    }
                 }
             }
         }

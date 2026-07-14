@@ -228,7 +228,9 @@ class ScreensController : UIViewController {
             return
         }
         
-        tabController.setTabBarHidden(windowScene.effectiveGeometry.interfaceOrientation.isLandscape, animated: true)
+        if #available(iOS 18.0, *) {
+            tabController.setTabBarHidden(windowScene.effectiveGeometry.interfaceOrientation.isLandscape, animated: true)
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
@@ -239,7 +241,10 @@ class ScreensController : UIViewController {
         
         let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
         coordinator.animate { context in } completion: { context in
-            tabController.setTabBarHidden(!windowScene.effectiveGeometry.interfaceOrientation.isPortrait, animated: true)
+            if #available(iOS 18.0, *) {
+                tabController.setTabBarHidden(windowScene.effectiveGeometry.interfaceOrientation.isLandscape, animated: true)
+            }
+            
             if windowScene.effectiveGeometry.interfaceOrientation.isPortrait {
                 self.view.removeConstraints(isPad ? self.constraints.pad.landscape : self.constraints.phone.landscape)
                 self.view.addConstraints(isPad ? self.constraints.pad.portrait : self.constraints.phone.portrait)

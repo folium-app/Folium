@@ -262,7 +262,7 @@ class SettingsController : UICollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let tabBarController {
+        if #available(iOS 18.0, *), let tabBarController {
             tabBarController.setTabBarHidden(false, animated: true)
         }
     }
