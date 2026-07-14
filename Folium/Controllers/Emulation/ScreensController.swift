@@ -7,6 +7,7 @@
 
 import ColourKit
 import ConstraintKit
+import MetalKit
 import UIKit
 
 class ScreensController : UIViewController {
@@ -61,12 +62,21 @@ class ScreensController : UIViewController {
         }
         
         switch game {
+        case is CytrusGame:
+            primaryRenderingView = MTKView()
+            primaryBackgroundRenderingView = MTKView()
+            
+            secondaryRenderingView = MTKView()
+            secondaryBackgroundRenderingView = MTKView()
+            
+            system = .cytrus
         case is GrapeGame:
             primaryRenderingView = UIImageView()
             primaryBackgroundRenderingView = UIImageView()
             
             secondaryRenderingView = UIImageView()
             secondaryBackgroundRenderingView = UIImageView()
+            
             system = .grape
         case is KiwiGame:
             primaryRenderingView = UIImageView()
@@ -99,13 +109,14 @@ class ScreensController : UIViewController {
         primaryBackgroundRenderingView.translatesAutoresizingMaskIntoConstraints = false
         primaryBackgroundRenderingView.backgroundColor = .secondarySystemBackground
         switch type(of: primaryBackgroundRenderingView.self) {
-        case is UIImageView.Type:
+        case is UIImageView.Type, is MTKView.Type:
             if #available(iOS 26.0, *) {
+                primaryBackgroundRenderingView.clipsToBounds = true
                 primaryBackgroundRenderingView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(32.0))
             } else {
-                primaryBackgroundRenderingView.layer.cornerRadius = 32.0
-                primaryBackgroundRenderingView.layer.cornerCurve = .continuous
                 primaryBackgroundRenderingView.clipsToBounds = true
+                primaryBackgroundRenderingView.layer.cornerCurve = .continuous
+                primaryBackgroundRenderingView.layer.cornerRadius = 32.0
             }
         default:
             break
@@ -118,11 +129,12 @@ class ScreensController : UIViewController {
         }
         primaryVisualEffectView.translatesAutoresizingMaskIntoConstraints = false
         if #available(iOS 26.0, *) {
+            primaryVisualEffectView.clipsToBounds = true
             primaryVisualEffectView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(38.0))
         } else {
-            primaryVisualEffectView.layer.cornerRadius = 38.0
-            primaryVisualEffectView.layer.cornerCurve = .continuous
             primaryVisualEffectView.clipsToBounds = true
+            primaryVisualEffectView.layer.cornerCurve = .continuous
+            primaryVisualEffectView.layer.cornerRadius = 38.0
         }
         view.addSubview(primaryVisualEffectView)
         
@@ -132,13 +144,14 @@ class ScreensController : UIViewController {
         primaryRenderingView.translatesAutoresizingMaskIntoConstraints = false
         primaryRenderingView.backgroundColor = .secondarySystemBackground
         switch type(of: primaryRenderingView.self) {
-        case is UIImageView.Type:
+        case is UIImageView.Type, is MTKView.Type:
             if #available(iOS 26.0, *) {
+                primaryRenderingView.clipsToBounds = true
                 primaryRenderingView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(32.0))
             } else {
-                primaryRenderingView.layer.cornerRadius = 32.0
-                primaryRenderingView.layer.cornerCurve = .continuous
                 primaryRenderingView.clipsToBounds = true
+                primaryRenderingView.layer.cornerCurve = .continuous
+                primaryRenderingView.layer.cornerRadius = 32.0
             }
         default:
             break
@@ -152,13 +165,14 @@ class ScreensController : UIViewController {
         secondaryBackgroundRenderingView.translatesAutoresizingMaskIntoConstraints = false
         secondaryBackgroundRenderingView.backgroundColor = .secondarySystemBackground
         switch type(of: secondaryBackgroundRenderingView.self) {
-        case is UIImageView.Type:
+        case is UIImageView.Type, is MTKView.Type:
             if #available(iOS 26.0, *) {
+                secondaryBackgroundRenderingView.clipsToBounds = true
                 secondaryBackgroundRenderingView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(32.0))
             } else {
-                secondaryBackgroundRenderingView.layer.cornerRadius = 32.0
-                secondaryBackgroundRenderingView.layer.cornerCurve = .continuous
                 secondaryBackgroundRenderingView.clipsToBounds = true
+                secondaryBackgroundRenderingView.layer.cornerCurve = .continuous
+                secondaryBackgroundRenderingView.layer.cornerRadius = 32.0
             }
         default:
             break
@@ -171,11 +185,12 @@ class ScreensController : UIViewController {
         }
         secondaryVisualEffectView.translatesAutoresizingMaskIntoConstraints = false
         if #available(iOS 26.0, *) {
+            secondaryVisualEffectView.clipsToBounds = true
             secondaryVisualEffectView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(38.0))
         } else {
-            secondaryVisualEffectView.layer.cornerRadius = 38.0
-            secondaryVisualEffectView.layer.cornerCurve = .continuous
             secondaryVisualEffectView.clipsToBounds = true
+            secondaryVisualEffectView.layer.cornerCurve = .continuous
+            secondaryVisualEffectView.layer.cornerRadius = 38.0
         }
         view.addSubview(secondaryVisualEffectView)
         
@@ -185,17 +200,19 @@ class ScreensController : UIViewController {
         secondaryRenderingView.translatesAutoresizingMaskIntoConstraints = false
         secondaryRenderingView.backgroundColor = .secondarySystemBackground
         switch type(of: secondaryRenderingView.self) {
-        case is UIImageView.Type:
+        case is UIImageView.Type, is MTKView.Type:
             if #available(iOS 26.0, *) {
+                secondaryRenderingView.clipsToBounds = true
                 secondaryRenderingView.cornerConfiguration = UICornerConfiguration.corners(radius: UICornerRadius.fixed(32.0))
             } else {
-                secondaryRenderingView.layer.cornerRadius = 32.0
-                secondaryRenderingView.layer.cornerCurve = .continuous
                 secondaryRenderingView.clipsToBounds = true
+                secondaryRenderingView.layer.cornerCurve = .continuous
+                secondaryRenderingView.layer.cornerRadius = 32.0
             }
         default:
             break
         }
+        secondaryRenderingView.isUserInteractionEnabled = true
         secondaryVisualEffectView.contentView.addSubview(secondaryRenderingView)
     }
     
@@ -235,13 +252,69 @@ class ScreensController : UIViewController {
         }
     }
     
-    func calculateAspectRatio(for system: System, isPortrait: Bool) -> CGFloat {
-        let aspectRatio: (portrait: CGFloat, landscape: CGFloat) = AspectRatioManager.aspectRatio(for: system)
-        return isPortrait ? aspectRatio.portrait : aspectRatio.landscape
+    func calculateAspectRatio(for system: System, isPortrait: Bool, secondary: Bool = false) -> CGFloat {
+        let aspectRatio: (top: (portrait: CGFloat, landscape: CGFloat), bottom: (portrait: CGFloat, landscape: CGFloat)) = AspectRatioManager.aspectRatio(for: system)
+        let topOrBottom: (portrait: CGFloat, landscape: CGFloat) = secondary ? aspectRatio.bottom : aspectRatio.top
+        return isPortrait ? topOrBottom.portrait : topOrBottom.landscape
     }
 }
 
 extension ScreensController {
+    func configureConstraintsForCytrus() {
+        guard let primaryBackgroundRenderingView: UIView,
+              let secondaryBackgroundRenderingView: UIView else {
+            return
+        }
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            constraints.pad.portrait.append(contentsOf: [
+                primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 46.0),
+                primaryBackgroundRenderingView.bottom.constraint(equalTo: view.salg.centerY, constant: -26.0),
+                primaryBackgroundRenderingView.width.constraint(equalTo: primaryBackgroundRenderingView.salg.height,
+                                                                multiplier: calculateAspectRatio(for: .cytrus, isPortrait: false)),
+                primaryBackgroundRenderingView.centerX.constraint(equalTo: view.salg.centerX),
+                
+                secondaryBackgroundRenderingView.top.constraint(equalTo: view.salg.centerY, constant: 26.0),
+                secondaryBackgroundRenderingView.bottom.constraint(equalTo: view.salg.bottom, constant: -46.0),
+                secondaryBackgroundRenderingView.width.constraint(equalTo: secondaryBackgroundRenderingView.salg.height,
+                                                                  multiplier: calculateAspectRatio(for: .cytrus, isPortrait: false, secondary: true)),
+                secondaryBackgroundRenderingView.centerX.constraint(equalTo: view.salg.centerX)
+            ])
+            
+            constraints.pad.landscape.append(contentsOf: constraints.pad.portrait)
+        } else {
+            constraints.phone.portrait.append(contentsOf: [
+                primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 26.0),
+                primaryBackgroundRenderingView.left.constraint(equalTo: view.salg.left, constant: 26.0),
+                primaryBackgroundRenderingView.right.constraint(equalTo: view.salg.right, constant: -26.0),
+                primaryBackgroundRenderingView.height.constraint(equalTo: primaryBackgroundRenderingView.salg.width,
+                                                                 multiplier: calculateAspectRatio(for: .cytrus, isPortrait: true)),
+                
+                secondaryBackgroundRenderingView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 26.0),
+                secondaryBackgroundRenderingView.left.constraint(equalTo: view.salg.left, constant: 26.0),
+                secondaryBackgroundRenderingView.right.constraint(equalTo: view.salg.right, constant: -26.0),
+                secondaryBackgroundRenderingView.height.constraint(equalTo: secondaryBackgroundRenderingView.salg.width,
+                                                                   multiplier: calculateAspectRatio(for: .cytrus, isPortrait: true, secondary: true)),
+            ])
+            
+            constraints.phone.landscape.append(contentsOf: [
+                primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 26.0),
+                primaryBackgroundRenderingView.left.constraint(equalTo: view.salg.left, constant: 26.0),
+                primaryBackgroundRenderingView.right.constraint(equalTo: view.salg.centerX, constant: -12.0),
+                // primaryBackgroundRenderingView.height.constraint(equalTo: view.salg.height, multiplier: 2.0 / 3.0),
+                primaryBackgroundRenderingView.height.constraint(equalTo: primaryBackgroundRenderingView.salg.width,
+                                                                multiplier: calculateAspectRatio(for: .cytrus, isPortrait: true)),
+                
+                secondaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 26.0),
+                secondaryBackgroundRenderingView.left.constraint(equalTo: view.salg.centerX, constant: 12.0),
+                secondaryBackgroundRenderingView.right.constraint(equalTo: view.salg.right, constant: -26.0),
+                // secondaryBackgroundRenderingView.height.constraint(equalTo: view.salg.height, multiplier: 2.0 / 3.0),
+                secondaryBackgroundRenderingView.height.constraint(equalTo: secondaryBackgroundRenderingView.salg.width,
+                                                                  multiplier: calculateAspectRatio(for: .cytrus, isPortrait: true, secondary: true))
+            ])
+        }
+    }
+    
     func configureConstraintsForGrape() {
         guard let primaryBackgroundRenderingView: UIView,
               let secondaryBackgroundRenderingView: UIView else {

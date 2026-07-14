@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <optional>
 #include "common/vector_math.h"
 #include "video_core/pica/packed_attribute.h"

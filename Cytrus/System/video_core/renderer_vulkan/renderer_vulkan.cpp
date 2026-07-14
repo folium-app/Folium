@@ -28,8 +28,8 @@
 #include "common/apple_utils.h"
 #endif
 
-#ifdef ENABLE_SDL2
-#include <SDL.h>
+#ifdef ENABLE_SDL3
+#include <SDL3/SDL.h>
 #endif
 
 MICROPROFILE_DEFINE(Vulkan_RenderFrame, "Vulkan", "Render Frame", MP_RGB(128, 128, 64));
@@ -62,7 +62,7 @@ constexpr static std::array<vk::DescriptorSetLayoutBinding, 1> PRESENT_BINDINGS 
 
 namespace {
 static bool IsLowRefreshRate() {
-#if (defined(__APPLE__) || defined(ENABLE_SDL2)) && !defined(HAVE_LIBRETRO)
+#if (defined(__APPLE__) || defined(ENABLE_SDL3)) && !defined(HAVE_LIBRETRO)
     if (!Settings::values.use_display_refresh_rate_detection) {
         LOG_INFO(Render_Vulkan, "Refresh rate detection is currently disabled via settings");
         return false;
@@ -77,7 +77,7 @@ static bool IsLowRefreshRate() {
     }
 
     const auto cur_refresh_rate = AppleUtils::GetRefreshRate();
-#elif defined(ENABLE_SDL2)
+#elif defined(ENABLE_SDL3)
     if (SDL_WasInit(SDL_INIT_VIDEO) == 0) {
         LOG_ERROR(Render_Vulkan, "Attempted to check refresh rate via SDL, but failed because "
                                  "SDL_INIT_VIDEO wasn't initialized");
@@ -88,7 +88,7 @@ static bool IsLowRefreshRate() {
     SDL_GetCurrentDisplayMode(0, &cur_display_mode); // TODO: Multimonitor handling. -OS
 
     const auto cur_refresh_rate = cur_display_mode.refresh_rate;
-#endif // ENABLE_SDL2
+#endif // ENABLE_SDL3
 
     if (cur_refresh_rate < SCREEN_REFRESH_RATE) {
         LOG_WARNING(Render_Vulkan,
@@ -100,7 +100,7 @@ static bool IsLowRefreshRate() {
         LOG_INFO(Render_Vulkan, "Refresh rate is above emulated 3DS screen: {}hz. Good.",
                  cur_refresh_rate);
     }
-#endif // (defined(__APPLE__) || defined(ENABLE_SDL2)) && !defined(HAVE_LIBRETRO)
+#endif // (defined(__APPLE__) || defined(ENABLE_SDL3)) && !defined(HAVE_LIBRETRO)
 
     // We have no available method of checking refresh rate. Just assume that everything is fine :)
     return false;

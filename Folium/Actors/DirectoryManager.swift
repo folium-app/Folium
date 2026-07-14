@@ -18,6 +18,27 @@ actor DirectoryManager {
         }
         
         let subfoldersForSystems: [System : [String : [String : SystemFile]]] = [
+            .cytrus: [
+                "cache": [:],
+                "cheats": [:],
+                "config": [:],
+                "dump": [:],
+                "external_dlls": [:],
+                "games" : [:],
+                "icons": [:],
+                "load": [:],
+                "log": [:],
+                "nand": [:],
+                "save_states": [:],
+                "sdmc": [:],
+                "shaders": [:],
+                "system_data": [
+                    "aes_keys.txt" : SystemFile(path: "system_data",
+                                                system: .cytrus,
+                                                systemFileType: .required,
+                                                title: "aes_keys.txt")
+                ]
+            ],
             .grape : [
                 "artworks" : [:],
                 "games" : [:],

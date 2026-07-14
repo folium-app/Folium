@@ -49,6 +49,8 @@ enum class LayoutOption : u32 { // Shouldn't these have set numbers to prevent l
     CustomLayout,
 };
 
+enum class InputMappingType : u8 { AllControllers, Guid, GuidPort };
+
 /** Defines the layout option for mobile portrait */
 enum class PortraitLayoutOption : u32 {
     // formerly mobile portrait
@@ -225,7 +227,7 @@ protected:
      * Only sets the setting to the given initializer, leaving the other members to their default
      * initializers.
      *
-     * @param global_val Initial value of the setting
+     * @param val Initial value of the setting
      */
     explicit Setting(const Type& val) : value{val} {}
 
@@ -458,6 +460,7 @@ struct InputProfile {
     std::string udp_input_address;
     u16 udp_input_port;
     u8 udp_pad_index;
+    InputMappingType maptype = Settings::InputMappingType::GuidPort;
 };
 
 struct TouchFromButtonMap {
@@ -554,7 +557,7 @@ struct Values {
                                                         Keys::texture_sampling};
     SwitchableSetting<u16, true> delay_game_render_thread_us{0, 0, 65000,
                                                              Keys::delay_game_render_thread_us};
-    SwitchableSetting<bool> simulate_3ds_gpu_timings{true, Keys::simulate_3ds_gpu_timings};
+    SwitchableSetting<bool> simulate_3ds_gpu_timings{false, Keys::simulate_3ds_gpu_timings};
 
     SwitchableSetting<LayoutOption> layout_option{LayoutOption::Default, Keys::layout_option};
     SwitchableSetting<bool> swap_screen{false, Keys::swap_screen};
@@ -657,6 +660,10 @@ struct Values {
     Setting<bool> enable_rpc_server{false, Keys::enable_rpc_server};
     Setting<bool> toggle_unique_data_console_type{false, Keys::toggle_unique_data_console_type};
     Setting<bool> break_on_unmapped_memory_access{false, Keys::break_on_unmapped_memory_access};
+
+    // WebService
+    Setting<std::string> web_api_url{"", Keys::web_api_url};
+    Setting<std::string> network_token{"", Keys::network_token};
 
     // Miscellaneous
     Setting<std::string> log_filter{"*:Info", Keys::log_filter};

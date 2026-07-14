@@ -29,7 +29,7 @@
 #elif defined(__APPLE__)
 #include <TargetConditionals.h>
 #if TARGET_OS_IPHONE
-#define EMU_APPLE_DATA_DIR "Documents" DIR_SEP "Azahar"
+#define EMU_APPLE_DATA_DIR "Documents" DIR_SEP "Cytrus"
 #define LEGACY_CITRA_APPLE_DATA_DIR "Documents" DIR_SEP "Citra"
 #define LEGACY_LIME3DS_APPLE_DATA_DIR "Documents" DIR_SEP "Lime3DS"
 #else
@@ -58,7 +58,7 @@
 #define CACHE_DIR "cache"
 #define SDMC_DIR "sdmc"
 #define NAND_DIR "nand"
-#define SYSDATA_DIR "sysdata"
+#define SYSDATA_DIR "system_data"
 #define LOG_DIR "log"
 #define CHEATS_DIR "cheats"
 #define DLL_DIR "external_dlls"
@@ -66,12 +66,12 @@
 #define DUMP_DIR "dump"
 #define LOAD_DIR "load"
 #define SHADER_DIR "shaders"
-#define STATES_DIR "states"
+#define STATES_DIR "save_states"
 #define ICONS_DIR "icons"
 
 // Filenames
 // Files in the directory returned by GetUserPath(UserPath::LogDir)
-#define LOG_FILE "azahar_log.txt"
+#define LOG_FILE "cytrus_log.txt"
 
 // Files in the directory returned by GetUserPath(UserPath::ConfigDir)
 #define EMU_CONFIG "emu.ini"

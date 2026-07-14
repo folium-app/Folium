@@ -4,13 +4,13 @@
 
 #include "common/scm_rev.h"
 
-#define GIT_REV      "a978452453e988fb25578e030313779c88afd556"
+#define GIT_REV      "76eb197f2e50c6a2e90d16d4d05cc900d739e9ef"
 #define GIT_BRANCH   "master"
-#define GIT_DESC     "a97845245"
+#define GIT_DESC     "76eb197f2"
 #define BUILD_NAME   ""
-#define BUILD_DATE   "2026-07-04T18:09:24Z"
+#define BUILD_DATE   "2026-07-11T22:16:12Z"
 #define BUILD_VERSION "0"
-#define BUILD_FULLNAME "a978452"
+#define BUILD_FULLNAME "76eb197"
 #define SHADER_CACHE_VERSION "720eadb59b33db946a74f3ad8bc11bec"
 
 namespace Common {

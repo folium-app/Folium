@@ -17,7 +17,7 @@ import Tomato
 
 class GamesController : UICollectionViewController {
     var importFileType: ImportFileType = .game
-    var selectedSnapshot: SelectedSnapshot = .grape {
+    var selectedSnapshot: SelectedSnapshot = .cytrus {
         didSet {
             guard let dataSource: UICollectionViewDiffableDataSource<String, Game> else {
                 return
@@ -31,7 +31,11 @@ class GamesController : UICollectionViewController {
             Task {
                 switch selectedSnapshot {
                 case .cytrus:
-                    break
+                    guard let cytrusSnapshot else {
+                        return
+                    }
+                    
+                    await dataSource.apply(cytrusSnapshot)
                 case .grape:
                     guard let grapeSnapshot else {
                         return
@@ -64,6 +68,7 @@ class GamesController : UICollectionViewController {
     }
     
     var dataSource: UICollectionViewDiffableDataSource<String, Game>? = nil
+    var cytrusSnapshot: NSDiffableDataSourceSnapshot<String, Game>? = nil
     var grapeSnapshot: NSDiffableDataSourceSnapshot<String, Game>? = nil
     var kiwiSnapshot: NSDiffableDataSourceSnapshot<String, Game>? = nil
     var mandarineSnapshot: NSDiffableDataSourceSnapshot<String, Game>? = nil
@@ -94,6 +99,10 @@ class GamesController : UICollectionViewController {
                             self.importFileType = .game
                             var types: [UTType] = []
                             switch self.selectedSnapshot {
+                            case .cytrus:
+                                if let `3ds`: UTType = .`3ds`, let cci: UTType = .cci {
+                                    types.append(contentsOf: [`3ds`, cci])
+                                }
                             case .grape:
                                 if let nds: UTType = .nds {
                                     types.append(nds)
@@ -145,7 +154,9 @@ class GamesController : UICollectionViewController {
                         UIAction(title: "CV", subtitle: "ColecoVision", attributes: .disabled) { action in }
                     ]),
                     UIMenu(title: "Nintendo", image: UIImage(systemName: "cpu"), children: [
-                        UIAction(title: "3DS", subtitle: "Nintendo 3DS", attributes: .disabled) { action in },
+                        UIAction(title: "3DS", subtitle: "Nintendo 3DS") { action in
+                            self.selectedSnapshot = .cytrus
+                        },
                         UIAction(title: "DS/DSi", subtitle: "Nintendo DS/DSi") { action in
                             self.selectedSnapshot = .grape
                         },
@@ -223,6 +234,7 @@ class GamesController : UICollectionViewController {
             collectionView.topEdgeEffect.style = .soft
         }
         
+        let cytrusCell: UICollectionView.CellRegistration<CytrusCell, CytrusGame> = CellManager.Library.cytrusCell(viewController: self)
         let grapeCell: UICollectionView.CellRegistration<GrapeCell, GrapeGame> = CellManager.Library.grapeCell(viewController: self)
         let kiwiCell: UICollectionView.CellRegistration<KiwiCell, KiwiGame> = CellManager.Library.kiwiCell(viewController: self)
         let mandarineCell: UICollectionView.CellRegistration<MandarineCell, MandarineGame> = CellManager.Library.mandarineCell(viewController: self)
@@ -239,6 +251,8 @@ class GamesController : UICollectionViewController {
         
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             switch itemIdentifier {
+            case let cytrusGame as CytrusGame:
+                collectionView.dequeueConfiguredReusableCell(using: cytrusCell, for: indexPath, item: cytrusGame)
             case let grapeGame as GrapeGame:
                 collectionView.dequeueConfiguredReusableCell(using: grapeCell, for: indexPath, item: grapeGame)
             case let kiwiGame as KiwiGame:
@@ -499,6 +513,12 @@ class GamesController : UICollectionViewController {
         }
         
         switch game {
+        case let cytrusGame as CytrusGame:
+            tabController.game = cytrusGame
+            
+            let cytrusController: CytrusController = CytrusController()
+            tabController.switchEmulationController(with: cytrusController)
+            tabController.switchSettingsSnapshot(for: .cytrus)
         case let grapeGame as GrapeGame:
             tabController.game = grapeGame
             
@@ -530,6 +550,16 @@ class GamesController : UICollectionViewController {
     
     func generateSnapshot<T>(for snapshot: inout NSDiffableDataSourceSnapshot<String, Game>, for games: [T], type: T.Type) {
         switch T.self {
+        case is CytrusGame.Type:
+            if let games: [CytrusGame] = games as? [CytrusGame] {
+                let sections: [CytrusGame] = games.mapUniqueBy({ game in game }, key: { game in game.prefix })
+                let sectionsStrings: [String] = sections.map(\.prefix)
+                
+                snapshot.appendSections(sectionsStrings.sorted())
+                snapshot.sectionIdentifiers.forEach { section in
+                    snapshot.appendItems(games.filter { game in game.prefix == section }.sorted(), toSection: section)
+                }
+            }
         case is GrapeGame.Type:
             if let games: [GrapeGame] = games as? [GrapeGame] {
                 let sections: [GrapeGame] = games.mapUniqueBy({ game in game }, key: { game in game.prefix })
@@ -577,6 +607,13 @@ class GamesController : UICollectionViewController {
     
     func populateGames() async {
         if let dataSource, let tabController: TabController = tabBarController as? TabController {
+            cytrusSnapshot = NSDiffableDataSourceSnapshot<String, Game>()
+            guard var cytrusSnapshot else {
+                return
+            }
+            generateSnapshot(for: &cytrusSnapshot, for: await tabController.gamesManager.games(for: .cytrus), type: CytrusGame.self)
+            self.cytrusSnapshot = cytrusSnapshot
+            
             grapeSnapshot = NSDiffableDataSourceSnapshot<String, Game>()
             guard var grapeSnapshot else {
                 return
@@ -612,6 +649,8 @@ class GamesController : UICollectionViewController {
                 }
                 
                 switch selectedSnapshot {
+                case .cytrus:
+                    await dataSource.apply(cytrusSnapshot)
                 case .grape:
                     await dataSource.apply(grapeSnapshot)
                 case .kiwi:
@@ -640,7 +679,8 @@ extension GamesController : UIDocumentPickerDelegate, UINavigationControllerDele
         
         var gamesDirectoryURL: URL = documentDirectoryURL
         switch selectedSnapshot {
-        case .grape,
+        case .cytrus,
+                .grape,
                 .kiwi,
                 .mandarine,
                 .tomato:

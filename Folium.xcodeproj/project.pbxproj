@@ -9,11 +9,24 @@
 /* Begin PBXBuildFile section */
 		E61175E92FE1D9700032DDC1 /* libMandarine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */; };
 		E61859FE2FE4B17100D44932 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E69CAA1D2FDC9FC200BCD2F9 /* SharedDependencies */; };
-		E63BA5E22FF989F70062683C /* libseekable_format in Frameworks */ = {isa = PBXBuildFile; productRef = E63BA5E12FF989F70062683C /* libseekable_format */; };
-		E63BA5E42FF989F70062683C /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E63BA5E32FF989F70062683C /* libzstd */; };
-		E63BA5E62FF989F70062683C /* libzstdwrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E63BA5E52FF989F70062683C /* libzstdwrapper */; };
-		E655CB832FE7349A003DCE2B /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E655CB822FE7349A003DCE2B /* SharedDependencies */; };
+		E64840A83002E668007BDFFA /* libseekable_format in Frameworks */ = {isa = PBXBuildFile; productRef = E64840A73002E668007BDFFA /* libseekable_format */; };
+		E64840AA3002E668007BDFFA /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E64840A93002E668007BDFFA /* libzstd */; };
+		E64840AC3002E668007BDFFA /* libzstdwrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E64840AB3002E668007BDFFA /* libzstdwrapper */; };
 		E655CB842FE734FB003DCE2B /* libTomato.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E655CB7A2FE73488003DCE2B /* libTomato.a */; };
+		E656E9A23006F6CC0061EA22 /* libseekable_format in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A13006F6CC0061EA22 /* libseekable_format */; };
+		E656E9A43006F6CC0061EA22 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A33006F6CC0061EA22 /* libzstd */; };
+		E656E9A63006F6CC0061EA22 /* libzstdwrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A53006F6CC0061EA22 /* libzstdwrapper */; };
+		E656E9A83006F6D60061EA22 /* libseekable_format in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A73006F6D60061EA22 /* libseekable_format */; };
+		E656E9AA3006F6D60061EA22 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A93006F6D60061EA22 /* libzstd */; };
+		E656E9AC3006F6D60061EA22 /* libzstdwrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9AB3006F6D60061EA22 /* libzstdwrapper */; };
+		E656E9AF3006F7FF0061EA22 /* TPCircularBuffer in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9AE3006F7FF0061EA22 /* TPCircularBuffer */; };
+		E656E9B23006F8670061EA22 /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9B13006F8670061EA22 /* AntiqueKit */; };
+		E656E9B43006F8670061EA22 /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9B33006F8670061EA22 /* ColourKit */; };
+		E656E9B63006F8670061EA22 /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9B53006F8670061EA22 /* ConstraintKit */; };
+		E656E9B83006F8670061EA22 /* ExtensionsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9B73006F8670061EA22 /* ExtensionsKit */; };
+		E656E9BA3006F8670061EA22 /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9B93006F8670061EA22 /* FontKit */; };
+		E656E9BC3006F8670061EA22 /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9BB3006F8670061EA22 /* OnboardingKit */; };
+		E656E9BE3006F8670061EA22 /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9BD3006F8670061EA22 /* SettingsKit */; };
 		E6979A492FE6ACA10055FA9D /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A482FE6ACA10055FA9D /* AntiqueKit */; };
 		E6979A4B2FE6ACA10055FA9D /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A4A2FE6ACA10055FA9D /* ColourKit */; };
 		E6979A4D2FE6ACA10055FA9D /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A4C2FE6ACA10055FA9D /* ConstraintKit */; };
@@ -21,11 +34,18 @@
 		E6979A512FE6ACA10055FA9D /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A502FE6ACA10055FA9D /* FontKit */; };
 		E6979A532FE6ACA10055FA9D /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A522FE6ACA10055FA9D /* OnboardingKit */; };
 		E6979A552FE6ACA10055FA9D /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A542FE6ACA10055FA9D /* SettingsKit */; };
-		E6A0118D2FF97CCD00D2BD20 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6A0118C2FF97CCD00D2BD20 /* SharedDependencies */; };
+		E6A01B90300444F800804CD4 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6A01B8F300444F800804CD4 /* SharedDependencies */; };
+		E6A29C0C300455E200415154 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6A29C0B300455E200415154 /* SharedDependencies */; };
+		E6A29C0E300455F700415154 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6A29C0D300455F700415154 /* SharedDependencies */; };
+		E6A29C10300455FB00415154 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6A29C0F300455FB00415154 /* SharedDependencies */; };
+		E6A29C12300455FF00415154 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6A29C11300455FF00415154 /* SharedDependencies */; };
+		E6A29C143004560400415154 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6A29C133004560400415154 /* SharedDependencies */; };
+		E6A2BF433004F24400415154 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6A2BF413004F24400415154 /* MoltenVK.xcframework */; };
+		E6A2BF443004F24800415154 /* MoltenVK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6A2BF413004F24400415154 /* MoltenVK.xcframework */; };
+		E6A2BF453004F24800415154 /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6A2BF413004F24400415154 /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E6AF262B3002E43C002D87C9 /* libCytrus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E62C749B2FFCE20100D6760E /* libCytrus.a */; };
 		E6C462C42FE4B0AA004E5B57 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6C462C32FE4B0AA004E5B57 /* SharedDependencies */; };
-		E6F139D32FF04DD100F30081 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6F139D22FF04DD100F30081 /* SharedDependencies */; };
 		E6F139D42FF04E1000F30081 /* libGrape.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F139CA2FF04DB700F30081 /* libGrape.a */; };
-		E6F48FB12FF6C0860085C59B /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6F48FB02FF6C0860085C59B /* SharedDependencies */; };
 		E6F49CDB2FF6C9F50085C59B /* libKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F48FA82FF6C0700085C59B /* libKiwi.a */; };
 		E6F49CDF2FF6CB810085C59B /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F49CDE2FF6CB7D0085C59B /* libresolv.9.tbd */; };
 		E6F49CEE2FF6E4480085C59B /* TPCircularBuffer in Frameworks */ = {isa = PBXBuildFile; productRef = E6F49CED2FF6E4480085C59B /* TPCircularBuffer */; };
@@ -45,6 +65,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = E655CB792FE73488003DCE2B;
 			remoteInfo = Tomato;
+		};
+		E6AF262C3002E43C002D87C9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6A00CC32FF967B900D2BD20;
+			remoteInfo = Cytrus;
 		};
 		E6F139D52FF04E1000F30081 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -90,6 +117,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E6A286D1300452C100415154 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E6A2BF453004F24800415154 /* MoltenVK.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E6F139C82FF04DB700F30081 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +153,7 @@
 		E655CB7A2FE73488003DCE2B /* libTomato.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTomato.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65A97A12FD0597F001DDEEE /* Folium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Folium.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMandarine.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6A2BF413004F24400415154 /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
 		E6F139CA2FF04DB700F30081 /* libGrape.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGrape.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6F48FA82FF6C0700085C59B /* libKiwi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKiwi.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6F49CDE2FF6CB7D0085C59B /* libresolv.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.9.tbd; path = usr/lib/libresolv.9.tbd; sourceTree = SDKROOT; };
@@ -130,7 +169,37 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		E6A2BF3B3004DFA900415154 /* Exceptions for "FFmpeg" folder in "Embed Frameworks" phase from "Folium" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			attributesByRelativePath = {
+				libavcodec.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				libavdevice.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				libavfilter.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				libavformat.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				libavutil.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				libswresample.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				libswscale.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+			};
+			buildPhase = E6A286D1300452C100415154 /* Embed Frameworks */;
+			membershipExceptions = (
+				libavcodec.xcframework,
+				libavdevice.xcframework,
+				libavfilter.xcframework,
+				libavformat.xcframework,
+				libavutil.xcframework,
+				libswresample.xcframework,
+				libswscale.xcframework,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		E6079C7E3006E7C80093F6A5 /* Boost */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Boost;
+			sourceTree = "<group>";
+		};
 		E655CB7B2FE73488003DCE2B /* Tomato */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Tomato;
@@ -154,6 +223,14 @@
 			path = Cytrus;
 			sourceTree = "<group>";
 		};
+		E6A2BF1E3004DF9F00415154 /* FFmpeg */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E6A2BF3B3004DFA900415154 /* Exceptions for "FFmpeg" folder in "Embed Frameworks" phase from "Folium" target */,
+			);
+			path = FFmpeg;
+			sourceTree = "<group>";
+		};
 		E6F139CB2FF04DB700F30081 /* Grape */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Grape;
@@ -171,7 +248,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E655CB832FE7349A003DCE2B /* SharedDependencies in Frameworks */,
+				E6A29C143004560400415154 /* SharedDependencies in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,15 +259,33 @@
 				E6979A532FE6ACA10055FA9D /* OnboardingKit in Frameworks */,
 				E6F49CDF2FF6CB810085C59B /* libresolv.9.tbd in Frameworks */,
 				E6979A552FE6ACA10055FA9D /* SettingsKit in Frameworks */,
+				E656E9B43006F8670061EA22 /* ColourKit in Frameworks */,
+				E656E9AF3006F7FF0061EA22 /* TPCircularBuffer in Frameworks */,
+				E64840AC3002E668007BDFFA /* libzstdwrapper in Frameworks */,
+				E6A2BF443004F24800415154 /* MoltenVK.xcframework in Frameworks */,
 				E6979A4D2FE6ACA10055FA9D /* ConstraintKit in Frameworks */,
 				E6C462C42FE4B0AA004E5B57 /* SharedDependencies in Frameworks */,
+				E656E9BA3006F8670061EA22 /* FontKit in Frameworks */,
+				E656E9B83006F8670061EA22 /* ExtensionsKit in Frameworks */,
+				E6A29C0C300455E200415154 /* SharedDependencies in Frameworks */,
+				E656E9B63006F8670061EA22 /* ConstraintKit in Frameworks */,
+				E6A01B90300444F800804CD4 /* SharedDependencies in Frameworks */,
+				E656E9A23006F6CC0061EA22 /* libseekable_format in Frameworks */,
 				E6979A4B2FE6ACA10055FA9D /* ColourKit in Frameworks */,
+				E6AF262B3002E43C002D87C9 /* libCytrus.a in Frameworks */,
 				E6979A4F2FE6ACA10055FA9D /* ExtensionsKit in Frameworks */,
+				E656E9BE3006F8670061EA22 /* SettingsKit in Frameworks */,
+				E656E9A63006F6CC0061EA22 /* libzstdwrapper in Frameworks */,
+				E656E9BC3006F8670061EA22 /* OnboardingKit in Frameworks */,
+				E656E9B23006F8670061EA22 /* AntiqueKit in Frameworks */,
 				E6F49CEE2FF6E4480085C59B /* TPCircularBuffer in Frameworks */,
 				E6979A512FE6ACA10055FA9D /* FontKit in Frameworks */,
 				E6979A492FE6ACA10055FA9D /* AntiqueKit in Frameworks */,
 				E61175E92FE1D9700032DDC1 /* libMandarine.a in Frameworks */,
 				E655CB842FE734FB003DCE2B /* libTomato.a in Frameworks */,
+				E64840A83002E668007BDFFA /* libseekable_format in Frameworks */,
+				E64840AA3002E668007BDFFA /* libzstd in Frameworks */,
+				E656E9A43006F6CC0061EA22 /* libzstd in Frameworks */,
 				E6F139D42FF04E1000F30081 /* libGrape.a in Frameworks */,
 				E6F49CDB2FF6C9F50085C59B /* libKiwi.a in Frameworks */,
 			);
@@ -208,10 +303,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E63BA5E42FF989F70062683C /* libzstd in Frameworks */,
-				E6A0118D2FF97CCD00D2BD20 /* SharedDependencies in Frameworks */,
-				E63BA5E22FF989F70062683C /* libseekable_format in Frameworks */,
-				E63BA5E62FF989F70062683C /* libzstdwrapper in Frameworks */,
+				E6A29C0E300455F700415154 /* SharedDependencies in Frameworks */,
+				E6A2BF433004F24400415154 /* MoltenVK.xcframework in Frameworks */,
+				E656E9AC3006F6D60061EA22 /* libzstdwrapper in Frameworks */,
+				E656E9AA3006F6D60061EA22 /* libzstd in Frameworks */,
+				E656E9A83006F6D60061EA22 /* libseekable_format in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,7 +315,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6F139D32FF04DD100F30081 /* SharedDependencies in Frameworks */,
+				E6A29C10300455FB00415154 /* SharedDependencies in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,7 +323,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6F48FB12FF6C0860085C59B /* SharedDependencies in Frameworks */,
+				E6A29C12300455FF00415154 /* SharedDependencies in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,12 +333,15 @@
 		E65A97982FD0597F001DDEEE = {
 			isa = PBXGroup;
 			children = (
+				E6A2BF413004F24400415154 /* MoltenVK.xcframework */,
+				E6079C7E3006E7C80093F6A5 /* Boost */,
+				E6A2BF1E3004DF9F00415154 /* FFmpeg */,
 				E65A97A32FD0597F001DDEEE /* Folium */,
+				E6A00CC52FF967B900D2BD20 /* Cytrus */,
 				E6F139CB2FF04DB700F30081 /* Grape */,
 				E6F48FA92FF6C0700085C59B /* Kiwi */,
 				E69CA8F62FDC9EAF00BCD2F9 /* Mandarine */,
 				E655CB7B2FE73488003DCE2B /* Tomato */,
-				E6A00CC52FF967B900D2BD20 /* Cytrus */,
 				E6F48FAF2FF6C0860085C59B /* Frameworks */,
 				E65A97A22FD0597F001DDEEE /* Products */,
 			);
@@ -289,7 +388,7 @@
 			);
 			name = Tomato;
 			packageProductDependencies = (
-				E655CB822FE7349A003DCE2B /* SharedDependencies */,
+				E6A29C133004560400415154 /* SharedDependencies */,
 			);
 			productName = Tomato;
 			productReference = E655CB7A2FE73488003DCE2B /* libTomato.a */;
@@ -302,6 +401,7 @@
 				E65A979D2FD0597F001DDEEE /* Sources */,
 				E65A979E2FD0597F001DDEEE /* Frameworks */,
 				E65A979F2FD0597F001DDEEE /* Resources */,
+				E6A286D1300452C100415154 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -310,9 +410,11 @@
 				E655CB862FE734FB003DCE2B /* PBXTargetDependency */,
 				E6F139D62FF04E1000F30081 /* PBXTargetDependency */,
 				E6F49CDD2FF6C9F50085C59B /* PBXTargetDependency */,
+				E6AF262D3002E43C002D87C9 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E65A97A32FD0597F001DDEEE /* Folium */,
+				E6A2BF1E3004DF9F00415154 /* FFmpeg */,
 			);
 			name = Folium;
 			packageProductDependencies = (
@@ -325,6 +427,22 @@
 				E6979A522FE6ACA10055FA9D /* OnboardingKit */,
 				E6979A542FE6ACA10055FA9D /* SettingsKit */,
 				E6F49CED2FF6E4480085C59B /* TPCircularBuffer */,
+				E64840A73002E668007BDFFA /* libseekable_format */,
+				E64840A93002E668007BDFFA /* libzstd */,
+				E64840AB3002E668007BDFFA /* libzstdwrapper */,
+				E6A01B8F300444F800804CD4 /* SharedDependencies */,
+				E6A29C0B300455E200415154 /* SharedDependencies */,
+				E656E9A13006F6CC0061EA22 /* libseekable_format */,
+				E656E9A33006F6CC0061EA22 /* libzstd */,
+				E656E9A53006F6CC0061EA22 /* libzstdwrapper */,
+				E656E9AE3006F7FF0061EA22 /* TPCircularBuffer */,
+				E656E9B13006F8670061EA22 /* AntiqueKit */,
+				E656E9B33006F8670061EA22 /* ColourKit */,
+				E656E9B53006F8670061EA22 /* ConstraintKit */,
+				E656E9B73006F8670061EA22 /* ExtensionsKit */,
+				E656E9B93006F8670061EA22 /* FontKit */,
+				E656E9BB3006F8670061EA22 /* OnboardingKit */,
+				E656E9BD3006F8670061EA22 /* SettingsKit */,
 			);
 			productName = Folium;
 			productReference = E65A97A12FD0597F001DDEEE /* Folium.app */;
@@ -366,14 +484,16 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				E6079C7E3006E7C80093F6A5 /* Boost */,
 				E6A00CC52FF967B900D2BD20 /* Cytrus */,
+				E6A2BF1E3004DF9F00415154 /* FFmpeg */,
 			);
 			name = Cytrus;
 			packageProductDependencies = (
-				E6A0118C2FF97CCD00D2BD20 /* SharedDependencies */,
-				E63BA5E12FF989F70062683C /* libseekable_format */,
-				E63BA5E32FF989F70062683C /* libzstd */,
-				E63BA5E52FF989F70062683C /* libzstdwrapper */,
+				E6A29C0D300455F700415154 /* SharedDependencies */,
+				E656E9A73006F6D60061EA22 /* libseekable_format */,
+				E656E9A93006F6D60061EA22 /* libzstd */,
+				E656E9AB3006F6D60061EA22 /* libzstdwrapper */,
 			);
 			productName = Cytrus;
 			productReference = E62C749B2FFCE20100D6760E /* libCytrus.a */;
@@ -396,7 +516,7 @@
 			);
 			name = Grape;
 			packageProductDependencies = (
-				E6F139D22FF04DD100F30081 /* SharedDependencies */,
+				E6A29C0F300455FB00415154 /* SharedDependencies */,
 			);
 			productName = Grape;
 			productReference = E6F139CA2FF04DB700F30081 /* libGrape.a */;
@@ -419,7 +539,7 @@
 			);
 			name = Kiwi;
 			packageProductDependencies = (
-				E6F48FB02FF6C0860085C59B /* SharedDependencies */,
+				E6A29C11300455FF00415154 /* SharedDependencies */,
 			);
 			productName = Kiwi;
 			productReference = E6F48FA82FF6C0700085C59B /* libKiwi.a */;
@@ -465,10 +585,10 @@
 			mainGroup = E65A97982FD0597F001DDEEE;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */,
-				E6979A472FE6ACA00055FA9D /* XCLocalSwiftPackageReference "../AntiqueKit" */,
-				E6F49CEC2FF6E4480085C59B /* XCLocalSwiftPackageReference "../../../Downloads/TPCircularBuffer" */,
-				E63BA5E02FF989F70062683C /* XCRemoteSwiftPackageReference "zstd" */,
+				E6A29C0A300455E200415154 /* XCLocalSwiftPackageReference "SharedDependencies" */,
+				E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */,
+				E656E9AD3006F7FF0061EA22 /* XCRemoteSwiftPackageReference "TPCircularBuffer" */,
+				E656E9B03006F8670061EA22 /* XCRemoteSwiftPackageReference "AntiqueKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E65A97A22FD0597F001DDEEE /* Products */;
@@ -551,6 +671,11 @@
 			target = E655CB792FE73488003DCE2B /* Tomato */;
 			targetProxy = E655CB852FE734FB003DCE2B /* PBXContainerItemProxy */;
 		};
+		E6AF262D3002E43C002D87C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6A00CC32FF967B900D2BD20 /* Cytrus */;
+			targetProxy = E6AF262C3002E43C002D87C9 /* PBXContainerItemProxy */;
+		};
 		E6F139D62FF04E1000F30081 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E6F139C92FF04DB700F30081 /* Grape */;
@@ -629,7 +754,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -650,7 +775,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "";
 				MARKETING_VERSION = 2.0;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -675,7 +802,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -696,7 +823,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "";
 				MARKETING_VERSION = 2.0;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -906,8 +1035,23 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					CPPHTTPLIB_OPENSSL_SUPPORT,
+					HAVE_COREAUDIO,
+					HAVE_OPENAL,
+					HAVE_SDL3,
+					ENABLE_SDL3,
+					ENABLE_VULKAN,
+					ENABLE_WEB_SERVICE,
+				);
 				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-Wno-shorten-64-to-32",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -916,13 +1060,16 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cytrus/System/include/bridge.h";
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					/opt/homebrew/include,
 					/usr/local/include,
-					"\"$(HOME)/VulkanSDK/1.4.350.1/macOS/include\"",
+					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include",
+					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include/glslang",
+					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include/vma",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cytrus/System/include";
@@ -936,8 +1083,22 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					CPPHTTPLIB_OPENSSL_SUPPORT,
+					HAVE_COREAUDIO,
+					HAVE_OPENAL,
+					HAVE_SDL3,
+					ENABLE_SDL3,
+					ENABLE_VULKAN,
+					ENABLE_WEB_SERVICE,
+				);
 				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-Wno-shorten-64-to-32",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -946,13 +1107,16 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cytrus/System/include/bridge.h";
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					/opt/homebrew/include,
 					/usr/local/include,
-					"\"$(HOME)/VulkanSDK/1.4.350.1/macOS/include\"",
+					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include",
+					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include/glslang",
+					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include/vma",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cytrus/System/include";
@@ -1148,22 +1312,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		E6979A472FE6ACA00055FA9D /* XCLocalSwiftPackageReference "../AntiqueKit" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../AntiqueKit;
-		};
-		E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */ = {
+		E6A29C0A300455E200415154 /* XCLocalSwiftPackageReference "SharedDependencies" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = SharedDependencies;
-		};
-		E6F49CEC2FF6E4480085C59B /* XCLocalSwiftPackageReference "../../../Downloads/TPCircularBuffer" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../Downloads/TPCircularBuffer;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E63BA5E02FF989F70062683C /* XCRemoteSwiftPackageReference "zstd" */ = {
+		E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jarrodnorwell/zstd";
 			requirement = {
@@ -1171,28 +1327,106 @@
 				kind = branch;
 			};
 		};
+		E656E9AD3006F7FF0061EA22 /* XCRemoteSwiftPackageReference "TPCircularBuffer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jarrodnorwell/TPCircularBuffer";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		E656E9B03006F8670061EA22 /* XCRemoteSwiftPackageReference "AntiqueKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jarrodnorwell/AntiqueKit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E63BA5E12FF989F70062683C /* libseekable_format */ = {
+		E64840A73002E668007BDFFA /* libseekable_format */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E63BA5E02FF989F70062683C /* XCRemoteSwiftPackageReference "zstd" */;
 			productName = libseekable_format;
 		};
-		E63BA5E32FF989F70062683C /* libzstd */ = {
+		E64840A93002E668007BDFFA /* libzstd */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E63BA5E02FF989F70062683C /* XCRemoteSwiftPackageReference "zstd" */;
 			productName = libzstd;
 		};
-		E63BA5E52FF989F70062683C /* libzstdwrapper */ = {
+		E64840AB3002E668007BDFFA /* libzstdwrapper */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E63BA5E02FF989F70062683C /* XCRemoteSwiftPackageReference "zstd" */;
 			productName = libzstdwrapper;
 		};
-		E655CB822FE7349A003DCE2B /* SharedDependencies */ = {
+		E656E9A13006F6CC0061EA22 /* libseekable_format */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */;
-			productName = SharedDependencies;
+			package = E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libseekable_format;
+		};
+		E656E9A33006F6CC0061EA22 /* libzstd */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstd;
+		};
+		E656E9A53006F6CC0061EA22 /* libzstdwrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstdwrapper;
+		};
+		E656E9A73006F6D60061EA22 /* libseekable_format */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libseekable_format;
+		};
+		E656E9A93006F6D60061EA22 /* libzstd */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstd;
+		};
+		E656E9AB3006F6D60061EA22 /* libzstdwrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstdwrapper;
+		};
+		E656E9AE3006F7FF0061EA22 /* TPCircularBuffer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9AD3006F7FF0061EA22 /* XCRemoteSwiftPackageReference "TPCircularBuffer" */;
+			productName = TPCircularBuffer;
+		};
+		E656E9B13006F8670061EA22 /* AntiqueKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9B03006F8670061EA22 /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = AntiqueKit;
+		};
+		E656E9B33006F8670061EA22 /* ColourKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9B03006F8670061EA22 /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = ColourKit;
+		};
+		E656E9B53006F8670061EA22 /* ConstraintKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9B03006F8670061EA22 /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = ConstraintKit;
+		};
+		E656E9B73006F8670061EA22 /* ExtensionsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9B03006F8670061EA22 /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = ExtensionsKit;
+		};
+		E656E9B93006F8670061EA22 /* FontKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9B03006F8670061EA22 /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = FontKit;
+		};
+		E656E9BB3006F8670061EA22 /* OnboardingKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9B03006F8670061EA22 /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = OnboardingKit;
+		};
+		E656E9BD3006F8670061EA22 /* SettingsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9B03006F8670061EA22 /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = SettingsKit;
 		};
 		E6979A482FE6ACA10055FA9D /* AntiqueKit */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1226,23 +1460,36 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = SharedDependencies;
 		};
-		E6A0118C2FF97CCD00D2BD20 /* SharedDependencies */ = {
+		E6A01B8F300444F800804CD4 /* SharedDependencies */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E6A29C0B300455E200415154 /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SharedDependencies;
+		};
+		E6A29C0D300455F700415154 /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6A29C0A300455E200415154 /* XCLocalSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E6A29C0F300455FB00415154 /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6A29C0A300455E200415154 /* XCLocalSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E6A29C11300455FF00415154 /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6A29C0A300455E200415154 /* XCLocalSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E6A29C133004560400415154 /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6A29C0A300455E200415154 /* XCLocalSwiftPackageReference "SharedDependencies" */;
 			productName = SharedDependencies;
 		};
 		E6C462C32FE4B0AA004E5B57 /* SharedDependencies */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = SharedDependencies;
-		};
-		E6F139D22FF04DD100F30081 /* SharedDependencies */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */;
-			productName = SharedDependencies;
-		};
-		E6F48FB02FF6C0860085C59B /* SharedDependencies */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E6C462C22FE4B0AA004E5B57 /* XCLocalSwiftPackageReference "SharedDependencies" */;
 			productName = SharedDependencies;
 		};
 		E6F49CED2FF6E4480085C59B /* TPCircularBuffer */ = {

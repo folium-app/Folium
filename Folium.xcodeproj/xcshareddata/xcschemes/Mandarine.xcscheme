@@ -17,6 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E69CA8F42FDC9EAF00BCD2F9"
                BuildableName = "libMandarine.a"
+               BlueprintName = "Mandarine"
                ReferencedContainer = "container:Folium.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -52,6 +53,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E69CA8F42FDC9EAF00BCD2F9"
             BuildableName = "libMandarine.a"
+            BlueprintName = "Mandarine"
             ReferencedContainer = "container:Folium.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

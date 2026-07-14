@@ -95,7 +95,7 @@ class MandarineController : ControlsController {
         // startConfiguration.image = UIImage(systemName: "plus")?
         //     .applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .medium))
         
-        let startConfiguration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "ellipsis"), nil, .medium)
+        let startConfiguration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "plus"), nil, .medium)
         startButton = .button(with: startConfiguration, actions: ({ _ in
             self.press(button: .start)
         }, { _ in

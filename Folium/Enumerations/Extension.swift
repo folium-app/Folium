@@ -8,6 +8,8 @@
 import Foundation
 
 enum Extension : String, @unchecked Sendable {
+    case `3ds` = "3ds"
+    case cci = "cci"
     case cue = "cue"
     case gb = "gb"
     case gbc = "gbc"

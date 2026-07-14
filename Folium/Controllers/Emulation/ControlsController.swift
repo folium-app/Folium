@@ -5,12 +5,23 @@
 //  Created by Jarrod Norwell on 23/6/2026.
 //
 
+import Cytrus
 import Grape
 import Kiwi
 import Mandarine
 import Tomato
 
 class ControlsController : ScreensController {
+    // MARK: Cytrus (3DS)
+    func press(button: CytrusButton, using cytrusSystem: CytrusSystem) {
+        cytrusSystem.press(button: button)
+    }
+    
+    func release(button: CytrusButton, using cytrusSystem: CytrusSystem) {
+        cytrusSystem.release(button: button)
+    }
+    
+    
     // MARK: Grape (DS/DSi)
     func press(button: GrapeButton, using grapeSystem: GrapeSystem) {
         grapeSystem.press(button: button)

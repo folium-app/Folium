@@ -106,7 +106,11 @@ std::shared_ptr<Common::DynamicLibrary> OpenLibrary(
 #endif
     auto library = std::make_shared<Common::DynamicLibrary>();
 #ifdef __APPLE__
+#if TARGET_OS_IPHONE
+    const std::string filename = "@rpath/MoltenVK.framework/MoltenVK";
+#else
     const std::string filename = Common::DynamicLibrary::GetLibraryName("vulkan");
+#endif
     if (!library->Load(filename)) {
         // Fall back to directly loading bundled MoltenVK library.
         const std::string mvk_filename = Common::DynamicLibrary::GetLibraryName("MoltenVK");

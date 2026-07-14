@@ -17,6 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "SharedDependencies"
                BuildableName = "SharedDependencies"
+               BlueprintName = "SharedDependencies"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -52,6 +53,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "SharedDependencies"
             BuildableName = "SharedDependencies"
+            BlueprintName = "SharedDependencies"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>

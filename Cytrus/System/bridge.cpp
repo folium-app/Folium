@@ -1,0 +1,306 @@
+//
+//  bridge.cpp
+//  Cytrus
+//
+//  Created by Jarrod Norwell on 13/7/2026.
+//
+
+#include "bridge.h"
+#include "configuration.h"
+#include "emu_window_vk.h"
+#include "input_manager.h"
+
+#include "core/core.h"
+#include "core/frontend/applets/default_applets.h"
+#include "core/hle/service/am/am.h"
+#include "core/loader/loader.h"
+#include "core/loader/smdh.h"
+#include "network/network.h"
+
+#include <dlfcn.h>
+#include <Metal.hpp>
+#define SDL_MAIN_HANDLED
+#include <SDL3/SDL_main.h>
+
+// MARK: SDMH BEGIN
+namespace {
+    std::vector<uint8_t> GetSMDHData(const std::unique_ptr<Loader::AppLoader>& loader) {
+        if (!loader) {
+            printf("invalid loader\n");
+            return std::vector<uint8_t>(0, 0);
+        }
+        
+        u64 program_id{0};
+        loader->ReadProgramId(program_id);
+        
+        std::vector<uint8_t> smdh = [program_id, &loader]() -> std::vector<u8> {
+            std::vector<uint8_t> original_smdh;
+            loader->ReadIcon(original_smdh);
+            
+            if (program_id < 0x00040000'00000000 || program_id > 0x00040000'FFFFFFFF)
+                return original_smdh;
+            
+            std::string update_path = Service::AM::GetTitleContentPath(Service::FS::MediaType::SDMC, program_id + 0x0000000E'00000000);
+            
+            if (!FileUtil::Exists(update_path))
+                return original_smdh;
+            
+            std::unique_ptr<Loader::AppLoader> update_loader = Loader::GetLoader(update_path);
+            
+            if (!update_loader)
+                return original_smdh;
+            
+            std::vector<uint8_t> update_smdh;
+            update_loader->ReadIcon(update_smdh);
+            return update_smdh;
+        }();
+        
+        return smdh;
+    }
+    
+    std::vector<uint16_t> GetIcon(std::vector<uint8_t> smdh_data) {
+        if (!Loader::IsValidSMDH(smdh_data)) {
+            printf("invalid smdh\n");
+            return std::vector<uint16_t>(0, 0);
+        }
+        
+        Loader::SMDH smdh;
+        memcpy(&smdh, smdh_data.data(), sizeof(Loader::SMDH));
+        
+        std::vector<uint16_t> icon_data = smdh.GetIcon(true);
+        return icon_data;
+    }
+    
+    
+    std::u16string Publisher(std::vector<uint8_t> smdh_data) {
+        Loader::SMDH::TitleLanguage language = Loader::SMDH::TitleLanguage::English;
+        
+        if (!Loader::IsValidSMDH(smdh_data))
+            return {};
+        
+        Loader::SMDH smdh;
+        memcpy(&smdh, smdh_data.data(), sizeof(Loader::SMDH));
+        
+        char16_t* publisher = reinterpret_cast<char16_t*>(smdh.titles[static_cast<int>(language)].publisher.data());
+        return publisher;
+    }
+    
+    std::string Regions(std::vector<uint8_t> smdh_data) {
+        if (!Loader::IsValidSMDH(smdh_data))
+            return "Invalid region";
+        
+        Loader::SMDH smdh;
+        memcpy(&smdh, smdh_data.data(), sizeof(Loader::SMDH));
+        
+        using GameRegion = Loader::SMDH::GameRegion;
+        static const std::map<GameRegion, const char*> regions_map = {
+            {GameRegion::Japan, "Japan"},   {GameRegion::NorthAmerica, "North America"},
+            {GameRegion::Europe, "Europe"}, {GameRegion::Australia, "Australia"},
+            {GameRegion::China, "China"},   {GameRegion::Korea, "Korea"},
+            {GameRegion::Taiwan, "Taiwan"}};
+        
+        std::vector<GameRegion> regions = smdh.GetRegions();
+        if (regions.empty())
+            return "Invalid region";
+        
+        const bool region_free = std::all_of(regions_map.begin(), regions_map.end(), [&regions](const auto& it) {
+            return std::find(regions.begin(), regions.end(), it.first) != regions.end();
+        });
+        
+        if (region_free)
+            return "Region Free";
+        
+        const std::string separator = ", ";
+        std::string result = regions_map.at(regions.front());
+        for (auto region = ++regions.begin(); region != regions.end(); ++region)
+            result += separator + regions_map.at(*region);
+        
+        return result;
+    }
+    
+    std::u16string Title(std::vector<uint8_t> smdh_data) {
+        Loader::SMDH::TitleLanguage language = Loader::SMDH::TitleLanguage::English;
+        
+        if (!Loader::IsValidSMDH(smdh_data))
+            return {};
+        
+        Loader::SMDH smdh;
+        memcpy(&smdh, smdh_data.data(), sizeof(Loader::SMDH));
+        
+        std::u16string title{reinterpret_cast<char16_t*>(smdh.titles[static_cast<int>(language)].long_title.data())};
+        return title;
+    }
+    
+    bool IsSystemTitle(std::string physical_name) {
+        std::unique_ptr<Loader::AppLoader> loader = Loader::GetLoader(physical_name);
+        if (!loader)
+            return false;
+        
+        u64 program_id{0};
+        loader->ReadProgramId(program_id);
+        return ((program_id >> 32) & 0xFFFFFFFF) == 0x00040010;
+    }
+}
+// MARK: SDMH END
+
+struct Container {
+    std::jthread thread;
+    std::atomic<bool> paused, running;
+    std::mutex mutex;
+    std::condition_variable_any cv;
+    
+    CA::MetalLayer* layer;
+    CA::MetalLayer* secondary_layer;
+    std::shared_ptr<Common::DynamicLibrary> library;
+    std::unique_ptr<EmulationWindow_Vulkan> window, secondary_window;
+    double height, width;
+    double secondary_height, secondary_width;
+} cntnr;
+
+
+void cytrus::print_about(void) {
+    printf("Welcome to Cytrus\n");
+    printf("Nintendo 3DS emulator based on Azahar\n");
+}
+
+
+void cytrus::initialize_logging(void) {
+    Common::Log::Initialize();
+    Common::Log::SetColorConsoleBackendEnabled(false);
+    Common::Log::Start();
+    
+    Common::Log::Filter filter;
+    filter.ParseFilterString(Settings::values.log_filter.GetValue());
+    Common::Log::SetGlobalFilter(filter);
+    
+    Config{};
+    
+    Settings::values.aspect_ratio.SetValue(Settings::AspectRatio::Stretch);
+    Settings::values.layout_option.SetValue(Settings::LayoutOption::SeparateWindows);
+    Settings::values.use_cpu_jit.SetValue(false);
+    Settings::values.use_shader_jit.SetValue(false);
+    
+    cntnr.library = std::make_shared<Common::DynamicLibrary>(dlopen("@rpath/MoltenVK.framework/MoltenVK", RTLD_NOW));
+    
+    SDL_SetMainReady();
+}
+
+
+static uint16_t empty[48 * 48]{};
+void* cytrus::icon_from_disc(std::string path) {
+    auto loader = Loader::GetLoader(path);
+    auto sdmh = GetSMDHData(loader);
+    auto icon = GetIcon(sdmh);
+    
+    if (icon.size() > 0)
+        return icon.data();
+    else
+        return empty;
+}
+
+
+void cytrus::insert_disc(std::string path) {
+    Core::System& system{Core::System::GetInstance()};
+    
+    cntnr.window.release();
+    cntnr.window = std::make_unique<EmulationWindow_Vulkan>(cntnr.layer, false, cntnr.library, cntnr.height, cntnr.width);
+    
+    cntnr.secondary_window.release();
+    cntnr.secondary_window = std::make_unique<EmulationWindow_Vulkan>(cntnr.secondary_layer, true, cntnr.library,
+                                                                      cntnr.secondary_height, cntnr.secondary_width);
+    
+    uint64_t program_id{0};
+    FileUtil::SetCurrentRomPath(path);
+    auto loader = Loader::GetLoader(path);
+    if (loader)
+        loader->ReadProgramId(program_id);
+    
+    Frontend::RegisterDefaultApplets(system);
+    
+    system.ApplySettings();
+    Settings::LogSettings();
+    
+    InputManager::Init();
+    Network::Init();
+    
+    void(system.Load(*cntnr.window, path, cntnr.secondary_window.get()));
+}
+
+
+bool cytrus::is_paused(bool change, bool set_paused) {
+    if (change)
+        cntnr.paused.store(set_paused);
+    return cntnr.paused.load();
+}
+
+bool cytrus::is_running(bool change, bool set_running) {
+    if (change)
+        cntnr.running.store(set_running);
+    return cntnr.running.load();
+}
+
+
+void cytrus::start(void) {
+    Core::System& system{Core::System::GetInstance()};
+    
+    cntnr.thread = std::jthread([&](std::stop_token token) {
+        while (cntnr.running.load()) {
+            if (cntnr.paused.load())
+                continue;
+            
+            void(system.RunLoop());
+        }
+    });
+}
+
+
+void cytrus::stop(void) {
+    cntnr.paused.store(false);
+    cntnr.running.store(false);
+    
+    Core::System& system{Core::System::GetInstance()};
+    system.RequestShutdown();
+    system.Shutdown();
+    
+    InputManager::Shutdown();
+    Network::Shutdown();
+}
+
+
+void cytrus::set_screens(void* layer, double height, double width, bool secondary) {
+    if (secondary) {
+        cntnr.secondary_layer = static_cast<CA::MetalLayer*>(layer);
+        cntnr.secondary_height = height;
+        cntnr.secondary_width = width;
+    } else {
+        cntnr.layer = static_cast<CA::MetalLayer*>(layer);
+        cntnr.height = height;
+        cntnr.width = width;
+    }
+}
+
+
+void cytrus::press_button(int button) {
+    if (auto handler = InputManager::ButtonHandler())
+        handler->PressKey(button);
+}
+
+void cytrus::release_button(int button) {
+    if (auto handler = InputManager::ButtonHandler())
+        handler->ReleaseKey(button);
+}
+
+
+void cytrus::touch_began(float x, float y) {
+    if (auto bottom = cntnr.secondary_window.get())
+        bottom->TouchPressed(x, y);
+}
+
+void cytrus::touch_ended(void) {
+    if (auto bottom = cntnr.secondary_window.get())
+        bottom->TouchReleased();
+}
+
+void cytrus::touch_moved(float x, float y) {
+    cytrus::touch_began(x, y);
+}
