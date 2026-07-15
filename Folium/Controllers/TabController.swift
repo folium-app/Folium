@@ -68,7 +68,7 @@ class TabController : UITabBarController {
             
             tabs = old
         } else {
-            var viewControllers: [UIViewController]? = viewControllers
+            let viewControllers: [UIViewController]? = viewControllers
             if var viewControllers {
                 viewControllers[.emulationController] = controller
                 

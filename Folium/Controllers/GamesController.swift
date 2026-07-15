@@ -303,8 +303,20 @@ class GamesController : UICollectionViewController {
                 })
             ]
             
+            let appIconSystemName: String = if #available(iOS 26.0, *) {
+                "app.grid"
+            } else {
+                "app.dashed"
+            }
+            
+            let automaticMigrationSystemName: String = if #available(iOS 26.0, *) {
+                "arrow.forward.folder.fill"
+            } else {
+                "folder.fill.badge.gearshape"
+            }
+            
             let cells: [CellConfiguration] = [
-                CellConfiguration(image: UIImage(systemName: "app.grid"), labels: (
+                CellConfiguration(image: UIImage(systemName: appIconSystemName), labels: (
                     LabelConfiguration(alignment: .left,
                                        color: .label,
                                        font: UIFont.regular(from: .headline),
@@ -446,7 +458,7 @@ class GamesController : UICollectionViewController {
                                        font: UIFont.regular(from: .subheadline),
                                        text: "Added support for iOS and iPadOS 18 and above, improving device support across the board")
                 )),
-                CellConfiguration(image: UIImage(systemName: "arrow.forward.folder.fill"), labels: (
+                CellConfiguration(image: UIImage(systemName: automaticMigrationSystemName), labels: (
                     LabelConfiguration(alignment: .left,
                                        color: .label,
                                        font: UIFont.regular(from: .headline),

@@ -76,7 +76,7 @@ struct LayoutManager {
         let header: NSCollectionLayoutBoundarySupplementaryItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: boundaryItemFullWidthSize,
                                                                                                               elementKind: UICollectionView.elementKindSectionHeader,
                                                                                                               alignment: .top)
-        header.pinToVisibleBounds = true
+        header.pinToVisibleBounds = false
         
         let section: NSCollectionLayoutSection = NSCollectionLayoutSection(group: group)
         section.boundarySupplementaryItems = [header]

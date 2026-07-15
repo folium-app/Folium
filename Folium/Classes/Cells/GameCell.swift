@@ -41,6 +41,7 @@ class GameCell : UICollectionViewCell {
             return
         }
         visualEffectView.translatesAutoresizingMaskIntoConstraints = false
+        visualEffectView.clipsToBounds = true
         contentView.addSubview(visualEffectView)
         
         visualEffectView.top.constraint(equalTo: contentView.salg.top).isActive = true
