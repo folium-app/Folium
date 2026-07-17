@@ -115,6 +115,11 @@ class SettingsController : UICollectionViewController {
         navigationItem.style = .browser
         view.backgroundColor = .systemBackground
         
+        if #available(iOS 26.0, *) {
+            collectionView.bottomEdgeEffect.style = .soft
+            collectionView.topEdgeEffect.style = .soft
+        }
+        
         var configuration: UICollectionLayoutListConfiguration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
         configuration.headerMode = .supplementary
         configuration.trailingSwipeActionsConfigurationProvider = { indexPath in
@@ -378,7 +383,24 @@ extension SettingsController : SettingDelegate {
         case .application:
             break
         case .cytrus:
-            break
+            Task {
+                switch item {
+                case let boolSetting as BoolSetting:
+                    boolSetting.value = UserDefaults.standard.bool(forKey: boolSetting.key)
+                case let inputNumberSetting as InputNumberSetting:
+                    inputNumberSetting.value = UserDefaults.standard.double(forKey: inputNumberSetting.key)
+                case let inputStringSetting as InputStringSetting:
+                    inputStringSetting.value = UserDefaults.standard.string(forKey: inputStringSetting.key)
+                case let segmentedSetting as SegmentedSetting:
+                    segmentedSetting.selectedValue = UserDefaults.standard.value(forKey: segmentedSetting.key)
+                case let stepperSetting as StepperSetting:
+                    stepperSetting.value = UserDefaults.standard.double(forKey: stepperSetting.key)
+                case let selectionSetting as SelectionSetting:
+                    selectionSetting.selectedValue = UserDefaults.standard.value(forKey: selectionSetting.key)
+                default:
+                    break
+                }
+            }
         case .grape:
             break
         case .kiwi:

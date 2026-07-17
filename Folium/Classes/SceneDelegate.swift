@@ -146,6 +146,48 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func initializeUserDefaultsWithDefaultValues() {
         let systemsWithDefaultValues: [System : [String : Any]] = [
+            .cytrus : [
+                "cpuJIT" : 0,
+                "cpuClockPercentage" : 100,
+                "new3DS" : 1,
+                "lleApplets" : true,
+                "deterministicAsyncOperations" : false,
+                "requiredOnlineLLEModules" : false,
+                
+                "logLevel" : "Info",
+                
+                "stereoscopic3D" : 0,
+                "`3DFactor" : 0,
+                "swapEyes3D" : false,
+                
+                "spirvOptimizer" : true,
+                "asyncPresentation" : true,
+                "vsync" : false,
+                "textureFilter" : 0,
+                "textureSampling" : 0,
+                
+                "upscaleFactor" : 0,
+                
+                "spirvShaderGen" : true,
+                "asyncShaderCompilation" : false,
+                "hardwareShaders" : 1,
+                "diskShaderCache" : true,
+                "shaderAccurateMultiplication" : true,
+                "shaderJIT" : false,
+                
+                "soundEmulation" : 0,
+                "soundStretching" : true,
+                "realtimeSound" : false,
+                "volume" : 100,
+                "soundOutput" : 6,
+                "soundInput" : 6,
+                
+                "clockType" : 0,
+                "stepsPerHour" : Double(UInt16.max),
+                
+                "systemRegion" : -1,
+                "regionFreePatch" : true
+            ],
             .mandarine : [
                 "widescreen" : false,
                 "forceWidescreen" : false,

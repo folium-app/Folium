@@ -175,6 +175,8 @@ void cytrus::initialize_logging(void) {
     
     Config{};
     
+    Settings::values.input_type.SetValue(AudioCore::InputType::CoreAudio);
+    Settings::values.output_type.SetValue(AudioCore::SinkType::CoreAudio);
     Settings::values.aspect_ratio.SetValue(Settings::AspectRatio::Stretch);
     Settings::values.layout_option.SetValue(Settings::LayoutOption::SeparateWindows);
     Settings::values.use_cpu_jit.SetValue(false);

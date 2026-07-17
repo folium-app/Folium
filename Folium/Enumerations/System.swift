@@ -49,7 +49,8 @@ enum System : String, CaseIterable, Codable, Hashable, Sendable {
         case .cytrus:
             [
                 .`3ds`,
-                .cci
+                .cci,
+                .cxi
             ]
         case .grape:
             [

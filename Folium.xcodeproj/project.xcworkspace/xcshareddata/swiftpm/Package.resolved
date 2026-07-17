@@ -1,5 +1,5 @@
 {
-  "originHash" : "9fe53643043c11436746ae34b0d440277b84faa354a094d0d2665c8c0837e0b8",
+  "originHash" : "1f68fbdee020566975b06821c93fa4bd342fdafc45447ce35de3c6ad412a4087",
   "pins" : [
     {
       "identity" : "antiquekit",
@@ -7,7 +7,7 @@
       "location" : "https://github.com/jarrodnorwell/AntiqueKit",
       "state" : {
         "branch" : "main",
-        "revision" : "967a0cf68e329ec99a771fe47ff92a36c80acf2d"
+        "revision" : "3b35ec99797467a249c1ee269a58b93ca15adf38"
       }
     },
     {

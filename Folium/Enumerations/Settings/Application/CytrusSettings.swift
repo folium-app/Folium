@@ -220,7 +220,7 @@ enum CytrusSettingsItems : String, CaseIterable {
                              title: title,
                              details: details,
                              values: [
-                                "Interp" : 0,
+                                "JIT-less" : 0,
                                 "JIT" : 1
                              ],
                              selectedValue: UserDefaults.standard.value(forKey: rawValue),
@@ -398,10 +398,7 @@ enum CytrusSettingsItems : String, CaseIterable {
                              title: title,
                              details: details,
                              values: [
-                                "Automatic" : 0,
-                                "Off" : 1,
-                                "OpenAL" : 3,
-                                "SDL3" : 4
+                                "CoreAudio" : 6
                              ],
                              selectedValue: UserDefaults.standard.value(forKey: rawValue),
                              action: {},
@@ -411,10 +408,7 @@ enum CytrusSettingsItems : String, CaseIterable {
                              title: title,
                              details: details,
                              values: [
-                                "Automatic" : 0,
-                                "Off" : 1,
-                                "Static" : 2,
-                                "OpenAL" : 4
+                                "CoreAudio" : 6
                              ],
                              selectedValue: UserDefaults.standard.value(forKey: rawValue),
                              action: {},

@@ -100,8 +100,8 @@ class GamesController : UICollectionViewController {
                             var types: [UTType] = []
                             switch self.selectedSnapshot {
                             case .cytrus:
-                                if let `3ds`: UTType = .`3ds`, let cci: UTType = .cci {
-                                    types.append(contentsOf: [`3ds`, cci])
+                                if let `3ds`: UTType = .`3ds`, let cci: UTType = .cci, let cxi: UTType = .cxi {
+                                    types.append(contentsOf: [`3ds`, cci, cxi])
                                 }
                             case .grape:
                                 if let nds: UTType = .nds {
@@ -712,7 +712,12 @@ extension GamesController : UIDocumentPickerDelegate, UINavigationControllerDele
             }
         }
         
-        controller.dismiss(animated: true)
+        
+        controller.dismiss(animated: true) {
+            Task {
+                await self.populateGames()
+            }
+        }
     }
 }
 

@@ -5,6 +5,7 @@
 //  Created by Jarrod Norwell on 5/7/2026.
 //
 
+import AVFoundation
 import Foundation
 import MetalKit
 
@@ -92,10 +93,24 @@ public actor CytrusSystem {
     }
     
     public func start() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print(error, error.localizedDescription)
+        }
+        
         cytrus.start()
     }
     
     public func stop() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch {
+            print(error, error.localizedDescription)
+        }
+        
         cytrus.stop()
     }
     
