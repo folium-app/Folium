@@ -12,7 +12,7 @@ import UIKit
 
 import Mandarine
 
-class MandarineController : ControlsController {
+class MandarineMPController : ControlsController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,40 +35,7 @@ class MandarineController : ControlsController {
         
         let settingsConfiguration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "ellipsis"), nil, .medium)
         settingsButton = .button(with: settingsConfiguration,
-                                 actions: ({ _ in }, { _ in }), UIMenu(preferredElementSize: .medium, children: [
-                                    UIDeferredMenuElement.uncached { completion in
-                                        guard let mandarineGame: MandarineGame = self.game as? MandarineGame else {
-                                            completion([])
-                                            return
-                                        }
-                                        
-                                        Task {
-                                            completion([
-                                                UIAction.async(title: await mandarineGame.mandarineSystem.paused ? "Resume" : "Pause",
-                                                               image: UIImage(systemName: await mandarineGame.mandarineSystem.paused ? "play.fill" : "pause.fill")) { action in
-                                                                   if await mandarineGame.mandarineSystem.paused {
-                                                                       await mandarineGame.mandarineSystem.set(change: true, isPaused: false)
-                                                                   } else {
-                                                                       await mandarineGame.mandarineSystem.set(change: true, isPaused: true)
-                                                                   }
-                                                },
-                                                UIAction.async(title: "Stop & Exit", image: UIImage(systemName: "stop.fill"), attributes: .destructive) { action in
-                                                    await mandarineGame.mandarineSystem.stop()
-                                                    
-                                                    self.game = nil
-                                                    
-                                                    if let tabController: TabController = self.tabBarController as? TabController {
-                                                        tabController.game = nil
-                                                        
-                                                        tabController.selectedIndex = .gamesController
-                                                        tabController.switchEmulationController(with: NoEmulationController())
-                                                        tabController.switchSettingsSnapshot(for: .application)
-                                                    }
-                                                }
-                                             ])
-                                        }
-                                    }
-                                 ]))
+                                 actions: ({ _ in }, { _ in }), UIMenu(preferredElementSize: .medium, children: []))
         guard let settingsButton else {
             return
         }
@@ -118,10 +85,10 @@ class MandarineController : ControlsController {
             self.release(button: .l3)
         }
         leftThumbstickView.didDrag = { point in
-            // self.drag(thumbstick: .left, value: point)
+            //self.drag(thumbstick: .left, value: point)
         }
         leftThumbstickView.didUndrag = {
-            // self.drag(thumbstick: .left, value: (0, 0))
+            //self.drag(thumbstick: .left, value: (0, 0))
         }
         view.addSubview(leftThumbstickView)
         
@@ -138,10 +105,10 @@ class MandarineController : ControlsController {
             self.release(button: .r3)
         }
         rightThumbstickView.didDrag = { point in
-            // self.drag(thumbstick: .right, value: point)
+            //self.drag(thumbstick: .right, value: point)
         }
         rightThumbstickView.didUndrag = {
-            // self.drag(thumbstick: .left, value: (0, 0))
+            //self.drag(thumbstick: .left, value: (0, 0))
         }
         view.addSubview(rightThumbstickView)
         
@@ -281,6 +248,7 @@ class MandarineController : ControlsController {
         stackView.addArrangedSubview(settingsButton)
         stackView.addArrangedSubview(startButton)
         
+        system = .mandarine
         switch system {
         case .mandarine:
             configureConstraintsForMandarine()
@@ -308,128 +276,28 @@ class MandarineController : ControlsController {
         view.addConstraints(commonConstraints)
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        guard let mandarineGame: MandarineGame = game as? MandarineGame else {
-            return
-        }
-        
-        Task {
-            if await mandarineGame.mandarineSystem.running {
-                return
-            }
-            
-            await mandarineGame.mandarineSystem.insertDisc(at: mandarineGame.details.url)
-            
-            await mandarineGame.mandarineSystem.set(change: true, isRunning: true)
-            
-            await mandarineGame.mandarineSystem.setContext(context: Unmanaged.passUnretained(self).toOpaque())
-            mandarineGame.mandarineSystem.videoBuffer15Bit { context, pointer in
-                guard let context, let pointer else {
-                    return
-                }
-                
-                let viewController: MandarineController = Unmanaged<MandarineController>.fromOpaque(context).takeUnretainedValue()
-                
-                guard let imageView: UIImageView = viewController.primaryRenderingView as? UIImageView,
-                      let secondaryImageView: UIImageView = viewController.primaryBackgroundRenderingView as? UIImageView,
-                      let game: MandarineGame = viewController.game as? MandarineGame else {
-                    return
-                }
-                
-                let cgImage: CGImage? = CGImage.mandarine15Bit(pointer, 1024, 512)
-                
-                Task { @MainActor in
-                    let height: Int32 = await game.mandarineSystem.framebufferHeight
-                    let width: Int32 = await game.mandarineSystem.framebufferWidth
-                    
-                    guard let cgImage,
-                          let cropped: CGImage = cgImage.cropping(to: CGRectMake(CGFloat(await game.mandarineSystem.framebufferStartX),
-                                                                                 CGFloat(await game.mandarineSystem.framebufferStartY),
-                                                                                 CGFloat(width),
-                                                                                 CGFloat(height))) else {
-                        return
-                    }
-                    
-                    let image: UIImage = UIImage(cgImage: cropped)
-                    
-                    imageView.image = image
-                    secondaryImageView.image = imageView.image
-                    
-                    viewController.send(frame: image, system: .mandarine)
-                }
-            }
-            
-            mandarineGame.mandarineSystem.videoBuffer24Bit { context, pointer in
-                guard let context, let pointer else {
-                    return
-                }
-                
-                let viewController: MandarineController = Unmanaged<MandarineController>.fromOpaque(context).takeUnretainedValue()
-                
-                guard let imageView: UIImageView = viewController.primaryRenderingView as? UIImageView,
-                      let secondaryImageView: UIImageView = viewController.primaryBackgroundRenderingView as? UIImageView,
-                      let game: MandarineGame = viewController.game as? MandarineGame else {
-                    return
-                }
-                
-                let cgImage: CGImage? = CGImage.mandarine24Bit(pointer, 1024, 512)
-                
-                Task { @MainActor in
-                    let height: Int32 = await game.mandarineSystem.framebufferHeight
-                    let width: Int32 = await game.mandarineSystem.framebufferWidth
-                    
-                    guard let cgImage,
-                          let cropped: CGImage = cgImage.cropping(to: CGRectMake(CGFloat(await game.mandarineSystem.framebufferStartX),
-                                                                                 CGFloat(await game.mandarineSystem.framebufferStartY),
-                                                                                 CGFloat(width),
-                                                                                 CGFloat(height))) else {
-                        return
-                    }
-                    
-                    let image: UIImage = UIImage(cgImage: cropped)
-                    
-                    imageView.image = image
-                    secondaryImageView.image = imageView.image
-                    
-                    viewController.send(frame: image, system: .mandarine)
-                }
-            }
-            
-            await mandarineGame.mandarineSystem.start()
-        }
-    }
-    
     func press(button: MandarineButton) {
-        guard let mandarineGame: MandarineGame = game as? MandarineGame else {
-            return
-        }
-        
-        press(button: button, using: mandarineGame.mandarineSystem)
+        send(button: button, pressed: true, system: system)
     }
     
     func release(button: MandarineButton) {
-        guard let mandarineGame: MandarineGame = game as? MandarineGame else {
-            return
-        }
-        
-        release(button: button, using: mandarineGame.mandarineSystem)
+        send(button: button, pressed: false, system: system)
     }
     
-    override nonisolated func receive(button: MandarineButton, pressed: Bool) {
-        guard let mandarineGame: MandarineGame = game as? MandarineGame else {
-            return
-        }
-        
-        if pressed {
-            press(button: button, index: 2, using: mandarineGame.mandarineSystem)
-        } else {
-            release(button: button, index: 2, using: mandarineGame.mandarineSystem)
+    override nonisolated func receive(frame: UIImage) {
+        Task { @MainActor in
+            guard let primaryRenderingView: UIImageView = primaryRenderingView as? UIImageView,
+                  let primaryBackgroundRenderingView: UIImageView = primaryBackgroundRenderingView as? UIImageView else {
+                return
+            }
+            
+            primaryRenderingView.image = frame
+            primaryBackgroundRenderingView.image = primaryRenderingView.image
         }
     }
 }
 
-extension MandarineController {
+extension MandarineMPController {
     func reconfigureConstraintsForMandarine() {
         guard let stackView: UIStackView,
               let selectButton: UIButton, let startButton: UIButton,

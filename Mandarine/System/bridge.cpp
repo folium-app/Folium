@@ -442,12 +442,12 @@ void mandarine::video_buffer_callback_24bit(mandarine::VideoBufferCallback24Bit 
 }
 
 
-void mandarine::press_button(std::string button) {
-    cppMandarine.controller->press(button, 1);
+void mandarine::press_button(std::string button, int index) {
+    cppMandarine.controller->press(button, index);
 }
 
-void mandarine::release_button(std::string button) {
-    cppMandarine.controller->release(button, 1);
+void mandarine::release_button(std::string button, int index) {
+    cppMandarine.controller->release(button, index);
 }
 
 void mandarine::drag_thumbstick(std::string thumbstick, uint8_t value) {

@@ -15,8 +15,15 @@ import UIKit
 
 import Tomato
 
+enum HostingOrJoiningState {
+    case disconnected,
+         hosting,
+         joined
+}
+
 class GamesController : UICollectionViewController {
     var importFileType: ImportFileType = .game
+    var hostingOrJoiningState: HostingOrJoiningState = .disconnected
     var selectedSnapshot: SelectedSnapshot = .cytrus {
         didSet {
             guard let dataSource: UICollectionViewDiffableDataSource<String, Game> else {
@@ -189,36 +196,41 @@ class GamesController : UICollectionViewController {
                                   return
                               }
                         
-                        let barButtonItem: UIBarButtonItem? = self.navigationItem.trailingItemGroups.last?.barButtonItems.first
-                        
-                        let hostingOrJoined: Bool = session.connectedPeers.count > 0
-                        
-                        let leaveAction: UIAction = UIAction(title: "Leave", image: UIImage(systemName: "network.slash"), attributes: hostingOrJoined ? .destructive : [.destructive, .disabled]) { handler in
+                        let leaveAction: UIAction = UIAction(title: "Leave",
+                                                             image: UIImage(systemName: "network.slash"),
+                                                             attributes: .destructive) { handler in
+                            self.hostingOrJoiningState = .disconnected
                             advertiser.stopAdvertisingPeer()
                             browser.stopBrowsingForPeers()
-                            session.disconnect()
-                            if let barButtonItem: UIBarButtonItem {
-                                barButtonItem.tintColor = nil
-                            }
                         }
                         
-                        let hostAction: UIAction = UIAction(title: hostingOrJoined ? "Hosting" : "Host", image: UIImage(systemName: "wave.3.up"), attributes: hostingOrJoined ? .disabled : []) { handler in
+                        let hostAction: UIAction = UIAction(title: self.hostingOrJoiningState == .hosting ? "Hosting" : "Host",
+                                                            image: UIImage(systemName: "wave.3.up"),
+                                                            attributes: self.hostingOrJoiningState == .hosting ? .disabled : []) { handler in
+                            self.hostingOrJoiningState = .hosting
                             advertiser.startAdvertisingPeer()
-                            if let barButtonItem: UIBarButtonItem {
-                                barButtonItem.tintColor = .tintColor
-                            }
                         }
                         
-                        let joinAction: UIAction = UIAction(title: hostingOrJoined ? "Joined" : "Join", image: UIImage(systemName: "wave.3.down"), attributes: hostingOrJoined ? .disabled : []) { handler in
+                        let joinAction: UIAction = UIAction(title: self.hostingOrJoiningState == .joined ? "Joined" : "Join",
+                                                            image: UIImage(systemName: "wave.3.down"),
+                                                            attributes: self.hostingOrJoiningState == .joined ? .disabled : []) { handler in
+                            self.hostingOrJoiningState = .joined
                             browser.startBrowsingForPeers()
-                            if let barButtonItem: UIBarButtonItem {
-                                barButtonItem.tintColor = .tintColor
-                            }
                         }
                         
-                        var children: [UIMenuElement] = [hostAction, joinAction]
-                        if hostingOrJoined {
-                            children.prepend(element: leaveAction)
+                        var children: [UIMenuElement] = []
+                        
+                        switch self.hostingOrJoiningState {
+                        case .disconnected:
+                            children = [hostAction, joinAction]
+                        case .hosting:
+                            children = [hostAction]
+                        case .joined:
+                            children = [joinAction]
+                        }
+                        
+                        if self.hostingOrJoiningState != .disconnected && session.connectedPeers.count > 0 {
+                            children.append(leaveAction)
                         }
                         
                         completion(children)
@@ -499,7 +511,7 @@ class GamesController : UICollectionViewController {
         let peerID: MCPeerID = MCPeerID(displayName: UIDevice.current.name)
         advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: "foliumlink")
         browser = MCNearbyServiceBrowser(peer: peerID, serviceType: "foliumlink")
-        session = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
+        session = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .none)
         
         if let advertiser: MCNearbyServiceAdvertiser, let browser: MCNearbyServiceBrowser, let session: MCSession {
             advertiser.delegate = self
@@ -549,6 +561,16 @@ class GamesController : UICollectionViewController {
             let mandarineController: MandarineController = MandarineController()
             tabController.switchEmulationController(with: mandarineController)
             tabController.switchSettingsSnapshot(for: .mandarine)
+            
+            let encoder: JSONEncoder = JSONEncoder()
+            do {
+                let packet: P2PPacket = P2PPacket(data: Data(), dataType: .prepare(.mandarine))
+                if let session: MCSession {
+                    try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .unreliable)
+                }
+            } catch {
+                print(error, error.localizedDescription)
+            }
         case let tomatoGame as TomatoGame:
             tabController.game = tomatoGame
             
@@ -722,7 +744,8 @@ extension GamesController : UIDocumentPickerDelegate, UINavigationControllerDele
 }
 
 extension GamesController : MCNearbyServiceAdvertiserDelegate {
-    nonisolated func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+    nonisolated func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID,
+                                withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         if let session: MCSession {
             invitationHandler(true, session)
         }
@@ -737,18 +760,79 @@ extension GamesController : MCNearbyServiceBrowserDelegate {
     }
     
     nonisolated func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        
+        Task { @MainActor in
+            hostingOrJoiningState = .disconnected
+            
+            let barButtonItem: UIBarButtonItem? = self.navigationItem.trailingItemGroups.last?.barButtonItems.first
+            if let barButtonItem: UIBarButtonItem {
+                barButtonItem.tintColor = if hostingOrJoiningState == .disconnected {
+                    nil
+                } else {
+                    .tintColor
+                }
+            }
+        }
     }
 }
 
 extension GamesController : MCSessionDelegate {
     nonisolated func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        Task { @MainActor in
+            switch state {
+            case .notConnected:
+                hostingOrJoiningState = .disconnected
+            default:
+                break
+            }
+            
+            let barButtonItem: UIBarButtonItem? = self.navigationItem.trailingItemGroups.last?.barButtonItems.first
+            if let barButtonItem: UIBarButtonItem {
+                barButtonItem.tintColor = if hostingOrJoiningState == .disconnected {
+                    nil
+                } else {
+                    .tintColor
+                }
+            }
+        }
         
+        if let tabController: TabController = tabBarController as? TabController {
+            if #available(iOS 18.0, *) {
+                if let emulationController: ScreensController = tabController.tabs[.emulationController].viewController as? ScreensController {
+                    emulationController.session(session, peer: peerID, didChange: state)
+                }
+            } else {
+                
+            }
+        }
     }
     
-    nonisolated func session(_ session: MCSession, didReceive data: Data,
-                             fromPeer peerID: MCPeerID) {
+    nonisolated func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        let decoder: JSONDecoder = JSONDecoder()
+        do {
+            let packet: P2PPacket = try decoder.decode(P2PPacket.self, from: data)
+            switch packet.dataType {
+            case .prepare(.mandarine):
+                Task { @MainActor in
+                    let mandarineController: MandarineMPController = MandarineMPController()
+                    mandarineController.system = .mandarine
+                    if let tabController: TabController = tabBarController as? TabController {
+                        tabController.switchEmulationController(with: mandarineController)
+                    }
+                }
+            default:
+                break
+            }
+        } catch {
+            print(error, error.localizedDescription)
+        }
         
+        if let tabController: TabController = tabBarController as? TabController {
+            if #available(iOS 18.0, *) {
+                if let emulationController: ScreensController = tabController.tabs[.emulationController].viewController as? ScreensController {
+                    emulationController.session(session, didReceive: data, fromPeer: peerID)
+                }
+            }
+        }
     }
     
     nonisolated func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String,
@@ -766,3 +850,4 @@ extension GamesController : MCSessionDelegate {
         
     }
 }
+

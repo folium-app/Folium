@@ -7,7 +7,7 @@
 
 import UIKit
 
-public enum MandarineButton : UInt32 {
+public enum MandarineButton : UInt32, Codable {
     case circle = 0x00000001,
          cross = 0x00000002,
          triangle = 0x00000003,
@@ -211,12 +211,12 @@ public actor MandarineSystem {
     }
     
     
-    public nonisolated func press(button: MandarineButton) {
-        mandarine.press_button(std.string(button.string))
+    public nonisolated func press(button: MandarineButton, index: Int32) {
+        mandarine.press_button(std.string(button.string), index)
     }
     
-    public nonisolated func release(button: MandarineButton) {
-        mandarine.release_button(std.string(button.string))
+    public nonisolated func release(button: MandarineButton, index: Int32) {
+        mandarine.release_button(std.string(button.string), index)
     }
     
     public nonisolated func drag(thumbstick: String, value: UInt8) {

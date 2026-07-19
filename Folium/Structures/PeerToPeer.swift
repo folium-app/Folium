@@ -7,20 +7,24 @@
 
 import Foundation
 
-typealias P2PTomatoFramebuffer = Data
+import Mandarine
 
-nonisolated struct P2PGame : Codable {
+nonisolated struct P2PMandarineButton : Codable {
     let data: Data
-    let game: Game
-    let system: System
+    let pressed: Bool
+}
+
+nonisolated struct P2PMandarineFrame : Codable {
+    let data: Data
 }
 
 nonisolated enum P2PDataType : Codable {
-    case tomatoFramebuffer
-    case game
+    case button(System)
+    case frame(System)
+    case prepare(System)
 }
 
 nonisolated struct P2PPacket : Codable {
-    let data: Data
+    var data: Data
     let dataType: P2PDataType
 }

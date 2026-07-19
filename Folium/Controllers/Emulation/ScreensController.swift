@@ -8,7 +8,10 @@
 import ColourKit
 import ConstraintKit
 import MetalKit
+import MultipeerConnectivity
 import UIKit
+
+import Mandarine
 
 class ScreensController : UIViewController {
     var constraints: (pad: (portrait: [NSLayoutConstraint], landscape: [NSLayoutConstraint]),
@@ -48,53 +51,64 @@ class ScreensController : UIViewController {
         r2Button: UIButton? = nil
     
     var usedForMultiplayer: Bool = false
-    var system: System = .mandarine
+    var system: System = .cytrus
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask { UIDevice.current.userInterfaceIdiom == .pad ? .portrait : .allButUpsideDown }
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        UIDevice.current.userInterfaceIdiom == .pad ? .portrait : .allButUpsideDown
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        guard let tabController: TabController = tabBarController as? TabController,
-              let game: Game = tabController.game else {
-            return
-        }
-        
-        switch game {
-        case is CytrusGame:
-            primaryRenderingView = MTKView()
-            primaryBackgroundRenderingView = MTKView()
-            
-            secondaryRenderingView = MTKView()
-            secondaryBackgroundRenderingView = MTKView()
-            
-            system = .cytrus
-        case is GrapeGame:
-            primaryRenderingView = UIImageView()
-            primaryBackgroundRenderingView = UIImageView()
-            
-            secondaryRenderingView = UIImageView()
-            secondaryBackgroundRenderingView = UIImageView()
-            
-            system = .grape
-        case is KiwiGame:
-            primaryRenderingView = UIImageView()
-            primaryBackgroundRenderingView = UIImageView()
-            
-            system = .kiwi
-        case is MandarineGame:
-            primaryRenderingView = UIImageView()
-            primaryBackgroundRenderingView = UIImageView()
-            
-            system = .mandarine
-        case is TomatoGame:
-            primaryRenderingView = UIImageView()
-            primaryBackgroundRenderingView = UIImageView()
-            
-            system = .tomato
-        default:
-            break
+        if let tabController: TabController = tabBarController as? TabController,
+           let game: Game = tabController.game {
+            switch game {
+            case is CytrusGame:
+                primaryRenderingView = MTKView()
+                primaryBackgroundRenderingView = MTKView()
+                
+                secondaryRenderingView = MTKView()
+                secondaryBackgroundRenderingView = MTKView()
+                
+                system = .cytrus
+            case is GrapeGame:
+                primaryRenderingView = UIImageView()
+                primaryBackgroundRenderingView = UIImageView()
+                
+                secondaryRenderingView = UIImageView()
+                secondaryBackgroundRenderingView = UIImageView()
+                
+                system = .grape
+            case is KiwiGame:
+                primaryRenderingView = UIImageView()
+                primaryBackgroundRenderingView = UIImageView()
+                
+                system = .kiwi
+            case is MandarineGame:
+                primaryRenderingView = UIImageView()
+                primaryBackgroundRenderingView = UIImageView()
+                
+                system = .mandarine
+            case is TomatoGame:
+                primaryRenderingView = UIImageView()
+                primaryBackgroundRenderingView = UIImageView()
+                
+                system = .tomato
+            default:
+                break
+            }
+        } else {
+            switch system {
+            case .kiwi:
+                primaryRenderingView = UIImageView()
+                primaryBackgroundRenderingView = UIImageView()
+            case .mandarine:
+                primaryRenderingView = UIImageView()
+                primaryBackgroundRenderingView = UIImageView()
+            default:
+                break
+            }
         }
         
         let effect: UIVisualEffect = if #available(iOS 26.0, *) {
@@ -261,6 +275,95 @@ class ScreensController : UIViewController {
         let aspectRatio: (top: (portrait: CGFloat, landscape: CGFloat), bottom: (portrait: CGFloat, landscape: CGFloat)) = AspectRatioManager.aspectRatio(for: system)
         let topOrBottom: (portrait: CGFloat, landscape: CGFloat) = secondary ? aspectRatio.bottom : aspectRatio.top
         return isPortrait ? topOrBottom.portrait : topOrBottom.landscape
+    }
+    
+    
+    
+    nonisolated func receive(frame: UIImage) {}
+    nonisolated func receive(button: MandarineButton, pressed: Bool) {}
+    
+    nonisolated func send(button: MandarineButton, pressed: Bool, system: System) {
+        guard let tabController: TabController = tabBarController as? TabController else {
+            return
+        }
+        
+        let encoder: JSONEncoder = JSONEncoder()
+        if #available(iOS 18.0, *) {
+            guard let navigationController: UINavigationController = tabController.tabs[.gamesController].viewController as? UINavigationController,
+                  let gamesController: GamesController = navigationController.viewControllers.first as? GamesController else {
+                return
+            }
+            
+            guard let session: MCSession = gamesController.session else {
+                return
+            }
+            
+            do {
+                let button: P2PMandarineButton = P2PMandarineButton(data: try encoder.encode(button), pressed: pressed)
+                let packet: P2PPacket = P2PPacket(data: try encoder.encode(button), dataType: .button(system))
+                try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .reliable)
+            } catch {
+                print(error, error.localizedDescription)
+            }
+        }
+    }
+    
+    nonisolated func send(frame: UIImage, system: System) {
+        guard let tabController: TabController = tabBarController as? TabController else {
+            return
+        }
+        
+        let encoder: JSONEncoder = JSONEncoder()
+        if #available(iOS 18.0, *) {
+            guard let navigationController: UINavigationController = tabController.tabs[.gamesController].viewController as? UINavigationController,
+                  let gamesController: GamesController = navigationController.viewControllers.first as? GamesController else {
+                return
+            }
+            
+            guard let session: MCSession = gamesController.session else {
+                return
+            }
+            
+            guard let data: Data = frame.pngData() else {
+                return
+            }
+            
+            do {
+                let frame: P2PMandarineFrame = P2PMandarineFrame(data: data)
+                let packet: P2PPacket = P2PPacket(data: try encoder.encode(frame), dataType: .frame(system))
+                try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .reliable)
+            } catch {
+                print(error, error.localizedDescription)
+            }
+        }
+    }
+    
+    
+    nonisolated func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        print(#function, #line, #file)
+    }
+    
+    nonisolated func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        let decoder: JSONDecoder = JSONDecoder()
+        do {
+            let packet: P2PPacket = try decoder.decode(P2PPacket.self, from: data)
+            switch packet.dataType {
+            case .button(.mandarine):
+                let button: P2PMandarineButton = try decoder.decode(P2PMandarineButton.self, from: packet.data)
+                self.receive(button: try decoder.decode(MandarineButton.self, from: button.data), pressed: button.pressed)
+            case .frame(.mandarine):
+                let frame: P2PMandarineFrame = try decoder.decode(P2PMandarineFrame.self, from: packet.data)
+                guard let image: UIImage = UIImage(data: frame.data) else {
+                    return
+                }
+                
+                self.receive(frame: image)
+            default:
+                break
+            }
+        } catch {
+            print(error, error.localizedDescription)
+        }
     }
 }
 

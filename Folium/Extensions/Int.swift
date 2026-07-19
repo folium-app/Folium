@@ -8,7 +8,7 @@
 import Foundation
 
 extension Int {
-    static let gamesController: Int = 0
-    static let emulationController: Int = 1
-    static let settingsController: Int = 2
+    nonisolated static let gamesController: Int = 0
+    nonisolated static let emulationController: Int = 1
+    nonisolated static let settingsController: Int = 2
 }

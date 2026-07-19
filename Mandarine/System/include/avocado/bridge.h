@@ -39,7 +39,7 @@ using VideoBufferCallback24Bit = void(*)(void*, uint16_t*);
 VideoBufferCallback24Bit callback_24bit;
 void video_buffer_callback_24bit(VideoBufferCallback24Bit);
 
-void press_button(std::string), release_button(std::string);
+void press_button(std::string, int), release_button(std::string, int);
 void drag_thumbstick(std::string, uint8_t);
 
 void* context;

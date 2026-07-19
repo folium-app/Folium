@@ -43,12 +43,12 @@ struct avocado_config_t {
         KeyBindings keys;
     } controller[2]{
         {
-            ControllerType::analog,
-            DefaultKeyBindings::keyboard_numpad(),
+            ControllerType::digital,
+            DefaultKeyBindings::controller(1),
         },
         {
-            ControllerType::none,
-            DefaultKeyBindings::none(),
+            ControllerType::digital,
+            DefaultKeyBindings::controller(2),
         },
     };
 

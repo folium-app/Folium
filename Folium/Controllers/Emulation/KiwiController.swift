@@ -395,12 +395,13 @@ class KiwiController : ControlsController {
                     let height: Int32 = await game.kiwiSystem.framebufferHeight
                     let width: Int32 = await game.kiwiSystem.framebufferWidth
                     
-                    let cgImage: CGImage? = CGImage.tomato(pointer, Int(width), Int(height))
+                    let cgImage: CGImage? = CGImage.kiwi(pointer, Int(width), Int(height))
                     
                     guard let cgImage: CGImage else {
                         return
                     }
                     
+                    // viewController.send(frame: pointer)
                     imageView.image = UIImage(cgImage: cgImage)
                     secondaryImageView.image = imageView.image
                 }

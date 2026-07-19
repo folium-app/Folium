@@ -43,12 +43,12 @@ class ControlsController : ScreensController {
     
     
     // MARK: Mandarine (PS1)
-    func press(button: MandarineButton, using mandarineSystem: MandarineSystem) {
-        mandarineSystem.press(button: button)
+    nonisolated func press(button: MandarineButton, index: Int32 = 1, using mandarineSystem: MandarineSystem) {
+        mandarineSystem.press(button: button, index: index)
     }
     
-    func release(button: MandarineButton, using mandarineSystem: MandarineSystem) {
-        mandarineSystem.release(button: button)
+    nonisolated func release(button: MandarineButton, index: Int32 = 1, using mandarineSystem: MandarineSystem) {
+        mandarineSystem.release(button: button, index: index)
     }
     
     
