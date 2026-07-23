@@ -294,13 +294,13 @@ class ScreensController : UIViewController {
                 return
             }
             
-            guard let session: MCSession = gamesController.session else {
+            guard let session: MCSession = gamesController.session, session.connectedPeers.count > 0 else {
                 return
             }
             
             do {
-                let button: P2PMandarineButton = P2PMandarineButton(data: try encoder.encode(button), pressed: pressed)
-                let packet: P2PPacket = P2PPacket(data: try encoder.encode(button), dataType: .button(system))
+                let button: P2P.Mandarine.Button = P2P.Mandarine.Button(data: try encoder.encode(button), pressed: pressed)
+                let packet: P2P.Packet = P2P.Packet(data: try encoder.encode(button), dataType: .button(system))
                 try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .reliable)
             } catch {
                 print(error, error.localizedDescription)
@@ -320,7 +320,7 @@ class ScreensController : UIViewController {
                 return
             }
             
-            guard let session: MCSession = gamesController.session else {
+            guard let session: MCSession = gamesController.session, session.connectedPeers.count > 0 else {
                 return
             }
             
@@ -329,8 +329,8 @@ class ScreensController : UIViewController {
             }
             
             do {
-                let frame: P2PMandarineFrame = P2PMandarineFrame(data: data)
-                let packet: P2PPacket = P2PPacket(data: try encoder.encode(frame), dataType: .frame(system))
+                let frame: P2P.Mandarine.Frame = P2P.Mandarine.Frame(data: data)
+                let packet: P2P.Packet = P2P.Packet(data: try encoder.encode(frame), dataType: .frame(system))
                 try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .reliable)
             } catch {
                 print(error, error.localizedDescription)
@@ -346,13 +346,13 @@ class ScreensController : UIViewController {
     nonisolated func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         let decoder: JSONDecoder = JSONDecoder()
         do {
-            let packet: P2PPacket = try decoder.decode(P2PPacket.self, from: data)
+            let packet: P2P.Packet = try decoder.decode(P2P.Packet.self, from: data)
             switch packet.dataType {
             case .button(.mandarine):
-                let button: P2PMandarineButton = try decoder.decode(P2PMandarineButton.self, from: packet.data)
+                let button: P2P.Mandarine.Button = try decoder.decode(P2P.Mandarine.Button.self, from: packet.data)
                 self.receive(button: try decoder.decode(MandarineButton.self, from: button.data), pressed: button.pressed)
             case .frame(.mandarine):
-                let frame: P2PMandarineFrame = try decoder.decode(P2PMandarineFrame.self, from: packet.data)
+                let frame: P2P.Mandarine.Frame = try decoder.decode(P2P.Mandarine.Frame.self, from: packet.data)
                 guard let image: UIImage = UIImage(data: frame.data) else {
                     return
                 }

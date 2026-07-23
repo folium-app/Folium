@@ -97,6 +97,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		E628E96630109BE0003E7BC9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = shaders/mandarine;
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E655CB782FE73488003DCE2B /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -170,6 +179,9 @@
 		E65A97B32FD05980001DDEEE /* Exceptions for "Folium" folder in "Folium" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				EmbeddedFiles/Mandarine/blit.shader,
+				EmbeddedFiles/Mandarine/copy.shader,
+				EmbeddedFiles/Mandarine/render.shader,
 				Info.plist,
 			);
 			target = E65A97A02FD0597F001DDEEE /* Folium */;
@@ -177,6 +189,15 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		E628E96A30109C03003E7BC9 /* Exceptions for "Folium" folder in "Copy Files" phase from "Folium" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = E628E96630109BE0003E7BC9 /* CopyFiles */;
+			membershipExceptions = (
+				EmbeddedFiles/Mandarine/blit.shader,
+				EmbeddedFiles/Mandarine/copy.shader,
+				EmbeddedFiles/Mandarine/render.shader,
+			);
+		};
 		E6A2BF3B3004DFA900415154 /* Exceptions for "FFmpeg" folder in "Embed Frameworks" phase from "Folium" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			attributesByRelativePath = {
@@ -216,6 +237,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				E65A97B32FD05980001DDEEE /* Exceptions for "Folium" folder in "Folium" target */,
+				E628E96A30109C03003E7BC9 /* Exceptions for "Folium" folder in "Copy Files" phase from "Folium" target */,
 			);
 			path = Folium;
 			sourceTree = "<group>";
@@ -416,6 +438,7 @@
 				E65A979E2FD0597F001DDEEE /* Frameworks */,
 				E65A979F2FD0597F001DDEEE /* Resources */,
 				E6A286D1300452C100415154 /* Embed Frameworks */,
+				E628E96630109BE0003E7BC9 /* CopyFiles */,
 			);
 			buildRules = (
 			);

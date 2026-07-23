@@ -26,4 +26,23 @@ void set_screens(void*, double, double, bool);
 
 void press_button(int), release_button(int);
 void touch_began(float, float), touch_ended(void), touch_moved(float, float);
+
+enum class SETTING {
+    LLE_APPLETS = 0,
+    DETERMINISTIC_ASYNC_OPERATIONS = 1,
+    REQUIRED_ONLINE_LLE_MODULES = 2,
+    REGION_PREF_PATCH = 3,
+    SWAP_EYES_3D = 4,
+    SPIRV_SHADER_GEN = 5,
+    SPIRV_OPTIMIZER = 6,
+    ASYNC_SHADER_COMPILATION = 7,
+    ASYNC_PRESENTATION = 8,
+    DISK_SHADER_CACHE = 9,
+    VSYNC = 10,
+    SHADER_ACCURATE_MULTIPLICATION = 11,
+    SOUND_STRETCHING = 12,
+    REALTIME_SOUND = 13
+};
+
+void set_setting(SETTING, bool);
 }

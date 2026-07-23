@@ -138,6 +138,15 @@ public actor CytrusSystem {
         cytrus.touch_moved(Float(point.x), Float(point.y))
     }
     
+    public func setSetting<T>(setting: cytrus.SETTING, value: T) {
+        switch value {
+        case let boolSetting as Bool:
+            cytrus.set_setting(setting, boolSetting)
+        default:
+            break
+        }
+    }
+    
     public func boxart(for url: URL) -> SendableBoxart {
         SendableBoxart(data: NSData(bytes: cytrus.icon_from_disc(std.string(url.path)),
                                     length: 48 * 48 * MemoryLayout<UInt16>.size))

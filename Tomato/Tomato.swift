@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GLKit
 
 public enum TomatoButton : UInt8 {
     case a = 0
@@ -135,26 +136,9 @@ public actor TomatoSystem {
         var title: String = url.deletingPathExtension().lastPathComponent
         title = title.replacingOccurrences(of: "&", with: "_")
         
-        /*
-        func code(from url: URL) throws -> String? {
-            let file: FileHandle = try FileHandle(forReadingFrom: url)
-            try file.seek(toOffset: 0x0AC)
-            
-            guard let data: Data = try file.read(upToCount: 0x04) else {
-                return title
-            }
-            
-            try file.close()
-            
-            guard let string: String = String(data: data, encoding: .ascii),
-                  let destination: Substring = string.trimmingCharacters(in: .controlCharacters).split(separator: "").last else {
-                return title
-            }
-            
-            return String(destination).uppercased()
-        }
-         */
+        let repository: String = "https://raw.githubusercontent.com/libretro/libretro-thumbnails"
+        let path: String = "Nintendo - Game Boy Advance/Named_Boxarts"
         
-        return "https://raw.githubusercontent.com/libretro/libretro-thumbnails/refs/heads/master/Nintendo - Game Boy Advance/Named_Boxarts/\(title).png"
+        return "\(repository)/refs/heads/master/\(path)/\(title).png"
     }
 }

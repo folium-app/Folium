@@ -564,9 +564,9 @@ class GamesController : UICollectionViewController {
             
             let encoder: JSONEncoder = JSONEncoder()
             do {
-                let packet: P2PPacket = P2PPacket(data: Data(), dataType: .prepare(.mandarine))
-                if let session: MCSession {
-                    try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .unreliable)
+                let packet: P2P.Packet = P2P.Packet(data: Data(), dataType: .prepare(.mandarine))
+                if let session: MCSession, session.connectedPeers.count > 0 {
+                    try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .reliable)
                 }
             } catch {
                 print(error, error.localizedDescription)
@@ -809,7 +809,7 @@ extension GamesController : MCSessionDelegate {
     nonisolated func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         let decoder: JSONDecoder = JSONDecoder()
         do {
-            let packet: P2PPacket = try decoder.decode(P2PPacket.self, from: data)
+            let packet: P2P.Packet = try decoder.decode(P2P.Packet.self, from: data)
             switch packet.dataType {
             case .prepare(.mandarine):
                 Task { @MainActor in

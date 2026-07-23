@@ -216,7 +216,7 @@ double limitFramerate(bool framelimiter, bool ntsc) {
 }
 
 
-struct CPPMandarine {
+struct MandarineCPP {
     MandarineCommon mandarineCommon{MandarineCommon::init()};
     MandarineSystem mandarineSystem{MandarineSystem::init()};
     
@@ -228,7 +228,7 @@ struct CPPMandarine {
     std::jthread thread;
     std::mutex mutex;
     std::condition_variable_any cv;
-} cppMandarine;
+} m_cntnr;
 
 void mandarine::print_about(void) {
     printf("Welcome to Mandarine\n");
@@ -290,21 +290,21 @@ std::string mandarine::disc_identifier(std::string path) {
 
 
 void mandarine::initialize_paths(void) {
-    auto mandarineDirectoryURL{cppMandarine.mandarineCommon.getMandarineDirectoryURL()};
+    auto mandarineDirectoryURL{m_cntnr.mandarineCommon.getMandarineDirectoryURL()};
     if (mandarineDirectoryURL.isSome()) {
         auto mandarine_path{std::filesystem::path{mandarineDirectoryURL.get()}};
         
-        cppMandarine.mandarine_path = mandarine_path;
-        cppMandarine.memory_cards_path = mandarine_path / "memory_cards";
-        cppMandarine.system_data_path = mandarine_path / "system_data";
+        m_cntnr.mandarine_path = mandarine_path;
+        m_cntnr.memory_cards_path = mandarine_path / "memory_cards";
+        m_cntnr.system_data_path = mandarine_path / "system_data";
     }
     
     auto memory_card = [](std::string index) -> std::filesystem::path {
-        auto system_data_path = cppMandarine.memory_cards_path / "";
+        auto system_data_path = m_cntnr.memory_cards_path / "";
         return system_data_path.string() + "memory_card_" + index + ".mcr";
     };
     
-    auto bios = cppMandarine.system_data_path / "bios.bin";
+    auto bios = m_cntnr.system_data_path / "bios.bin";
     
     auto memory_card_0 = memory_card("0");
     auto memory_card_1 = memory_card("1");
@@ -312,6 +312,8 @@ void mandarine::initialize_paths(void) {
     config.bios = bios.string();
     config.memoryCard[0].path = memory_card_0.string();
     config.memoryCard[1].path = memory_card_1.string();
+    
+    config.debug.log.bios = 1;
 }
 
 void mandarine::initialize_memory_cards(void) {
@@ -332,16 +334,15 @@ void mandarine::initialize_memory_cards(void) {
 }
 
 void mandarine::initialize_system(void) {
-    cppMandarine.controller.reset();
+    m_cntnr.controller.reset();
     Sound::close();
     
-    
-    cppMandarine.system = system_tools::hardReset();
-    cppMandarine.system->state = System::State::stop;
+    m_cntnr.system = system_tools::hardReset();
+    m_cntnr.system->state = System::State::stop;
     
     Sound::init();
-    cppMandarine.controller = std::make_unique<GCInputManager>();
-    InputManager::setInstance(cppMandarine.controller.get());
+    m_cntnr.controller = std::make_unique<GCInputManager>();
+    InputManager::setInstance(m_cntnr.controller.get());
 }
 
 
@@ -351,85 +352,85 @@ void mandarine::destroy_system(void) {
 
 
 void mandarine::insert_disc(std::string path) {
-    system_tools::loadFile(cppMandarine.system, path);
+    system_tools::loadFile(m_cntnr.system, path);
 }
 
 
 bool mandarine::is_paused(bool change, bool set_paused) {
     if (change)
-        cppMandarine.system->state = set_paused ? System::State::pause : System::State::run;
-    return cppMandarine.system->state == System::State::pause;
+        m_cntnr.system->state = set_paused ? System::State::pause : System::State::run;
+    return m_cntnr.system->state == System::State::pause;
 }
 
 bool mandarine::is_running(bool change, bool set_running) {
     if (change)
-        cppMandarine.system->state = set_running ? System::State::run : System::State::stop;
-    return cppMandarine.system->state == System::State::run;
+        m_cntnr.system->state = set_running ? System::State::run : System::State::stop;
+    return m_cntnr.system->state == System::State::run;
 }
 
 
 void mandarine::start(void) {
-    cppMandarine.system->state = System::State::run;
-    cppMandarine.thread = std::jthread([&](std::stop_token token) {
+    m_cntnr.system->state = System::State::run;
+    m_cntnr.thread = std::jthread([&](std::stop_token token) {
         using namespace std::chrono;
         
         while (!token.stop_requested()) {
-            switch (cppMandarine.system->state) {
+            switch (m_cntnr.system->state) {
                 case System::State::halted:
                     printf("halted\n");
+                    break;
                 case System::State::stop:
                     printf("stopped\n");
+                    break;
                 case System::State::pause:
                     printf("paused\n");
                     continue;
                 case System::State::run:
-                    // printf("running\n");
+                    m_cntnr.system->gpu->clear();
+                    m_cntnr.system->controller->update();
                     
-                    cppMandarine.system->gpu->clear();
-                    cppMandarine.system->controller->update();
+                    m_cntnr.system->emulateFrame();
                     
-                    cppMandarine.system->emulateFrame();
+                    if (m_cntnr.system->gpu->gp1_08.colorDepth == gpu::GP1_08::ColorDepth::bit24)
+                        mandarine::callback_24bit(mandarine::context, m_cntnr.system->gpu->vram.data());
+                    else
+                        mandarine::callback_15bit(mandarine::context, m_cntnr.system->gpu->vram.data());
                     
-                    if (cppMandarine.system->gpu->gp1_08.colorDepth == gpu::GP1_08::ColorDepth::bit24) {
-                        mandarine::callback_24bit(mandarine::context, cppMandarine.system->gpu->vram.data());
-                    } else {
-                        mandarine::callback_15bit(mandarine::context, cppMandarine.system->gpu->vram.data());
-                    }
-                    
-                    limitFramerate(true, cppMandarine.system->gpu->isNtsc());
+                    limitFramerate(true, m_cntnr.system->gpu->isNtsc());
+                    break;
             }
         }
     });
 }
 
 void mandarine::stop(void) {
-    cppMandarine.thread.request_stop();
-    if (cppMandarine.thread.joinable())
-        cppMandarine.thread.join();
+    m_cntnr.thread.request_stop();
+    if (m_cntnr.thread.joinable())
+        m_cntnr.thread.join();
     
-    system_tools::saveMemoryCard(cppMandarine.system, 0, true);
-    system_tools::saveMemoryCard(cppMandarine.system, 1, true);
+    system_tools::saveMemoryCard(m_cntnr.system, 0, true);
+    system_tools::saveMemoryCard(m_cntnr.system, 1, true);
     
-    cppMandarine.system->state = System::State::stop;
+    m_cntnr.system->state = System::State::stop;
     
     mandarine::destroy_system();
 }
 
 
 int16_t mandarine::framebuffer_start_x(void) {
-    return cppMandarine.system->gpu->displayAreaStartX;
+    return m_cntnr.system->gpu->displayAreaStartX;
 }
 
 int16_t mandarine::framebuffer_start_y(void) {
-    return cppMandarine.system->gpu->displayAreaStartY;
+    return m_cntnr.system->gpu->displayAreaStartY;
 }
 
 int mandarine::framebuffer_height(void) {
-    return cppMandarine.system->gpu->gp1_08.getVerticalResoulution();
+    return m_cntnr.system->gpu->gp1_08.getVerticalResoulution();
 }
 
 int mandarine::framebuffer_width(void) {
-    return cppMandarine.system->gpu->gp1_08.getHorizontalResoulution();
+    return m_cntnr.system->gpu->gp1_08.getHorizontalResoulution();
 }
 
 
@@ -443,15 +444,15 @@ void mandarine::video_buffer_callback_24bit(mandarine::VideoBufferCallback24Bit 
 
 
 void mandarine::press_button(std::string button, int index) {
-    cppMandarine.controller->press(button, index);
+    m_cntnr.controller->press(button, index);
 }
 
 void mandarine::release_button(std::string button, int index) {
-    cppMandarine.controller->release(button, index);
+    m_cntnr.controller->release(button, index);
 }
 
 void mandarine::drag_thumbstick(std::string thumbstick, uint8_t value) {
-    cppMandarine.controller->drag(thumbstick, 1, value);
+    m_cntnr.controller->drag(thumbstick, 1, value);
 }
 
 
@@ -463,12 +464,21 @@ void mandarine::set_context(void* context) {
 int busToken = 0;
 void mandarine::set_setting(mandarine::SETTING setting, bool value) {
     switch (setting) {
+        case mandarine::SETTING::WIDESCREEN:
+            config.options.graphics.widescreen = value;
+            break;
+        case mandarine::SETTING::FORCE_WIDESCREEN:
+            config.options.graphics.forceWidescreen = value;
+            break;
         case mandarine::SETTING::SOUND_ENABLED:
             config.options.sound.enabled = value;
             if (config.options.sound.enabled)
                 Sound::play();
             else
                 Sound::stop();
+            break;
+        case mandarine::SETTING::EXTENDED_MEMORY:
+            config.options.system.ram8mb = value;
             break;
     }
 }

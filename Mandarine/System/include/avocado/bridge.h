@@ -46,7 +46,10 @@ void* context;
 void set_context(void* context);
 
 enum class SETTING {
-    SOUND_ENABLED = 0
+    WIDESCREEN = 0,
+    FORCE_WIDESCREEN = 1,
+    SOUND_ENABLED = 2,
+    EXTENDED_MEMORY = 3
 };
 
 void set_setting(SETTING, bool);

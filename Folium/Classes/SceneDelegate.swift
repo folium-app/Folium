@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private var directoryManager: DirectoryManager = DirectoryManager()
     
-    private let cytrustSystem: CytrusSystem = CytrusSystem()
+    private let cytrusSystem: CytrusSystem = CytrusSystem()
     private let grapeSystem: GrapeSystem = GrapeSystem()
     private let kiwiSystem: KiwiSystem = KiwiSystem()
     private let mandarineSystem: MandarineSystem = MandarineSystem()
@@ -36,7 +36,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         
-        let gamesManager: GamesManager = GamesManager(cytrusSystem: cytrustSystem,
+        let gamesManager: GamesManager = GamesManager(cytrusSystem: cytrusSystem,
                                                       grapeSystem: grapeSystem,
                                                       kiwiSystem: kiwiSystem,
                                                       mandarineSystem: mandarineSystem,
@@ -103,12 +103,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let task: Task = Task {
             try await directoryManager.initializeSystemDirectoriesForInitialLaunch()
+            
+            try moveMandarineShaderFilesIfNeeded()
         }
         
         Task {
             switch await task.result {
             case .success(_):
-                await cytrustSystem.initializeLogging()
+                await cytrusSystem.initializeLogging()
                 
                 await grapeSystem.initializePaths()
                 await grapeSystem.initializeSystem()
@@ -128,6 +130,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         initializeUserDefaultsWithDefaultValues()
+        setSettingsForCytrus()
+        setSettingsForMandarine()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {}
@@ -216,6 +220,83 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             for (key, value) in defaultValues {
                 if userDefaults.value(forKey: "\(system.string.localizedLowercase).\(key)") == nil {
                     userDefaults.set(value, forKey: "\(system.string.localizedLowercase).\(key)")
+                }
+            }
+        }
+    }
+    
+    func moveMandarineShaderFilesIfNeeded() throws {
+        guard let documentDirectoryURL: URL = .documentDirectoryURL else {
+            return
+        }
+        
+        print(documentDirectoryURL.path)
+        
+        let shadersDirectoryURL: URL = documentDirectoryURL.appending(component: "Mandarine")
+            .appending(component: "shaders")
+        
+        let shaderFileNames: [String] = [
+            "blit",
+            "copy",
+            "render"
+        ]
+        
+        for shaderFileName in shaderFileNames {
+            let to: URL = shadersDirectoryURL.appending(component: shaderFileName.appending(".shader"))
+            guard let from: URL = Bundle.main.url(forResource: shaderFileName, withExtension: "shader", subdirectory: "shaders/mandarine"),
+                  !FileManager.default.fileExists(atPath: to.path) else {
+                return
+            }
+            
+            try FileManager.default.copyItem(at: from, to: to)
+        }
+    }
+    
+    func setSettingsForCytrus() {
+        let settings: [CytrusSettingsItems : cytrus.SETTING] = [
+            .lleApplets : cytrus.SETTING.LLE_APPLETS,
+            .deterministicAsyncOperations : cytrus.SETTING.DETERMINISTIC_ASYNC_OPERATIONS,
+            .requiredOnlineLLEModules : cytrus.SETTING.REQUIRED_ONLINE_LLE_MODULES,
+            .regionFreePatch : cytrus.SETTING.REGION_PREF_PATCH,
+            .swapEyes3D : cytrus.SETTING.SWAP_EYES_3D,
+            .spirvShaderGen : cytrus.SETTING.SPIRV_SHADER_GEN,
+            .spirvOptimizer : cytrus.SETTING.SPIRV_OPTIMIZER,
+            .asyncShaderCompilation : cytrus.SETTING.ASYNC_SHADER_COMPILATION,
+            .asyncPresentation : cytrus.SETTING.ASYNC_PRESENTATION,
+            .diskShaderCache : cytrus.SETTING.DISK_SHADER_CACHE,
+            .vsync : cytrus.SETTING.VSYNC,
+            .shaderAccurateMultiplication : cytrus.SETTING.SHADER_ACCURATE_MULTIPLICATION,
+            .soundStretching : cytrus.SETTING.SOUND_STRETCHING,
+            .realtimeSound : cytrus.SETTING.REALTIME_SOUND
+        ]
+        
+        SettingsHeaders.cytrusHeaders.forEach { header in
+            CytrusSettingsItems.settings(header).forEach { item in
+                guard let setting: cytrus.SETTING = settings[item] else {
+                    return
+                }
+                
+                Task {
+                    await cytrusSystem.setSetting(setting: setting, value: UserDefaults.standard.value(forKey: item.rawValue))
+                }
+            }
+        }
+    }
+    
+    func setSettingsForMandarine() {
+        let settingsForMandarine: [MandarineSettingsItems : mandarine.SETTING] = [
+            .extendedMemory : mandarine.SETTING.EXTENDED_MEMORY,
+            .soundEnabled : mandarine.SETTING.SOUND_ENABLED
+        ]
+        
+        SettingsHeaders.mandarineHeaders.forEach { header in
+            MandarineSettingsItems.settings(header).forEach { item in
+                guard let settingForMandarine: mandarine.SETTING = settingsForMandarine[item] else {
+                    return
+                }
+                
+                Task {
+                    await mandarineSystem.setSetting(setting: settingForMandarine, value: UserDefaults.standard.value(forKey: item.rawValue))
                 }
             }
         }

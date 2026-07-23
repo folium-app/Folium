@@ -182,8 +182,12 @@ INLINE T System::readMemory(uint32_t address) {
         LOG_IO(IO_LOG_ENTRY::MODE::READ, sizeof(T) * 8, address, data, cpu->PC);
         return data;
     }
+    
+    // Gran Tursimo 2
+    if (in_range<0x1f801130, 16>(address) && sizeof(T) == 2)
+        return 0;
 
-    fmt::print("[SYS] R Unhandled address at 0x{:08x}\n", address);
+    fmt::print("[SYS] R Unhandled address at 0x{:08x} ({})\n", address, sizeof(T));
     cpu->busError();
 
     return 0;

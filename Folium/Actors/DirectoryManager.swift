@@ -88,6 +88,7 @@ actor DirectoryManager {
                 "memory_cards" : [:],
                 "games" : [:],
                 "save_states" : [:],
+                "shaders" : [:],
                 "system_data" : [
                     "bios.bin" : SystemFile(path: "system_data",
                                             system: .mandarine,

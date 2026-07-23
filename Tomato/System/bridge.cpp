@@ -6,11 +6,11 @@
 //
 
 #include "nba/bridge.hpp"
-#include "nba/config.hpp"
-#include "nba/core_base.hpp"
-#include "nba/rom/header.hpp"
-#include "nba/rom/backup/flash.hpp"
-#include "nba/rom/backup/sram.hpp"
+#include "nba/config.hh"
+#include "nba/core_base.hh"
+#include "nba/rom/header.hh"
+#include "nba/rom/backup/flash.hh"
+#include "nba/rom/backup/sram.hh"
 
 #include <SDL3/SDL_audio.h>
 #include <SDL3/SDL_main.h>
@@ -187,25 +187,22 @@ private:
     static auto RoundSizeToPowerOfTwo(size_t size) -> size_t;
 };
 
-void SDL3_AudioDeviceCallback(struct SDL3_AudioDevice* audio_device, SDL_AudioStream* stream, int additional_amount, int total_amount);
+struct SDL3_AudioDevice : AudioDevice {
+  bool Open(void* userdata, Callback callback) final;
+  void Reset() final;
+  void Close() final;
+  auto GetSampleRate() -> int final { return m_specification.freq; }
+  void SetPause(bool value) final;
 
-class SDL3_AudioDevice : public AudioDevice {
-public:
-    int GetSampleRate() final;
-    int GetBlockSize() final;
-    bool Open(void* userdata, Callback callback) final;
-    void SetPause(bool value) final;
-    void Close() final;
-    
 private:
-    friend void SDL3_AudioDeviceCallback(SDL3_AudioDevice* audio_device, SDL_AudioStream* stream, int additional_amount, int total_amount);
-    
-    Callback m_callback{};
-    void* m_callback_userdata{};
-    SDL_AudioStream* m_audio_stream{};
-    bool m_opened{};
-    bool m_paused{};
-    std::vector<u8> m_tmp_buffer{};
+  static void InternalCallback(void *userdata, SDL_AudioStream *stream, int additional_amount, int total_amount);
+
+  SDL_AudioStream* m_stream = nullptr;
+  SDL_AudioSpec m_specification;
+  Callback m_callback;
+  void* m_userdata;
+
+  std::vector<s16> m_data;
 };
 
 struct SWVideoDevice : VideoDevice {
@@ -319,7 +316,7 @@ void nba::EmulatorThread::SetPerFrameCallback(std::function<void()> callback) {
 }
 
 void nba::EmulatorThread::Start(std::unique_ptr<CoreBase> core) {
-    Assert(!running, "Started an emulator thread which was already running");
+    assert(!running);
     
     this->core = std::move(core);
     running = true;
@@ -404,7 +401,7 @@ void nba::EmulatorThread::ProcessMessage(const Message& message) {
             break;
         }
         default:
-            Assert(false, "unhandled message type: {}", static_cast<int>(message.type));
+            assert(false);
             break;
     }
 }
@@ -561,7 +558,6 @@ auto ROMLoader::Load(std::unique_ptr<System>& core, std::filesystem::path const&
         } else {
             backup_type = GetBackupType(file_data);
             if(backup_type == BackupType::Detect) {
-                Log<Warn>("ROMLoader: failed to detect backup type!");
                 backup_type = BackupType::SRAM;
             }
         }
@@ -691,74 +687,68 @@ auto ROMLoader::RoundSizeToPowerOfTwo(size_t size) -> size_t {
 }
 }
 
-static constexpr int k_sample_rate = 48000;
-
-auto nba::SDL3_AudioDevice::GetSampleRate() -> int {
-    return k_sample_rate;
-}
-
-auto nba::SDL3_AudioDevice::GetBlockSize() -> int {
-    // TODO: we do not really have a buffer size anymore. Just remove this from the API?
-    return 4096;
-}
-
 bool nba::SDL3_AudioDevice::Open(void* userdata, Callback callback) {
-    auto want = SDL_AudioSpec{};
-    
-    SDL_SetMainReady();
-    if(SDL_Init(SDL_INIT_AUDIO) == false) {
-        Log<Error>("Audio: SDL_Init(SDL_INIT_AUDIO) failed.");
-        return false;
-    }
-    
-    want.freq = GetSampleRate();
-    want.format = SDL_AUDIO_S16;
-    want.channels = 2;
-    
-    m_callback = callback;
-    m_callback_userdata = userdata;
-    
-    m_audio_stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &want, (SDL_AudioStreamCallback)SDL3_AudioDeviceCallback, this);
-    
-    if(m_audio_stream == nullptr) {
-        Log<Error>("Audio: SDL_OpenAudioDeviceStream: failed to open audio: %s\n", SDL_GetError());
-        return false;
-    }
-    
-    m_opened = true;
-    
-    if(!m_paused) {
-        SDL_ResumeAudioStreamDevice(m_audio_stream);
-    }
-    return true;
-}
+  auto specification = SDL_AudioSpec{};
 
-void nba::SDL3_AudioDevice::SetPause(bool value) {
-    if(!m_opened) {
-        return;
-    }
-    
-    if(value) {
-        SDL_PauseAudioStreamDevice(m_audio_stream);
-    } else {
-        SDL_ResumeAudioStreamDevice(m_audio_stream);
-    }
+  if(!SDL_Init(SDL_INIT_AUDIO)) {
+    printf("Audio: SDL_Init(SDL_INIT_AUDIO) failed.\n");
+    return false;
+  }
+
+  specification.freq = 48000;
+  specification.format = SDL_AUDIO_S16LE;
+  specification.channels = 2;
+
+  m_stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &specification, SDL3_AudioDevice::InternalCallback, this);
+  if(m_stream == 0) {
+    printf("Audio: SDL_OpenAudioDeviceStream: failed to open audio: %s\n", SDL_GetError());
+    return false;
+  }
+
+  m_callback = callback;
+  m_data.resize(4096); // most systems seem happy with this
+  m_specification = specification;
+  m_userdata = userdata;
+
+  SDL_ResumeAudioStreamDevice(m_stream);
+
+  return true;
 }
 
 void nba::SDL3_AudioDevice::Close() {
-    if(m_opened) {
-        SDL_CloseAudioDevice(SDL_GetAudioStreamDevice(m_audio_stream));
-        m_opened = false;
-    }
+  if(m_stream == nullptr) {
+    return;
+  }
+
+  SDL_DestroyAudioStream(m_stream);
+  m_stream = nullptr;
 }
 
-void nba::SDL3_AudioDeviceCallback(SDL3_AudioDevice* audio_device, SDL_AudioStream* stream, int additional_amount, int total_amount) {
-    (void)total_amount;
-    
-    std::vector<u8>& tmp_buffer = audio_device->m_tmp_buffer;
-    tmp_buffer.resize(additional_amount);
-    audio_device->m_callback(audio_device->m_callback_userdata, (s16*)tmp_buffer.data(), additional_amount);
-    SDL_PutAudioStreamData(stream, tmp_buffer.data(), additional_amount);
+
+void nba::SDL3_AudioDevice::Reset() {
+  if(m_stream == nullptr) {
+    return;
+  }
+
+  SDL_ClearAudioStream(m_stream);
+}
+
+void nba::SDL3_AudioDevice::SetPause(bool value) {
+  if(m_stream == nullptr) {
+    return;
+  }
+
+  (value ? SDL_PauseAudioStreamDevice : SDL_ResumeAudioStreamDevice)(m_stream);
+}
+
+void nba::SDL3_AudioDevice::InternalCallback(void* userdata, SDL_AudioStream* stream, int additional_amount, int total_amount) {
+    nba::SDL3_AudioDevice* instance = reinterpret_cast<nba::SDL3_AudioDevice*>(userdata);
+  if (total_amount > instance->m_data.size()) {
+    instance->m_data.resize(total_amount);
+  }
+
+  instance->m_callback(instance->m_userdata, instance->m_data.data(), additional_amount);
+  SDL_PutAudioStreamData(stream, instance->m_data.data(), additional_amount);
 }
 
 

@@ -17,11 +17,11 @@ import Tomato
 actor GamesManager {
     private let fileManager: FileManager = .default
     
-    private let cytrusSystem: CytrusSystem
-    private let grapeSystem: GrapeSystem
-    private let kiwiSystem: KiwiSystem
-    private let mandarineSystem: MandarineSystem
-    private let tomatoSystem: TomatoSystem
+    let cytrusSystem: CytrusSystem
+    let grapeSystem: GrapeSystem
+    let kiwiSystem: KiwiSystem
+    let mandarineSystem: MandarineSystem
+    let tomatoSystem: TomatoSystem
     
     init(cytrusSystem: CytrusSystem, grapeSystem: GrapeSystem, kiwiSystem: KiwiSystem, mandarineSystem: MandarineSystem, tomatoSystem: TomatoSystem) {
         self.cytrusSystem = cytrusSystem

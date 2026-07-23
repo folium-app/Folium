@@ -45,4 +45,27 @@ enum SettingsHeaders : String, CaseIterable {
     }
     
     static var allHeaders: [SettingHeader] { allCases.map { `case` in `case`.header } }
+    
+    static var cytrusHeaders: [SettingsHeaders] {
+        [
+            .coreGeneral,
+            .debuggingGeneral,
+            .graphics3D,
+            .graphicsGeneral,
+            .graphicsResolution,
+            .graphicsShader,
+            .soundGeneral,
+            .systemGeneral,
+            .systemRegion
+        ]
+    }
+    
+    static var mandarineHeaders: [SettingsHeaders] {
+        [
+            .graphicsGeneral,
+            .graphicsResolution,
+            .soundGeneral,
+            .systemGeneral
+        ]
+    }
 }

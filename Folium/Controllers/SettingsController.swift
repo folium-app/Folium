@@ -5,9 +5,11 @@
 //  Created by Jarrod Norwell on 3/6/2026.
 //
 
-import Mandarine
 import SettingsKit
 import UIKit
+
+import Cytrus
+import Mandarine
 
 class SettingsController : UICollectionViewController {
     var selectedSnapshot: SelectedSnapshot = .application {
@@ -387,6 +389,27 @@ extension SettingsController : SettingDelegate {
                 switch item {
                 case let boolSetting as BoolSetting:
                     boolSetting.value = UserDefaults.standard.bool(forKey: boolSetting.key)
+                    
+                    guard let setting: cytrus.SETTING = [
+                        CytrusSettingsItems.lleApplets.rawValue : cytrus.SETTING.LLE_APPLETS,
+                        CytrusSettingsItems.deterministicAsyncOperations.rawValue : cytrus.SETTING.DETERMINISTIC_ASYNC_OPERATIONS,
+                        CytrusSettingsItems.requiredOnlineLLEModules.rawValue : cytrus.SETTING.REQUIRED_ONLINE_LLE_MODULES,
+                        CytrusSettingsItems.regionFreePatch.rawValue : cytrus.SETTING.REGION_PREF_PATCH,
+                        CytrusSettingsItems.swapEyes3D.rawValue : cytrus.SETTING.SWAP_EYES_3D,
+                        CytrusSettingsItems.spirvShaderGen.rawValue : cytrus.SETTING.SPIRV_SHADER_GEN,
+                        CytrusSettingsItems.spirvOptimizer.rawValue : cytrus.SETTING.SPIRV_OPTIMIZER,
+                        CytrusSettingsItems.asyncShaderCompilation.rawValue : cytrus.SETTING.ASYNC_SHADER_COMPILATION,
+                        CytrusSettingsItems.asyncPresentation.rawValue : cytrus.SETTING.ASYNC_PRESENTATION,
+                        CytrusSettingsItems.diskShaderCache.rawValue : cytrus.SETTING.DISK_SHADER_CACHE,
+                        CytrusSettingsItems.vsync.rawValue : cytrus.SETTING.VSYNC,
+                        CytrusSettingsItems.shaderAccurateMultiplication.rawValue : cytrus.SETTING.SHADER_ACCURATE_MULTIPLICATION,
+                        CytrusSettingsItems.soundStretching.rawValue : cytrus.SETTING.SOUND_STRETCHING,
+                        CytrusSettingsItems.realtimeSound.rawValue : cytrus.SETTING.REALTIME_SOUND
+                    ][boolSetting.key] else {
+                        return
+                    }
+                    
+                    await tabController.gamesManager.cytrusSystem.setSetting(setting: setting, value: boolSetting.value)
                 case let inputNumberSetting as InputNumberSetting:
                     inputNumberSetting.value = UserDefaults.standard.double(forKey: inputNumberSetting.key)
                 case let inputStringSetting as InputStringSetting:
@@ -406,15 +429,19 @@ extension SettingsController : SettingDelegate {
         case .kiwi:
             break
         case .mandarine:
-            guard let mandarineGame: MandarineGame = tabController.game as? MandarineGame else {
-                return
-            }
-            
             Task {
                 switch item {
                 case let boolSetting as BoolSetting:
                     boolSetting.value = UserDefaults.standard.bool(forKey: boolSetting.key)
-                    await mandarineGame.mandarineSystem.setSetting(setting: mandarine.SETTING.SOUND_ENABLED, value: boolSetting.value)
+                    
+                    guard let setting: mandarine.SETTING = [
+                        MandarineSettingsItems.extendedMemory.rawValue : mandarine.SETTING.EXTENDED_MEMORY,
+                        MandarineSettingsItems.soundEnabled.rawValue : mandarine.SETTING.SOUND_ENABLED
+                    ][boolSetting.key] else {
+                        return
+                    }
+                    
+                    await tabController.gamesManager.mandarineSystem.setSetting(setting: setting, value: boolSetting.value)
                 default:
                     break
                 }

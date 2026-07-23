@@ -306,3 +306,50 @@ void cytrus::touch_ended(void) {
 void cytrus::touch_moved(float x, float y) {
     cytrus::touch_began(x, y);
 }
+
+void cytrus::set_setting(cytrus::SETTING setting, bool value) {
+    switch (setting) {
+        case SETTING::LLE_APPLETS:
+            Settings::values.lle_applets.SetValue(value);
+            break;
+        case SETTING::DETERMINISTIC_ASYNC_OPERATIONS:
+            Settings::values.deterministic_async_operations.SetValue(value);
+            break;
+        case SETTING::REQUIRED_ONLINE_LLE_MODULES:
+            Settings::values.enable_required_online_lle_modules.SetValue(value);
+            break;
+        case SETTING::REGION_PREF_PATCH:
+            Settings::values.apply_region_free_patch.SetValue(value);
+            break;
+        case SETTING::SWAP_EYES_3D:
+            Settings::values.swap_eyes_3d.SetValue(value);
+            break;
+        case SETTING::SPIRV_SHADER_GEN:
+            Settings::values.spirv_shader_gen.SetValue(value);
+            break;
+        case SETTING::SPIRV_OPTIMIZER:
+            Settings::values.disable_spirv_optimizer.SetValue(!value);
+            break;
+        case SETTING::ASYNC_SHADER_COMPILATION:
+            Settings::values.async_shader_compilation.SetValue(value);
+            break;
+        case SETTING::ASYNC_PRESENTATION:
+            Settings::values.async_presentation.SetValue(value);
+            break;
+        case SETTING::DISK_SHADER_CACHE:
+            Settings::values.use_disk_shader_cache.SetValue(value);
+            break;
+        case SETTING::VSYNC:
+            Settings::values.use_vsync.SetValue(value);
+            break;
+        case SETTING::SHADER_ACCURATE_MULTIPLICATION:
+            Settings::values.shaders_accurate_mul.SetValue(value);
+            break;
+        case SETTING::SOUND_STRETCHING:
+            Settings::values.enable_audio_stretching.SetValue(value);
+            break;
+        case SETTING::REALTIME_SOUND:
+            Settings::values.enable_realtime_audio.SetValue(value);
+            break;
+    }
+}

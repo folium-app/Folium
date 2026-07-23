@@ -359,13 +359,14 @@ void SPU::write(uint32_t address, uint8_t data) {
             FUNC(v, data & (1 << (v % 8)));
         }
     };
-
+    
     address += BASE_ADDRESS;
-
+    
     if (address >= 0x1f801c00 && address < 0x1f801c00 + 0x10 * VOICE_COUNT) {
         writeVoice(address - 0x1f801c00, data);
         return;
     }
+    
     if (verbose) {
         if (address >= 0x1f801da8 && address <= 0x1f801da9) {
         } else if (address >= 0x1f801d88 && address <= 0x1f801d8b) {
@@ -468,6 +469,21 @@ void SPU::write(uint32_t address, uint8_t data) {
             }
         }
         return;
+    }
+    
+    // Alundra 2 - A New Legend Begins
+    {
+        std::vector<std::pair<uint32_t, uint32_t>> addresses{
+            {0x1f801da0, 2},
+            {0x1f801dae, 2},
+            {0x1f801db8, 4},
+            {0x1f801dbc, 4}
+        };
+        
+        auto in_range = [address](uint32_t base, uint32_t size) { return (address >= base && address < base + size); };
+        
+        if (std::any_of(addresses.begin(), addresses.end(), [in_range](auto pair) { return in_range(pair.first, pair.second); }))
+            return;
     }
 
     if (address >= 0x1f801dac && address <= 0x1f801dad) {  // Data Transfer Control
