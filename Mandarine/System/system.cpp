@@ -2,8 +2,6 @@
 #include <fmt/core.h>
 #include <fmt/format.h>
 #include <fmt/format-inl.h>
-#include <cstdlib>
-#include <cstring>
 #include "avocado/bios/functions.h"
 #include "avocado/config.h"
 #include "avocado/sound/sound.h"
@@ -12,12 +10,55 @@
 #include "avocado/utils/file.h"
 #include "avocado/utils/psx_exe.h"
 
-System::System() {
-    bios.fill(0);
-    ram.resize(!config.options.system.ram8mb ? RAM_SIZE_2MB : RAM_SIZE_8MB, 0);
-    scratchpad.fill(0);
-    expansion.fill(0);
+#include <variant>
+#include <vector>
 
+#ifdef ENABLE_IO_LOG
+#define LOG_IO(mode, size, addr, data, pc) ioLogList.push_back({(mode), (size), (addr), (data), (pc)})
+#else
+#define LOG_IO(mode, size, addr, data, pc)
+#endif
+
+#define READ_IO32(begin, end, periph)                                                                                    \
+    if (aligned_address >= (begin) && aligned_address < (end)) {                                                                               \
+        T data = 0;                                                                                                      \
+        if (sizeof(T) == 4) {                                                                                            \
+            data = (periph)->read(aligned_address - (begin));                                                                       \
+        } else {                                                                                                         \
+            fmt::print("[SYS] R Unsupported access to " #periph " with bit size {}\n", static_cast<int>(sizeof(T) * 8)); \
+        }                                                                                                                \
+                                                                                                                         \
+        LOG_IO(IO_LOG_ENTRY::MODE::READ, sizeof(T) * 8, address, data, cpu->PC);                                         \
+        return data;                                                                                                     \
+    }
+
+#define WRITE_IO32(begin, end, periph)                                                                                   \
+    if (aligned_address >= (begin) && aligned_address < (end)) {                                                                               \
+        if (sizeof(T) == 4) {                                                                                            \
+            (periph)->write(aligned_address - (begin), value);                                                                       \
+        } else {                                                                                                         \
+            fmt::print("[SYS] W Unsupported access to " #periph " with bit size {}\n", static_cast<int>(sizeof(T) * 8)); \
+        }                                                                                                                \
+                                                                                                                         \
+        LOG_IO(IO_LOG_ENTRY::MODE::WRITE, sizeof(T) * 8, address, value, cpu->PC);                                        \
+        return;                                                                                                          \
+    }
+
+System::System() {
+    bios.resize(constants::bios::SIZE);
+    expansion_region_1.resize(constants::expansion::REGION_1_SIZE);
+    if (config.options.system.ram8mb)
+        ram.resize(constants::ram::SIZE_8MB);
+    else
+        ram.resize(constants::ram::SIZE_2MB);
+    scratchpad.resize(constants::scratchpad::SIZE);
+    
+    for (auto vec : {&bios, &expansion_region_1, &ram, &scratchpad})
+        std::fill(vec->begin(), vec->end(), 0);
+    
+    timers.resize(constants::timers::SIZE);
+    std::fill(timers.begin(), timers.end(), nullptr);
+    
     cpu = std::make_unique<mips::CPU>(this);
     gpu = std::make_unique<gpu::GPU>(this);
     spu = std::make_unique<spu::SPU>(this);
@@ -32,9 +73,9 @@ System::System() {
     ramControl = std::make_unique<RamControl>();
     cacheControl = std::make_unique<CacheControl>(this);
     serial = std::make_unique<Serial>();
-    for (int t : {0, 1, 2}) {
-        timer[t] = std::make_unique<device::timer::Timer>(this, t);
-    }
+    
+    for (auto i : std::views::iota(0, 3))
+        timers.at(i) = std::make_unique<device::timer::Timer>(this, i);
 
     debugOutput = config.debug.log.system;
     biosLog = config.debug.log.bios;
@@ -42,215 +83,400 @@ System::System() {
     cycles = 0;
 }
 
-// Note: stupid static_casts and asserts are only to suppress MSVC warnings
-
-// Warning: This function does not check array boundaries. Make sure that address is aligned!
 template <typename T>
-constexpr T read_fast(uint8_t* device, uint32_t addr) {
-    static_assert(std::is_same<T, uint8_t>() || std::is_same<T, uint16_t>() || std::is_same<T, uint32_t>(), "Invalid type used");
-
-    if (sizeof(T) == 1) return static_cast<T>(((uint8_t*)device)[addr]);
-    if (sizeof(T) == 2) return static_cast<T>(((uint16_t*)device)[addr / 2]);
-    if (sizeof(T) == 4) return static_cast<T>(((uint32_t*)device)[addr / 4]);
-    return 0;
-}
-
-// Warning: This function does not check array boundaries. Make sure that address is aligned!
-template <typename T>
-constexpr void write_fast(uint8_t* device, uint32_t addr, T value) {
-    static_assert(std::is_same<T, uint8_t>() || std::is_same<T, uint16_t>() || std::is_same<T, uint32_t>(), "Invalid type used");
-
-    if (sizeof(T) == 1)
-        ((uint8_t*)device)[addr] = static_cast<uint8_t>(value);
-    else if (sizeof(T) == 2)
-        ((uint16_t*)device)[addr / 2] = static_cast<uint16_t>(value);
-    else if (sizeof(T) == 4)
-        ((uint32_t*)device)[addr / 4] = static_cast<uint32_t>(value);
-}
-
-template <typename T, typename Device>
-constexpr T read_io(Device& periph, uint32_t addr) {
-    static_assert(std::is_same<T, uint8_t>() || std::is_same<T, uint16_t>() || std::is_same<T, uint32_t>(), "Invalid type used");
-
-    if (sizeof(T) == 1) return periph->read(addr);
-    if (sizeof(T) == 2) return periph->read(addr) | periph->read(addr + 1) << 8;
-    if (sizeof(T) == 4)
-        return periph->read(addr) | periph->read(addr + 1) << 8 | periph->read(addr + 2) << 16 | periph->read(addr + 3) << 24;
-    return 0;
-}
-
-template <typename T, typename Device>
-constexpr void write_io(Device& periph, uint32_t addr, T data) {
-    static_assert(std::is_same<T, uint8_t>() || std::is_same<T, uint16_t>() || std::is_same<T, uint32_t>(), "Invalid type used");
-
-    if (sizeof(T) == 1) {
-        periph->write(addr, (static_cast<uint8_t>(data)) & 0xff);
-    } else if (sizeof(T) == 2) {
-        periph->write(addr, (static_cast<uint16_t>(data)) & 0xff);
-        periph->write(addr + 1, (static_cast<uint16_t>(data) >> 8) & 0xff);
-    } else if (sizeof(T) == 4) {
-        periph->write(addr, (static_cast<uint32_t>(data)) & 0xff);
-        periph->write(addr + 1, (static_cast<uint32_t>(data) >> 8) & 0xff);
-        periph->write(addr + 2, (static_cast<uint32_t>(data) >> 16) & 0xff);
-        periph->write(addr + 3, (static_cast<uint32_t>(data) >> 24) & 0xff);
+constexpr T System::fast_read(uint8_t* device, uint32_t address) {
+    std::vector<bool> checklist{
+        std::is_same_v<T, uint8_t>,
+        std::is_same_v<T, uint16_t>,
+        std::is_same_v<T, uint32_t>
+    };
+    assert(std::any_of(checklist.begin(), checklist.end(), [](bool result) { return result; }));
+    
+    switch (sizeof(T)) {
+        case sizeof(uint8_t):
+            return static_cast<T>(device[address]);
+        case sizeof(uint16_t):
+            return static_cast<T>(((uint16_t*)device)[address / sizeof(uint16_t)]);
+        case sizeof(uint32_t):
+            return static_cast<T>(((uint32_t*)device)[address / sizeof(uint32_t)]);
+        default:
+            return 0;
     }
 }
-
-#ifdef ENABLE_IO_LOG
-#define LOG_IO(mode, size, addr, data, pc) ioLogList.push_back({(mode), (size), (addr), (data), (pc)})
-#else
-#define LOG_IO(mode, size, addr, data, pc)
-#endif
-
-#define READ_IO(begin, end, periph)                                              \
-    if (addr >= (begin) && addr < (end)) {                                       \
-        auto data = read_io<T>((periph), addr - (begin));                        \
-                                                                                 \
-        LOG_IO(IO_LOG_ENTRY::MODE::READ, sizeof(T) * 8, address, data, cpu->PC); \
-        return data;                                                             \
-    }
-
-#define READ_IO32(begin, end, periph)                                                                                    \
-    if (addr >= (begin) && addr < (end)) {                                                                               \
-        T data = 0;                                                                                                      \
-        if (sizeof(T) == 4) {                                                                                            \
-            data = (periph)->read(addr - (begin));                                                                       \
-        } else {                                                                                                         \
-            fmt::print("[SYS] R Unsupported access to " #periph " with bit size {}\n", static_cast<int>(sizeof(T) * 8)); \
-        }                                                                                                                \
-                                                                                                                         \
-        LOG_IO(IO_LOG_ENTRY::MODE::READ, sizeof(T) * 8, address, data, cpu->PC);                                         \
-        return data;                                                                                                     \
-    }
-
-#define WRITE_IO(begin, end, periph)                                              \
-    if (addr >= (begin) && addr < (end)) {                                        \
-        write_io<T>((periph), addr - (begin), data);                              \
-                                                                                  \
-        LOG_IO(IO_LOG_ENTRY::MODE::WRITE, sizeof(T) * 8, address, data, cpu->PC); \
-        return;                                                                   \
-    }
-
-#define WRITE_IO32(begin, end, periph)                                                                                   \
-    if (addr >= (begin) && addr < (end)) {                                                                               \
-        if (sizeof(T) == 4) {                                                                                            \
-            (periph)->write(addr - (begin), data);                                                                       \
-        } else {                                                                                                         \
-            fmt::print("[SYS] W Unsupported access to " #periph " with bit size {}\n", static_cast<int>(sizeof(T) * 8)); \
-        }                                                                                                                \
-                                                                                                                         \
-        LOG_IO(IO_LOG_ENTRY::MODE::WRITE, sizeof(T) * 8, address, data, cpu->PC);                                        \
-        return;                                                                                                          \
-    }
 
 template <typename T>
-INLINE T System::readMemory(uint32_t address) {
-    static_assert(std::is_same<T, uint8_t>() || std::is_same<T, uint16_t>() || std::is_same<T, uint32_t>(), "Invalid type used");
+constexpr void System::fast_write(uint8_t* device, uint32_t address, T value) {
+    std::vector<bool> checklist{
+        std::is_same_v<T, uint8_t>,
+        std::is_same_v<T, uint16_t>,
+        std::is_same_v<T, uint32_t>
+    };
+    assert(std::any_of(checklist.begin(), checklist.end(), [](bool result) { return result; }));
+    
+    switch (sizeof(T)) {
+        case sizeof(uint8_t):
+            ((uint8_t*)device)[address] = static_cast<uint8_t>(value);
+            break;
+        case sizeof(uint16_t):
+            ((uint16_t*)device)[address / sizeof(uint16_t)] = static_cast<uint16_t>(value);
+            break;
+        case sizeof(uint32_t):
+            ((uint32_t*)device)[address / sizeof(uint32_t)] = static_cast<uint32_t>(value);
+            break;
+        default:
+            break;
+    }
+}
 
-    uint32_t addr = align_mips<T>(address);
+template <typename T, typename Peripheral>
+constexpr std::optional<T> System::read_peripheral(Peripheral& peripheral, uint32_t address) {
+    std::vector<bool> checklist{
+        std::is_same_v<T, uint8_t>,
+        std::is_same_v<T, uint16_t>,
+        std::is_same_v<T, uint32_t>
+    };
+    assert(std::any_of(checklist.begin(), checklist.end(), [](bool result) { return result; }));
+    
+    switch (sizeof(T)) {
+        case sizeof(uint8_t):
+            return peripheral->read(address);
+        case sizeof(uint16_t):
+            return peripheral->read(address) | peripheral->read(address + 1) << 8;
+        case sizeof(uint32_t):
+            return peripheral->read(address) | peripheral->read(address + 1) << 8 |  peripheral->read(address + 2) << 16 | peripheral->read(address + 3) << 24;
+        default:
+            return std::nullopt;
+    }
+}
 
-    if (in_range<RAM_BASE, RAM_SIZE_8MB>(addr)) {
-        return read_fast<T>(ram.data(), (addr - RAM_BASE) & (ram.size() - 1));
+template <typename T, typename Peripheral>
+constexpr void System::write_peripheral(Peripheral& peripheral, uint32_t address, T value) {
+    std::vector<bool> checklist{
+        std::is_same_v<T, uint8_t>,
+        std::is_same_v<T, uint16_t>,
+        std::is_same_v<T, uint32_t>
+    };
+    assert(std::any_of(checklist.begin(), checklist.end(), [](bool result) { return result; }));
+    
+    switch (sizeof(T)) {
+        case sizeof(uint8_t):
+            peripheral->write(address, static_cast<uint8_t>(value) & 0xFF);
+            break;
+        case sizeof(uint16_t):
+            peripheral->write(address, static_cast<uint16_t>(value) & 0xFF);
+            peripheral->write(address + 1, static_cast<uint16_t>(value >> 8) & 0xFF);
+            break;
+        case sizeof(uint32_t):
+            peripheral->write(address, static_cast<uint32_t>(value) & 0xFF);
+            peripheral->write(address + 1, static_cast<uint32_t>(value >> 8) & 0xFF);
+            peripheral->write(address + 2, static_cast<uint32_t>(value >> 16) & 0xFF);
+            peripheral->write(address + 3, static_cast<uint32_t>(value >> 24) & 0xFF);
+            break;
+        default:
+            break;
     }
-    if (in_range<EXPANSION_BASE, EXPANSION_SIZE>(addr)) {
-        return read_fast<T>(expansion.data(), addr - EXPANSION_BASE);
-    }
-    if (in_range<SCRATCHPAD_BASE, SCRATCHPAD_SIZE>(addr)) {
-        return read_fast<T>(scratchpad.data(), addr - SCRATCHPAD_BASE);
-    }
-    if (in_range<BIOS_BASE, BIOS_SIZE>(addr)) {
-        return read_fast<T>(bios.data(), addr - BIOS_BASE);
-    }
+}
 
-    READ_IO(0x1f801000, 0x1f801024, memoryControl);
-    READ_IO(0x1f801040, 0x1f801050, controller);
-    READ_IO(0x1f801050, 0x1f801060, serial);
-    READ_IO(0x1f801060, 0x1f801064, ramControl);
-    READ_IO(0x1f801070, 0x1f801078, interrupt);
-    READ_IO(0x1f801080, 0x1f801100, dma);
-    READ_IO(0x1f801100, 0x1f801110, timer[0]);
-    READ_IO(0x1f801110, 0x1f801120, timer[1]);
-    READ_IO(0x1f801120, 0x1f801130, timer[2]);
-    READ_IO(0x1f801800, 0x1f801804, cdrom);
+template<typename T, typename Peripheral>
+constexpr std::optional<T> System::read_io(uint32_t address, uint32_t begin, uint32_t end, Peripheral& peripheral) {
+    if (address >= begin && address < end)
+        return read_peripheral<T, Peripheral>(peripheral, address - begin);
+    return std::nullopt;
+}
+
+template<typename T, typename Peripheral>
+constexpr bool System::write_io(uint32_t address, T value, uint32_t begin, uint32_t end, Peripheral& peripheral) {
+    if (address >= begin && address < end) {
+        write_peripheral<T, Peripheral>(peripheral, address - begin, value);
+        return true;
+    } else
+        return false;
+}
+
+template <typename T>
+T System::read(uint32_t address) {
+    std::vector<bool> checklist{
+        std::is_same_v<T, uint8_t>,
+        std::is_same_v<T, uint16_t>,
+        std::is_same_v<T, uint32_t>
+    };
+    assert(std::any_of(checklist.begin(), checklist.end(), [](bool result) { return result; }));
+
+    uint32_t aligned_address = align_mips<T>(address);
+
+    if (in_range<constants::ram::BASE, constants::ram::SIZE_8MB>(aligned_address))
+        return fast_read<T>(ram.data(), (aligned_address - constants::ram::BASE) & (ram.size() - 1));
+    
+    if (in_range<constants::expansion::REGION_1_BASE, constants::expansion::REGION_1_SIZE>(aligned_address))
+        return fast_read<T>(expansion_region_1.data(), aligned_address - constants::expansion::REGION_1_BASE);
+    
+    if (in_range<constants::scratchpad::BASE, constants::scratchpad::SIZE>(aligned_address))
+        return fast_read<T>(scratchpad.data(), aligned_address - constants::scratchpad::BASE);
+    
+    if (in_range<constants::bios::BASE, constants::bios::SIZE>(aligned_address))
+        return fast_read<T>(bios.data(), aligned_address - constants::bios::BASE);
+    
+    std::vector<std::optional<T>> read_io_results{
+        read_io<T>(aligned_address, constants::io::MEMORY_CONTROL_START, constants::io::MEMORY_CONTROL_END, memoryControl),
+        read_io<T>(aligned_address, constants::io::CONTROLLER_START, constants::io::CONTROLLER_END, controller),
+        read_io<T>(aligned_address, constants::io::SERIAL_START, constants::io::SERIAL_END, serial),
+        read_io<T>(aligned_address, constants::io::RAM_CONTROL_START, constants::io::RAM_CONTROL_END, ramControl),
+        read_io<T>(aligned_address, constants::io::INTERRUPT_START, constants::io::INTERRUPT_END, interrupt),
+        read_io<T>(aligned_address, constants::io::DMA_START, constants::io::DMA_END, dma),
+        read_io<T>(aligned_address, constants::io::TIMER_1_START, constants::io::TIMER_1_END, timers.at(0)),
+        read_io<T>(aligned_address, constants::io::TIMER_2_START, constants::io::TIMER_2_END, timers.at(1)),
+        read_io<T>(aligned_address, constants::io::TIMER_3_START, constants::io::TIMER_3_END, timers.at(2)),
+        read_io<T>(aligned_address, constants::io::CDROM_START, constants::io::CDROM_END, cdrom),
+        
+        read_io<T>(aligned_address, constants::io::SPU_START, constants::io::SPU_END, spu),
+        read_io<T>(aligned_address, constants::io::EXPANSION_2_START, constants::io::EXPANSION_2_END, expansion2)
+    };
+    
+    for (auto result : read_io_results)
+        if (result.has_value())
+            return result.value();
+
     READ_IO32(0x1f801810, 0x1f801818, gpu);
     READ_IO32(0x1f801820, 0x1f801828, mdec);
-    READ_IO(0x1f801C00, 0x1f802000, spu);
-    READ_IO(0x1f802000, 0x1f804000, expansion2);
 
-    if (in_range<0xfffe0130, 4>(address) && sizeof(T) == 4) {
+    if (in_range<0xfffe0130, 4>(address) && sizeof(T) == sizeof(uint32_t)) {
         auto data = cacheControl->read(0);
-        LOG_IO(IO_LOG_ENTRY::MODE::READ, sizeof(T) * 8, address, data, cpu->PC);
         return data;
     }
     
     // Gran Tursimo 2
-    if (in_range<0x1f801130, 16>(address) && sizeof(T) == 2)
+    if (in_range<0x1f801130, 16>(address) && sizeof(T) == sizeof(uint16_t))
         return 0;
 
-    fmt::print("[SYS] R Unhandled address at 0x{:08x} ({})\n", address, sizeof(T));
+    std::string num{"32"};
+    switch (sizeof(T)) {
+        case sizeof(uint8_t):
+            num = "8";
+            break;
+        case sizeof(uint16_t):
+            num = "16";
+            break;
+        case sizeof(uint32_t):
+            num = "32";
+            break;
+        default:
+            break;
+    }
+    
+    fmt::print("[SYSTEM:{}{}]: unhandled read from address 0x{:08X} of size {}\n", __func__, num, address, sizeof(T));
     cpu->busError();
 
     return 0;
 }
+
+template uint8_t System::read<uint8_t>(uint32_t);
+template uint16_t System::read<uint16_t>(uint32_t);
+template uint32_t System::read<uint32_t>(uint32_t);
+
 template <typename T>
-INLINE void System::writeMemory(uint32_t address, T data) {
-    static_assert(std::is_same<T, uint8_t>() || std::is_same<T, uint16_t>() || std::is_same<T, uint32_t>(), "Invalid type used");
+void System::write(uint32_t address, T value) {
+    std::vector<bool> checklist{
+        std::is_same_v<T, uint8_t>,
+        std::is_same_v<T, uint16_t>,
+        std::is_same_v<T, uint32_t>
+    };
+    assert(std::any_of(checklist.begin(), checklist.end(), [](bool result) { return result; }));
 
     if (unlikely(cpu->cop0.status.isolateCache)) {
         uint32_t tag = (address & 0xfffff000) >> 12;
         uint16_t index = (address & 0xffc) >> 2;
-        cpu->icache[index] = mips::CacheLine{tag, data};
+        cpu->icache[index] = mips::CacheLine{tag, value};
         return;
     }
 
-    uint32_t addr = align_mips<T>(address);
+    uint32_t aligned_address = align_mips<T>(address);
 
-    if (in_range<RAM_BASE, RAM_SIZE_8MB>(addr)) {
-        return write_fast<T>(ram.data(), (addr - RAM_BASE) & (ram.size() - 1), data);
-    }
-    if (in_range<EXPANSION_BASE, EXPANSION_SIZE>(addr)) {
-        return write_fast<T>(expansion.data(), addr - EXPANSION_BASE, data);
-    }
-    if (in_range<SCRATCHPAD_BASE, SCRATCHPAD_SIZE>(addr)) {
-        return write_fast<T>(scratchpad.data(), addr - SCRATCHPAD_BASE, data);
-    }
-
-    WRITE_IO(0x1f801000, 0x1f801024, memoryControl);
-    WRITE_IO(0x1f801040, 0x1f801050, controller);
-    WRITE_IO(0x1f801050, 0x1f801060, serial);
-    WRITE_IO(0x1f801060, 0x1f801064, ramControl);
-    WRITE_IO(0x1f801070, 0x1f801078, interrupt);
-    WRITE_IO(0x1f801080, 0x1f801100, dma);
-    WRITE_IO(0x1f801100, 0x1f801110, timer[0]);
-    WRITE_IO(0x1f801110, 0x1f801120, timer[1]);
-    WRITE_IO(0x1f801120, 0x1f801130, timer[2]);
-    WRITE_IO(0x1f801800, 0x1f801804, cdrom);
+    if (in_range<constants::ram::BASE, constants::ram::SIZE_8MB>(aligned_address))
+        return fast_write<T>(ram.data(), (aligned_address - constants::ram::BASE) & (ram.size() - 1), value);
+    
+    if (in_range<constants::expansion::REGION_1_BASE, constants::expansion::REGION_1_SIZE>(aligned_address))
+        return fast_write<T>(expansion_region_1.data(), aligned_address - constants::expansion::REGION_1_BASE, value);
+    
+    if (in_range<constants::scratchpad::BASE, constants::scratchpad::SIZE>(aligned_address))
+        return fast_write<T>(scratchpad.data(), aligned_address - constants::scratchpad::BASE, value);
+    
+    std::vector<bool> write_io_results{
+        write_io<T>(aligned_address, value, constants::io::MEMORY_CONTROL_START, constants::io::MEMORY_CONTROL_END, memoryControl),
+        write_io<T>(aligned_address, value, constants::io::CONTROLLER_START, constants::io::CONTROLLER_END, controller),
+        write_io<T>(aligned_address, value, constants::io::SERIAL_START, constants::io::SERIAL_END, serial),
+        write_io<T>(aligned_address, value, constants::io::RAM_CONTROL_START, constants::io::RAM_CONTROL_END, ramControl),
+        write_io<T>(aligned_address, value, constants::io::INTERRUPT_START, constants::io::INTERRUPT_END, interrupt),
+        write_io<T>(aligned_address, value, constants::io::DMA_START, constants::io::DMA_END, dma),
+        write_io<T>(aligned_address, value, constants::io::TIMER_1_START, constants::io::TIMER_1_END, timers.at(0)),
+        write_io<T>(aligned_address, value, constants::io::TIMER_2_START, constants::io::TIMER_2_END, timers.at(1)),
+        write_io<T>(aligned_address, value, constants::io::TIMER_3_START, constants::io::TIMER_3_END, timers.at(2)),
+        write_io<T>(aligned_address, value, constants::io::CDROM_START, constants::io::CDROM_END, cdrom),
+        
+        write_io<T>(aligned_address, value, constants::io::SPU_START, constants::io::SPU_END, spu),
+        write_io<T>(aligned_address, value, constants::io::EXPANSION_2_START, constants::io::EXPANSION_2_END, expansion2)
+    };
+    
+    for (auto result : write_io_results)
+        if (result)
+            return;
+    
     WRITE_IO32(0x1f801810, 0x1f801818, gpu);
     WRITE_IO32(0x1f801820, 0x1f801828, mdec);
-    WRITE_IO(0x1f801C00, 0x1f802000, spu);
-    WRITE_IO(0x1f802000, 0x1f804000, expansion2);
 
-    if (in_range<0xfffe0130, 4>(address) && sizeof(T) == 4) {
-        cacheControl->write(0, data);
-        LOG_IO(IO_LOG_ENTRY::MODE::WRITE, sizeof(T) * 8, address, data, cpu->PC);
+    if (in_range<0xfffe0130, 4>(address) && sizeof(T) == sizeof(uint32_t)) {
+        cacheControl->write(0, value);
         return;
     }
 
-    fmt::print("[SYS] W Unhandled address at 0x{:08x}: 0x{:02x}\n", address, data);
+    std::string num{"32"};
+    switch (sizeof(T)) {
+        case sizeof(uint8_t):
+            num = "8";
+            break;
+        case sizeof(uint16_t):
+            num = "16";
+            break;
+        case sizeof(uint32_t):
+            num = "32";
+            break;
+        default:
+            break;
+    }
+    
+    fmt::print("[SYSTEM:{}{}]: unhandled write to address 0x{:08X} with value {} of size {}\n", __func__, num, address, value, sizeof(T));
+    
     cpu->busError();
 }
 
-uint8_t System::readMemory8(uint32_t address) { return readMemory<uint8_t>(address); }
+template void System::write<uint8_t>(uint32_t, uint8_t);
+template void System::write<uint16_t>(uint32_t, uint16_t);
+template void System::write<uint32_t>(uint32_t, uint32_t);
 
-uint16_t System::readMemory16(uint32_t address) { return readMemory<uint16_t>(address); }
+constexpr void System::step(int count) {
+    state = State::run;
+    cpu->executeInstructions(1);
+    state = State::pause;
 
-uint32_t System::readMemory32(uint32_t address) { return readMemory<uint32_t>(address); }
+    dma->step();
+    cdrom->step(3);
+    timers.at(0)->step(3);
+    timers.at(1)->step(3);
+    timers.at(2)->step(3);
+    controller->step();
+    spu->step(cdrom.get());
 
-void System::writeMemory8(uint32_t address, uint8_t data) { writeMemory<uint8_t>(address, data); }
+    if (gpu->emulateGpuCycles(3))
+        interrupt->trigger(interrupt::VBLANK);
+}
 
-void System::writeMemory16(uint32_t address, uint16_t data) { writeMemory<uint16_t>(address, data); }
+template <typename Peripheral>
+constexpr void System::reset_peripheral(Peripheral& peripheral) {
+    std::visit([](auto* peripheral) {
+        peripheral->reset();
+    }, peripheral);
+}
 
-void System::writeMemory32(uint32_t address, uint32_t data) { writeMemory<uint32_t>(address, data); }
+constexpr bool System::reset(bool soft) {
+    std::vector<PeripheralTypes> peripherals{
+        dma.get(),
+        expansion2.get(),
+        gpu.get(),
+        interrupt.get(),
+        mdec.get(),
+        memoryControl.get(),
+        ramControl.get(),
+        cacheControl.get(),
+        serial.get()
+    };
+    
+    for (auto& peripheral : peripherals)
+        reset_peripheral(peripheral);
+    
+    cpu->setPC(0xBFC00000);
+    cpu->inBranchDelay = false;
+    state = State::run;
+    
+    return true;
+}
+
+bool System::load(const std::string& path) {
+    const char* licenseString = "Sony Computer Entertainment Inc";
+
+    auto _bios = getFileContents(path);
+    if (_bios.empty()) {
+        fmt::print("[SYS] Cannot open BIOS {}\n", path);
+        return false;
+    }
+    assert(_bios.size() <= 512 * 1024);
+
+    if (memcmp(_bios.data() + 0x108, licenseString, strlen(licenseString)) != 0) {
+        fmt::print("[WARNING]: Loaded bios ({}) have invalid header, are you using correct file?\n", getFilenameExt(path));
+    }
+
+    std::copy(_bios.begin(), _bios.end(), bios.begin());
+    this->biosPath = path;
+    state = State::run;
+    biosLoaded = true;
+
+    auto patch = [&](uint32_t address, uint32_t opcode) {
+        address &= bios.size() - 1;
+        for (int i = 0; i < 4; i++) {
+            bios[address + i] = (opcode >> (i * 8)) & 0xff;
+        }
+    };
+
+    if (config.debug.log.system) {
+        fmt::print("[INFO] Patching BIOS for system log\n");
+        patch(0x6F0C, 0x24010001);
+        patch(0x6F14, 0xAF81A9C0);
+    }
+
+    return true;
+}
+
+bool System::load(const std::vector<uint8_t>& data, const bool is_exe) {
+    if (is_exe) {
+        if (data.empty()) return false;
+        assert(data.size() >= 0x800);
+
+        PsxExe exe;
+        memcpy(&exe, data.data(), sizeof(exe));
+
+        if (exe.t_size > data.size() - 0x800) {
+            fmt::print("Invalid exe t_size: 0x{:08x}\n", exe.t_size);
+            exe.t_size = data.size() - 0x800;
+        }
+
+        for (uint32_t i = 0; i < exe.t_size; i++) {
+            write<uint8_t>(exe.t_addr + i, data[0x800 + i]);
+        }
+
+        cpu->setPC(exe.pc0);
+        cpu->setReg(28, exe.gp0);
+
+        if (exe.s_addr != 0) {
+            cpu->setReg(29, exe.s_addr + exe.s_size);
+            cpu->setReg(30, exe.s_addr + exe.s_size);
+        }
+
+        cpu->inBranchDelay = false;
+
+        return true;
+    } else {
+        assert(data.size() <= constants::expansion::REGION_1_SIZE);
+        
+        if (data.empty())
+            return false;
+
+        const std::string license{"Licensed by Sony Computer Entertainment Inc"};
+        if (memcmp(data.data() + 4, license.c_str(), strlen(license.c_str())) != 0)
+            fmt::print("[WARN]: Loaded expansion have invalid header, are you using correct file?\n");
+
+        std::copy(data.begin(), data.end(), expansion_region_1.begin());
+        
+        return true;
+    }
+}
 
 void System::printFunctionInfo(const char* functionNum, const bios::Function& f) {
     fmt::print("  {}: {}(", functionNum, f.name);
@@ -267,7 +493,7 @@ void System::printFunctionInfo(const char* functionNum, const bios::Function& f)
             case bios::Type::STRING: {
                 fmt::print("\"");
                 for (int i = 0; i < 32; i++) {
-                    uint8_t c = readMemory8(param + i);
+                    uint8_t c = read<uint8_t>(param + i);
 
                     if (c == 0) {
                         break;
@@ -332,24 +558,6 @@ void System::handleSyscallFunction() {
     }
 }
 
-void System::singleStep() {
-    state = State::run;
-    cpu->executeInstructions(1);
-    state = State::pause;
-
-    dma->step();
-    cdrom->step(3);
-    timer[0]->step(3);
-    timer[1]->step(3);
-    timer[2]->step(3);
-    controller->step();
-    spu->step(cdrom.get());
-
-    if (gpu->emulateGpuCycles(3)) {
-        interrupt->trigger(interrupt::VBLANK);
-    }
-}
-
 void System::emulateFrame() {
 #ifdef ENABLE_IO_LOG
     ioLogList.clear();
@@ -384,9 +592,9 @@ void System::emulateFrame() {
 
         dma->step();
         cdrom->step(systemCycles / 1.5f);
-        timer[0]->step(systemCycles);
-        timer[1]->step(systemCycles);
-        timer[2]->step(systemCycles);
+        timers.at(0)->step(systemCycles);
+        timers.at(1)->step(systemCycles);
+        timers.at(2)->step(systemCycles);
 
         static float spuCounter = 0;
 
@@ -416,15 +624,15 @@ void System::emulateFrame() {
 
         // TODO: Move this code to Timer class
         if (gpu->gpuLine > gpu->linesPerFrame() - 20) {
-            auto& t = *timer[1];
+            auto& t = *timers.at(1);
             if (t.mode.syncEnabled) {
                 using modes = device::timer::CounterMode::SyncMode1;
-                auto mode1 = static_cast<modes>(timer[1]->mode.syncMode);
+                auto mode1 = static_cast<modes>(timers.at(1)->mode.syncMode);
                 if (mode1 == modes::resetAtVblank || mode1 == modes::resetAtVblankAndPauseOutside) {
-                    timer[1]->current._reg = 0;
+                    timers.at(1)->current._reg = 0;
                 } else if (mode1 == modes::pauseUntilVblankAndFreerun) {
-                    timer[1]->paused = false;
-                    timer[1]->mode.syncEnabled = false;
+                    timers.at(1)->paused = false;
+                    timers.at(1)->mode.syncEnabled = false;
                 }
             }
         }
@@ -432,113 +640,8 @@ void System::emulateFrame() {
     }
 }
 
-void System::softReset() {
-    //    cdrom->reset();
-    //    controller->reset();
-    dma->reset();
-    expansion2->reset();
-    gpu->reset();
-    interrupt->reset();
-    mdec->reset();
-    memoryControl->reset();
-    ramControl->reset();
-    cacheControl->reset();
-    //    spu->reset();
-    serial->reset();
-    for (int t : {0, 1, 2}) {
-        //        timer[t]->reset();
-    }
-
-    //    cpu->reset();
-    cpu->setPC(0xBFC00000);
-    cpu->inBranchDelay = false;
-    state = State::run;
-}
-
 bool System::isSystemReady() { return biosLoaded; }
 
-bool System::loadExeFile(const std::vector<uint8_t>& _exe) {
-    if (_exe.empty()) return false;
-    assert(_exe.size() >= 0x800);
-
-    PsxExe exe;
-    memcpy(&exe, _exe.data(), sizeof(exe));
-
-    if (exe.t_size > _exe.size() - 0x800) {
-        fmt::print("Invalid exe t_size: 0x{:08x}\n", exe.t_size);
-        exe.t_size = _exe.size() - 0x800;
-    }
-
-    for (uint32_t i = 0; i < exe.t_size; i++) {
-        writeMemory8(exe.t_addr + i, _exe[0x800 + i]);
-    }
-
-    cpu->setPC(exe.pc0);
-    cpu->setReg(28, exe.gp0);
-
-    if (exe.s_addr != 0) {
-        cpu->setReg(29, exe.s_addr + exe.s_size);
-        cpu->setReg(30, exe.s_addr + exe.s_size);
-    }
-
-    cpu->inBranchDelay = false;
-
-    return true;
-}
-
-bool System::loadBios(const std::string& path) {
-    const char* licenseString = "Sony Computer Entertainment Inc";
-
-    auto _bios = getFileContents(path);
-    if (_bios.empty()) {
-        fmt::print("[SYS] Cannot open BIOS {}\n", path);
-        return false;
-    }
-    assert(_bios.size() <= 512 * 1024);
-
-    if (memcmp(_bios.data() + 0x108, licenseString, strlen(licenseString)) != 0) {
-        fmt::print("[WARNING]: Loaded bios ({}) have invalid header, are you using correct file?\n", getFilenameExt(path));
-    }
-
-    std::copy(_bios.begin(), _bios.end(), bios.begin());
-    this->biosPath = path;
-    state = State::run;
-    biosLoaded = true;
-
-    auto patch = [&](uint32_t address, uint32_t opcode) {
-        address &= bios.size() - 1;
-        for (int i = 0; i < 4; i++) {
-            bios[address + i] = (opcode >> (i * 8)) & 0xff;
-        }
-    };
-
-    if (config.debug.log.system) {
-        fmt::print("[INFO] Patching BIOS for system log\n");
-        patch(0x6F0C, 0x24010001);
-        patch(0x6F14, 0xAF81A9C0);
-    }
-
-    return true;
-}
-
-bool System::loadExpansion(const std::vector<uint8_t>& _exp) {
-    const char* licenseString = "Licensed by Sony Computer Entertainment Inc";
-
-    if (_exp.empty()) {
-        return false;
-    }
-
-    assert(_exp.size() <= EXPANSION_SIZE);
-
-    if (memcmp(_exp.data() + 4, licenseString, strlen(licenseString)) != 0) {
-        fmt::print("[WARN]: Loaded expansion have invalid header, are you using correct file?\n");
-    }
-
-    std::copy(_exp.begin(), _exp.end(), expansion.begin());
-    return true;
-}
-
 void System::dumpRam() {
-    std::vector<uint8_t> ram(this->ram.begin(), this->ram.end());
-    putFileContents("ram.bin", ram);
+    writeToDisc("ram.bin", ram);
 }

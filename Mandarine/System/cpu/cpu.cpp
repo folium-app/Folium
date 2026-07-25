@@ -59,7 +59,7 @@ INLINE uint32_t CPU::fetchInstruction(uint32_t address) {
     // I'm completely clueless if address comparison here makes any sense
     // Host CPU branch predictor sure isn't happy about it
     if (unlikely(!icacheEnabled) || address >= 0xa000'0000) {
-        return sys->readMemory32(address);
+        return sys->read(address);
     }
 
     uint32_t tag = ((address & 0xfffff000) >> 12) | CACHE_LINE_VALID_BIT;
@@ -70,7 +70,7 @@ INLINE uint32_t CPU::fetchInstruction(uint32_t address) {
         return line.data;
     }
 
-    uint32_t data = sys->readMemory32(address);
+    uint32_t data = sys->read(address);
     icache[index] = CacheLine{tag, data};
 
     return data;

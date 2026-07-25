@@ -47,7 +47,7 @@ void loadFile(std::unique_ptr<System>& sys, const std::string& path) {
         bool isPaused = sys->state == System::State::pause;
         bootstrap(sys);
         // Replace shell with .exe contents
-        if (sys->loadExeFile(getFileContents(path))) {
+        if (sys->load(getFileContents(path), true)) {
             toast(fmt::format("{} loaded", filenameExt));
         } else {
             toast(fmt::format("Cannot load {}", filenameExt));
@@ -136,12 +136,12 @@ std::unique_ptr<System> hardReset() {
     auto sys = std::make_unique<System>();
 
     std::string bios = config.bios;
-    if (!bios.empty() && sys->loadBios(bios)) {
+    if (!bios.empty() && sys->load(bios)) {
         fmt::print("[INFO] Using bios {}\n", getFilenameExt(bios));
     }
 
     std::string extension = config.extension;
-    if (!extension.empty() && sys->loadExpansion(getFileContents(extension))) {
+    if (!extension.empty() && sys->load(getFileContents(extension))) {
         fmt::print("[INFO] Using extension {}\n", getFilenameExt(extension));
     }
 

@@ -165,7 +165,7 @@ void exception(CPU *cpu, COP0::CAUSE::Exception cause) {
     // COP0 set EPC to the same opcode causing it to execute twice
     // HACK: Delay interrupts if current opcode is GTE command
     if (cause == Exception::interrupt) {
-        Opcode i(cpu->sys->readMemory32(cpu->exceptionPC));
+        Opcode i(cpu->sys->read(cpu->exceptionPC));
         if (i.op == 18) {  // COP2 opcode
             return;
         }
@@ -177,7 +177,7 @@ void exception(CPU *cpu, COP0::CAUSE::Exception cause) {
     cpu->cop0.status.enterException();
 
     if (cause != Exception::busErrorInstruction) {
-        Opcode i(cpu->sys->readMemory32(cpu->exceptionPC));
+        Opcode i(cpu->sys->read(cpu->exceptionPC));
         cpu->cop0.cause.coprocessorNumber = i.op & 3;
     }
 
@@ -621,7 +621,7 @@ void op_cop2(CPU *cpu, Opcode i) {
 // LB rt, offset(base)
 void op_lb(CPU *cpu, Opcode i) {
     uint32_t addr = cpu->reg[i.rs] + i.offset;
-    cpu->loadDelaySlot(i.rt, ((int32_t)(cpu->sys->readMemory8(addr) << 24)) >> 24);
+    cpu->loadDelaySlot(i.rt, ((int32_t)(cpu->sys->read<uint8_t>(addr) << 24)) >> 24);
 }
 
 // Load Halfword
@@ -633,14 +633,14 @@ void op_lh(CPU *cpu, Opcode i) {
         exception(cpu, COP0::CAUSE::Exception::addressErrorLoad);
         return;
     }
-    cpu->loadDelaySlot(i.rt, (int32_t)(int16_t)cpu->sys->readMemory16(addr));
+    cpu->loadDelaySlot(i.rt, (int32_t)(int16_t)cpu->sys->read<uint16_t>(addr));
 }
 
 // Load Word Left
 // LWL rt, offset(base)
 void op_lwl(CPU *cpu, Opcode i) {
     uint32_t addr = cpu->reg[i.rs] + i.offset;
-    uint32_t mem = cpu->sys->readMemory32(addr & 0xfffffffc);
+    uint32_t mem = cpu->sys->read(addr & 0xfffffffc);
 
     uint32_t reg;
     if (cpu->slots[0].reg == i.rt) {
@@ -668,14 +668,14 @@ void op_lw(CPU *cpu, Opcode i) {
         exception(cpu, COP0::CAUSE::Exception::addressErrorLoad);
         return;
     }
-    cpu->loadDelaySlot(i.rt, cpu->sys->readMemory32(addr));
+    cpu->loadDelaySlot(i.rt, cpu->sys->read(addr));
 }
 
 // Load Byte Unsigned
 // LBU rt, offset(base)
 void op_lbu(CPU *cpu, Opcode i) {
     uint32_t addr = cpu->reg[i.rs] + i.offset;
-    cpu->loadDelaySlot(i.rt, cpu->sys->readMemory8(addr));
+    cpu->loadDelaySlot(i.rt, cpu->sys->read<uint8_t>(addr));
 }
 
 // Load Halfword Unsigned
@@ -687,7 +687,7 @@ void op_lhu(CPU *cpu, Opcode i) {
         exception(cpu, COP0::CAUSE::Exception::addressErrorLoad);
         return;
     }
-    cpu->loadDelaySlot(i.rt, cpu->sys->readMemory16(addr));
+    cpu->loadDelaySlot(i.rt, cpu->sys->read<uint16_t>(addr));
 }
 
 // Load Word Right
@@ -695,7 +695,7 @@ void op_lhu(CPU *cpu, Opcode i) {
 void op_lwr(CPU *cpu, Opcode i) {
     uint32_t addr = cpu->reg[i.rs] + i.offset;
 
-    uint32_t mem = cpu->sys->readMemory32(addr & 0xfffffffc);
+    uint32_t mem = cpu->sys->read(addr & 0xfffffffc);
 
     uint32_t reg;
     if (cpu->slots[0].reg == i.rt) {
@@ -718,7 +718,7 @@ void op_lwr(CPU *cpu, Opcode i) {
 // SB rt, offset(base)
 void op_sb(CPU *cpu, Opcode i) {
     uint32_t addr = cpu->reg[i.rs] + i.offset;
-    cpu->sys->writeMemory8(addr, cpu->reg[i.rt]);
+    cpu->sys->write<uint8_t>(addr, cpu->reg[i.rt]);
 }
 
 // Store Halfword
@@ -730,14 +730,14 @@ void op_sh(CPU *cpu, Opcode i) {
         exception(cpu, COP0::CAUSE::Exception::addressErrorStore);
         return;
     }
-    cpu->sys->writeMemory16(addr, cpu->reg[i.rt]);
+    cpu->sys->write<uint16_t>(addr, cpu->reg[i.rt]);
 }
 
 // Store Word Left
 // SWL rt, offset(base)
 void op_swl(CPU *cpu, Opcode i) {
     uint32_t addr = cpu->reg[i.rs] + i.offset;
-    uint32_t mem = cpu->sys->readMemory32(addr & 0xfffffffc);
+    uint32_t mem = cpu->sys->read(addr & 0xfffffffc);
     uint32_t reg = cpu->reg[i.rt];
 
     uint32_t result = 0;
@@ -747,7 +747,7 @@ void op_swl(CPU *cpu, Opcode i) {
         case 2: result = (mem & 0xff000000) | (reg >> 8); break;
         case 3: result = (mem & 0x00000000) | (reg); break;
     }
-    cpu->sys->writeMemory32(addr & 0xfffffffc, result);
+    cpu->sys->write(addr & 0xfffffffc, result);
 }
 
 // Store Word
@@ -759,14 +759,14 @@ void op_sw(CPU *cpu, Opcode i) {
         exception(cpu, COP0::CAUSE::Exception::addressErrorStore);
         return;
     }
-    cpu->sys->writeMemory32(addr, cpu->reg[i.rt]);
+    cpu->sys->write(addr, cpu->reg[i.rt]);
 }
 
 // Store Word Right
 // SWR rt, offset(base)
 void op_swr(CPU *cpu, Opcode i) {
     uint32_t addr = cpu->reg[i.rs] + i.offset;
-    uint32_t mem = cpu->sys->readMemory32(addr & 0xfffffffc);
+    uint32_t mem = cpu->sys->read(addr & 0xfffffffc);
     uint32_t reg = cpu->reg[i.rt];
 
     uint32_t result = 0;
@@ -776,7 +776,7 @@ void op_swr(CPU *cpu, Opcode i) {
         case 2: result = (reg << 16) | (mem & 0x0000ffff); break;
         case 3: result = (reg << 24) | (mem & 0x00ffffff); break;
     }
-    cpu->sys->writeMemory32(addr & 0xfffffffc, result);
+    cpu->sys->write(addr & 0xfffffffc, result);
 }
 
 // Load to coprocessor 2
@@ -785,7 +785,7 @@ void op_lwc2(CPU *cpu, Opcode i) {
     uint32_t addr = cpu->reg[i.rs] + i.offset;
 
     assert(i.rt < 64);
-    auto data = cpu->sys->readMemory32(addr);
+    auto data = cpu->sys->read(addr);
     cpu->gte.write(i.rt, data);
 }
 
@@ -795,6 +795,6 @@ void op_swc2(CPU *cpu, Opcode i) {
     uint32_t addr = cpu->reg[i.rs] + i.offset;
     assert(i.rt < 64);
     auto gteRead = cpu->gte.read(i.rt);
-    cpu->sys->writeMemory32(addr, gteRead);
+    cpu->sys->write(addr, gteRead);
 }
 };  // namespace instructions

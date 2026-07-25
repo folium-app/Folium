@@ -43,11 +43,11 @@ struct avocado_config_t {
         KeyBindings keys;
     } controller[2]{
         {
-            ControllerType::digital,
+            ControllerType::analog,
             DefaultKeyBindings::controller(1),
         },
         {
-            ControllerType::digital,
+            ControllerType::analog,
             DefaultKeyBindings::controller(2),
         },
     };
@@ -92,7 +92,7 @@ struct avocado_config_t {
             int mdec = 0;
             int memoryCard = 0;
             int spu = 0;
-            int system = 1;
+            int system = 0;
             int memoryControl = 0;
         } log;
     } debug;

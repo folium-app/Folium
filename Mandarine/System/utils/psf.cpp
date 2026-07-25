@@ -31,7 +31,7 @@ bool loadExe(System* sys, const std::vector<uint8_t>& _exe, PsfType type) {
     }
 
     for (uint32_t i = 0; i < exe.t_size; i++) {
-        sys->writeMemory8(exe.t_addr + i, _exe[0x800 + i]);
+        sys->write<uint8_t>(exe.t_addr + i, _exe[0x800 + i]);
     }
 
     if (type == PsfType::Main || type == PsfType::MainLib) {

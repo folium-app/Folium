@@ -30,7 +30,7 @@ void DMA6Channel::burstTransfer() {
     }
 
     for (int i = wordCount - 1; i >= 0; i--, addr -= 4) {
-        sys->writeMemory32(addr, (i == 0) ? 0xffffff : (addr - 4) & 0xffffff);
+        sys->write(addr, (i == 0) ? 0xffffff : (addr - 4) & 0xffffff);
     }
 
     irqFlag = true;

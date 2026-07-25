@@ -63,7 +63,7 @@ bool dbgOutputChar(System* sys) {
 bool dbgOutputString(System* sys) {
     if (!sys->debugOutput) return false;
     for (int i = 0; i < 80; i++) {
-        char c = sys->readMemory8(sys->cpu->reg[4] + i);
+        char c = sys->read<uint8_t>(sys->cpu->reg[4] + i);
         if (c == 0) {
             fmt::print("\n");
             return false;
@@ -106,7 +106,7 @@ bool unresolvedException(System* sys) {
     fmt::print(BLUE, "0x{:08x}\n", sys->cpu->reg[31]);
 
     for (uint32_t addr = epc - howManyInstructionsToDisassemble * 4; addr <= epc; addr += 4) {
-        auto opcode = mips::Opcode(sys->readMemory32(addr));
+        auto opcode = mips::Opcode(sys->read(addr));
         auto ins = debugger::decodeInstruction(opcode);
 
         fmt::print(BLUE, "0x{:08x}: ", addr);

@@ -235,7 +235,8 @@ class GamesController : UICollectionViewController {
                         
                         completion(children)
                     }
-                ]))
+                ])),
+                UIBarButtonItem(image: UIImage(systemName: "person.crop.circle"))
             ], representativeItem: nil)
         ]
         navigationItem.style = .browser

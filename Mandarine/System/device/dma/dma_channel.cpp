@@ -70,11 +70,11 @@ void DMAChannel::burstTransfer() {
     }
     if (control.direction == CHCR::Direction::toRam) {
         for (size_t i = 0; i < wordCount; i++, addr += control.step()) {
-            sys->writeMemory32(addr, readDevice());
+            sys->write(addr, readDevice());
         }
     } else if (control.direction == CHCR::Direction::fromRam) {
         for (size_t i = 0; i < wordCount; i++, addr += control.step()) {
-            writeDevice(sys->readMemory32(addr));
+            writeDevice(sys->read(addr));
         }
     }
 
@@ -100,11 +100,11 @@ hack_transferLoop:
     // TODO: Execute sync with chopping
     if (control.direction == CHCR::Direction::toRam) {
         for (int i = 0; i < count.syncMode1.blockSize; i++, addr += control.step()) {
-            sys->writeMemory32(addr, readDevice());
+            sys->write(addr, readDevice());
         }
     } else if (control.direction == CHCR::Direction::fromRam) {
         for (int i = 0; i < count.syncMode1.blockSize; i++, addr += control.step()) {
-            writeDevice(sys->readMemory32(addr));
+            writeDevice(sys->read(addr));
         }
     }
     // TODO: Need proper Chopping implementation for SPU READ to work
@@ -131,7 +131,7 @@ void DMAChannel::linkedListTransfer() {
     // TODO: Break execution in between
     std::unordered_set<uint32_t> visited;
     for (;;) {
-        uint32_t blockInfo = sys->readMemory32(addr);
+        uint32_t blockInfo = sys->read(addr);
         int commandCount = blockInfo >> 24;
         int nextAddr = blockInfo & 0xffffff;
 
@@ -142,7 +142,7 @@ void DMAChannel::linkedListTransfer() {
 
         addr += control.step();
         for (int i = 0; i < commandCount; i++, addr += control.step()) {
-            writeDevice(sys->readMemory32(addr));
+            writeDevice(sys->read(addr));
         }
 
         addr = nextAddr;

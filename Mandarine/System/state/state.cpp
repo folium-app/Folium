@@ -63,7 +63,7 @@ struct StateMetadata {
         ar(*sys);
 
         if (!biosPath.empty() && biosPath != sys->biosPath) {
-            sys->loadBios(biosPath);
+            sys->load(biosPath);
         }
 
         if (!discPath.empty() && discPath != sys->cdrom->disc->getFile()) {

@@ -61,6 +61,7 @@ bool putFileContents(const std::string &name, const std::vector<unsigned char> &
 
     return true;
 }
+bool writeToDisc(const std::string& name, const std::vector<uint8_t>& contents) { return putFileContents(name, contents); };
 
 bool putFileContents(const std::string &path, const std::string contents) {
     FILE *f = fopen(path.c_str(), "wb");
@@ -312,8 +313,6 @@ void mandarine::initialize_paths(void) {
     config.bios = bios.string();
     config.memoryCard[0].path = memory_card_0.string();
     config.memoryCard[1].path = memory_card_1.string();
-    
-    config.debug.log.bios = 1;
 }
 
 void mandarine::initialize_memory_cards(void) {

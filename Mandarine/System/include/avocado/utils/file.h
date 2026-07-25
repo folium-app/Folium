@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+bool writeToDisc(const std::string&, const std::vector<uint8_t>&);
+
 std::string getPath(const std::string& name);
 std::string getFilenameExt(const std::string& name);
 std::string getFilename(const std::string& name);

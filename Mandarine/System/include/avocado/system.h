@@ -1,5 +1,5 @@
 #pragma once
-#include <cstdint>
+#include "avocado/constants.h"
 #include "avocado/cpu/cpu.h"
 #include "avocado/device/cache_control.h"
 #include "avocado/device/cdrom/cdrom.h"
@@ -17,7 +17,11 @@
 #include "avocado/utils/macros.h"
 #include "avocado/utils/timing.h"
 
+#include <cstdint>
+#include <cstdlib>
+#include <cstring>
 #include <memory>
+#include <ranges>
 #include <vector>
 
 /**
@@ -47,30 +51,13 @@ struct Function;
 
 struct System {
     enum class State {
-        halted,  // Cannot be run until reset
+        halted,  // reset to run again
         stop,    // after reset
-        pause,   // if debugger attach
+        pause,   // if debugger is attached
         run      // normal state
-    };
-
-    static const int BIOS_BASE = 0x1fc00000;
-    static const int RAM_BASE = 0x00000000;
-    static const int SCRATCHPAD_BASE = 0x1f800000;
-    static const int EXPANSION_BASE = 0x1f000000;
-    static const int IO_BASE = 0x1f801000;
-
-    static const int BIOS_SIZE = 512 * 1024;
-    static const int RAM_SIZE_2MB = 2 * 1024 * 1024;
-    static const int RAM_SIZE_8MB = 8 * 1024 * 1024;
-    static const int SCRATCHPAD_SIZE = 1024;
-    static const int EXPANSION_SIZE = 1 * 1024 * 1024;
-    static const int IO_SIZE = 0x2000;
-    State state = State::stop;
-
-    std::array<uint8_t, BIOS_SIZE> bios;
-    std::vector<uint8_t> ram;
-    std::array<uint8_t, SCRATCHPAD_SIZE> scratchpad;
-    std::array<uint8_t, EXPANSION_SIZE> expansion;
+    } state{State::stop};
+    
+    std::vector<uint8_t> bios, ram, expansion_region_1, scratchpad;
 
     bool debugOutput = true;  // Print BIOS logs
     bool biosLoaded = false;
@@ -80,6 +67,7 @@ struct System {
     // Devices
     std::unique_ptr<mips::CPU> cpu;
 
+    std::unique_ptr<CacheControl> cacheControl;
     std::unique_ptr<device::cdrom::CDROM> cdrom;
     std::unique_ptr<device::controller::Controller> controller;
     std::unique_ptr<device::dma::DMA> dma;
@@ -89,38 +77,59 @@ struct System {
     std::unique_ptr<mdec::MDEC> mdec;
     std::unique_ptr<MemoryControl> memoryControl;
     std::unique_ptr<RamControl> ramControl;
-    std::unique_ptr<CacheControl> cacheControl;
-    std::unique_ptr<spu::SPU> spu;
     std::unique_ptr<Serial> serial;
-    std::array<std::unique_ptr<device::timer::Timer>, 3> timer;
-
+    std::unique_ptr<spu::SPU> spu;
+    
+    std::vector<std::unique_ptr<device::timer::Timer>> timers;
+    
     template <typename T>
-    INLINE T readMemory(uint32_t address);
+    constexpr T fast_read(uint8_t*, uint32_t);
+    
     template <typename T>
-    INLINE void writeMemory(uint32_t address, T data);
-    void singleStep();
+    constexpr void fast_write(uint8_t*, uint32_t, T);
+    
+    template <typename T, typename Peripheral>
+    constexpr std::optional<T> read_peripheral(Peripheral&, uint32_t);
+    
+    template <typename T, typename Peripheral>
+    constexpr void write_peripheral(Peripheral&, uint32_t, T);
+    
+    template<typename T, typename Peripheral>
+    constexpr std::optional<T> read_io(uint32_t, uint32_t, uint32_t, Peripheral&);
+    
+    template<typename T, typename Peripheral>
+    constexpr bool write_io(uint32_t, T, uint32_t, uint32_t, Peripheral&);
+    
+    template <typename T = uint32_t>
+    T read(uint32_t);
+    
+    template <typename T = uint32_t>
+    void write(uint32_t, T);
+    
+    constexpr void step(int /* count */ = 1);
+    
+    using PeripheralTypes = std::variant<device::dma::DMA*, Expansion2*, gpu::GPU*, Interrupt*, mdec::MDEC*, MemoryControl*, RamControl*, CacheControl*, Serial*>;
+    
+    template <typename Peripheral>
+    constexpr void reset_peripheral(Peripheral&);
+    
+    constexpr bool reset(bool /* soft */ = true);
+    
+    bool load(const std::string& /* path */);
+    bool load(const std::vector<uint8_t>& /* data */, const bool /* is_exe */ = false);
+    
     void handleBiosFunction();
     void handleSyscallFunction();
 
     System();
-    uint8_t readMemory8(uint32_t address);
-    uint16_t readMemory16(uint32_t address);
-    uint32_t readMemory32(uint32_t address);
-    void writeMemory8(uint32_t address, uint8_t data);
-    void writeMemory16(uint32_t address, uint16_t data);
-    void writeMemory32(uint32_t address, uint32_t data);
     void printFunctionInfo(const char* functionNum, const bios::Function& f);
     void emulateFrame();
-    void softReset();
     bool isSystemReady();
 
     // Helpers
     std::string biosPath;
     int biosLog = 0;
     bool printStackTrace = false;
-    bool loadBios(const std::string& name);
-    bool loadExpansion(const std::vector<uint8_t>& _exe);
-    bool loadExeFile(const std::vector<uint8_t>& _exe);
     void dumpRam();
 
 #ifdef ENABLE_IO_LOG
@@ -149,7 +158,8 @@ struct System {
         ar(*serial);
         ar(*mdec);
         ar(*controller);
-        for (auto i : {0, 1, 2}) ar(*timer[i]);
+        for (auto i : std::views::iota(0, 3))
+            ar(*timers.at(i));
 
         ar(ram);
         ar(scratchpad);

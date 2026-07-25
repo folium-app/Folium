@@ -13,7 +13,11 @@ INLINE constexpr uint32_t align_mips(uint32_t address) {
     return 0;
 }
 
-template <uint32_t base, uint32_t size>
-INLINE constexpr bool in_range(const uint32_t addr) {
-    return (addr >= base && addr < base + size);
+template <uint32_t begin, uint32_t end>
+INLINE constexpr bool in_range(const uint32_t address) {
+    return (address >= begin && address < begin + end);
+}
+
+INLINE constexpr bool in_range(const uint32_t address, const uint32_t begin, const uint32_t end) {
+    return (address >= begin && address < begin + end);
 }
