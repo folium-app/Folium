@@ -9,11 +9,25 @@ import Foundation
 import SettingsKit
 
 enum MandarineSettingsItems : String, CaseIterable {
+    // Debugging (General)
+    case logBios = "mandarine.logBios"
+    case logCdrom = "mandarine.logCdrom"
+    case logController = "mandarine.logController"
+    case logDma = "mandarine.logDma"
+    case logGpu = "mandarine.logGpu"
+    case logGte = "mandarine.logGte"
+    case logMdec = "mandarine.logMdec"
+    case logMemoryCard = "mandarine.logMemoryCard"
+    case logMemoryControl = "mandarine.logMemoryControl"
+    case logSpu = "mandarine.logSpu"
+    case logSystem = "mandarine.logSystem"
+    
     // Graphics (General)
-    case widescreen = "mandarine.widescreen"
-    case forceWidescreen = "mandarine.forceWidescreen"
-    case vsync = "mandarine.vsync"
     case forceNTSC = "mandarine.forceNTSC"
+    case forceWidescreen = "mandarine.forceWidescreen"
+    case nativeTextureFormat = "mandarine.nativeTextureFormat"
+    case vsync = "mandarine.vsync"
+    case widescreen = "mandarine.widescreen"
     
     // Graphics (Resolution)
     case height = "mandarine.height"
@@ -24,17 +38,44 @@ enum MandarineSettingsItems : String, CaseIterable {
     
     // System (General)
     case extendedMemory = "mandarine.extendedMemory"
+    case preserveState = "mandarine.preserveState"
+    case timeTravel = "mandarine.timeTravel"
     
     var title: String {
         switch self {
-        case .widescreen:
-            "Widescreen"
-        case .forceWidescreen:
-            "Force Widescreen"
-        case .vsync:
-            "Vertical Sync"
+        case .logBios:
+            "Log BIOS"
+        case .logCdrom:
+            " Log CDROM"
+        case .logController:
+            "Log Controller"
+        case .logDma:
+            "Log DMA"
+        case .logGpu:
+            "Log GPU"
+        case .logGte:
+            "Log GTE"
+        case .logMdec:
+            "Log MDEC"
+        case .logMemoryCard:
+            "Log Memory Card"
+        case .logMemoryControl:
+            "Log Memory Control"
+        case .logSpu:
+            "Log SPU"
+        case .logSystem:
+            "Log System"
+            
         case .forceNTSC:
             "Force NTSC"
+        case .forceWidescreen:
+            "Force Widescreen"
+        case .nativeTextureFormat:
+            "Native Texture Format"
+        case .vsync:
+            "Vertical Sync"
+        case .widescreen:
+            "Widescreen"
             
         case .height:
             "Height"
@@ -46,19 +87,48 @@ enum MandarineSettingsItems : String, CaseIterable {
             
         case .extendedMemory:
             "Extended Memory"
+        case .preserveState:
+            "Preserve State"
+        case .timeTravel:
+            "Time Travel"
         }
     }
     
     var details: String? {
         switch self {
-        case .widescreen:
-            "Enable widescreen so the renderer outputs 16:9 in 3D"
-        case .forceWidescreen:
-            "Force enable widescreen so the renderer outputs 16:9 in 3D"
-        case .vsync:
-            "Enable vertical sync so the renderer runs at the displays refresh rate"
+        case .logBios:
+            ""
+        case .logCdrom:
+            ""
+        case .logController:
+            ""
+        case .logDma:
+            ""
+        case .logGpu:
+            ""
+        case .logGte:
+            ""
+        case .logMdec:
+            ""
+        case .logMemoryCard:
+            ""
+        case .logMemoryControl:
+            ""
+        case .logSpu:
+            ""
+        case .logSystem:
+            ""
+            
         case .forceNTSC:
             "Force NTSC"
+        case .forceWidescreen:
+            "Force enable widescreen so the renderer outputs 16:9 in 3D"
+        case .nativeTextureFormat:
+            ""
+        case .vsync:
+            "Enable vertical sync so the renderer runs at the displays refresh rate"
+        case .widescreen:
+            "Enable widescreen so the renderer outputs 16:9 in 3D"
             
         case .height:
             "Sets the height at which the renderer will output to"
@@ -70,22 +140,40 @@ enum MandarineSettingsItems : String, CaseIterable {
             
         case .extendedMemory:
             "Extends the system memory to 8 MB"
+        case .preserveState:
+            ""
+        case .timeTravel:
+            ""
         }
     }
     
     func setting(_ delegate: SettingDelegate? = nil) -> BaseSetting {
         switch self {
-        case .widescreen,
-                .forceWidescreen,
-                .vsync,
+        case .logBios,
+                .logCdrom,
+                .logController,
+                .logDma,
+                .logGpu,
+                .logGte,
+                .logMdec,
+                .logMemoryCard,
+                .logMemoryControl,
+                .logSpu,
+                .logSystem,
                 .forceNTSC,
+                .forceWidescreen,
+                .nativeTextureFormat,
+                .vsync,
+                .widescreen,
                 .soundEnabled,
-                .extendedMemory:
+                .extendedMemory,
+                .preserveState,
+                .timeTravel:
             BoolSetting(key: rawValue,
                         title: title,
                         details: details,
-                        secondaryTitle: [.extendedMemory, .soundEnabled].contains(self) ? nil : "Unavailable for now",
-                        isEnabled: [.extendedMemory, .soundEnabled].contains(self),
+                        secondaryTitle: nil,
+                        isEnabled: true,
                         value: UserDefaults.standard.bool(forKey: rawValue),
                         delegate: delegate)
         
@@ -94,8 +182,8 @@ enum MandarineSettingsItems : String, CaseIterable {
             InputNumberSetting(key: rawValue,
                                title: title,
                                details: details,
-                               secondaryTitle: [.extendedMemory, .soundEnabled].contains(self) ? nil : "Unavailable for now",
-                               isEnabled: false,
+                               secondaryTitle: nil,
+                               isEnabled: true,
                                min: self == .height ? 480 : 640,
                                max: self == .height ? 960 : 1280,
                                value: UserDefaults.standard.double(forKey: rawValue),
@@ -105,12 +193,27 @@ enum MandarineSettingsItems : String, CaseIterable {
     
     static func settings(_ header: SettingsHeaders) -> [MandarineSettingsItems] {
         switch header {
+        case .debuggingGeneral:
+            [
+                .logBios,
+                .logCdrom,
+                .logController,
+                .logDma,
+                .logGpu,
+                .logGte,
+                .logMdec,
+                .logMemoryCard,
+                .logMemoryControl,
+                .logSpu,
+                .logSystem
+            ]
         case .graphicsGeneral:
             [
-                .widescreen,
+                .forceNTSC,
                 .forceWidescreen,
+                .nativeTextureFormat,
                 .vsync,
-                .forceNTSC
+                .widescreen
             ]
         case .graphicsResolution:
             [
@@ -123,7 +226,9 @@ enum MandarineSettingsItems : String, CaseIterable {
             ]
         case .systemGeneral:
             [
-                .extendedMemory
+                .extendedMemory,
+                .preserveState,
+                .timeTravel
             ]
         default:
             []

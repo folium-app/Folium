@@ -151,4 +151,9 @@ public actor CytrusSystem {
         SendableBoxart(data: NSData(bytes: cytrus.icon_from_disc(std.string(url.path)),
                                     length: 48 * 48 * MemoryLayout<UInt16>.size))
     }
+    
+    
+    public nonisolated func ledStatusDidChange(callback: cytrus.LEDStatusChangedCallback) {
+        cytrus.led_status_changed_callback(callback)
+    }
 }

@@ -45,4 +45,11 @@ enum class SETTING {
 };
 
 void set_setting(SETTING, bool);
+
+void* context;
+void set_context(void* context);
+
+using LEDStatusChangedCallback = void(*)(void*, uint8_t, uint8_t, uint8_t);
+LEDStatusChangedCallback callback;
+void led_status_changed_callback(LEDStatusChangedCallback);
 }

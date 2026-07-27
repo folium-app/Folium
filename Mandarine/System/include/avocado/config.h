@@ -91,9 +91,9 @@ struct avocado_config_t {
             int gte = 0;
             int mdec = 0;
             int memoryCard = 0;
-            int spu = 0;
-            int system = 0;
             int memoryControl = 0;
+            int spu = 0;
+            int system = 1;
         } log;
     } debug;
 
@@ -113,3 +113,4 @@ struct avocado_config_t {
 };
 
 extern avocado_config_t config;
+

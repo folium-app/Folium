@@ -48,8 +48,25 @@ void set_context(void* context);
 enum class SETTING {
     WIDESCREEN = 0,
     FORCE_WIDESCREEN = 1,
-    SOUND_ENABLED = 2,
-    EXTENDED_MEMORY = 3
+    VSYNC = 2,
+    FORCE_NTSC = 3,
+    NATIVE_TEXTURE_FORMAT = 4,
+    SOUND_ENABLED = 5,
+    PRESERVE_STATE = 6,
+    TIME_TRAVEL = 7,
+    EXTENDED_MEMORY = 8,
+    
+    LOG_BIOS = 9,
+    LOG_CDROM = 10,
+    LOG_CONTROLLER = 11,
+    LOG_DMA = 12,
+    LOG_GPU = 13,
+    LOG_GTE = 14,
+    LOG_MDEC = 15,
+    LOG_MEMORY_CARD = 16,
+    LOG_MEMORY_CONTROL = 17,
+    LOG_SPU = 18,
+    LOG_SYSTEM = 19
 };
 
 void set_setting(SETTING, bool);

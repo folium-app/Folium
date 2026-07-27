@@ -118,8 +118,8 @@ struct System {
     bool load(const std::string& /* path */);
     bool load(const std::vector<uint8_t>& /* data */, const bool /* is_exe */ = false);
     
-    void handleBiosFunction();
-    void handleSyscallFunction();
+    enum HandleType : uint32_t { BIOS = 0, SYSTEM_CALL = 1 };
+    void handle(HandleType);
 
     System();
     void printFunctionInfo(const char* functionNum, const bios::Function& f);

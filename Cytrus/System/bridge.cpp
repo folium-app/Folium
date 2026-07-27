@@ -218,6 +218,10 @@ void cytrus::insert_disc(std::string path) {
         loader->ReadProgramId(program_id);
     
     Frontend::RegisterDefaultApplets(system);
+    system.RegisterInfoLEDColorChanged([&]() {
+        const auto& color = system.GetInfoLEDColor();
+        cytrus::callback(cytrus::context, color.x, color.y, color.z);
+    });
     
     system.ApplySettings();
     Settings::LogSettings();
@@ -352,4 +356,12 @@ void cytrus::set_setting(cytrus::SETTING setting, bool value) {
             Settings::values.enable_realtime_audio.SetValue(value);
             break;
     }
+}
+
+void cytrus::set_context(void* context) {
+    cytrus::context = context;
+}
+
+void cytrus::led_status_changed_callback(cytrus::LEDStatusChangedCallback callback) {
+    cytrus::callback = callback;
 }

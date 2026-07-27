@@ -229,6 +229,7 @@ class SettingsController : UICollectionViewController {
         self.grapeSnapshot = grapeSnapshot
         
         generateSnapshot(for: &mandarineSnapshot, with: [
+            .debuggingGeneral,
             .graphicsGeneral,
             .graphicsResolution,
             .soundGeneral,
@@ -436,7 +437,25 @@ extension SettingsController : SettingDelegate {
                     
                     guard let setting: mandarine.SETTING = [
                         MandarineSettingsItems.extendedMemory.rawValue : mandarine.SETTING.EXTENDED_MEMORY,
-                        MandarineSettingsItems.soundEnabled.rawValue : mandarine.SETTING.SOUND_ENABLED
+                        MandarineSettingsItems.forceNTSC.rawValue : mandarine.SETTING.FORCE_NTSC,
+                        MandarineSettingsItems.forceWidescreen.rawValue : mandarine.SETTING.FORCE_WIDESCREEN,
+                        MandarineSettingsItems.logBios.rawValue : mandarine.SETTING.LOG_BIOS,
+                        MandarineSettingsItems.logCdrom.rawValue : mandarine.SETTING.LOG_CDROM,
+                        MandarineSettingsItems.logController.rawValue : mandarine.SETTING.LOG_CONTROLLER,
+                        MandarineSettingsItems.logDma.rawValue : mandarine.SETTING.LOG_DMA,
+                        MandarineSettingsItems.logGpu.rawValue : mandarine.SETTING.LOG_GPU,
+                        MandarineSettingsItems.logGte.rawValue : mandarine.SETTING.LOG_GTE,
+                        MandarineSettingsItems.logMdec.rawValue : mandarine.SETTING.LOG_MDEC,
+                        MandarineSettingsItems.logMemoryCard.rawValue : mandarine.SETTING.LOG_MEMORY_CARD,
+                        MandarineSettingsItems.logMemoryControl.rawValue : mandarine.SETTING.LOG_MEMORY_CONTROL,
+                        MandarineSettingsItems.logSpu.rawValue : mandarine.SETTING.LOG_SPU,
+                        MandarineSettingsItems.logSystem.rawValue : mandarine.SETTING.LOG_SYSTEM,
+                        MandarineSettingsItems.nativeTextureFormat.rawValue : mandarine.SETTING.NATIVE_TEXTURE_FORMAT,
+                        MandarineSettingsItems.preserveState.rawValue : mandarine.SETTING.PRESERVE_STATE,
+                        MandarineSettingsItems.soundEnabled.rawValue : mandarine.SETTING.SOUND_ENABLED,
+                        MandarineSettingsItems.timeTravel.rawValue : mandarine.SETTING.TIME_TRAVEL,
+                        MandarineSettingsItems.vsync.rawValue : mandarine.SETTING.VSYNC,
+                        MandarineSettingsItems.widescreen.rawValue : mandarine.SETTING.WIDESCREEN
                     ][boolSetting.key] else {
                         return
                     }

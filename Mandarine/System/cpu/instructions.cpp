@@ -278,7 +278,7 @@ void op_jalr(CPU *cpu, Opcode i) {
 void op_syscall(CPU *cpu, Opcode i) {
     UNUSED(i);
     if (cpu->sys->biosLog) {
-        cpu->sys->handleSyscallFunction();
+        cpu->sys->handle(System::HandleType::SYSTEM_CALL);
     }
     exception(cpu, COP0::CAUSE::Exception::syscall);
 }

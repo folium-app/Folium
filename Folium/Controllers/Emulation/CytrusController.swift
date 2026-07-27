@@ -15,8 +15,31 @@ import Cytrus
 import Grape
 
 class CytrusController : ControlsController {
+    var ledStatusIndicatorView: UIVisualEffectView? = nil
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if #available(iOS 26.0, *) {
+            let effect: UIGlassEffect = UIGlassEffect(style: .clear)
+            effect.tintColor = .clear
+            
+            ledStatusIndicatorView = UIVisualEffectView(effect: effect)
+            if let ledStatusIndicatorView {
+                ledStatusIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+                ledStatusIndicatorView.cornerConfiguration = .capsule()
+                view.addSubview(ledStatusIndicatorView)
+                
+                constraints.pad.landscape.append(contentsOf: [
+                    ledStatusIndicatorView.top.constraint(equalTo: view.salg.top, constant: 8.0),
+                    ledStatusIndicatorView.left.constraint(equalTo: view.salg.left, constant: 8.0),
+                    ledStatusIndicatorView.height.constraint(equalToConstant: 12.0),
+                    ledStatusIndicatorView.width.constraint(equalTo: ledStatusIndicatorView.salg.height)
+                ])
+                constraints.pad.portrait.append(contentsOf: constraints.pad.landscape)
+                constraints.phone.landscape.append(contentsOf: constraints.pad.landscape)
+                constraints.phone.portrait.append(contentsOf: constraints.pad.landscape)
+            }
+        }
         
         stackView = UIStackView()
         guard let stackView: UIStackView else {
@@ -298,6 +321,21 @@ class CytrusController : ControlsController {
                                                   height: bottom.frame.size.height,
                                                   width: bottom.frame.size.width,
                                                   secondary: true)
+                
+                cytrusGame.cytrusSystem.ledStatusDidChange { context, red, green, blue in
+                    guard let context: UnsafeMutableRawPointer else {
+                        return
+                    }
+                    
+                    let viewController: CytrusController = Unmanaged<CytrusController>.fromOpaque(context).takeUnretainedValue()
+                    
+                    if #available(iOS 26.0, *), let ledStatusIndicatorView: UIVisualEffectView = viewController.ledStatusIndicatorView {
+                        if let effect: UIGlassEffect = ledStatusIndicatorView.effect as? UIGlassEffect {
+                            effect.tintColor = UIColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: 1.0)
+                            ledStatusIndicatorView.effect = effect
+                        }
+                    }
+                }
                 
                 await cytrusGame.cytrusSystem.insertDisc(at: cytrusGame.details.url)
                 

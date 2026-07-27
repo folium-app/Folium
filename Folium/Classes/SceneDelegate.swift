@@ -193,14 +193,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 "regionFreePatch" : true
             ],
             .mandarine : [
-                "widescreen" : false,
-                "forceWidescreen" : false,
-                "vsync" : false,
+                "logBios" : false,
+                "logCdrom" : false,
+                "logController" : false,
+                "logDma" : false,
+                "logGpu" : false,
+                "logGte" : false,
+                "logMdec" : false,
+                "logMemoryCard" : false,
+                "logMemoryControl" : false,
+                "logSpu" : false,
+                "logSystem" : true,
+                
                 "forceNTSC" : false,
+                "forceWidescreen" : false,
+                "nativeTextureFormat" : true,
+                "vsync" : false,
+                "widescreen" : false,
+                
                 "height" : 480,
                 "width" : 640,
+                
                 "soundEnabled" : true,
-                "extendedMemory" : false
+                
+                "extendedMemory" : false,
+                "preserveState" : true,
+                "timeTravel" : false
             ],
             .tomato : [
                 "backupType" : 0,
@@ -286,7 +304,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func setSettingsForMandarine() {
         let settingsForMandarine: [MandarineSettingsItems : mandarine.SETTING] = [
             .extendedMemory : mandarine.SETTING.EXTENDED_MEMORY,
-            .soundEnabled : mandarine.SETTING.SOUND_ENABLED
+            .forceNTSC : mandarine.SETTING.FORCE_NTSC,
+            .forceWidescreen : mandarine.SETTING.FORCE_WIDESCREEN,
+            .logBios : mandarine.SETTING.LOG_BIOS,
+            .logCdrom : mandarine.SETTING.LOG_CDROM,
+            .logController : mandarine.SETTING.LOG_CONTROLLER,
+            .logDma : mandarine.SETTING.LOG_DMA,
+            .logGpu : mandarine.SETTING.LOG_GPU,
+            .logGte : mandarine.SETTING.LOG_GTE,
+            .logMdec : mandarine.SETTING.LOG_MDEC,
+            .logMemoryCard : mandarine.SETTING.LOG_MEMORY_CARD,
+            .logMemoryControl : mandarine.SETTING.LOG_MEMORY_CONTROL,
+            .logSpu : mandarine.SETTING.LOG_SPU,
+            .logSystem : mandarine.SETTING.LOG_SYSTEM,
+            .nativeTextureFormat : mandarine.SETTING.NATIVE_TEXTURE_FORMAT,
+            .preserveState : mandarine.SETTING.PRESERVE_STATE,
+            .soundEnabled : mandarine.SETTING.SOUND_ENABLED,
+            .timeTravel : mandarine.SETTING.TIME_TRAVEL,
+            .vsync : mandarine.SETTING.VSYNC,
+            .widescreen : mandarine.SETTING.WIDESCREEN
         ]
         
         SettingsHeaders.mandarineHeaders.forEach { header in

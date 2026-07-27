@@ -9,6 +9,7 @@ import Foundation
 import SettingsKit
 
 enum SettingsHeaders : String, CaseIterable {
+    case debuggingGeneral = "Debugging.General"
     case general = "General"
     case graphicsGeneral = "Graphics.General"
     case graphicsResolution = "Graphics.Resolution"
@@ -17,7 +18,6 @@ enum SettingsHeaders : String, CaseIterable {
     
     // Cytrus
     case coreGeneral = "Core.General"
-    case debuggingGeneral = "Debugging.General"
     case graphics3D = "Graphics.3D"
     case graphicsShader = "Graphics.Shader"
     case systemRegion = "System.Region"
@@ -62,6 +62,7 @@ enum SettingsHeaders : String, CaseIterable {
     
     static var mandarineHeaders: [SettingsHeaders] {
         [
+            .debuggingGeneral,
             .graphicsGeneral,
             .graphicsResolution,
             .soundGeneral,

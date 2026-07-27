@@ -478,6 +478,47 @@ bool System::load(const std::vector<uint8_t>& data, const bool is_exe) {
     }
 }
 
+void System::handle(HandleType handle_type) {
+    switch (handle_type) {
+        case HandleType::BIOS: {
+            uint32_t maskedPC = cpu->PC & 0x1FFFFF;
+
+            int tableNum = (maskedPC - 0xA0) / 0x10;
+            if (tableNum > 2)
+                return;
+
+            uint8_t functionNumber = cpu->reg[9];
+            const auto& table = bios::tables[tableNum];
+            const auto& function = table.find(functionNumber);
+
+            if (function == table.end()) {
+                fmt::print("  BIOS {:1X}(0x{:02X}): Unknown function!\n", 0xA + tableNum, functionNumber);
+                return;
+            }
+            
+            auto log = biosLog;
+            if (function->second.callback != nullptr)
+                log = function->second.callback(this);
+
+            if (log)
+                printFunctionInfo(fmt::format("BIOS {:1X}({:02X})", 0xA + tableNum, functionNumber).c_str(), function->second);
+        } break;
+        case HandleType::SYSTEM_CALL: {
+            uint8_t functionNumber = cpu->reg[4];
+            const auto& function = bios::SYSCALL.find(functionNumber);
+            if (function == bios::SYSCALL.end())
+                return;
+
+            auto log = biosLog;
+            if (function->second.callback != nullptr)
+                log = function->second.callback(this);
+
+            if (log)
+                cpu->sys->printFunctionInfo(fmt::format("SYSCALL({:X})", functionNumber).c_str(), function->second);
+        } break;
+    }
+}
+
 void System::printFunctionInfo(const char* functionNum, const bios::Function& f) {
     fmt::print("  {}: {}(", functionNum, f.name);
     unsigned int a = 0;
@@ -514,48 +555,6 @@ void System::printFunctionInfo(const char* functionNum, const bios::Function& f)
         if (a > 4) break;
     }
     fmt::print(")\n");
-}
-
-void System::handleBiosFunction() {
-    uint32_t maskedPC = cpu->PC & 0x1FFFFF;
-    uint8_t functionNumber = cpu->reg[9];
-    bool log = biosLog;
-
-    int tableNum = (maskedPC - 0xA0) / 0x10;
-    if (tableNum > 2) return;
-
-    const auto& table = bios::tables[tableNum];
-    const auto& function = table.find(functionNumber);
-
-    if (function == table.end()) {
-        fmt::print("  BIOS {:1X}(0x{:02X}): Unknown function!\n", 0xA + tableNum, functionNumber);
-        return;
-    }
-    if (function->second.callback != nullptr) {
-        log = function->second.callback(this);
-    }
-
-    if (log) {
-        std::string type = fmt::format("BIOS {:1X}({:02X})", 0xA + tableNum, functionNumber);
-        printFunctionInfo(type.c_str(), function->second);
-    }
-}
-
-void System::handleSyscallFunction() {
-    uint8_t functionNumber = cpu->reg[4];
-    bool log = biosLog;
-
-    const auto& function = bios::SYSCALL.find(functionNumber);
-    if (function == bios::SYSCALL.end()) return;
-
-    if (function->second.callback != nullptr) {
-        log = function->second.callback(this);
-    }
-
-    if (log) {
-        std::string type = fmt::format("SYSCALL({:X})", functionNumber);
-        cpu->sys->printFunctionInfo(type.c_str(), function->second);
-    }
 }
 
 void System::emulateFrame() {

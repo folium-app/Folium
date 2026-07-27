@@ -459,25 +459,71 @@ void mandarine::set_context(void* context) {
     mandarine::context = context;
 }
 
-
-int busToken = 0;
 void mandarine::set_setting(mandarine::SETTING setting, bool value) {
     switch (setting) {
-        case mandarine::SETTING::WIDESCREEN:
+        case SETTING::WIDESCREEN:
             config.options.graphics.widescreen = value;
             break;
-        case mandarine::SETTING::FORCE_WIDESCREEN:
+        case SETTING::FORCE_WIDESCREEN:
             config.options.graphics.forceWidescreen = value;
             break;
-        case mandarine::SETTING::SOUND_ENABLED:
+        case SETTING::VSYNC:
+            config.options.graphics.vsync = value;
+            break;
+        case SETTING::FORCE_NTSC:
+            config.options.graphics.forceNtsc = value;
+            break;
+        case SETTING::NATIVE_TEXTURE_FORMAT:
+            config.options.graphics.nativeTextureFormat = value;
+            break;
+        case SETTING::SOUND_ENABLED:
             config.options.sound.enabled = value;
             if (config.options.sound.enabled)
                 Sound::play();
             else
                 Sound::stop();
             break;
-        case mandarine::SETTING::EXTENDED_MEMORY:
+        case SETTING::PRESERVE_STATE:
+            config.options.emulator.preserveState = value;
+            break;
+        case SETTING::TIME_TRAVEL:
+            config.options.emulator.timeTravel = value;
+            break;
+        case SETTING::EXTENDED_MEMORY:
             config.options.system.ram8mb = value;
+            break;
+        case SETTING::LOG_BIOS:
+            config.debug.log.bios = value;
+            break;
+        case SETTING::LOG_CDROM:
+            config.debug.log.cdrom = value;
+            break;
+        case SETTING::LOG_CONTROLLER:
+            config.debug.log.controller = value;
+            break;
+        case SETTING::LOG_DMA:
+            config.debug.log.dma = value;
+            break;
+        case SETTING::LOG_GPU:
+            config.debug.log.gpu = value;
+            break;
+        case SETTING::LOG_GTE:
+            config.debug.log.gte = value;
+            break;
+        case SETTING::LOG_MDEC:
+            config.debug.log.mdec = value;
+            break;
+        case SETTING::LOG_MEMORY_CARD:
+            config.debug.log.memoryCard = value;
+            break;
+        case SETTING::LOG_MEMORY_CONTROL:
+            config.debug.log.memoryControl = value;
+            break;
+        case SETTING::LOG_SPU:
+            config.debug.log.spu = value;
+            break;
+        case SETTING::LOG_SYSTEM:
+            config.debug.log.system = value;
             break;
     }
 }
