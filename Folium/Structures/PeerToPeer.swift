@@ -10,6 +10,17 @@ import Foundation
 import Mandarine
 
 nonisolated struct P2P : Codable {
+    nonisolated struct Cherry : Codable {
+        nonisolated struct Button : Codable {
+            let data: Data
+            let pressed: Bool
+        }
+        
+        nonisolated struct Frame : Codable {
+            let data: Data
+        }
+    }
+    
     nonisolated struct Mandarine : Codable {
         nonisolated struct Button : Codable {
             let data: Data

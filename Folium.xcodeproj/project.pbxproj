@@ -20,6 +20,8 @@
 		E656E9AA3006F6D60061EA22 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A93006F6D60061EA22 /* libzstd */; };
 		E656E9AC3006F6D60061EA22 /* libzstdwrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9AB3006F6D60061EA22 /* libzstdwrapper */; };
 		E656E9AF3006F7FF0061EA22 /* TPCircularBuffer in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9AE3006F7FF0061EA22 /* TPCircularBuffer */; };
+		E67923303028758E00B556A8 /* libCherry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E67922CC30286E7700B556A8 /* libCherry.a */; };
+		E67923343028759F00B556A8 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E67923333028759F00B556A8 /* SharedDependencies */; };
 		E6979A492FE6ACA10055FA9D /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A482FE6ACA10055FA9D /* AntiqueKit */; };
 		E6979A4B2FE6ACA10055FA9D /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A4A2FE6ACA10055FA9D /* ColourKit */; };
 		E6979A4D2FE6ACA10055FA9D /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A4C2FE6ACA10055FA9D /* ConstraintKit */; };
@@ -73,6 +75,13 @@
 			remoteGlobalIDString = E655CB792FE73488003DCE2B;
 			remoteInfo = Tomato;
 		};
+		E67923313028758E00B556A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E67922CB30286E7700B556A8;
+			remoteInfo = Cherry;
+		};
 		E6AF262C3002E43C002D87C9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
@@ -107,6 +116,15 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		E655CB782FE73488003DCE2B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E67922CA30286E7700B556A8 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
@@ -168,6 +186,7 @@
 		E62C749B2FFCE20100D6760E /* libCytrus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCytrus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E655CB7A2FE73488003DCE2B /* libTomato.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTomato.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65A97A12FD0597F001DDEEE /* Folium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Folium.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E67922CC30286E7700B556A8 /* libCherry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCherry.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMandarine.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6A2BF413004F24400415154 /* MoltenVK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MoltenVK.xcframework; sourceTree = "<group>"; };
 		E6F139CA2FF04DB700F30081 /* libGrape.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGrape.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -242,6 +261,11 @@
 			path = Folium;
 			sourceTree = "<group>";
 		};
+		E67922CD30286E7700B556A8 /* Cherry */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Cherry;
+			sourceTree = "<group>";
+		};
 		E69CA8F62FDC9EAF00BCD2F9 /* Mandarine */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Mandarine;
@@ -297,6 +321,7 @@
 				E6A0FEE63007D7FF006FB733 /* FontKit in Frameworks */,
 				E6A0FEE43007D7FF006FB733 /* ExtensionsKit in Frameworks */,
 				E6A0FEF73007EC92006FB733 /* OnboardingKit in Frameworks */,
+				E67923303028758E00B556A8 /* libCherry.a in Frameworks */,
 				E6A0FEF33007EC92006FB733 /* ExtensionsKit in Frameworks */,
 				E6A0FEE23007D7FF006FB733 /* ConstraintKit in Frameworks */,
 				E6C462C42FE4B0AA004E5B57 /* SharedDependencies in Frameworks */,
@@ -324,6 +349,14 @@
 				E656E9A43006F6CC0061EA22 /* libzstd in Frameworks */,
 				E6F139D42FF04E1000F30081 /* libGrape.a in Frameworks */,
 				E6F49CDB2FF6C9F50085C59B /* libKiwi.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E67922C930286E7700B556A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E67923343028759F00B556A8 /* SharedDependencies in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +406,7 @@
 				E6079C7E3006E7C80093F6A5 /* Boost */,
 				E6A2BF1E3004DF9F00415154 /* FFmpeg */,
 				E65A97A32FD0597F001DDEEE /* Folium */,
+				E67922CD30286E7700B556A8 /* Cherry */,
 				E6A00CC52FF967B900D2BD20 /* Cytrus */,
 				E6F139CB2FF04DB700F30081 /* Grape */,
 				E6F48FA92FF6C0700085C59B /* Kiwi */,
@@ -392,6 +426,7 @@
 				E6F139CA2FF04DB700F30081 /* libGrape.a */,
 				E6F48FA82FF6C0700085C59B /* libKiwi.a */,
 				E62C749B2FFCE20100D6760E /* libCytrus.a */,
+				E67922CC30286E7700B556A8 /* libCherry.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -448,6 +483,7 @@
 				E6F139D62FF04E1000F30081 /* PBXTargetDependency */,
 				E6F49CDD2FF6C9F50085C59B /* PBXTargetDependency */,
 				E6AF262D3002E43C002D87C9 /* PBXTargetDependency */,
+				E67923323028758E00B556A8 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E65A97A32FD0597F001DDEEE /* Folium */,
@@ -491,6 +527,29 @@
 			productName = Folium;
 			productReference = E65A97A12FD0597F001DDEEE /* Folium.app */;
 			productType = "com.apple.product-type.application";
+		};
+		E67922CB30286E7700B556A8 /* Cherry */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E67922D230286E7700B556A8 /* Build configuration list for PBXNativeTarget "Cherry" */;
+			buildPhases = (
+				E67922C830286E7700B556A8 /* Sources */,
+				E67922C930286E7700B556A8 /* Frameworks */,
+				E67922CA30286E7700B556A8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E67922CD30286E7700B556A8 /* Cherry */,
+			);
+			name = Cherry;
+			packageProductDependencies = (
+				E67923333028759F00B556A8 /* SharedDependencies */,
+			);
+			productName = Cherry;
+			productReference = E67922CC30286E7700B556A8 /* libCherry.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 		E69CA8F42FDC9EAF00BCD2F9 /* Mandarine */ = {
 			isa = PBXNativeTarget;
@@ -605,6 +664,9 @@
 					E65A97A02FD0597F001DDEEE = {
 						CreatedOnToolsVersion = 26.5;
 					};
+					E67922CB30286E7700B556A8 = {
+						CreatedOnToolsVersion = 27.0;
+					};
 					E69CA8F42FDC9EAF00BCD2F9 = {
 						CreatedOnToolsVersion = 27.0;
 					};
@@ -640,6 +702,7 @@
 			projectRoot = "";
 			targets = (
 				E65A97A02FD0597F001DDEEE /* Folium */,
+				E67922CB30286E7700B556A8 /* Cherry */,
 				E6A00CC32FF967B900D2BD20 /* Cytrus */,
 				E6F139C92FF04DB700F30081 /* Grape */,
 				E6F48FA72FF6C0700085C59B /* Kiwi */,
@@ -668,6 +731,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		E65A979D2FD0597F001DDEEE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E67922C830286E7700B556A8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -714,6 +784,11 @@
 			isa = PBXTargetDependency;
 			target = E655CB792FE73488003DCE2B /* Tomato */;
 			targetProxy = E655CB852FE734FB003DCE2B /* PBXContainerItemProxy */;
+		};
+		E67923323028758E00B556A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E67922CB30286E7700B556A8 /* Cherry */;
+			targetProxy = E67923313028758E00B556A8 /* PBXContainerItemProxy */;
 		};
 		E6AF262D3002E43C002D87C9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -798,7 +873,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -847,7 +922,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1012,6 +1087,56 @@
 			};
 			name = Release;
 		};
+		E67922D030286E7700B556A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cherry/System/include/gearcoleco/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cherry/System/include";
+			};
+			name = Debug;
+		};
+		E67922D130286E7700B556A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cherry/System/include/gearcoleco/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cherry/System/include";
+			};
+			name = Release;
+		};
 		E69CA8F92FDC9EAF00BCD2F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1106,7 +1231,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cytrus/System/include/bridge.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cytrus/System/include/cytrus/bridge.h";
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
@@ -1153,7 +1278,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cytrus/System/include/bridge.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cytrus/System/include/cytrus/bridge.h";
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
@@ -1319,6 +1444,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		E67922D230286E7700B556A8 /* Build configuration list for PBXNativeTarget "Cherry" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E67922D030286E7700B556A8 /* Debug */,
+				E67922D130286E7700B556A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E69CA8FB2FDC9EAF00BCD2F9 /* Build configuration list for PBXNativeTarget "Mandarine" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1438,6 +1572,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E656E9AD3006F7FF0061EA22 /* XCRemoteSwiftPackageReference "TPCircularBuffer" */;
 			productName = TPCircularBuffer;
+		};
+		E67923333028759F00B556A8 /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E6A29C0A300455E200415154 /* XCLocalSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
 		};
 		E6979A482FE6ACA10055FA9D /* AntiqueKit */ = {
 			isa = XCSwiftPackageProductDependency;

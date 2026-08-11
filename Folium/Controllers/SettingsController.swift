@@ -254,6 +254,8 @@ class SettingsController : UICollectionViewController {
             switch selectedSnapshot {
             case .application:
                 await dataSource.apply(applicationSnapshot)
+            case .cherry:
+                break
             case .cytrus:
                 await dataSource.apply(cytrusSnapshot)
             case .grape:
@@ -384,6 +386,8 @@ extension SettingsController : SettingDelegate {
         
         switch selectedSnapshot {
         case .application:
+            break
+        case .cherry:
             break
         case .cytrus:
             Task {

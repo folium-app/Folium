@@ -11,6 +11,7 @@ import MetalKit
 import MultipeerConnectivity
 import UIKit
 
+import Cherry
 import Mandarine
 
 class ScreensController : UIViewController {
@@ -50,6 +51,20 @@ class ScreensController : UIViewController {
         l2Button: UIButton? = nil,
         r2Button: UIButton? = nil
     
+    // Keypad
+    var zeroButton: UIButton? = nil,
+        oneButton: UIButton? = nil,
+        twoButton: UIButton? = nil,
+        threeButton: UIButton? = nil,
+        fourButton: UIButton? = nil,
+        fiveButton: UIButton? = nil,
+        sixButton: UIButton? = nil,
+        sevenButton: UIButton? = nil,
+        eightButton: UIButton? = nil,
+        nineButton: UIButton? = nil,
+        asterixButton: UIButton? = nil,
+        hashtagButton: UIButton? = nil
+    
     var usedForMultiplayer: Bool = false
     var system: System = .cytrus
     
@@ -64,6 +79,11 @@ class ScreensController : UIViewController {
         if let tabController: TabController = tabBarController as? TabController,
            let game: Game = tabController.game {
             switch game {
+            case is CherryGame:
+                primaryRenderingView = UIImageView()
+                primaryBackgroundRenderingView = UIImageView()
+                
+                system = .cherry
             case is CytrusGame:
                 primaryRenderingView = MTKView()
                 primaryBackgroundRenderingView = MTKView()
@@ -100,7 +120,7 @@ class ScreensController : UIViewController {
             }
         } else {
             switch system {
-            case .kiwi:
+            case .cherry:
                 primaryRenderingView = UIImageView()
                 primaryBackgroundRenderingView = UIImageView()
             case .mandarine:
@@ -280,7 +300,34 @@ class ScreensController : UIViewController {
     
     
     nonisolated func receive(frame: UIImage) {}
+    nonisolated func receive(button: CherryButton, pressed: Bool) {}
     nonisolated func receive(button: MandarineButton, pressed: Bool) {}
+    
+    nonisolated func send(button: CherryButton, pressed: Bool, system: System) {
+        guard let tabController: TabController = tabBarController as? TabController else {
+            return
+        }
+        
+        let encoder: JSONEncoder = JSONEncoder()
+        if #available(iOS 18.0, *) {
+            guard let navigationController: UINavigationController = tabController.tabs[.gamesController].viewController as? UINavigationController,
+                  let gamesController: GamesController = navigationController.viewControllers.first as? GamesController else {
+                return
+            }
+            
+            guard let session: MCSession = gamesController.session, session.connectedPeers.count > 0 else {
+                return
+            }
+            
+            do {
+                let button: P2P.Cherry.Button = P2P.Cherry.Button(data: try encoder.encode(button), pressed: pressed)
+                let packet: P2P.Packet = P2P.Packet(data: try encoder.encode(button), dataType: .button(system))
+                try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .reliable)
+            } catch {
+                print(error, error.localizedDescription)
+            }
+        }
+    }
     
     nonisolated func send(button: MandarineButton, pressed: Bool, system: System) {
         guard let tabController: TabController = tabBarController as? TabController else {
@@ -348,6 +395,16 @@ class ScreensController : UIViewController {
         do {
             let packet: P2P.Packet = try decoder.decode(P2P.Packet.self, from: data)
             switch packet.dataType {
+            case .button(.cherry):
+                let button: P2P.Cherry.Button = try decoder.decode(P2P.Cherry.Button.self, from: packet.data)
+                self.receive(button: try decoder.decode(CherryButton.self, from: button.data), pressed: button.pressed)
+            case .frame(.cherry):
+                let frame: P2P.Cherry.Frame = try decoder.decode(P2P.Cherry.Frame.self, from: packet.data)
+                guard let image: UIImage = UIImage(data: frame.data) else {
+                    return
+                }
+                
+                self.receive(frame: image)
             case .button(.mandarine):
                 let button: P2P.Mandarine.Button = try decoder.decode(P2P.Mandarine.Button.self, from: packet.data)
                 self.receive(button: try decoder.decode(MandarineButton.self, from: button.data), pressed: button.pressed)
@@ -368,6 +425,46 @@ class ScreensController : UIViewController {
 }
 
 extension ScreensController {
+    func configureConstraintsForCherry() {
+        guard let primaryBackgroundRenderingView: UIView else {
+            return
+        }
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            constraints.pad.portrait.append(contentsOf: [
+                primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 46.0),
+                primaryBackgroundRenderingView.left.constraint(equalTo: view.salg.left, constant: 46.0),
+                primaryBackgroundRenderingView.right.constraint(equalTo: view.salg.right, constant: -46.0),
+                primaryBackgroundRenderingView.height.constraint(equalTo: primaryBackgroundRenderingView.salg.width,
+                                                                 multiplier: calculateAspectRatio(for: .cherry, isPortrait: true))
+            ])
+            
+            constraints.pad.landscape.append(contentsOf: [
+                primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 26.0),
+                primaryBackgroundRenderingView.bottom.constraint(equalTo: view.salg.bottom, constant: -26.0),
+                primaryBackgroundRenderingView.width.constraint(equalTo: primaryBackgroundRenderingView.salg.height,
+                                                                multiplier: calculateAspectRatio(for: .cherry, isPortrait: false)),
+                primaryBackgroundRenderingView.centerX.constraint(equalTo: view.salg.centerX),
+            ])
+        } else {
+            constraints.phone.portrait.append(contentsOf: [
+                primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 26.0),
+                primaryBackgroundRenderingView.left.constraint(equalTo: view.salg.left, constant: 26.0),
+                primaryBackgroundRenderingView.right.constraint(equalTo: view.salg.right, constant: -26.0),
+                primaryBackgroundRenderingView.height.constraint(equalTo: primaryBackgroundRenderingView.salg.width,
+                                                                 multiplier: calculateAspectRatio(for: .cherry, isPortrait: true))
+            ])
+            
+            constraints.phone.landscape.append(contentsOf: [
+                primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 26.0),
+                primaryBackgroundRenderingView.bottom.constraint(equalTo: view.salg.bottom, constant: -26.0),
+                primaryBackgroundRenderingView.width.constraint(equalTo: primaryBackgroundRenderingView.salg.height,
+                                                                multiplier: calculateAspectRatio(for: .cherry, isPortrait: false)),
+                primaryBackgroundRenderingView.centerX.constraint(equalTo: view.salg.centerX),
+            ])
+        }
+    }
+    
     func configureConstraintsForCytrus() {
         guard let primaryBackgroundRenderingView: UIView,
               let secondaryBackgroundRenderingView: UIView else {

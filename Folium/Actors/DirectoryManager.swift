@@ -18,6 +18,16 @@ actor DirectoryManager {
         }
         
         let subfoldersForSystems: [System : [String : [String : SystemFile]]] = [
+            .cherry: [
+                "artworks" : [:],
+                "games" : [:],
+                "system_data": [
+                    "bios.col" : SystemFile(path: "system_data",
+                                                system: .cherry,
+                                                systemFileType: .required,
+                                                title: "bios.col")
+                ]
+            ],
             .cytrus: [
                 "cache": [:],
                 "cheats": [:],

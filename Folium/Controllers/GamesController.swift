@@ -24,7 +24,7 @@ enum HostingOrJoiningState {
 class GamesController : UICollectionViewController {
     var importFileType: ImportFileType = .game
     var hostingOrJoiningState: HostingOrJoiningState = .disconnected
-    var selectedSnapshot: SelectedSnapshot = .cytrus {
+    var selectedSnapshot: SelectedSnapshot = .cherry {
         didSet {
             guard let dataSource: UICollectionViewDiffableDataSource<String, Game> else {
                 return
@@ -37,6 +37,12 @@ class GamesController : UICollectionViewController {
             
             Task {
                 switch selectedSnapshot {
+                case .cherry:
+                    guard let cherrySnapshot else {
+                        return
+                    }
+                    
+                    await dataSource.apply(cherrySnapshot)
                 case .cytrus:
                     guard let cytrusSnapshot else {
                         return
@@ -75,6 +81,7 @@ class GamesController : UICollectionViewController {
     }
     
     var dataSource: UICollectionViewDiffableDataSource<String, Game>? = nil
+    var cherrySnapshot: NSDiffableDataSourceSnapshot<String, Game>? = nil
     var cytrusSnapshot: NSDiffableDataSourceSnapshot<String, Game>? = nil
     var grapeSnapshot: NSDiffableDataSourceSnapshot<String, Game>? = nil
     var kiwiSnapshot: NSDiffableDataSourceSnapshot<String, Game>? = nil
@@ -106,6 +113,10 @@ class GamesController : UICollectionViewController {
                             self.importFileType = .game
                             var types: [UTType] = []
                             switch self.selectedSnapshot {
+                            case .cherry:
+                                if let col: UTType = .col, let rom: UTType = .rom {
+                                    types.append(contentsOf: [col, rom])
+                                }
                             case .cytrus:
                                 if let `3ds`: UTType = .`3ds`, let cci: UTType = .cci, let cxi: UTType = .cxi {
                                     types.append(contentsOf: [`3ds`, cci, cxi])
@@ -158,7 +169,9 @@ class GamesController : UICollectionViewController {
                 ])),
                 UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: UIMenu(children: [
                     UIMenu(title: "Coleco", image: UIImage(systemName: "cpu"), children: [
-                        UIAction(title: "CV", subtitle: "ColecoVision", attributes: .disabled) { action in }
+                        UIAction(title: "CV", subtitle: "ColecoVision") { action in
+                            self.selectedSnapshot = .cherry
+                        }
                     ]),
                     UIMenu(title: "Nintendo", image: UIImage(systemName: "cpu"), children: [
                         UIAction(title: "3DS", subtitle: "Nintendo 3DS") { action in
@@ -247,6 +260,7 @@ class GamesController : UICollectionViewController {
             collectionView.topEdgeEffect.style = .soft
         }
         
+        let cherryCell: UICollectionView.CellRegistration<CherryCell, CherryGame> = CellManager.Library.cherryCell(viewController: self)
         let cytrusCell: UICollectionView.CellRegistration<CytrusCell, CytrusGame> = CellManager.Library.cytrusCell(viewController: self)
         let grapeCell: UICollectionView.CellRegistration<GrapeCell, GrapeGame> = CellManager.Library.grapeCell(viewController: self)
         let kiwiCell: UICollectionView.CellRegistration<KiwiCell, KiwiGame> = CellManager.Library.kiwiCell(viewController: self)
@@ -264,6 +278,8 @@ class GamesController : UICollectionViewController {
         
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             switch itemIdentifier {
+            case let cherryGame as CherryGame:
+                collectionView.dequeueConfiguredReusableCell(using: cherryCell, for: indexPath, item: cherryGame)
             case let cytrusGame as CytrusGame:
                 collectionView.dequeueConfiguredReusableCell(using: cytrusCell, for: indexPath, item: cytrusGame)
             case let grapeGame as GrapeGame:
@@ -538,6 +554,22 @@ class GamesController : UICollectionViewController {
         }
         
         switch game {
+        case let cherryGame as CherryGame:
+            tabController.game = cherryGame
+            
+            let cherryController: CherryController = CherryController()
+            tabController.switchEmulationController(with: cherryController)
+            // tabController.switchSettingsSnapshot(for: .cherry)
+            
+            let encoder: JSONEncoder = JSONEncoder()
+            do {
+                let packet: P2P.Packet = P2P.Packet(data: Data(), dataType: .prepare(.cherry))
+                if let session: MCSession, session.connectedPeers.count > 0 {
+                    try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .reliable)
+                }
+            } catch {
+                print(error, error.localizedDescription)
+            }
         case let cytrusGame as CytrusGame:
             tabController.game = cytrusGame
             
@@ -585,6 +617,16 @@ class GamesController : UICollectionViewController {
     
     func generateSnapshot<T>(for snapshot: inout NSDiffableDataSourceSnapshot<String, Game>, for games: [T], type: T.Type) {
         switch T.self {
+        case is CherryGame.Type:
+            if let games: [CherryGame] = games as? [CherryGame] {
+                let sections: [CherryGame] = games.mapUniqueBy({ game in game }, key: { game in game.prefix })
+                let sectionsStrings: [String] = sections.map(\.prefix)
+                
+                snapshot.appendSections(sectionsStrings.sorted())
+                snapshot.sectionIdentifiers.forEach { section in
+                    snapshot.appendItems(games.filter { game in game.prefix == section }.sorted(), toSection: section)
+                }
+            }
         case is CytrusGame.Type:
             if let games: [CytrusGame] = games as? [CytrusGame] {
                 let sections: [CytrusGame] = games.mapUniqueBy({ game in game }, key: { game in game.prefix })
@@ -642,6 +684,13 @@ class GamesController : UICollectionViewController {
     
     func populateGames() async {
         if let dataSource, let tabController: TabController = tabBarController as? TabController {
+            cherrySnapshot = NSDiffableDataSourceSnapshot<String, Game>()
+            guard var cherrySnapshot else {
+                return
+            }
+            generateSnapshot(for: &cherrySnapshot, for: await tabController.gamesManager.games(for: .cherry), type: CherryGame.self)
+            self.cherrySnapshot = cherrySnapshot
+            
             cytrusSnapshot = NSDiffableDataSourceSnapshot<String, Game>()
             guard var cytrusSnapshot else {
                 return
@@ -684,6 +733,8 @@ class GamesController : UICollectionViewController {
                 }
                 
                 switch selectedSnapshot {
+                case .cherry:
+                    await dataSource.apply(cherrySnapshot)
                 case .cytrus:
                     await dataSource.apply(cytrusSnapshot)
                 case .grape:
@@ -714,7 +765,8 @@ extension GamesController : UIDocumentPickerDelegate, UINavigationControllerDele
         
         var gamesDirectoryURL: URL = documentDirectoryURL
         switch selectedSnapshot {
-        case .cytrus,
+        case .cherry,
+                .cytrus,
                 .grape,
                 .kiwi,
                 .mandarine,
@@ -812,6 +864,14 @@ extension GamesController : MCSessionDelegate {
         do {
             let packet: P2P.Packet = try decoder.decode(P2P.Packet.self, from: data)
             switch packet.dataType {
+            case .prepare(.cherry):
+                Task { @MainActor in
+                    let cherryController: CherryMPController = CherryMPController()
+                    cherryController.system = .cherry
+                    if let tabController: TabController = tabBarController as? TabController {
+                        tabController.switchEmulationController(with: cherryController)
+                    }
+                }
             case .prepare(.mandarine):
                 Task { @MainActor in
                     let mandarineController: MandarineMPController = MandarineMPController()

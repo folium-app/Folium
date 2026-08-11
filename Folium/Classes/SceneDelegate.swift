@@ -12,6 +12,7 @@ import OnboardingKit
 import SwiftUI
 import UIKit
 
+import Cherry
 import Cytrus
 import Grape
 import Kiwi
@@ -25,6 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private var directoryManager: DirectoryManager = DirectoryManager()
     
+    private let cherrySystem: CherrySystem = CherrySystem()
     private let cytrusSystem: CytrusSystem = CytrusSystem()
     private let grapeSystem: GrapeSystem = GrapeSystem()
     private let kiwiSystem: KiwiSystem = KiwiSystem()
@@ -36,7 +38,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         
-        let gamesManager: GamesManager = GamesManager(cytrusSystem: cytrusSystem,
+        let gamesManager: GamesManager = GamesManager(cherrySystem: cherrySystem,
+                                                      cytrusSystem: cytrusSystem,
                                                       grapeSystem: grapeSystem,
                                                       kiwiSystem: kiwiSystem,
                                                       mandarineSystem: mandarineSystem,
@@ -110,6 +113,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         Task {
             switch await task.result {
             case .success(_):
+                await cherrySystem.initializePaths()
+                await cherrySystem.initializeSystem()
+                
                 await cytrusSystem.initializeLogging()
                 
                 await grapeSystem.initializePaths()

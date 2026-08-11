@@ -38,7 +38,7 @@ public enum CytrusButton : Int32 {
     case debug = 781
     case gpio14 = 782
     
-    var int32: Int32 { rawValue }
+    public var int32: Int32 { rawValue }
 };
 
 public struct SendableBoxart : @unchecked Sendable {
@@ -136,6 +136,10 @@ public actor CytrusSystem {
     
     public func touchMoved(at point: CGPoint) {
         cytrus.touch_moved(Float(point.x), Float(point.y))
+    }
+    
+    public nonisolated func moveThumbstick(with id: Int32, x: Float, y: Float) {
+        cytrus.move_thumbstick(id, x, y)
     }
     
     public func setSetting<T>(setting: cytrus.SETTING, value: T) {

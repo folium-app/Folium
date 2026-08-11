@@ -27,6 +27,8 @@ void set_screens(void*, double, double, bool);
 void press_button(int), release_button(int);
 void touch_began(float, float), touch_ended(void), touch_moved(float, float);
 
+void move_thumbstick(int, float, float);
+
 enum class SETTING {
     LLE_APPLETS = 0,
     DETERMINISTIC_ASYNC_OPERATIONS = 1,

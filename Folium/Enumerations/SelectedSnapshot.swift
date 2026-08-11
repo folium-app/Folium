@@ -6,12 +6,14 @@
 //
 
 enum SelectedSnapshot : Int {
-    case application, cytrus, grape, kiwi, mandarine, tomato
+    case application, cherry, cytrus, grape, kiwi, mandarine, tomato
     
     var string: String {
         switch self {
         case .application:
             "Application"
+        case .cherry:
+            "Cherry"
         case .cytrus:
             "Cytrus"
         case .grape:
@@ -29,6 +31,8 @@ enum SelectedSnapshot : Int {
         switch self {
         case .application:
             nil
+        case .cherry:
+            System.cherry
         case .cytrus:
             System.cytrus
         case .grape:

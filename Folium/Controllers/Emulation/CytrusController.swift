@@ -19,6 +19,7 @@ class CytrusController : ControlsController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        /*
         if #available(iOS 26.0, *) {
             let effect: UIGlassEffect = UIGlassEffect(style: .clear)
             effect.tintColor = .clear
@@ -40,6 +41,7 @@ class CytrusController : ControlsController {
                 constraints.phone.portrait.append(contentsOf: constraints.pad.landscape)
             }
         }
+         */
         
         stackView = UIStackView()
         guard let stackView: UIStackView else {
@@ -129,6 +131,32 @@ class CytrusController : ControlsController {
         guard let startButton else {
             return
         }
+        
+        leftThumbstickView = ThumbstickView()
+        guard let leftThumbstickView else {
+            return
+        }
+        leftThumbstickView.translatesAutoresizingMaskIntoConstraints = false
+        leftThumbstickView.didDrag = { position in
+            self.move(thumbstick: CytrusButton.circlePad.int32, position: position)
+        }
+        leftThumbstickView.didUndrag = {}
+        leftThumbstickView.didClick = {}
+        leftThumbstickView.didUnclick = {}
+        view.addSubview(leftThumbstickView)
+        
+        rightThumbstickView = ThumbstickView()
+        guard let rightThumbstickView else {
+            return
+        }
+        rightThumbstickView.translatesAutoresizingMaskIntoConstraints = false
+        rightThumbstickView.didDrag = { position in
+            self.move(thumbstick: CytrusButton.cStick.int32, position: position)
+        }
+        rightThumbstickView.didUndrag = {}
+        rightThumbstickView.didClick = {}
+        rightThumbstickView.didUnclick = {}
+        view.addSubview(rightThumbstickView)
         
         let upConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "chevron.up"), nil, .large)
         upButton = .button(with: upConfiguration, actions: ({ _ in
@@ -361,6 +389,14 @@ class CytrusController : ControlsController {
         
         release(button: button, using: cytrusGame.cytrusSystem)
     }
+    
+    func move(thumbstick: Int32, position: (x: Float, y: Float)) {
+        guard let cytrusGame: CytrusGame = game as? CytrusGame else {
+            return
+        }
+        
+        move(thumbstick: thumbstick, x: position.x, y: position.y, using: cytrusGame.cytrusSystem)
+    }
 }
 
 extension CytrusController {
@@ -412,6 +448,9 @@ extension CytrusController {
             return
         }
         
+        guard let leftThumbstickView, let rightThumbstickView else {
+            return
+        }
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             constraints.pad.portrait.append(contentsOf: [
@@ -454,6 +493,16 @@ extension CytrusController {
                 r2Button.right.constraint(equalTo: r1Button.salg.left, constant: -20.0),
                 r2Button.centerY.constraint(equalTo: r1Button.salg.centerY),
                 r2Button.width.constraint(equalTo: r2Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                leftThumbstickView.top.constraint(equalTo: upButton.salg.top),
+                leftThumbstickView.left.constraint(equalTo: leftButton.salg.left),
+                leftThumbstickView.bottom.constraint(equalTo: downButton.salg.bottom),
+                leftThumbstickView.right.constraint(equalTo: rightButton.salg.right),
+                
+                rightThumbstickView.top.constraint(equalTo: northButton.salg.top),
+                rightThumbstickView.left.constraint(equalTo: westButton.salg.left),
+                rightThumbstickView.bottom.constraint(equalTo: southButton.salg.bottom),
+                rightThumbstickView.right.constraint(equalTo: eastButton.salg.right),
                 
                 stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
                 stackView.centerX.constraint(equalTo: view.salg.centerX)
@@ -500,6 +549,16 @@ extension CytrusController {
                 r2Button.centerY.constraint(equalTo: r1Button.salg.centerY),
                 r2Button.width.constraint(equalTo: r2Button.salg.height, multiplier: 3.0 / 2.0),
                 
+                leftThumbstickView.top.constraint(equalTo: upButton.salg.top),
+                leftThumbstickView.left.constraint(equalTo: leftButton.salg.left),
+                leftThumbstickView.bottom.constraint(equalTo: downButton.salg.bottom),
+                leftThumbstickView.right.constraint(equalTo: rightButton.salg.right),
+                
+                rightThumbstickView.top.constraint(equalTo: northButton.salg.top),
+                rightThumbstickView.left.constraint(equalTo: westButton.salg.left),
+                rightThumbstickView.bottom.constraint(equalTo: southButton.salg.bottom),
+                rightThumbstickView.right.constraint(equalTo: eastButton.salg.right),
+                
                 stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
                 stackView.centerX.constraint(equalTo: view.salg.centerX)
             ])
@@ -545,6 +604,16 @@ extension CytrusController {
                 r2Button.centerY.constraint(equalTo: r1Button.salg.centerY),
                 r2Button.width.constraint(equalTo: r2Button.salg.height, multiplier: 3.0 / 2.0),
                 
+                leftThumbstickView.top.constraint(equalTo: upButton.salg.top),
+                leftThumbstickView.left.constraint(equalTo: leftButton.salg.left),
+                leftThumbstickView.bottom.constraint(equalTo: downButton.salg.bottom),
+                leftThumbstickView.right.constraint(equalTo: rightButton.salg.right),
+                
+                rightThumbstickView.top.constraint(equalTo: northButton.salg.top),
+                rightThumbstickView.left.constraint(equalTo: westButton.salg.left),
+                rightThumbstickView.bottom.constraint(equalTo: southButton.salg.bottom),
+                rightThumbstickView.right.constraint(equalTo: eastButton.salg.right),
+                
                 stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
                 stackView.centerX.constraint(equalTo: view.salg.centerX)
             ])
@@ -589,6 +658,16 @@ extension CytrusController {
                 r2Button.right.constraint(equalTo: r1Button.salg.left, constant: -20.0),
                 r2Button.centerY.constraint(equalTo: r1Button.salg.centerY),
                 r2Button.width.constraint(equalTo: r2Button.salg.height, multiplier: 3.0 / 2.0),
+                
+                leftThumbstickView.top.constraint(equalTo: upButton.salg.top),
+                leftThumbstickView.left.constraint(equalTo: leftButton.salg.left),
+                leftThumbstickView.bottom.constraint(equalTo: downButton.salg.bottom),
+                leftThumbstickView.right.constraint(equalTo: rightButton.salg.right),
+                
+                rightThumbstickView.top.constraint(equalTo: northButton.salg.top),
+                rightThumbstickView.left.constraint(equalTo: westButton.salg.left),
+                rightThumbstickView.bottom.constraint(equalTo: southButton.salg.bottom),
+                rightThumbstickView.right.constraint(equalTo: eastButton.salg.right),
                 
                 stackView.bottom.constraint(equalTo: view.salg.bottom,constant: -20.0),
                 stackView.centerX.constraint(equalTo: view.salg.centerX)

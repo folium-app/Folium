@@ -5,7 +5,7 @@
 //  Created by Jarrod Norwell on 13/7/2026.
 //
 
-#include "bridge.h"
+#include "cytrus/bridge.h"
 #include "configuration.h"
 #include "emu_window_vk.h"
 #include "input_manager.h"
@@ -309,6 +309,11 @@ void cytrus::touch_ended(void) {
 
 void cytrus::touch_moved(float x, float y) {
     cytrus::touch_began(x, y);
+}
+
+void cytrus::move_thumbstick(int id, float x, float y) {
+    if (auto handler = InputManager::AnalogHandler())
+        handler->MoveJoystick(id, x, y);
 }
 
 void cytrus::set_setting(cytrus::SETTING setting, bool value) {

@@ -5,6 +5,8 @@
 //  Created by Jarrod Norwell on 23/6/2026.
 //
 
+
+import Cherry
 import Cytrus
 import Grape
 import Kiwi
@@ -12,6 +14,15 @@ import Mandarine
 import Tomato
 
 class ControlsController : ScreensController {
+    // MARK: Cherry (CV)
+    nonisolated func press(button: CherryButton, index: Int32 = 0, using cherrySystem: CherrySystem) {
+        cherrySystem.press(button: button, index: index)
+    }
+    
+    nonisolated func release(button: CherryButton, index: Int32 = 0, using cherrySystem: CherrySystem) {
+        cherrySystem.release(button: button, index: index)
+    }
+    
     // MARK: Cytrus (3DS)
     func press(button: CytrusButton, using cytrusSystem: CytrusSystem) {
         cytrusSystem.press(button: button)
@@ -19,6 +30,10 @@ class ControlsController : ScreensController {
     
     func release(button: CytrusButton, using cytrusSystem: CytrusSystem) {
         cytrusSystem.release(button: button)
+    }
+    
+    func move(thumbstick: Int32, x: Float, y: Float, using cytrusSystem: CytrusSystem) {
+        cytrusSystem.moveThumbstick(with: thumbstick, x: x, y: y)
     }
     
     

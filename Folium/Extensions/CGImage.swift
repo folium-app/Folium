@@ -9,6 +9,29 @@ import CoreGraphics
 import Foundation
 
 extension CGImage {
+    static func colecoVision(_ buffer: UnsafeMutablePointer<UInt8>, _ width: Int, _ height: Int) -> CGImage? {
+        let colorSpaceRef = CGColorSpaceCreateDeviceRGB()
+                
+        let bitsPerComponent = 8
+        let bytesPerPixel = 3
+        let bitsPerPixel = bytesPerPixel * bitsPerComponent
+        let bytesPerRow = bytesPerPixel * width
+        let totalBytes = height * bytesPerRow
+        
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue).union(.byteOrderDefault)
+        guard let providerRef = CGDataProvider(dataInfo: nil, data: buffer, size: totalBytes,
+            releaseData: { _, _, _  in }) else {
+            return nil
+        }
+        
+        var imageRef: CGImage? = nil
+        imageRef = CGImage(width: width, height: height, bitsPerComponent: bitsPerComponent, bitsPerPixel: bitsPerPixel,
+            bytesPerRow: bytesPerRow, space: colorSpaceRef, bitmapInfo: bitmapInfo, provider: providerRef,
+            decode: nil, shouldInterpolate: false, intent: .defaultIntent)
+        
+        return imageRef
+    }
+    
     static func grape(_ pointer: UnsafeMutablePointer<UInt32>, _ width: Int, _ height: Int) -> CGImage? {
         let colorSpaceRef = CGColorSpaceCreateDeviceRGB()
                 
