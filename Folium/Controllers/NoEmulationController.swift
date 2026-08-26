@@ -15,7 +15,7 @@ class NoEmulationController : OBController {
     init() {
         let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                        color: .label,
-                                                                       font: .regular(from: .extraLargeTitle),
+                                                                       font: .regular(from: .compatibleExtraLargeTitle),
                                                                        text: "Select a Game")
         
         let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,

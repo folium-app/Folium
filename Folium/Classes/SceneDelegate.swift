@@ -44,7 +44,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                       kiwiSystem: kiwiSystem,
                                                       mandarineSystem: mandarineSystem,
                                                       tomatoSystem: tomatoSystem)
-        let onboardingModel: OnboardingModel = OnboardingModel(gamesManager: gamesManager)
+        let onboardingModel: OnboardingModel = OnboardingModel(direcotryManager: directoryManager,
+                                                               gamesManager: gamesManager)
         
         window = UIWindow(windowScene: windowScene)
         guard let window else {
@@ -56,7 +57,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         var onboardingController: OBController {
             let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                            color: .label,
-                                                                           font: .regular(from: .extraLargeTitle),
+                                                                           font: .regular(from: .compatibleExtraLargeTitle),
                                                                            text: "Folium")
             
             let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
@@ -96,7 +97,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         window.rootViewController = if onboardingComplete {
-            TabController(gamesManager: gamesManager)
+            TabController(directoryManager: directoryManager, gamesManager: gamesManager)
         } else {
             onboardingController
         }

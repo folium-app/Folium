@@ -10,6 +10,8 @@ import ExtensionsKit
 import FontKit
 import MultipeerConnectivity
 import OnboardingKit
+import StoreKit
+import SwiftUI
 import UniformTypeIdentifiers
 import UIKit
 
@@ -22,7 +24,9 @@ enum HostingOrJoiningState {
 }
 
 class GamesController : UICollectionViewController {
+    var currentlyImportingSystemFile: String? = nil
     var importFileType: ImportFileType = .game
+    
     var hostingOrJoiningState: HostingOrJoiningState = .disconnected
     var selectedSnapshot: SelectedSnapshot = .cherry {
         didSet {
@@ -248,8 +252,8 @@ class GamesController : UICollectionViewController {
                         
                         completion(children)
                     }
-                ])),
-                UIBarButtonItem(image: UIImage(systemName: "person.crop.circle"))
+                ]))// ,
+                // UIBarButtonItem(image: UIImage(systemName: "person.crop.circle"))
             ], representativeItem: nil)
         ]
         navigationItem.style = .browser
@@ -308,7 +312,7 @@ class GamesController : UICollectionViewController {
         }
         
         var whatsNewController: OBControllerWithList {
-            let textFont: UIFont = .regular(from: .extraLargeTitle)
+            let textFont: UIFont = .regular(from: .compatibleExtraLargeTitle)
             
             let image: UIImage? = UIImage(systemName: "sparkles")
             
@@ -553,65 +557,163 @@ class GamesController : UICollectionViewController {
             return
         }
         
-        switch game {
-        case let cherryGame as CherryGame:
-            tabController.game = cherryGame
+        func beginImporting(systemFile: String) {
+            currentlyImportingSystemFile = systemFile
             
-            let cherryController: CherryController = CherryController()
-            tabController.switchEmulationController(with: cherryController)
-            // tabController.switchSettingsSnapshot(for: .cherry)
-            
-            let encoder: JSONEncoder = JSONEncoder()
-            do {
-                let packet: P2P.Packet = P2P.Packet(data: Data(), dataType: .prepare(.cherry))
-                if let session: MCSession, session.connectedPeers.count > 0 {
-                    try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .reliable)
+            let documentPickerController: UIDocumentPickerViewController = UIDocumentPickerViewController(forOpeningContentTypes: [.item], asCopy: true)
+            // documentPickerController.allowsMultipleSelection =
+            documentPickerController.delegate = self
+            present(documentPickerController, animated: true)
+        }
+        
+        func requiresSystemFiles(for system: System) async -> (Bool, [SystemFile]) {
+            let systemFiles: [SystemFile] = await tabController.directoryManager.unavailableSystemFiles
+            return (systemFiles.contains(where: { systemFile in systemFile.system == system }), systemFiles.filter { systemFile in systemFile.system == system })
+        }
+        
+        let alertController: UIAlertController = UIAlertController(title: "Requires System Files",
+                                                                   message: "Required system files for this console cannot be found, please tap one of the options below to import them",
+                                                                   preferredStyle: .alert)
+        
+        Task {
+            switch game {
+            case let cherryGame as CherryGame:
+                let (result, systemFiles) = await requiresSystemFiles(for: cherryGame.system)
+                if result {
+                    importFileType = .systemFile
+                    
+                    for systemFile in systemFiles {
+                        alertController.addAction(UIAlertAction(title: systemFile.title, style: .default) { action in
+                            beginImporting(systemFile: systemFile.title)
+                        })
+                    }
+                    
+                    present(alertController, animated: true)
+                } else {
+                    tabController.game = cherryGame
+                    
+                    let cherryController: CherryController = CherryController()
+                    tabController.switchEmulationController(with: cherryController)
+                    // tabController.switchSettingsSnapshot(for: .cherry)
+                    
+                    let encoder: JSONEncoder = JSONEncoder()
+                    do {
+                        let packet: P2P.Packet = P2P.Packet(data: Data(), dataType: .prepare(.cherry))
+                        if let session: MCSession, session.connectedPeers.count > 0 {
+                            try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .reliable)
+                        }
+                    } catch {
+                        print(error, error.localizedDescription)
+                    }
                 }
-            } catch {
-                print(error, error.localizedDescription)
-            }
-        case let cytrusGame as CytrusGame:
-            tabController.game = cytrusGame
-            
-            let cytrusController: CytrusController = CytrusController()
-            tabController.switchEmulationController(with: cytrusController)
-            tabController.switchSettingsSnapshot(for: .cytrus)
-        case let grapeGame as GrapeGame:
-            tabController.game = grapeGame
-            
-            let grapeController: GrapeController = GrapeController()
-            tabController.switchEmulationController(with: grapeController)
-            tabController.switchSettingsSnapshot(for: .grape)
-        case let kiwiGame as KiwiGame:
-            tabController.game = kiwiGame
-            
-            let kiwiController: KiwiController = KiwiController()
-            tabController.switchEmulationController(with: kiwiController)
-            // tabController.switchSettingsSnapshot(for: .kiwi)
-        case let mandarineGame as MandarineGame:
-            tabController.game = mandarineGame
-            
-            let mandarineController: MandarineController = MandarineController()
-            tabController.switchEmulationController(with: mandarineController)
-            tabController.switchSettingsSnapshot(for: .mandarine)
-            
-            let encoder: JSONEncoder = JSONEncoder()
-            do {
-                let packet: P2P.Packet = P2P.Packet(data: Data(), dataType: .prepare(.mandarine))
-                if let session: MCSession, session.connectedPeers.count > 0 {
-                    try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .reliable)
+            case let cytrusGame as CytrusGame:
+                let (result, systemFiles) = await requiresSystemFiles(for: cytrusGame.system)
+                if result {
+                    importFileType = .systemFile
+                    
+                    for systemFile in systemFiles {
+                        alertController.addAction(UIAlertAction(title: systemFile.title, style: .default) { action in
+                            beginImporting(systemFile: systemFile.title)
+                        })
+                    }
+                    
+                    present(alertController, animated: true)
+                } else {
+                    tabController.game = cytrusGame
+                    
+                    let cytrusController: CytrusController = CytrusController()
+                    tabController.switchEmulationController(with: cytrusController)
+                    tabController.switchSettingsSnapshot(for: .cytrus)
                 }
-            } catch {
-                print(error, error.localizedDescription)
+            case let grapeGame as GrapeGame:
+                let (result, systemFiles) = await requiresSystemFiles(for: grapeGame.system)
+                if result {
+                    importFileType = .systemFile
+                    
+                    for systemFile in systemFiles {
+                        alertController.addAction(UIAlertAction(title: systemFile.title, style: .default) { action in
+                            beginImporting(systemFile: systemFile.title)
+                        })
+                    }
+                    
+                    present(alertController, animated: true)
+                } else {
+                    tabController.game = grapeGame
+                    
+                    let grapeController: GrapeController = GrapeController()
+                    tabController.switchEmulationController(with: grapeController)
+                    tabController.switchSettingsSnapshot(for: .grape)
+                }
+            case let kiwiGame as KiwiGame:
+                let (result, systemFiles) = await requiresSystemFiles(for: kiwiGame.system)
+                if result {
+                    importFileType = .systemFile
+                    
+                    for systemFile in systemFiles {
+                        alertController.addAction(UIAlertAction(title: systemFile.title, style: .default) { action in
+                            beginImporting(systemFile: systemFile.title)
+                        })
+                    }
+                    
+                    present(alertController, animated: true)
+                } else {
+                    tabController.game = kiwiGame
+                    
+                    let kiwiController: KiwiController = KiwiController()
+                    tabController.switchEmulationController(with: kiwiController)
+                    // tabController.switchSettingsSnapshot(for: .kiwi)
+                }
+            case let mandarineGame as MandarineGame:
+                let (result, systemFiles) = await requiresSystemFiles(for: mandarineGame.system)
+                if result {
+                    importFileType = .systemFile
+                    
+                    for systemFile in systemFiles {
+                        alertController.addAction(UIAlertAction(title: systemFile.title, style: .default) { action in
+                            beginImporting(systemFile: systemFile.title)
+                        })
+                    }
+                    
+                    present(alertController, animated: true)
+                } else {
+                    tabController.game = mandarineGame
+                    
+                    let mandarineController: MandarineController = MandarineController()
+                    tabController.switchEmulationController(with: mandarineController)
+                    tabController.switchSettingsSnapshot(for: .mandarine)
+                    
+                    let encoder: JSONEncoder = JSONEncoder()
+                    do {
+                        let packet: P2P.Packet = P2P.Packet(data: Data(), dataType: .prepare(.mandarine))
+                        if let session: MCSession, session.connectedPeers.count > 0 {
+                            try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .reliable)
+                        }
+                    } catch {
+                        print(error, error.localizedDescription)
+                    }
+                }
+            case let tomatoGame as TomatoGame:
+                let (result, systemFiles) = await requiresSystemFiles(for: tomatoGame.system)
+                if result {
+                    importFileType = .systemFile
+                    
+                    for systemFile in systemFiles {
+                        alertController.addAction(UIAlertAction(title: systemFile.title, style: .default) { action in
+                            beginImporting(systemFile: systemFile.title)
+                        })
+                    }
+                    
+                    present(alertController, animated: true)
+                } else {
+                    tabController.game = tomatoGame
+                    
+                    let tomatoController: TomatoController = TomatoController()
+                    tabController.switchEmulationController(with: tomatoController)
+                    tabController.switchSettingsSnapshot(for: .tomato)
+                }
+            default:
+                break
             }
-        case let tomatoGame as TomatoGame:
-            tabController.game = tomatoGame
-            
-            let tomatoController: TomatoController = TomatoController()
-            tabController.switchEmulationController(with: tomatoController)
-            tabController.switchSettingsSnapshot(for: .tomato)
-        default:
-            break
         }
     }
     
@@ -682,7 +784,7 @@ class GamesController : UICollectionViewController {
         }
     }
     
-    func populateGames() async {
+    func populateGames(_ reinitialisingSystem: Bool = false) async {
         if let dataSource, let tabController: TabController = tabBarController as? TabController {
             cherrySnapshot = NSDiffableDataSourceSnapshot<String, Game>()
             guard var cherrySnapshot else {
@@ -776,17 +878,27 @@ extension GamesController : UIDocumentPickerDelegate, UINavigationControllerDele
             break
         }
         
-        gamesDirectoryURL.append(component: "games")
+        gamesDirectoryURL.append(component: importFileType.directory)
         
         for url in urls {
-            let toURL: URL = gamesDirectoryURL.appending(component: url.lastPathComponent)
+            let toURL: URL = if importFileType == .game {
+                gamesDirectoryURL.appending(component: url.lastPathComponent)
+            } else {
+                gamesDirectoryURL.appending(component: currentlyImportingSystemFile ?? url.lastPathComponent)
+            }
+            
             do {
                 try FileManager.default.copyItem(at: url, to: toURL)
+                
+                if let currentlyImportingSystemFile: String, let tabController: TabController = tabBarController as? TabController {
+                    tabController.directoryManager.unavailableSystemFiles.removeAll(where: { systemFile in
+                        selectedSnapshot.valid && systemFile.title == currentlyImportingSystemFile
+                    })
+                }
             } catch {
                 print(error, error.localizedDescription)
             }
         }
-        
         
         controller.dismiss(animated: true) {
             Task {

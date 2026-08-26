@@ -10,4 +10,13 @@ import Foundation
 enum ImportFileType {
     case game,
          systemFile
+    
+    var directory: String {
+        switch self {
+        case .game:
+            "games"
+        case .systemFile:
+            "system_data"
+        }
+    }
 }

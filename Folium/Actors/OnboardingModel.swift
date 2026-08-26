@@ -12,9 +12,11 @@ import OnboardingKit
 import UIKit
 
 actor OnboardingModel {
+    private let directoryManager: DirectoryManager
     private let gamesManager: GamesManager
     
-    init(gamesManager: GamesManager) {
+    init(direcotryManager: DirectoryManager, gamesManager: GamesManager) {
+        self.directoryManager = direcotryManager
         self.gamesManager = gamesManager
     }
     
@@ -22,7 +24,7 @@ actor OnboardingModel {
         var viewController: OBController {
             let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                            color: .label,
-                                                                           font: .regular(from: .extraLargeTitle),
+                                                                           font: .regular(from: .compatibleExtraLargeTitle),
                                                                            text: "Camera")
             
             let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
@@ -55,7 +57,7 @@ actor OnboardingModel {
         var viewController: OBController {
             let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                            color: .label,
-                                                                           font: .regular(from: .extraLargeTitle),
+                                                                           font: .regular(from: .compatibleExtraLargeTitle),
                                                                            text: "Microphone")
             
             let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
@@ -88,7 +90,7 @@ actor OnboardingModel {
         var viewController: OBController {
             let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                            color: .label,
-                                                                           font: .regular(from: .extraLargeTitle),
+                                                                           font: .regular(from: .compatibleExtraLargeTitle),
                                                                            text: "Motion")
             
             let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
@@ -101,7 +103,8 @@ actor OnboardingModel {
                     UserDefaults.standard.set(true, forKey: "folium.onboardingComplete")
                     
                     onMainThread {
-                        let viewController: TabController = TabController(gamesManager: self.gamesManager)
+                        let viewController: TabController = TabController(directoryManager: self.directoryManager,
+                                                                          gamesManager: self.gamesManager)
                         viewController.modalPresentationStyle = .fullScreen
                         controller.present(viewController, animated: true)
                     }

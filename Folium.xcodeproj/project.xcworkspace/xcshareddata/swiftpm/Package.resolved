@@ -7,7 +7,7 @@
       "location" : "https://github.com/jarrodnorwell/AntiqueKit",
       "state" : {
         "branch" : "main",
-        "revision" : "3b35ec99797467a249c1ee269a58b93ca15adf38"
+        "revision" : "8fb5c19247b65ac89f5ece5601ddc210d23dd023"
       }
     },
     {
@@ -34,7 +34,7 @@
       "location" : "https://github.com/jarrodnorwell/TPCircularBuffer",
       "state" : {
         "branch" : "master",
-        "revision" : "cd1a84e64decf2c3624dd31c5618d6ffdecdbe83"
+        "revision" : "230a0818f91241d1b4c3b366b23def9f55837441"
       }
     },
     {

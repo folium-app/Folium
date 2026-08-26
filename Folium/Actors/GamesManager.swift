@@ -35,7 +35,7 @@ actor GamesManager {
         self.tomatoSystem = tomatoSystem
     }
     
-    func games<T>(for system: System) async -> [T] {
+    func games<T>(for system: System, _ reinitialisingSystem: Bool = false) async -> [T] {
         let empty: [T] = []
         var games: [T] = []
         
@@ -46,7 +46,8 @@ actor GamesManager {
         let systemDirectoryURL: URL = documentDirectoryURL.appending(component: await system.string)
         let systemGamesDirectoryURL: URL = systemDirectoryURL.appending(component: "games")
         
-        guard let directoryEnumerator: FileManager.DirectoryEnumerator = fileManager.enumerator(at: systemGamesDirectoryURL, includingPropertiesForKeys: [.fileSizeKey]) else {
+        guard let directoryEnumerator: FileManager.DirectoryEnumerator = fileManager.enumerator(at: systemGamesDirectoryURL,
+                                                                                                includingPropertiesForKeys: [.fileSizeKey]) else {
             return empty
         }
         
@@ -70,6 +71,10 @@ actor GamesManager {
                 if let game: T = game as? T {
                     games.append(game)
                 }
+                
+                if reinitialisingSystem {
+                    await cherrySystem.initializeSystem()
+                }
             case is CytrusGame.Type:
                 let game: CytrusGame = CytrusGame(details: Details(url: url),
                                                   cytrusSystem: cytrusSystem,
@@ -88,6 +93,10 @@ actor GamesManager {
                 if let game: T = game as? T {
                     games.append(game)
                 }
+                
+                if reinitialisingSystem {
+                    await grapeSystem.initializeSystem()
+                }
             case is KiwiGame.Type:
                 let game: KiwiGame = KiwiGame(details: Details(url: url),
                                               kiwiSystem: kiwiSystem,
@@ -96,6 +105,10 @@ actor GamesManager {
                 
                 if let game: T = game as? T {
                     games.append(game)
+                }
+                
+                if reinitialisingSystem {
+                    await kiwiSystem.initializeSystem()
                 }
             case is MandarineGame.Type:
                 let game: MandarineGame = MandarineGame(details: Details(url: url),
@@ -107,6 +120,10 @@ actor GamesManager {
                 if let game: T = game as? T {
                     games.append(game)
                 }
+                
+                if reinitialisingSystem {
+                    await mandarineSystem.initializeSystem()
+                }
             case is TomatoGame.Type:
                 let game: TomatoGame = TomatoGame(details: Details(url: url),
                                                   tomatoSystem: tomatoSystem,
@@ -115,6 +132,10 @@ actor GamesManager {
                 
                 if let game: T = game as? T {
                     games.append(game)
+                }
+                
+                if reinitialisingSystem {
+                    await tomatoSystem.initializeSystem()
                 }
             default:
                 break

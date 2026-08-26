@@ -13,7 +13,7 @@ func url(for libraryName: String, with version: String = "2.0") -> String {
 let package = Package(
     name: "SharedDependencies",
     platforms: [
-        .iOS(.v17),
+        .iOS(.v16),
     ],
     products: [
         .library(name: "SharedDependencies", targets: [

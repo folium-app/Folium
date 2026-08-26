@@ -10,7 +10,7 @@ import Foundation.NSURL
 actor DirectoryManager {
     private let fileManager: FileManager = .default
     
-    private var unavailableSystemFiles: [SystemFile] = []
+    var unavailableSystemFiles: [SystemFile] = []
     
     func initializeSystemDirectoriesForInitialLaunch() async throws {
         guard let documentDirectoryURL: URL = await .documentDirectoryURL else {

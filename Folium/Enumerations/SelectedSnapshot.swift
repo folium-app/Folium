@@ -45,4 +45,12 @@ enum SelectedSnapshot : Int {
             System.tomato
         }
     }
+    
+    var valid: Bool {
+        neq(.application)
+    }
+    
+    private func neq(_ value: SelectedSnapshot) -> Bool {
+        self != value
+    }
 }
