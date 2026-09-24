@@ -1,0 +1,147 @@
+//
+//  OnboardingModel.swift
+//  Folium
+//
+//  Created by Jarrod Norwell on 7/6/2026.
+//
+
+import ColourKit
+import ExtensionsKit
+import FontKit
+import OnboardingKit
+import UIKit
+
+actor OnboardingModel {
+    private let directoryManager: DirectoryManager
+    private let gamesManager: GamesManager
+    
+    init(direcotryManager: DirectoryManager, gamesManager: GamesManager) {
+        self.directoryManager = direcotryManager
+        self.gamesManager = gamesManager
+    }
+    
+    func camera(controller: UIViewController) async {
+        let cameraAccess: CameraAccess = CameraAccess()
+        await cameraAccess.checkAuthorisationStatus()
+        
+        var viewController: OBController {
+            let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
+                                                                           color: .label,
+                                                                           font: .regular(from: .compatibleExtraLargeTitle),
+                                                                           text: "Camera")
+            
+            let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
+                                                                                    color: .secondaryLabel,
+                                                                                    font: .regular(from: .body),
+                                                                                    text: "Folium may require access to Camera where it is used for game and system functionality")
+            
+            let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
+                (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
+                    _ = await cameraAccess.authorise()
+                    await self.microphone(controller: controller)
+                })
+            ]
+            
+            let configuration: OBControllerConfiguration = OBControllerConfiguration(image: UIImage(systemName: "camera.fill"),
+                                                                                     textConfiguration: textConfiguration,
+                                                                                     secondaryConfiguration: secondaryTextConfiguration,
+                                                                                     tertiaryConfiguration: nil,
+                                                                                     buttons: buttons,
+                                                                                     colors: Colour.vibrantGreens)
+            
+            let obController: OBController = OBController(configuration: configuration)
+            obController.modalPresentationStyle = .fullScreen
+            return obController
+        }
+        
+        await controller.present(viewController, animated: true)
+    }
+    
+    private func microphone(controller: UIViewController) async {
+        let MicrophoneAccessProtocolType: MicrophoneAccessProtocol.Type = if #available(iOS 17, *) {
+            LatestMicrophoneAccess.self
+        } else {
+            MicrophoneAccess.self
+        }
+        
+        let microphoneAccess: MicrophoneAccessProtocol = await MicrophoneAccessProtocolType.init()
+        await microphoneAccess.checkAuthorisationStatus()
+        
+        var viewController: OBController {
+            let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
+                                                                           color: .label,
+                                                                           font: .regular(from: .compatibleExtraLargeTitle),
+                                                                           text: "Microphone")
+            
+            let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
+                                                                                    color: .secondaryLabel,
+                                                                                    font: .regular(from: .body),
+                                                                                    text: "Folium may require access to Microphone where it is used for game and system functionality")
+            
+            let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
+                (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
+                    _ = await microphoneAccess.authorise()
+                    await self.motion(controller: controller)
+                })
+            ]
+            
+            let configuration: OBControllerConfiguration = OBControllerConfiguration(image: UIImage(systemName: "microphone.and.signal.meter.fill"),
+                                                                                     textConfiguration: textConfiguration,
+                                                                                     secondaryConfiguration: secondaryTextConfiguration,
+                                                                                     tertiaryConfiguration: nil,
+                                                                                     buttons: buttons,
+                                                                                     colors: Colour.vibrantOranges)
+            
+            let obController: OBController = OBController(configuration: configuration)
+            obController.modalPresentationStyle = .fullScreen
+            return obController
+        }
+        
+        await controller.present(viewController, animated: true)
+    }
+    
+    private func motion(controller: UIViewController) async {
+        let motionAndFitnessAccess: MotionAndFitnessAccess = MotionAndFitnessAccess()
+        await motionAndFitnessAccess.checkAuthorisationStatus()
+        
+        var viewController: OBController {
+            let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
+                                                                           color: .label,
+                                                                           font: .regular(from: .compatibleExtraLargeTitle),
+                                                                           text: "Motion")
+            
+            let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
+                                                                                    color: .secondaryLabel,
+                                                                                    font: .regular(from: .body),
+                                                                                    text: "Folium may require access to Motion where it is used for game and system functionality")
+            
+            let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
+                (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
+                    _ = await motionAndFitnessAccess.authorise()
+                    
+                    UserDefaults.standard.set(true, forKey: "folium.onboardingComplete")
+                    
+                    onMainThread {
+                        let viewController: TabController = TabController(directoryManager: self.directoryManager,
+                                                                          gamesManager: self.gamesManager)
+                        viewController.modalPresentationStyle = .fullScreen
+                        controller.present(viewController, animated: true)
+                    }
+                })
+            ]
+            
+            let configuration: OBControllerConfiguration = OBControllerConfiguration(image: UIImage(systemName: "figure.walk.motion"),
+                                                                                     textConfiguration: textConfiguration,
+                                                                                     secondaryConfiguration: secondaryTextConfiguration,
+                                                                                     tertiaryConfiguration: nil,
+                                                                                     buttons: buttons,
+                                                                                     colors: Colour.vibrantGreens)
+            
+            let obController: OBController = OBController(configuration: configuration)
+            obController.modalPresentationStyle = .fullScreen
+            return obController
+        }
+        
+        await controller.present(viewController, animated: true)
+    }
+}

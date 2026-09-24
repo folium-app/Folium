@@ -1,0 +1,3416 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 110;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E6016ADC303FEBD2006F3A06 /* libPlum.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6016A1D303FE0EA006F3A06 /* libPlum.a */; };
+		E61175E92FE1D9700032DDC1 /* libMandarine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */; };
+		E61859FE2FE4B17100D44932 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E69CAA1D2FDC9FC200BCD2F9 /* SharedDependencies */; };
+		E61C017F3053FC5F00F3CE02 /* libMesenCE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E5FD13050696400672845 /* libMesenCE.a */; };
+		E64840A83002E668007BDFFA /* libseekable_format in Frameworks */ = {isa = PBXBuildFile; productRef = E64840A73002E668007BDFFA /* libseekable_format */; };
+		E64840AA3002E668007BDFFA /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E64840A93002E668007BDFFA /* libzstd */; };
+		E64840AC3002E668007BDFFA /* libzstdwrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E64840AB3002E668007BDFFA /* libzstdwrapper */; };
+		E651DE6C3047ED6000A6BF11 /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE6B3047ED6000A6BF11 /* AntiqueKit */; };
+		E651DE6E3047ED6000A6BF11 /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE6D3047ED6000A6BF11 /* ColourKit */; };
+		E651DE703047ED6000A6BF11 /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE6F3047ED6000A6BF11 /* ConstraintKit */; };
+		E651DE723047ED6000A6BF11 /* ExtensionsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE713047ED6000A6BF11 /* ExtensionsKit */; };
+		E651DE743047ED6000A6BF11 /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE733047ED6000A6BF11 /* FontKit */; };
+		E651DE763047ED6000A6BF11 /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE753047ED6000A6BF11 /* OnboardingKit */; };
+		E651DE783047ED6000A6BF11 /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE773047ED6000A6BF11 /* SettingsKit */; };
+		E651DE7B3047ED8B00A6BF11 /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE7A3047ED8B00A6BF11 /* AntiqueKit */; };
+		E651DE7D3047ED8B00A6BF11 /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE7C3047ED8B00A6BF11 /* ColourKit */; };
+		E651DE7F3047ED8B00A6BF11 /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE7E3047ED8B00A6BF11 /* ConstraintKit */; };
+		E651DE813047ED8B00A6BF11 /* ExtensionsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE803047ED8B00A6BF11 /* ExtensionsKit */; };
+		E651DE833047ED8B00A6BF11 /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE823047ED8B00A6BF11 /* FontKit */; };
+		E651DE853047ED8B00A6BF11 /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE843047ED8B00A6BF11 /* OnboardingKit */; };
+		E651DE873047ED8B00A6BF11 /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE863047ED8B00A6BF11 /* SettingsKit */; };
+		E655CB842FE734FB003DCE2B /* libTomato.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E655CB7A2FE73488003DCE2B /* libTomato.a */; };
+		E656E9A23006F6CC0061EA22 /* libseekable_format in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A13006F6CC0061EA22 /* libseekable_format */; };
+		E656E9A43006F6CC0061EA22 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A33006F6CC0061EA22 /* libzstd */; };
+		E656E9A63006F6CC0061EA22 /* libzstdwrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A53006F6CC0061EA22 /* libzstdwrapper */; };
+		E656E9A83006F6D60061EA22 /* libseekable_format in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A73006F6D60061EA22 /* libseekable_format */; };
+		E656E9AA3006F6D60061EA22 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A93006F6D60061EA22 /* libzstd */; };
+		E656E9AC3006F6D60061EA22 /* libzstdwrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9AB3006F6D60061EA22 /* libzstdwrapper */; };
+		E671D46B3065CE3100FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D46A3065CE3100FD334E /* SharedDependencies */; };
+		E671D46D3065CE4B00FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D46C3065CE4B00FD334E /* SharedDependencies */; };
+		E671D46F3065CE5000FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D46E3065CE5000FD334E /* SharedDependencies */; };
+		E671D4713065CE5500FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4703065CE5500FD334E /* SharedDependencies */; };
+		E671D4733065CE5C00FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4723065CE5C00FD334E /* SharedDependencies */; };
+		E671D4753065CE6000FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4743065CE6000FD334E /* SharedDependencies */; };
+		E671D4773065CE6800FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4763065CE6800FD334E /* SharedDependencies */; };
+		E671D4793065CE6E00FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4783065CE6E00FD334E /* SharedDependencies */; };
+		E671D47B3065CE7200FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D47A3065CE7200FD334E /* SharedDependencies */; };
+		E671D47D3065CE7700FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D47C3065CE7700FD334E /* SharedDependencies */; };
+		E671D47F3065CE7B00FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D47E3065CE7B00FD334E /* SharedDependencies */; };
+		E671D4823065CF4800FD334E /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4813065CF4800FD334E /* AntiqueKit */; };
+		E671D4843065CF4800FD334E /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4833065CF4800FD334E /* ColourKit */; };
+		E671D4863065CF4800FD334E /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4853065CF4800FD334E /* ConstraintKit */; };
+		E671D4883065CF4800FD334E /* ExtensionsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4873065CF4800FD334E /* ExtensionsKit */; };
+		E671D48A3065CF4800FD334E /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4893065CF4800FD334E /* FontKit */; };
+		E671D48C3065CF4800FD334E /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D48B3065CF4800FD334E /* OnboardingKit */; };
+		E671D48E3065CF4800FD334E /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D48D3065CF4800FD334E /* SettingsKit */; };
+		E672C01130488D57005F73C5 /* libMango.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E63619793048010100C93070 /* libMango.a */; };
+		E67923303028758E00B556A8 /* libCherry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E67922CC30286E7700B556A8 /* libCherry.a */; };
+		E6979A492FE6ACA10055FA9D /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A482FE6ACA10055FA9D /* AntiqueKit */; };
+		E6979A4B2FE6ACA10055FA9D /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A4A2FE6ACA10055FA9D /* ColourKit */; };
+		E6979A4D2FE6ACA10055FA9D /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A4C2FE6ACA10055FA9D /* ConstraintKit */; };
+		E6979A4F2FE6ACA10055FA9D /* ExtensionsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A4E2FE6ACA10055FA9D /* ExtensionsKit */; };
+		E6979A512FE6ACA10055FA9D /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A502FE6ACA10055FA9D /* FontKit */; };
+		E6979A532FE6ACA10055FA9D /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A522FE6ACA10055FA9D /* OnboardingKit */; };
+		E6979A552FE6ACA10055FA9D /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A542FE6ACA10055FA9D /* SettingsKit */; };
+		E69E5FDD30506AAA00672845 /* libMesenCE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E5FD13050696400672845 /* libMesenCE.a */; };
+		E69E5FFA30508B9100672845 /* libMesenCE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E5FD13050696400672845 /* libMesenCE.a */; };
+		E69E600630508E4A00672845 /* libLychee.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E5FF330508B7B00672845 /* libLychee.a */; };
+		E69E601D3050A8EA00672845 /* libMesenCE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E5FD13050696400672845 /* libMesenCE.a */; };
+		E69E60223050AD3D00672845 /* libDurian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E60113050A87D00672845 /* libDurian.a */; };
+		E6A01B90300444F800804CD4 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6A01B8F300444F800804CD4 /* SharedDependencies */; };
+		E6A0FEDE3007D7FF006FB733 /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6A0FEDD3007D7FF006FB733 /* AntiqueKit */; };
+		E6A0FEE03007D7FF006FB733 /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6A0FEDF3007D7FF006FB733 /* ColourKit */; };
+		E6A0FEE23007D7FF006FB733 /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6A0FEE13007D7FF006FB733 /* ConstraintKit */; };
+		E6A0FEE43007D7FF006FB733 /* ExtensionsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6A0FEE33007D7FF006FB733 /* ExtensionsKit */; };
+		E6A0FEE63007D7FF006FB733 /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6A0FEE53007D7FF006FB733 /* FontKit */; };
+		E6A0FEE83007D7FF006FB733 /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6A0FEE73007D7FF006FB733 /* OnboardingKit */; };
+		E6A0FEEA3007D7FF006FB733 /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6A0FEE93007D7FF006FB733 /* SettingsKit */; };
+		E6A29C0C300455E200415154 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6A29C0B300455E200415154 /* SharedDependencies */; };
+		E6AF262B3002E43C002D87C9 /* libCytrus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E62C749B2FFCE20100D6760E /* libCytrus.a */; };
+		E6C462C42FE4B0AA004E5B57 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6C462C32FE4B0AA004E5B57 /* SharedDependencies */; };
+		E6F139D42FF04E1000F30081 /* libGrape.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F139CA2FF04DB700F30081 /* libGrape.a */; };
+		E6F49CDB2FF6C9F50085C59B /* libKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F48FA82FF6C0700085C59B /* libKiwi.a */; };
+		E6F49CDF2FF6CB810085C59B /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F49CDE2FF6CB7D0085C59B /* libresolv.9.tbd */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E6016ADD303FEBD3006F3A06 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6016A1C303FE0EA006F3A06;
+			remoteInfo = Plum;
+		};
+		E61175EA2FE1D9700032DDC1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E69CA8F42FDC9EAF00BCD2F9;
+			remoteInfo = Mandarine;
+		};
+		E61C01803053FC5F00F3CE02 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E69E5FD03050696400672845;
+			remoteInfo = MesenCE;
+		};
+		E655CB852FE734FB003DCE2B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E655CB792FE73488003DCE2B;
+			remoteInfo = Tomato;
+		};
+		E672C01230488D57005F73C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E63619783048010100C93070;
+			remoteInfo = Mango;
+		};
+		E67923313028758E00B556A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E67922CB30286E7700B556A8;
+			remoteInfo = Cherry;
+		};
+		E69E5FDE30506AAA00672845 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E69E5FD03050696400672845;
+			remoteInfo = MesenCE;
+		};
+		E69E5FFB30508B9100672845 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E69E5FD03050696400672845;
+			remoteInfo = MesenCE;
+		};
+		E69E600730508E4A00672845 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E69E5FF230508B7B00672845;
+			remoteInfo = Lychee;
+		};
+		E69E601E3050A8EA00672845 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E69E5FD03050696400672845;
+			remoteInfo = MesenCE;
+		};
+		E69E60233050AD3D00672845 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E69E60103050A87D00672845;
+			remoteInfo = Durian;
+		};
+		E6AF262C3002E43C002D87C9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6A00CC32FF967B900D2BD20;
+			remoteInfo = Cytrus;
+		};
+		E6F139D52FF04E1000F30081 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6F139C92FF04DB700F30081;
+			remoteInfo = Grape;
+		};
+		E6F49CDC2FF6C9F50085C59B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6F48FA72FF6C0700085C59B;
+			remoteInfo = Kiwi;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E6016A1B303FE0EA006F3A06 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolder = Product;
+			files = (
+			);
+		};
+		E63619773048010100C93070 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolder = Product;
+			files = (
+			);
+		};
+		E655CB782FE73488003DCE2B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolder = Product;
+			files = (
+			);
+		};
+		E67922CA30286E7700B556A8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolder = Product;
+			files = (
+			);
+		};
+		E69CA8F32FDC9EAF00BCD2F9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolder = Product;
+			files = (
+			);
+		};
+		E69E5FCF3050696400672845 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolder = Product;
+			files = (
+			);
+		};
+		E69E5FF130508B7B00672845 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolder = Product;
+			files = (
+			);
+		};
+		E69E600F3050A87D00672845 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolder = Product;
+			files = (
+			);
+		};
+		E6A00CC22FF967B900D2BD20 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolder = Product;
+			files = (
+			);
+		};
+		E6A286D1300452C100415154 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = Frameworks;
+			files = (
+			);
+			name = "Embed Frameworks";
+		};
+		E6F139C82FF04DB700F30081 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolder = Product;
+			files = (
+			);
+		};
+		E6F48FA62FF6C0700085C59B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolder = Product;
+			files = (
+			);
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		E6016A1D303FE0EA006F3A06 /* libPlum.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPlum.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E62C749B2FFCE20100D6760E /* libCytrus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCytrus.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E63619793048010100C93070 /* libMango.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMango.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E655CB7A2FE73488003DCE2B /* libTomato.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTomato.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E65A97A12FD0597F001DDEEE /* Folium.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Folium.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E67922CC30286E7700B556A8 /* libCherry.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCherry.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMandarine.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E69E5FD13050696400672845 /* libMesenCE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMesenCE.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E69E5FF330508B7B00672845 /* libLychee.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLychee.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E69E60113050A87D00672845 /* libDurian.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDurian.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6F139CA2FF04DB700F30081 /* libGrape.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGrape.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6F48FA82FF6C0700085C59B /* libKiwi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKiwi.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6F49CDE2FF6CB7D0085C59B /* libresolv.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.9.tbd; path = usr/lib/libresolv.9.tbd; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E6520A6B3065D1C300E9F3C7 /* Exceptions for "Dependencies" folder in "Cytrus" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FFmpeg/libavcodec.xcframework,
+				FFmpeg/libavdevice.xcframework,
+				FFmpeg/libavfilter.xcframework,
+				FFmpeg/libavformat.xcframework,
+				FFmpeg/libavutil.xcframework,
+				FFmpeg/libswresample.xcframework,
+				FFmpeg/libswscale.xcframework,
+				MoltenVK.xcframework,
+			);
+			target = E6A00CC32FF967B900D2BD20 /* Cytrus */;
+		};
+		E6520A7D3065D1D600E9F3C7 /* Exceptions for "Dependencies" folder in "Folium" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Boost/libboost_iostreams.xcframework,
+				Boost/libboost_serialization.xcframework,
+				FFmpeg/libavcodec.xcframework,
+				FFmpeg/libavdevice.xcframework,
+				FFmpeg/libavfilter.xcframework,
+				FFmpeg/libavformat.xcframework,
+				FFmpeg/libavutil.xcframework,
+				FFmpeg/libswresample.xcframework,
+				FFmpeg/libswscale.xcframework,
+				MoltenVK.xcframework,
+			);
+			target = E65A97A02FD0597F001DDEEE /* Folium */;
+		};
+		E65A97B32FD05980001DDEEE /* Exceptions for "Folium" folder in "Folium" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E65A97A02FD0597F001DDEEE /* Folium */;
+		};
+		E671D4683065C66300FD334E /* Exceptions for "Plum" folder in "Plum" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				System/core/clown68000/interpreter/microcode.c,
+				"System/core/mega-cd-boot-rom.c",
+			);
+			target = E6016A1C303FE0EA006F3A06 /* Plum */;
+		};
+		E69E5FDB305069BB00672845 /* Exceptions for "MesenCE" folder in "Mango" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				System/Core/Debugger/Base6502Assembler.cpp,
+				System/Core/Debugger/BaseEventManager.cpp,
+				System/Core/Debugger/Breakpoint.cpp,
+				System/Core/Debugger/BreakpointManager.cpp,
+				System/Core/Debugger/CallstackManager.cpp,
+				System/Core/Debugger/CdlManager.cpp,
+				System/Core/Debugger/CodeDataLogger.cpp,
+				System/Core/Debugger/Debugger.cpp,
+				System/Core/Debugger/Disassembler.cpp,
+				System/Core/Debugger/DisassemblyInfo.cpp,
+				System/Core/Debugger/DisassemblySearch.cpp,
+				System/Core/Debugger/ExpressionEvaluator.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Cx4.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Gameboy.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Gba.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Gsu.cpp,
+				System/Core/Debugger/ExpressionEvaluator.NecDsp.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Nes.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Pce.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Sms.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Snes.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Spc.cpp,
+				System/Core/Debugger/ExpressionEvaluator.St018.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Ws.cpp,
+				System/Core/Debugger/LabelManager.cpp,
+				System/Core/Debugger/LuaApi.cpp,
+				System/Core/Debugger/LuaCallHelper.cpp,
+				System/Core/Debugger/MemoryAccessCounter.cpp,
+				System/Core/Debugger/MemoryDumper.cpp,
+				System/Core/Debugger/PpuTools.cpp,
+				System/Core/Debugger/Profiler.cpp,
+				System/Core/Debugger/ScriptHost.cpp,
+				System/Core/Debugger/ScriptingContext.cpp,
+				System/Core/Debugger/ScriptManager.cpp,
+				System/Core/Debugger/StepBackManager.cpp,
+				System/Core/Gameboy/APU/GbApu.cpp,
+				System/Core/Gameboy/APU/GbNoiseChannel.cpp,
+				System/Core/Gameboy/APU/GbSquareChannel.cpp,
+				System/Core/Gameboy/APU/GbWaveChannel.cpp,
+				System/Core/Gameboy/Debugger/DummyGbCpu.cpp,
+				System/Core/Gameboy/Debugger/GameboyDisUtils.cpp,
+				System/Core/Gameboy/Debugger/GbAssembler.cpp,
+				System/Core/Gameboy/Debugger/GbDebugger.cpp,
+				System/Core/Gameboy/Debugger/GbEventManager.cpp,
+				System/Core/Gameboy/Debugger/GbPpuTools.cpp,
+				System/Core/Gameboy/Debugger/GbTraceLogger.cpp,
+				System/Core/Gameboy/Gameboy.cpp,
+				System/Core/Gameboy/GbControlManager.cpp,
+				System/Core/Gameboy/GbCpu.cpp,
+				System/Core/Gameboy/GbDefaultVideoFilter.cpp,
+				System/Core/Gameboy/GbDmaController.cpp,
+				System/Core/Gameboy/GbMemoryManager.cpp,
+				System/Core/Gameboy/GbPpu.cpp,
+				System/Core/Gameboy/GbTimer.cpp,
+				System/Core/GBA/APU/GbaApu.cpp,
+				System/Core/GBA/APU/GbaNoiseChannel.cpp,
+				System/Core/GBA/APU/GbaSquareChannel.cpp,
+				System/Core/GBA/APU/GbaWaveChannel.cpp,
+				System/Core/GBA/Cart/GbaCart.cpp,
+				System/Core/GBA/Cart/GbaGpio.cpp,
+				System/Core/GBA/Cart/GbaRtc.cpp,
+				System/Core/GBA/Debugger/DummyGbaCpu.cpp,
+				System/Core/GBA/Debugger/GbaDebugger.cpp,
+				System/Core/GBA/Debugger/GbaDisUtils.cpp,
+				System/Core/GBA/Debugger/GbaEventManager.cpp,
+				System/Core/GBA/Debugger/GbaPpuTools.cpp,
+				System/Core/GBA/Debugger/GbaTraceLogger.cpp,
+				System/Core/GBA/GbaConsole.cpp,
+				System/Core/GBA/GbaControlManager.cpp,
+				System/Core/GBA/GbaCpu.Arm.cpp,
+				System/Core/GBA/GbaCpu.cpp,
+				System/Core/GBA/GbaCpu.Thumb.cpp,
+				System/Core/GBA/GbaDefaultVideoFilter.cpp,
+				System/Core/GBA/GbaDmaController.cpp,
+				System/Core/GBA/GbaMemoryManager.cpp,
+				System/Core/GBA/GbaPpu.cpp,
+				System/Core/GBA/GbaTimer.cpp,
+				System/Core/NES/APU/DeltaModulationChannel.cpp,
+				System/Core/NES/APU/NesApu.cpp,
+				System/Core/NES/BaseMapper.cpp,
+				System/Core/NES/BaseNesPpu.cpp,
+				System/Core/NES/BisqwitNtscFilter.cpp,
+				System/Core/NES/Debugger/DummyNesCpu.cpp,
+				System/Core/NES/Debugger/NesAssembler.cpp,
+				System/Core/NES/Debugger/NesDebugger.cpp,
+				System/Core/NES/Debugger/NesDisUtils.cpp,
+				System/Core/NES/Debugger/NesEventManager.cpp,
+				System/Core/NES/Debugger/NesPpuTools.cpp,
+				System/Core/NES/Debugger/NesTraceLogger.cpp,
+				System/Core/NES/Epsm.cpp,
+				System/Core/NES/GameDatabase.cpp,
+				System/Core/NES/HdPacks/HdAudioDevice.cpp,
+				System/Core/NES/HdPacks/HdNesPack.cpp,
+				System/Core/NES/HdPacks/HdNesPpu.cpp,
+				System/Core/NES/HdPacks/HdPackBuilder.cpp,
+				System/Core/NES/HdPacks/HdPackLoader.cpp,
+				System/Core/NES/HdPacks/HdVideoFilter.cpp,
+				System/Core/NES/HdPacks/OggMixer.cpp,
+				System/Core/NES/HdPacks/OggReader.cpp,
+				System/Core/NES/Loaders/FdsLoader.cpp,
+				System/Core/NES/Loaders/iNesLoader.cpp,
+				System/Core/NES/Loaders/NsfLoader.cpp,
+				System/Core/NES/Loaders/RomLoader.cpp,
+				System/Core/NES/Loaders/StudyBoxLoader.cpp,
+				System/Core/NES/Loaders/UnifLoader.cpp,
+				System/Core/NES/MapperFactory.cpp,
+				System/Core/NES/Mappers/FDS/Fds.cpp,
+				System/Core/NES/Mappers/FDS/FdsAudio.cpp,
+				System/Core/NES/Mappers/FDS/FdsInputButtons.cpp,
+				System/Core/NES/Mappers/Homebrew/Rainbow.cpp,
+				System/Core/NES/Mappers/NSF/NsfMapper.cpp,
+				System/Core/NES/Mappers/VsSystem/VsControlManager.cpp,
+				System/Core/NES/NesConsole.cpp,
+				System/Core/NES/NesControlManager.cpp,
+				System/Core/NES/NesCpu.cpp,
+				System/Core/NES/NesDefaultVideoFilter.cpp,
+				System/Core/NES/NesHeader.cpp,
+				System/Core/NES/NesMemoryManager.cpp,
+				System/Core/NES/NesNtscFilter.cpp,
+				System/Core/NES/NesPpu.cpp,
+				System/Core/NES/NesSoundMixer.cpp,
+				System/Core/Netplay/GameClient.cpp,
+				System/Core/Netplay/GameClientConnection.cpp,
+				System/Core/Netplay/GameConnection.cpp,
+				System/Core/Netplay/GameServer.cpp,
+				System/Core/Netplay/GameServerConnection.cpp,
+				System/Core/PCE/CdRom/PceAdpcm.cpp,
+				System/Core/PCE/CdRom/PceArcadeCard.cpp,
+				System/Core/PCE/CdRom/PceAudioFader.cpp,
+				System/Core/PCE/CdRom/PceCdAudioPlayer.cpp,
+				System/Core/PCE/CdRom/PceCdRom.cpp,
+				System/Core/PCE/CdRom/PceScsiBus.cpp,
+				System/Core/PCE/Debugger/DummyPceCpu.cpp,
+				System/Core/PCE/Debugger/PceAssembler.cpp,
+				System/Core/PCE/Debugger/PceDebugger.cpp,
+				System/Core/PCE/Debugger/PceDisUtils.cpp,
+				System/Core/PCE/Debugger/PceEventManager.cpp,
+				System/Core/PCE/Debugger/PceTraceLogger.cpp,
+				System/Core/PCE/Debugger/PceVdcTools.cpp,
+				System/Core/PCE/Input/PceTurboTap.cpp,
+				System/Core/PCE/PceConsole.cpp,
+				System/Core/PCE/PceControlManager.cpp,
+				System/Core/PCE/PceCpu.cpp,
+				System/Core/PCE/PceCpu.Instructions.cpp,
+				System/Core/PCE/PceMemoryManager.cpp,
+				System/Core/PCE/PceNtscFilter.cpp,
+				System/Core/PCE/PcePsg.cpp,
+				System/Core/PCE/PcePsgChannel.cpp,
+				System/Core/PCE/PceSf2RomMapper.cpp,
+				System/Core/PCE/PceTimer.cpp,
+				System/Core/PCE/PceVce.cpp,
+				System/Core/PCE/PceVdc.cpp,
+				System/Core/PCE/PceVpc.cpp,
+				System/Core/pch.cpp,
+				System/Core/Shared/Audio/AudioPlayerHud.cpp,
+				System/Core/Shared/Audio/BaseSoundManager.cpp,
+				System/Core/Shared/Audio/PcmReader.cpp,
+				System/Core/Shared/Audio/SoundMixer.cpp,
+				System/Core/Shared/Audio/SoundResampler.cpp,
+				System/Core/Shared/Audio/WaveRecorder.cpp,
+				System/Core/Shared/BaseControlDevice.cpp,
+				System/Core/Shared/BaseControlManager.cpp,
+				System/Core/Shared/BatteryManager.cpp,
+				System/Core/Shared/CdReader.cpp,
+				System/Core/Shared/CheatManager.cpp,
+				System/Core/Shared/DebuggerRequest.cpp,
+				System/Core/Shared/Emulator.cpp,
+				System/Core/Shared/EmulatorLock.cpp,
+				System/Core/Shared/EmuSettings.cpp,
+				System/Core/Shared/HistoryViewer.cpp,
+				System/Core/Shared/InputHud.cpp,
+				System/Core/Shared/KeyManager.cpp,
+				System/Core/Shared/MessageManager.cpp,
+				System/Core/Shared/Movies/BizHawkMovie.cpp,
+				System/Core/Shared/Movies/MesenMovie.cpp,
+				System/Core/Shared/Movies/MovieManager.cpp,
+				System/Core/Shared/Movies/MovieRecorder.cpp,
+				System/Core/Shared/NotificationManager.cpp,
+				System/Core/Shared/RecordedRomTest.cpp,
+				System/Core/Shared/RewindData.cpp,
+				System/Core/Shared/RewindManager.cpp,
+				System/Core/Shared/SaveStateManager.cpp,
+				System/Core/Shared/ShortcutKeyHandler.cpp,
+				System/Core/Shared/Utilities/emu2413.cpp,
+				System/Core/Shared/Utilities/S3511ARtc.cpp,
+				System/Core/Shared/Video/BaseVideoFilter.cpp,
+				System/Core/Shared/Video/DebugHud.cpp,
+				System/Core/Shared/Video/DebugStats.cpp,
+				System/Core/Shared/Video/DrawStringCommand.cpp,
+				System/Core/Shared/Video/RotateFilter.cpp,
+				System/Core/Shared/Video/ScaleFilter.cpp,
+				System/Core/Shared/Video/SoftwareRenderer.cpp,
+				System/Core/Shared/Video/SystemHud.cpp,
+				System/Core/Shared/Video/VideoDecoder.cpp,
+				System/Core/Shared/Video/VideoRenderer.cpp,
+				System/Core/SMS/Carts/SmsCart.cpp,
+				System/Core/SMS/Debugger/DummySmsCpu.cpp,
+				System/Core/SMS/Debugger/SmsAssembler.cpp,
+				System/Core/SMS/Debugger/SmsDebugger.cpp,
+				System/Core/SMS/Debugger/SmsDisUtils.cpp,
+				System/Core/SMS/Debugger/SmsEventManager.cpp,
+				System/Core/SMS/Debugger/SmsTraceLogger.cpp,
+				System/Core/SMS/Debugger/SmsVdpTools.cpp,
+				System/Core/SMS/SmsBiosMapper.cpp,
+				System/Core/SMS/SmsConsole.cpp,
+				System/Core/SMS/SmsControlManager.cpp,
+				System/Core/SMS/SmsCpu.cpp,
+				System/Core/SMS/SmsFmAudio.cpp,
+				System/Core/SMS/SmsMemoryManager.cpp,
+				System/Core/SMS/SmsNtscFilter.cpp,
+				System/Core/SMS/SmsPsg.cpp,
+				System/Core/SMS/SmsVdp.cpp,
+				System/Core/SNES/AluMulDiv.cpp,
+				System/Core/SNES/BaseCartridge.cpp,
+				System/Core/SNES/Coprocessors/BSX/BsxCart.cpp,
+				System/Core/SNES/Coprocessors/BSX/BsxMemoryPack.cpp,
+				System/Core/SNES/Coprocessors/BSX/BsxSatellaview.cpp,
+				System/Core/SNES/Coprocessors/BSX/BsxStream.cpp,
+				System/Core/SNES/Coprocessors/CX4/Cx4.cpp,
+				System/Core/SNES/Coprocessors/CX4/Cx4.Instructions.cpp,
+				System/Core/SNES/Coprocessors/DSP/NecDsp.cpp,
+				System/Core/SNES/Coprocessors/GSU/Gsu.cpp,
+				System/Core/SNES/Coprocessors/GSU/Gsu.Instructions.cpp,
+				System/Core/SNES/Coprocessors/MSU1/Msu1.cpp,
+				System/Core/SNES/Coprocessors/OBC1/Obc1.cpp,
+				System/Core/SNES/Coprocessors/SA1/Sa1.cpp,
+				System/Core/SNES/Coprocessors/SA1/Sa1Cpu.cpp,
+				System/Core/SNES/Coprocessors/SDD1/Sdd1.cpp,
+				System/Core/SNES/Coprocessors/SDD1/Sdd1Decomp.cpp,
+				System/Core/SNES/Coprocessors/SDD1/Sdd1Mmc.cpp,
+				System/Core/SNES/Coprocessors/SGB/SuperGameboy.cpp,
+				System/Core/SNES/Coprocessors/SPC7110/Rtc4513.cpp,
+				System/Core/SNES/Coprocessors/SPC7110/Spc7110.cpp,
+				System/Core/SNES/Coprocessors/SPC7110/Spc7110Decomp.cpp,
+				System/Core/SNES/Coprocessors/ST018/ArmV3Cpu.cpp,
+				System/Core/SNES/Coprocessors/ST018/St018.cpp,
+				System/Core/SNES/Debugger/Cx4Debugger.cpp,
+				System/Core/SNES/Debugger/Cx4DisUtils.cpp,
+				System/Core/SNES/Debugger/DummyArmV3Cpu.cpp,
+				System/Core/SNES/Debugger/DummySnesCpu.cpp,
+				System/Core/SNES/Debugger/DummySpc.cpp,
+				System/Core/SNES/Debugger/GsuDebugger.cpp,
+				System/Core/SNES/Debugger/GsuDisUtils.cpp,
+				System/Core/SNES/Debugger/NecDspDebugger.cpp,
+				System/Core/SNES/Debugger/NecDspDisUtils.cpp,
+				System/Core/SNES/Debugger/SnesAssembler.cpp,
+				System/Core/SNES/Debugger/SnesDebugger.cpp,
+				System/Core/SNES/Debugger/SnesDisUtils.cpp,
+				System/Core/SNES/Debugger/SnesEventManager.cpp,
+				System/Core/SNES/Debugger/SnesPpuTools.cpp,
+				System/Core/SNES/Debugger/SpcDebugger.cpp,
+				System/Core/SNES/Debugger/SpcDisUtils.cpp,
+				System/Core/SNES/Debugger/St018Debugger.cpp,
+				System/Core/SNES/Debugger/St018DisUtils.cpp,
+				System/Core/SNES/Debugger/TraceLogger/Cx4TraceLogger.cpp,
+				System/Core/SNES/Debugger/TraceLogger/GsuTraceLogger.cpp,
+				System/Core/SNES/Debugger/TraceLogger/NecDspTraceLogger.cpp,
+				System/Core/SNES/Debugger/TraceLogger/SnesCpuTraceLogger.cpp,
+				System/Core/SNES/Debugger/TraceLogger/SpcTraceLogger.cpp,
+				System/Core/SNES/Debugger/TraceLogger/St018TraceLogger.cpp,
+				System/Core/SNES/DSP/Dsp.cpp,
+				System/Core/SNES/DSP/DspVoice.cpp,
+				System/Core/SNES/Input/Multitap.cpp,
+				System/Core/SNES/Input/SnesBlueRetroController.cpp,
+				System/Core/SNES/Input/SnesController.cpp,
+				System/Core/SNES/Input/SnesNttDataKeypad.cpp,
+				System/Core/SNES/Input/SnesRumbleController.cpp,
+				System/Core/SNES/InternalRegisters.cpp,
+				System/Core/SNES/MemoryMappings.cpp,
+				System/Core/SNES/RegisterHandlerB.cpp,
+				System/Core/SNES/SnesConsole.cpp,
+				System/Core/SNES/SnesControlManager.cpp,
+				System/Core/SNES/SnesCpu.cpp,
+				System/Core/SNES/SnesDefaultVideoFilter.cpp,
+				System/Core/SNES/SnesDmaController.cpp,
+				System/Core/SNES/SnesMemoryManager.cpp,
+				System/Core/SNES/SnesNtscFilter.cpp,
+				System/Core/SNES/SnesPpu.cpp,
+				System/Core/SNES/Spc.cpp,
+				System/Core/SNES/Spc.Instructions.cpp,
+				System/Core/WS/APU/WsApu.cpp,
+				System/Core/WS/Carts/WsCart.cpp,
+				System/Core/WS/Carts/WsCartBandai2001.cpp,
+				System/Core/WS/Carts/WsCartBandai2003.cpp,
+				System/Core/WS/Carts/WsCartWonderWitch.cpp,
+				System/Core/WS/Carts/WsRtc.cpp,
+				System/Core/WS/Debugger/DummyWsCpu.cpp,
+				System/Core/WS/Debugger/WsDebugger.cpp,
+				System/Core/WS/Debugger/WsDisUtils.cpp,
+				System/Core/WS/Debugger/WsEventManager.cpp,
+				System/Core/WS/Debugger/WsPpuTools.cpp,
+				System/Core/WS/Debugger/WsTraceLogger.cpp,
+				System/Core/WS/WsConsole.cpp,
+				System/Core/WS/WsControlManager.cpp,
+				System/Core/WS/WsCpu.cpp,
+				System/Core/WS/WsCpuPrefetch.cpp,
+				System/Core/WS/WsDefaultVideoFilter.cpp,
+				System/Core/WS/WsDmaController.cpp,
+				System/Core/WS/WsEeprom.cpp,
+				System/Core/WS/WsMemoryManager.cpp,
+				System/Core/WS/WsPpu.cpp,
+				System/Core/WS/WsSerial.cpp,
+				System/Core/WS/WsTimer.cpp,
+				System/Lua/auxiliar.c,
+				System/Lua/buffer.c,
+				System/Lua/compat.c,
+				System/Lua/except.c,
+				System/Lua/inet.c,
+				System/Lua/io.c,
+				System/Lua/lapi.c,
+				System/Lua/lauxlib.c,
+				System/Lua/lbaselib.c,
+				System/Lua/lbitlib.c,
+				System/Lua/lcode.c,
+				System/Lua/lcorolib.c,
+				System/Lua/lctype.c,
+				System/Lua/ldblib.c,
+				System/Lua/ldebug.c,
+				System/Lua/ldo.c,
+				System/Lua/ldump.c,
+				System/Lua/lfunc.c,
+				System/Lua/lgc.c,
+				System/Lua/linit.c,
+				System/Lua/liolib.c,
+				System/Lua/llex.c,
+				System/Lua/lmathlib.c,
+				System/Lua/lmem.c,
+				System/Lua/loadlib.c,
+				System/Lua/lobject.c,
+				System/Lua/lopcodes.c,
+				System/Lua/loslib.c,
+				System/Lua/lparser.c,
+				System/Lua/lstate.c,
+				System/Lua/lstring.c,
+				System/Lua/lstrlib.c,
+				System/Lua/ltable.c,
+				System/Lua/ltablib.c,
+				System/Lua/ltm.c,
+				System/Lua/luasocket.c,
+				System/Lua/lundump.c,
+				System/Lua/lutf8lib.c,
+				System/Lua/lvm.c,
+				System/Lua/lzio.c,
+				System/Lua/mime.c,
+				System/Lua/options.c,
+				System/Lua/select.c,
+				System/Lua/serial.c,
+				System/Lua/tcp.c,
+				System/Lua/timeout.c,
+				System/Lua/udp.c,
+				System/Lua/unix.c,
+				System/Lua/unixdgram.c,
+				System/Lua/unixstream.c,
+				System/Lua/usocket.c,
+				System/Lua/wsocket.c,
+				System/SevenZip/7zAlloc.c,
+				System/SevenZip/7zArcIn.c,
+				System/SevenZip/7zBuf.c,
+				System/SevenZip/7zCrc.c,
+				System/SevenZip/7zCrcOpt.c,
+				System/SevenZip/7zDec.c,
+				System/SevenZip/7zFile.c,
+				System/SevenZip/7zMemBuffer.c,
+				System/SevenZip/7zStream.c,
+				System/SevenZip/Bcj2.c,
+				System/SevenZip/Bra.c,
+				System/SevenZip/Bra86.c,
+				System/SevenZip/BraIA64.c,
+				System/SevenZip/CpuArch.c,
+				System/SevenZip/Delta.c,
+				System/SevenZip/Lzma2Dec.c,
+				System/SevenZip/LzmaDec.c,
+				System/SevenZip/Ppmd7.c,
+				System/SevenZip/Ppmd7Dec.c,
+				System/SevenZip/Precomp.c,
+				System/Utilities/ArchiveReader.cpp,
+				System/Utilities/Audio/BiquadCascadeFilter.cpp,
+				System/Utilities/Audio/BiquadFilter.cpp,
+				System/Utilities/Audio/blip_buf.cpp,
+				System/Utilities/Audio/CrossFeedFilter.cpp,
+				System/Utilities/Audio/Equalizer.cpp,
+				System/Utilities/Audio/HermiteResampler.cpp,
+				System/Utilities/Audio/ReverbFilter.cpp,
+				System/Utilities/Audio/stb_vorbis.cpp,
+				System/Utilities/Audio/StereoCombFilter.cpp,
+				System/Utilities/Audio/StereoDelayFilter.cpp,
+				System/Utilities/Audio/StereoPanningFilter.cpp,
+				System/Utilities/Audio/WavReader.cpp,
+				System/Utilities/Audio/ymfm/ymfm_adpcm.cpp,
+				System/Utilities/Audio/ymfm/ymfm_misc.cpp,
+				System/Utilities/Audio/ymfm/ymfm_opn.cpp,
+				System/Utilities/Audio/ymfm/ymfm_ssg.cpp,
+				System/Utilities/AutoResetEvent.cpp,
+				System/Utilities/FolderUtilities.cpp,
+				System/Utilities/HexUtilities.cpp,
+				System/Utilities/HQX/hq2x.cpp,
+				System/Utilities/HQX/hq3x.cpp,
+				System/Utilities/HQX/hq4x.cpp,
+				System/Utilities/HQX/init.cpp,
+				System/Utilities/KreedSaiEagle/2xSai.cpp,
+				System/Utilities/KreedSaiEagle/Super2xSai.cpp,
+				System/Utilities/KreedSaiEagle/SuperEagle.cpp,
+				System/Utilities/Mango_CRC32.cpp,
+				System/Utilities/miniz.cpp,
+				System/Utilities/NTSC/nes_ntsc.cpp,
+				System/Utilities/NTSC/sms_ntsc.cpp,
+				System/Utilities/NTSC/snes_ntsc.cpp,
+				System/Utilities/Patches/BpsPatcher.cpp,
+				System/Utilities/Patches/IpsPatcher.cpp,
+				System/Utilities/Patches/UpsPatcher.cpp,
+				System/Utilities/pch.cpp,
+				System/Utilities/PlatformUtilities.cpp,
+				System/Utilities/PNGHelper.cpp,
+				System/Utilities/Scale2x/scale2x.cpp,
+				System/Utilities/Scale2x/scale3x.cpp,
+				System/Utilities/Scale2x/scalebit.cpp,
+				System/Utilities/Serializer.cpp,
+				System/Utilities/sha1.cpp,
+				System/Utilities/SimpleLock.cpp,
+				System/Utilities/Socket.cpp,
+				System/Utilities/spng.c,
+				System/Utilities/SZReader.cpp,
+				System/Utilities/Timer.cpp,
+				System/Utilities/UPnPPortMapper.cpp,
+				System/Utilities/UTF8Util.cpp,
+				System/Utilities/Video/AviRecorder.cpp,
+				System/Utilities/Video/AviWriter.cpp,
+				System/Utilities/Video/CamstudioCodec.cpp,
+				System/Utilities/Video/GifRecorder.cpp,
+				System/Utilities/Video/ZmbvCodec.cpp,
+				System/Utilities/VirtualFile.cpp,
+				System/Utilities/xBRZ/xbrz.cpp,
+				System/Utilities/ZipReader.cpp,
+				System/Utilities/ZipWriter.cpp,
+			);
+			target = E63619783048010100C93070 /* Mango */;
+		};
+		E69E5FDC305069BB00672845 /* Exceptions for "MesenCE" folder in "MesenCE" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				System/Core/Debugger/Base6502Assembler.cpp,
+				System/Core/Debugger/BaseEventManager.cpp,
+				System/Core/Debugger/Breakpoint.cpp,
+				System/Core/Debugger/BreakpointManager.cpp,
+				System/Core/Debugger/CallstackManager.cpp,
+				System/Core/Debugger/CdlManager.cpp,
+				System/Core/Debugger/CodeDataLogger.cpp,
+				System/Core/Debugger/Debugger.cpp,
+				System/Core/Debugger/Disassembler.cpp,
+				System/Core/Debugger/DisassemblyInfo.cpp,
+				System/Core/Debugger/DisassemblySearch.cpp,
+				System/Core/Debugger/ExpressionEvaluator.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Cx4.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Gameboy.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Gba.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Gsu.cpp,
+				System/Core/Debugger/ExpressionEvaluator.NecDsp.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Nes.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Pce.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Sms.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Snes.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Spc.cpp,
+				System/Core/Debugger/ExpressionEvaluator.St018.cpp,
+				System/Core/Debugger/ExpressionEvaluator.Ws.cpp,
+				System/Core/Debugger/LabelManager.cpp,
+				System/Core/Debugger/LuaApi.cpp,
+				System/Core/Debugger/LuaCallHelper.cpp,
+				System/Core/Debugger/MemoryAccessCounter.cpp,
+				System/Core/Debugger/MemoryDumper.cpp,
+				System/Core/Debugger/PpuTools.cpp,
+				System/Core/Debugger/Profiler.cpp,
+				System/Core/Debugger/ScriptHost.cpp,
+				System/Core/Debugger/ScriptingContext.cpp,
+				System/Core/Debugger/ScriptManager.cpp,
+				System/Core/Debugger/StepBackManager.cpp,
+				System/Core/Gameboy/APU/GbApu.cpp,
+				System/Core/Gameboy/APU/GbNoiseChannel.cpp,
+				System/Core/Gameboy/APU/GbSquareChannel.cpp,
+				System/Core/Gameboy/APU/GbWaveChannel.cpp,
+				System/Core/Gameboy/Debugger/DummyGbCpu.cpp,
+				System/Core/Gameboy/Debugger/GameboyDisUtils.cpp,
+				System/Core/Gameboy/Debugger/GbAssembler.cpp,
+				System/Core/Gameboy/Debugger/GbDebugger.cpp,
+				System/Core/Gameboy/Debugger/GbEventManager.cpp,
+				System/Core/Gameboy/Debugger/GbPpuTools.cpp,
+				System/Core/Gameboy/Debugger/GbTraceLogger.cpp,
+				System/Core/Gameboy/Gameboy.cpp,
+				System/Core/Gameboy/GbControlManager.cpp,
+				System/Core/Gameboy/GbCpu.cpp,
+				System/Core/Gameboy/GbDefaultVideoFilter.cpp,
+				System/Core/Gameboy/GbDmaController.cpp,
+				System/Core/Gameboy/GbMemoryManager.cpp,
+				System/Core/Gameboy/GbPpu.cpp,
+				System/Core/Gameboy/GbTimer.cpp,
+				System/Core/GBA/APU/GbaApu.cpp,
+				System/Core/GBA/APU/GbaNoiseChannel.cpp,
+				System/Core/GBA/APU/GbaSquareChannel.cpp,
+				System/Core/GBA/APU/GbaWaveChannel.cpp,
+				System/Core/GBA/Cart/GbaCart.cpp,
+				System/Core/GBA/Cart/GbaGpio.cpp,
+				System/Core/GBA/Cart/GbaRtc.cpp,
+				System/Core/GBA/Debugger/DummyGbaCpu.cpp,
+				System/Core/GBA/Debugger/GbaDebugger.cpp,
+				System/Core/GBA/Debugger/GbaDisUtils.cpp,
+				System/Core/GBA/Debugger/GbaEventManager.cpp,
+				System/Core/GBA/Debugger/GbaPpuTools.cpp,
+				System/Core/GBA/Debugger/GbaTraceLogger.cpp,
+				System/Core/GBA/GbaConsole.cpp,
+				System/Core/GBA/GbaControlManager.cpp,
+				System/Core/GBA/GbaCpu.Arm.cpp,
+				System/Core/GBA/GbaCpu.cpp,
+				System/Core/GBA/GbaCpu.Thumb.cpp,
+				System/Core/GBA/GbaDefaultVideoFilter.cpp,
+				System/Core/GBA/GbaDmaController.cpp,
+				System/Core/GBA/GbaMemoryManager.cpp,
+				System/Core/GBA/GbaPpu.cpp,
+				System/Core/GBA/GbaTimer.cpp,
+				System/Core/NES/APU/DeltaModulationChannel.cpp,
+				System/Core/NES/APU/NesApu.cpp,
+				System/Core/NES/BaseMapper.cpp,
+				System/Core/NES/BaseNesPpu.cpp,
+				System/Core/NES/BisqwitNtscFilter.cpp,
+				System/Core/NES/Debugger/DummyNesCpu.cpp,
+				System/Core/NES/Debugger/NesAssembler.cpp,
+				System/Core/NES/Debugger/NesDebugger.cpp,
+				System/Core/NES/Debugger/NesDisUtils.cpp,
+				System/Core/NES/Debugger/NesEventManager.cpp,
+				System/Core/NES/Debugger/NesPpuTools.cpp,
+				System/Core/NES/Debugger/NesTraceLogger.cpp,
+				System/Core/NES/Epsm.cpp,
+				System/Core/NES/GameDatabase.cpp,
+				System/Core/NES/HdPacks/HdAudioDevice.cpp,
+				System/Core/NES/HdPacks/HdNesPack.cpp,
+				System/Core/NES/HdPacks/HdNesPpu.cpp,
+				System/Core/NES/HdPacks/HdPackBuilder.cpp,
+				System/Core/NES/HdPacks/HdPackLoader.cpp,
+				System/Core/NES/HdPacks/HdVideoFilter.cpp,
+				System/Core/NES/HdPacks/OggMixer.cpp,
+				System/Core/NES/HdPacks/OggReader.cpp,
+				System/Core/NES/Loaders/FdsLoader.cpp,
+				System/Core/NES/Loaders/iNesLoader.cpp,
+				System/Core/NES/Loaders/NsfLoader.cpp,
+				System/Core/NES/Loaders/RomLoader.cpp,
+				System/Core/NES/Loaders/StudyBoxLoader.cpp,
+				System/Core/NES/Loaders/UnifLoader.cpp,
+				System/Core/NES/MapperFactory.cpp,
+				System/Core/NES/Mappers/FDS/Fds.cpp,
+				System/Core/NES/Mappers/FDS/FdsAudio.cpp,
+				System/Core/NES/Mappers/FDS/FdsInputButtons.cpp,
+				System/Core/NES/Mappers/Homebrew/Rainbow.cpp,
+				System/Core/NES/Mappers/NSF/NsfMapper.cpp,
+				System/Core/NES/Mappers/VsSystem/VsControlManager.cpp,
+				System/Core/NES/NesConsole.cpp,
+				System/Core/NES/NesControlManager.cpp,
+				System/Core/NES/NesCpu.cpp,
+				System/Core/NES/NesDefaultVideoFilter.cpp,
+				System/Core/NES/NesHeader.cpp,
+				System/Core/NES/NesMemoryManager.cpp,
+				System/Core/NES/NesNtscFilter.cpp,
+				System/Core/NES/NesPpu.cpp,
+				System/Core/NES/NesSoundMixer.cpp,
+				System/Core/Netplay/GameClient.cpp,
+				System/Core/Netplay/GameClientConnection.cpp,
+				System/Core/Netplay/GameConnection.cpp,
+				System/Core/Netplay/GameServer.cpp,
+				System/Core/Netplay/GameServerConnection.cpp,
+				System/Core/PCE/CdRom/PceAdpcm.cpp,
+				System/Core/PCE/CdRom/PceArcadeCard.cpp,
+				System/Core/PCE/CdRom/PceAudioFader.cpp,
+				System/Core/PCE/CdRom/PceCdAudioPlayer.cpp,
+				System/Core/PCE/CdRom/PceCdRom.cpp,
+				System/Core/PCE/CdRom/PceScsiBus.cpp,
+				System/Core/PCE/Debugger/DummyPceCpu.cpp,
+				System/Core/PCE/Debugger/PceAssembler.cpp,
+				System/Core/PCE/Debugger/PceDebugger.cpp,
+				System/Core/PCE/Debugger/PceDisUtils.cpp,
+				System/Core/PCE/Debugger/PceEventManager.cpp,
+				System/Core/PCE/Debugger/PceTraceLogger.cpp,
+				System/Core/PCE/Debugger/PceVdcTools.cpp,
+				System/Core/PCE/Input/PceTurboTap.cpp,
+				System/Core/PCE/PceConsole.cpp,
+				System/Core/PCE/PceControlManager.cpp,
+				System/Core/PCE/PceCpu.cpp,
+				System/Core/PCE/PceCpu.Instructions.cpp,
+				System/Core/PCE/PceMemoryManager.cpp,
+				System/Core/PCE/PceNtscFilter.cpp,
+				System/Core/PCE/PcePsg.cpp,
+				System/Core/PCE/PcePsgChannel.cpp,
+				System/Core/PCE/PceSf2RomMapper.cpp,
+				System/Core/PCE/PceTimer.cpp,
+				System/Core/PCE/PceVce.cpp,
+				System/Core/PCE/PceVdc.cpp,
+				System/Core/PCE/PceVpc.cpp,
+				System/Core/pch.cpp,
+				System/Core/Shared/Audio/AudioPlayerHud.cpp,
+				System/Core/Shared/Audio/BaseSoundManager.cpp,
+				System/Core/Shared/Audio/PcmReader.cpp,
+				System/Core/Shared/Audio/SoundMixer.cpp,
+				System/Core/Shared/Audio/SoundResampler.cpp,
+				System/Core/Shared/Audio/WaveRecorder.cpp,
+				System/Core/Shared/BaseControlDevice.cpp,
+				System/Core/Shared/BaseControlManager.cpp,
+				System/Core/Shared/BatteryManager.cpp,
+				System/Core/Shared/CdReader.cpp,
+				System/Core/Shared/CheatManager.cpp,
+				System/Core/Shared/DebuggerRequest.cpp,
+				System/Core/Shared/Emulator.cpp,
+				System/Core/Shared/EmulatorLock.cpp,
+				System/Core/Shared/EmuSettings.cpp,
+				System/Core/Shared/HistoryViewer.cpp,
+				System/Core/Shared/InputHud.cpp,
+				System/Core/Shared/KeyManager.cpp,
+				System/Core/Shared/MessageManager.cpp,
+				System/Core/Shared/Movies/BizHawkMovie.cpp,
+				System/Core/Shared/Movies/MesenMovie.cpp,
+				System/Core/Shared/Movies/MovieManager.cpp,
+				System/Core/Shared/Movies/MovieRecorder.cpp,
+				System/Core/Shared/NotificationManager.cpp,
+				System/Core/Shared/RecordedRomTest.cpp,
+				System/Core/Shared/RewindData.cpp,
+				System/Core/Shared/RewindManager.cpp,
+				System/Core/Shared/SaveStateManager.cpp,
+				System/Core/Shared/ShortcutKeyHandler.cpp,
+				System/Core/Shared/Utilities/emu2413.cpp,
+				System/Core/Shared/Utilities/S3511ARtc.cpp,
+				System/Core/Shared/Video/BaseVideoFilter.cpp,
+				System/Core/Shared/Video/DebugHud.cpp,
+				System/Core/Shared/Video/DebugStats.cpp,
+				System/Core/Shared/Video/DrawStringCommand.cpp,
+				System/Core/Shared/Video/RotateFilter.cpp,
+				System/Core/Shared/Video/ScaleFilter.cpp,
+				System/Core/Shared/Video/SoftwareRenderer.cpp,
+				System/Core/Shared/Video/SystemHud.cpp,
+				System/Core/Shared/Video/VideoDecoder.cpp,
+				System/Core/Shared/Video/VideoRenderer.cpp,
+				System/Core/SMS/Carts/SmsCart.cpp,
+				System/Core/SMS/Debugger/DummySmsCpu.cpp,
+				System/Core/SMS/Debugger/SmsAssembler.cpp,
+				System/Core/SMS/Debugger/SmsDebugger.cpp,
+				System/Core/SMS/Debugger/SmsDisUtils.cpp,
+				System/Core/SMS/Debugger/SmsEventManager.cpp,
+				System/Core/SMS/Debugger/SmsTraceLogger.cpp,
+				System/Core/SMS/Debugger/SmsVdpTools.cpp,
+				System/Core/SMS/SmsBiosMapper.cpp,
+				System/Core/SMS/SmsConsole.cpp,
+				System/Core/SMS/SmsControlManager.cpp,
+				System/Core/SMS/SmsCpu.cpp,
+				System/Core/SMS/SmsFmAudio.cpp,
+				System/Core/SMS/SmsMemoryManager.cpp,
+				System/Core/SMS/SmsNtscFilter.cpp,
+				System/Core/SMS/SmsPsg.cpp,
+				System/Core/SMS/SmsVdp.cpp,
+				System/Core/SNES/AluMulDiv.cpp,
+				System/Core/SNES/BaseCartridge.cpp,
+				System/Core/SNES/Coprocessors/BSX/BsxCart.cpp,
+				System/Core/SNES/Coprocessors/BSX/BsxMemoryPack.cpp,
+				System/Core/SNES/Coprocessors/BSX/BsxSatellaview.cpp,
+				System/Core/SNES/Coprocessors/BSX/BsxStream.cpp,
+				System/Core/SNES/Coprocessors/CX4/Cx4.cpp,
+				System/Core/SNES/Coprocessors/CX4/Cx4.Instructions.cpp,
+				System/Core/SNES/Coprocessors/DSP/NecDsp.cpp,
+				System/Core/SNES/Coprocessors/GSU/Gsu.cpp,
+				System/Core/SNES/Coprocessors/GSU/Gsu.Instructions.cpp,
+				System/Core/SNES/Coprocessors/MSU1/Msu1.cpp,
+				System/Core/SNES/Coprocessors/OBC1/Obc1.cpp,
+				System/Core/SNES/Coprocessors/SA1/Sa1.cpp,
+				System/Core/SNES/Coprocessors/SA1/Sa1Cpu.cpp,
+				System/Core/SNES/Coprocessors/SDD1/Sdd1.cpp,
+				System/Core/SNES/Coprocessors/SDD1/Sdd1Decomp.cpp,
+				System/Core/SNES/Coprocessors/SDD1/Sdd1Mmc.cpp,
+				System/Core/SNES/Coprocessors/SGB/SuperGameboy.cpp,
+				System/Core/SNES/Coprocessors/SPC7110/Rtc4513.cpp,
+				System/Core/SNES/Coprocessors/SPC7110/Spc7110.cpp,
+				System/Core/SNES/Coprocessors/SPC7110/Spc7110Decomp.cpp,
+				System/Core/SNES/Coprocessors/ST018/ArmV3Cpu.cpp,
+				System/Core/SNES/Coprocessors/ST018/St018.cpp,
+				System/Core/SNES/Debugger/Cx4Debugger.cpp,
+				System/Core/SNES/Debugger/Cx4DisUtils.cpp,
+				System/Core/SNES/Debugger/DummyArmV3Cpu.cpp,
+				System/Core/SNES/Debugger/DummySnesCpu.cpp,
+				System/Core/SNES/Debugger/DummySpc.cpp,
+				System/Core/SNES/Debugger/GsuDebugger.cpp,
+				System/Core/SNES/Debugger/GsuDisUtils.cpp,
+				System/Core/SNES/Debugger/NecDspDebugger.cpp,
+				System/Core/SNES/Debugger/NecDspDisUtils.cpp,
+				System/Core/SNES/Debugger/SnesAssembler.cpp,
+				System/Core/SNES/Debugger/SnesDebugger.cpp,
+				System/Core/SNES/Debugger/SnesDisUtils.cpp,
+				System/Core/SNES/Debugger/SnesEventManager.cpp,
+				System/Core/SNES/Debugger/SnesPpuTools.cpp,
+				System/Core/SNES/Debugger/SpcDebugger.cpp,
+				System/Core/SNES/Debugger/SpcDisUtils.cpp,
+				System/Core/SNES/Debugger/St018Debugger.cpp,
+				System/Core/SNES/Debugger/St018DisUtils.cpp,
+				System/Core/SNES/Debugger/TraceLogger/Cx4TraceLogger.cpp,
+				System/Core/SNES/Debugger/TraceLogger/GsuTraceLogger.cpp,
+				System/Core/SNES/Debugger/TraceLogger/NecDspTraceLogger.cpp,
+				System/Core/SNES/Debugger/TraceLogger/SnesCpuTraceLogger.cpp,
+				System/Core/SNES/Debugger/TraceLogger/SpcTraceLogger.cpp,
+				System/Core/SNES/Debugger/TraceLogger/St018TraceLogger.cpp,
+				System/Core/SNES/DSP/Dsp.cpp,
+				System/Core/SNES/DSP/DspVoice.cpp,
+				System/Core/SNES/Input/Multitap.cpp,
+				System/Core/SNES/Input/SnesBlueRetroController.cpp,
+				System/Core/SNES/Input/SnesController.cpp,
+				System/Core/SNES/Input/SnesNttDataKeypad.cpp,
+				System/Core/SNES/Input/SnesRumbleController.cpp,
+				System/Core/SNES/InternalRegisters.cpp,
+				System/Core/SNES/MemoryMappings.cpp,
+				System/Core/SNES/RegisterHandlerB.cpp,
+				System/Core/SNES/SnesConsole.cpp,
+				System/Core/SNES/SnesControlManager.cpp,
+				System/Core/SNES/SnesCpu.cpp,
+				System/Core/SNES/SnesDefaultVideoFilter.cpp,
+				System/Core/SNES/SnesDmaController.cpp,
+				System/Core/SNES/SnesMemoryManager.cpp,
+				System/Core/SNES/SnesNtscFilter.cpp,
+				System/Core/SNES/SnesPpu.cpp,
+				System/Core/SNES/Spc.cpp,
+				System/Core/SNES/Spc.Instructions.cpp,
+				System/Core/WS/APU/WsApu.cpp,
+				System/Core/WS/Carts/WsCart.cpp,
+				System/Core/WS/Carts/WsCartBandai2001.cpp,
+				System/Core/WS/Carts/WsCartBandai2003.cpp,
+				System/Core/WS/Carts/WsCartWonderWitch.cpp,
+				System/Core/WS/Carts/WsRtc.cpp,
+				System/Core/WS/Debugger/DummyWsCpu.cpp,
+				System/Core/WS/Debugger/WsDebugger.cpp,
+				System/Core/WS/Debugger/WsDisUtils.cpp,
+				System/Core/WS/Debugger/WsEventManager.cpp,
+				System/Core/WS/Debugger/WsPpuTools.cpp,
+				System/Core/WS/Debugger/WsTraceLogger.cpp,
+				System/Core/WS/WsConsole.cpp,
+				System/Core/WS/WsControlManager.cpp,
+				System/Core/WS/WsCpu.cpp,
+				System/Core/WS/WsCpuPrefetch.cpp,
+				System/Core/WS/WsDefaultVideoFilter.cpp,
+				System/Core/WS/WsDmaController.cpp,
+				System/Core/WS/WsEeprom.cpp,
+				System/Core/WS/WsMemoryManager.cpp,
+				System/Core/WS/WsPpu.cpp,
+				System/Core/WS/WsSerial.cpp,
+				System/Core/WS/WsTimer.cpp,
+				System/Lua/auxiliar.c,
+				System/Lua/buffer.c,
+				System/Lua/compat.c,
+				System/Lua/except.c,
+				System/Lua/inet.c,
+				System/Lua/io.c,
+				System/Lua/lapi.c,
+				System/Lua/lauxlib.c,
+				System/Lua/lbaselib.c,
+				System/Lua/lbitlib.c,
+				System/Lua/lcode.c,
+				System/Lua/lcorolib.c,
+				System/Lua/lctype.c,
+				System/Lua/ldblib.c,
+				System/Lua/ldebug.c,
+				System/Lua/ldo.c,
+				System/Lua/ldump.c,
+				System/Lua/lfunc.c,
+				System/Lua/lgc.c,
+				System/Lua/linit.c,
+				System/Lua/liolib.c,
+				System/Lua/llex.c,
+				System/Lua/lmathlib.c,
+				System/Lua/lmem.c,
+				System/Lua/loadlib.c,
+				System/Lua/lobject.c,
+				System/Lua/lopcodes.c,
+				System/Lua/loslib.c,
+				System/Lua/lparser.c,
+				System/Lua/lstate.c,
+				System/Lua/lstring.c,
+				System/Lua/lstrlib.c,
+				System/Lua/ltable.c,
+				System/Lua/ltablib.c,
+				System/Lua/ltm.c,
+				System/Lua/luasocket.c,
+				System/Lua/lundump.c,
+				System/Lua/lutf8lib.c,
+				System/Lua/lvm.c,
+				System/Lua/lzio.c,
+				System/Lua/mime.c,
+				System/Lua/options.c,
+				System/Lua/select.c,
+				System/Lua/serial.c,
+				System/Lua/tcp.c,
+				System/Lua/timeout.c,
+				System/Lua/udp.c,
+				System/Lua/unix.c,
+				System/Lua/unixdgram.c,
+				System/Lua/unixstream.c,
+				System/Lua/usocket.c,
+				System/Lua/wsocket.c,
+				System/SevenZip/7zAlloc.c,
+				System/SevenZip/7zArcIn.c,
+				System/SevenZip/7zBuf.c,
+				System/SevenZip/7zCrc.c,
+				System/SevenZip/7zCrcOpt.c,
+				System/SevenZip/7zDec.c,
+				System/SevenZip/7zFile.c,
+				System/SevenZip/7zMemBuffer.c,
+				System/SevenZip/7zStream.c,
+				System/SevenZip/Bcj2.c,
+				System/SevenZip/Bra.c,
+				System/SevenZip/Bra86.c,
+				System/SevenZip/BraIA64.c,
+				System/SevenZip/CpuArch.c,
+				System/SevenZip/Delta.c,
+				System/SevenZip/Lzma2Dec.c,
+				System/SevenZip/LzmaDec.c,
+				System/SevenZip/Ppmd7.c,
+				System/SevenZip/Ppmd7Dec.c,
+				System/SevenZip/Precomp.c,
+				System/Utilities/ArchiveReader.cpp,
+				System/Utilities/Audio/BiquadCascadeFilter.cpp,
+				System/Utilities/Audio/BiquadFilter.cpp,
+				System/Utilities/Audio/blip_buf.cpp,
+				System/Utilities/Audio/CrossFeedFilter.cpp,
+				System/Utilities/Audio/Equalizer.cpp,
+				System/Utilities/Audio/HermiteResampler.cpp,
+				System/Utilities/Audio/ReverbFilter.cpp,
+				System/Utilities/Audio/stb_vorbis.cpp,
+				System/Utilities/Audio/StereoCombFilter.cpp,
+				System/Utilities/Audio/StereoDelayFilter.cpp,
+				System/Utilities/Audio/StereoPanningFilter.cpp,
+				System/Utilities/Audio/WavReader.cpp,
+				System/Utilities/Audio/ymfm/ymfm_adpcm.cpp,
+				System/Utilities/Audio/ymfm/ymfm_misc.cpp,
+				System/Utilities/Audio/ymfm/ymfm_opn.cpp,
+				System/Utilities/Audio/ymfm/ymfm_ssg.cpp,
+				System/Utilities/AutoResetEvent.cpp,
+				System/Utilities/FolderUtilities.cpp,
+				System/Utilities/HexUtilities.cpp,
+				System/Utilities/HQX/hq2x.cpp,
+				System/Utilities/HQX/hq3x.cpp,
+				System/Utilities/HQX/hq4x.cpp,
+				System/Utilities/HQX/init.cpp,
+				System/Utilities/KreedSaiEagle/2xSai.cpp,
+				System/Utilities/KreedSaiEagle/Super2xSai.cpp,
+				System/Utilities/KreedSaiEagle/SuperEagle.cpp,
+				System/Utilities/Mango_CRC32.cpp,
+				System/Utilities/miniz.cpp,
+				System/Utilities/NTSC/nes_ntsc.cpp,
+				System/Utilities/NTSC/sms_ntsc.cpp,
+				System/Utilities/NTSC/snes_ntsc.cpp,
+				System/Utilities/Patches/BpsPatcher.cpp,
+				System/Utilities/Patches/IpsPatcher.cpp,
+				System/Utilities/Patches/UpsPatcher.cpp,
+				System/Utilities/pch.cpp,
+				System/Utilities/PlatformUtilities.cpp,
+				System/Utilities/PNGHelper.cpp,
+				System/Utilities/Scale2x/scale2x.cpp,
+				System/Utilities/Scale2x/scale3x.cpp,
+				System/Utilities/Scale2x/scalebit.cpp,
+				System/Utilities/Serializer.cpp,
+				System/Utilities/sha1.cpp,
+				System/Utilities/SimpleLock.cpp,
+				System/Utilities/Socket.cpp,
+				System/Utilities/spng.c,
+				System/Utilities/SZReader.cpp,
+				System/Utilities/Timer.cpp,
+				System/Utilities/UPnPPortMapper.cpp,
+				System/Utilities/UTF8Util.cpp,
+				System/Utilities/Video/AviRecorder.cpp,
+				System/Utilities/Video/AviWriter.cpp,
+				System/Utilities/Video/CamstudioCodec.cpp,
+				System/Utilities/Video/GifRecorder.cpp,
+				System/Utilities/Video/ZmbvCodec.cpp,
+				System/Utilities/VirtualFile.cpp,
+				System/Utilities/xBRZ/xbrz.cpp,
+				System/Utilities/ZipReader.cpp,
+				System/Utilities/ZipWriter.cpp,
+			);
+			target = E69E5FD03050696400672845 /* MesenCE */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		E6520A7E3065D1D600E9F3C7 /* Exceptions for "Dependencies" folder in "Embed Frameworks" phase from "Folium" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			attributesByRelativePath = {
+				FFmpeg/libavcodec.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				FFmpeg/libavdevice.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				FFmpeg/libavfilter.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				FFmpeg/libavformat.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				FFmpeg/libavutil.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				FFmpeg/libswresample.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				FFmpeg/libswscale.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+				MoltenVK.xcframework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+			};
+			buildPhase = E6A286D1300452C100415154 /* Embed Frameworks */;
+			membershipExceptions = (
+				FFmpeg/libavcodec.xcframework,
+				FFmpeg/libavdevice.xcframework,
+				FFmpeg/libavfilter.xcframework,
+				FFmpeg/libavformat.xcframework,
+				FFmpeg/libavutil.xcframework,
+				FFmpeg/libswresample.xcframework,
+				FFmpeg/libswscale.xcframework,
+				MoltenVK.xcframework,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		E6016A1E303FE0EA006F3A06 /* Plum */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E671D4683065C66300FD334E /* Exceptions for "Plum" folder in "Plum" target */,
+			);
+			path = Plum;
+			sourceTree = "<group>";
+		};
+		E636197A3048010100C93070 /* Mango */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Mango;
+			sourceTree = "<group>";
+		};
+		E6520A593065D13F00E9F3C7 /* Dependencies */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E6520A6B3065D1C300E9F3C7 /* Exceptions for "Dependencies" folder in "Cytrus" target */,
+				E6520A7D3065D1D600E9F3C7 /* Exceptions for "Dependencies" folder in "Folium" target */,
+				E6520A7E3065D1D600E9F3C7 /* Exceptions for "Dependencies" folder in "Embed Frameworks" phase from "Folium" target */,
+			);
+			path = Dependencies;
+			sourceTree = "<group>";
+		};
+		E655CB7B2FE73488003DCE2B /* Tomato */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Tomato;
+			sourceTree = "<group>";
+		};
+		E65A97A32FD0597F001DDEEE /* Folium */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E65A97B32FD05980001DDEEE /* Exceptions for "Folium" folder in "Folium" target */,
+			);
+			path = Folium;
+			sourceTree = "<group>";
+		};
+		E67922CD30286E7700B556A8 /* Cherry */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Cherry;
+			sourceTree = "<group>";
+		};
+		E69CA8F62FDC9EAF00BCD2F9 /* Mandarine */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Mandarine;
+			sourceTree = "<group>";
+		};
+		E69E5FD23050696400672845 /* MesenCE */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E69E5FDB305069BB00672845 /* Exceptions for "MesenCE" folder in "Mango" target */,
+				E69E5FDC305069BB00672845 /* Exceptions for "MesenCE" folder in "MesenCE" target */,
+			);
+			path = MesenCE;
+			sourceTree = "<group>";
+		};
+		E69E5FF430508B7B00672845 /* Lychee */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Lychee;
+			sourceTree = "<group>";
+		};
+		E69E60123050A87D00672845 /* Durian */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Durian;
+			sourceTree = "<group>";
+		};
+		E6A00CC52FF967B900D2BD20 /* Cytrus */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Cytrus;
+			sourceTree = "<group>";
+		};
+		E6F139CB2FF04DB700F30081 /* Grape */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Grape;
+			sourceTree = "<group>";
+		};
+		E6F48FA92FF6C0700085C59B /* Kiwi */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Kiwi;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E6016A1A303FE0EA006F3A06 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				E671D47D3065CE7700FD334E /* SharedDependencies in Frameworks */,
+			);
+		};
+		E63619763048010100C93070 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				E671D4793065CE6E00FD334E /* SharedDependencies in Frameworks */,
+				E69E5FDD30506AAA00672845 /* libMesenCE.a in Frameworks */,
+			);
+		};
+		E655CB772FE73488003DCE2B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				E671D47F3065CE7B00FD334E /* SharedDependencies in Frameworks */,
+			);
+		};
+		E65A979E2FD0597F001DDEEE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				E6979A532FE6ACA10055FA9D /* OnboardingKit in Frameworks */,
+				E6F49CDF2FF6CB810085C59B /* libresolv.9.tbd in Frameworks */,
+				E6979A552FE6ACA10055FA9D /* SettingsKit in Frameworks */,
+				E6A0FEE03007D7FF006FB733 /* ColourKit in Frameworks */,
+				E671D48E3065CF4800FD334E /* SettingsKit in Frameworks */,
+				E651DE783047ED6000A6BF11 /* SettingsKit in Frameworks */,
+				E64840AC3002E668007BDFFA /* libzstdwrapper in Frameworks */,
+				E671D46B3065CE3100FD334E /* SharedDependencies in Frameworks */,
+				E651DE743047ED6000A6BF11 /* FontKit in Frameworks */,
+				E69E600630508E4A00672845 /* libLychee.a in Frameworks */,
+				E671D4863065CF4800FD334E /* ConstraintKit in Frameworks */,
+				E6979A4D2FE6ACA10055FA9D /* ConstraintKit in Frameworks */,
+				E671D48C3065CF4800FD334E /* OnboardingKit in Frameworks */,
+				E651DE6E3047ED6000A6BF11 /* ColourKit in Frameworks */,
+				E651DE873047ED8B00A6BF11 /* SettingsKit in Frameworks */,
+				E6A0FEE63007D7FF006FB733 /* FontKit in Frameworks */,
+				E651DE853047ED8B00A6BF11 /* OnboardingKit in Frameworks */,
+				E6A0FEE43007D7FF006FB733 /* ExtensionsKit in Frameworks */,
+				E67923303028758E00B556A8 /* libCherry.a in Frameworks */,
+				E6A0FEE23007D7FF006FB733 /* ConstraintKit in Frameworks */,
+				E6C462C42FE4B0AA004E5B57 /* SharedDependencies in Frameworks */,
+				E671D4823065CF4800FD334E /* AntiqueKit in Frameworks */,
+				E651DE7B3047ED8B00A6BF11 /* AntiqueKit in Frameworks */,
+				E69E60223050AD3D00672845 /* libDurian.a in Frameworks */,
+				E6A29C0C300455E200415154 /* SharedDependencies in Frameworks */,
+				E6A01B90300444F800804CD4 /* SharedDependencies in Frameworks */,
+				E656E9A23006F6CC0061EA22 /* libseekable_format in Frameworks */,
+				E6979A4B2FE6ACA10055FA9D /* ColourKit in Frameworks */,
+				E6016ADC303FEBD2006F3A06 /* libPlum.a in Frameworks */,
+				E6AF262B3002E43C002D87C9 /* libCytrus.a in Frameworks */,
+				E6979A4F2FE6ACA10055FA9D /* ExtensionsKit in Frameworks */,
+				E672C01130488D57005F73C5 /* libMango.a in Frameworks */,
+				E6A0FEEA3007D7FF006FB733 /* SettingsKit in Frameworks */,
+				E651DE7D3047ED8B00A6BF11 /* ColourKit in Frameworks */,
+				E651DE833047ED8B00A6BF11 /* FontKit in Frameworks */,
+				E671D48A3065CF4800FD334E /* FontKit in Frameworks */,
+				E651DE723047ED6000A6BF11 /* ExtensionsKit in Frameworks */,
+				E651DE813047ED8B00A6BF11 /* ExtensionsKit in Frameworks */,
+				E656E9A63006F6CC0061EA22 /* libzstdwrapper in Frameworks */,
+				E651DE703047ED6000A6BF11 /* ConstraintKit in Frameworks */,
+				E6A0FEE83007D7FF006FB733 /* OnboardingKit in Frameworks */,
+				E651DE7F3047ED8B00A6BF11 /* ConstraintKit in Frameworks */,
+				E6A0FEDE3007D7FF006FB733 /* AntiqueKit in Frameworks */,
+				E6979A512FE6ACA10055FA9D /* FontKit in Frameworks */,
+				E6979A492FE6ACA10055FA9D /* AntiqueKit in Frameworks */,
+				E61175E92FE1D9700032DDC1 /* libMandarine.a in Frameworks */,
+				E655CB842FE734FB003DCE2B /* libTomato.a in Frameworks */,
+				E651DE763047ED6000A6BF11 /* OnboardingKit in Frameworks */,
+				E64840A83002E668007BDFFA /* libseekable_format in Frameworks */,
+				E651DE6C3047ED6000A6BF11 /* AntiqueKit in Frameworks */,
+				E671D4883065CF4800FD334E /* ExtensionsKit in Frameworks */,
+				E64840AA3002E668007BDFFA /* libzstd in Frameworks */,
+				E671D4843065CF4800FD334E /* ColourKit in Frameworks */,
+				E656E9A43006F6CC0061EA22 /* libzstd in Frameworks */,
+				E6F139D42FF04E1000F30081 /* libGrape.a in Frameworks */,
+				E6F49CDB2FF6C9F50085C59B /* libKiwi.a in Frameworks */,
+			);
+		};
+		E67922C930286E7700B556A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				E671D46D3065CE4B00FD334E /* SharedDependencies in Frameworks */,
+			);
+		};
+		E69CA8F22FDC9EAF00BCD2F9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				E61859FE2FE4B17100D44932 /* SharedDependencies in Frameworks */,
+			);
+		};
+		E69E5FCE3050696400672845 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				E671D47B3065CE7200FD334E /* SharedDependencies in Frameworks */,
+			);
+		};
+		E69E5FF030508B7B00672845 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				E671D4773065CE6800FD334E /* SharedDependencies in Frameworks */,
+				E69E5FFA30508B9100672845 /* libMesenCE.a in Frameworks */,
+			);
+		};
+		E69E600E3050A87D00672845 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				E671D4713065CE5500FD334E /* SharedDependencies in Frameworks */,
+				E69E601D3050A8EA00672845 /* libMesenCE.a in Frameworks */,
+			);
+		};
+		E6A00CC12FF967B900D2BD20 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				E656E9AC3006F6D60061EA22 /* libzstdwrapper in Frameworks */,
+				E656E9AA3006F6D60061EA22 /* libzstd in Frameworks */,
+				E671D46F3065CE5000FD334E /* SharedDependencies in Frameworks */,
+				E656E9A83006F6D60061EA22 /* libseekable_format in Frameworks */,
+			);
+		};
+		E6F139C72FF04DB700F30081 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				E671D4733065CE5C00FD334E /* SharedDependencies in Frameworks */,
+			);
+		};
+		E6F48FA52FF6C0700085C59B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				E671D4753065CE6000FD334E /* SharedDependencies in Frameworks */,
+				E61C017F3053FC5F00F3CE02 /* libMesenCE.a in Frameworks */,
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E65A97982FD0597F001DDEEE = {
+			isa = PBXGroup;
+			children = (
+				E67922CD30286E7700B556A8 /* Cherry */,
+				E6A00CC52FF967B900D2BD20 /* Cytrus */,
+				E6520A593065D13F00E9F3C7 /* Dependencies */,
+				E69E60123050A87D00672845 /* Durian */,
+				E65A97A32FD0597F001DDEEE /* Folium */,
+				E6F139CB2FF04DB700F30081 /* Grape */,
+				E6F48FA92FF6C0700085C59B /* Kiwi */,
+				E69E5FF430508B7B00672845 /* Lychee */,
+				E69CA8F62FDC9EAF00BCD2F9 /* Mandarine */,
+				E636197A3048010100C93070 /* Mango */,
+				E69E5FD23050696400672845 /* MesenCE */,
+				E6016A1E303FE0EA006F3A06 /* Plum */,
+				E655CB7B2FE73488003DCE2B /* Tomato */,
+				E6F48FAF2FF6C0860085C59B /* Frameworks */,
+				E65A97A22FD0597F001DDEEE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E65A97A22FD0597F001DDEEE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E65A97A12FD0597F001DDEEE /* Folium.app */,
+				E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */,
+				E655CB7A2FE73488003DCE2B /* libTomato.a */,
+				E6F139CA2FF04DB700F30081 /* libGrape.a */,
+				E6F48FA82FF6C0700085C59B /* libKiwi.a */,
+				E62C749B2FFCE20100D6760E /* libCytrus.a */,
+				E67922CC30286E7700B556A8 /* libCherry.a */,
+				E6016A1D303FE0EA006F3A06 /* libPlum.a */,
+				E63619793048010100C93070 /* libMango.a */,
+				E69E5FD13050696400672845 /* libMesenCE.a */,
+				E69E5FF330508B7B00672845 /* libLychee.a */,
+				E69E60113050A87D00672845 /* libDurian.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6F48FAF2FF6C0860085C59B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E6F49CDE2FF6CB7D0085C59B /* libresolv.9.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E6016A1C303FE0EA006F3A06 /* Plum */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6016A21303FE0EA006F3A06 /* Build configuration list for PBXNativeTarget "Plum" */;
+			buildPhases = (
+				E6016A19303FE0EA006F3A06 /* Sources */,
+				E6016A1A303FE0EA006F3A06 /* Frameworks */,
+				E6016A1B303FE0EA006F3A06 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				E6016A1E303FE0EA006F3A06 /* Plum */,
+			);
+			name = Plum;
+			packageProductDependencies = (
+				E671D47C3065CE7700FD334E /* SharedDependencies */,
+			);
+			productName = Plum;
+			productReference = E6016A1D303FE0EA006F3A06 /* libPlum.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E63619783048010100C93070 /* Mango */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E636197D3048010100C93070 /* Build configuration list for PBXNativeTarget "Mango" */;
+			buildPhases = (
+				E63619753048010100C93070 /* Sources */,
+				E63619763048010100C93070 /* Frameworks */,
+				E63619773048010100C93070 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E69E5FDF30506AAA00672845 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E636197A3048010100C93070 /* Mango */,
+			);
+			name = Mango;
+			packageProductDependencies = (
+				E671D4783065CE6E00FD334E /* SharedDependencies */,
+			);
+			productName = Mango;
+			productReference = E63619793048010100C93070 /* libMango.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E655CB792FE73488003DCE2B /* Tomato */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E655CB7E2FE73488003DCE2B /* Build configuration list for PBXNativeTarget "Tomato" */;
+			buildPhases = (
+				E655CB762FE73488003DCE2B /* Sources */,
+				E655CB772FE73488003DCE2B /* Frameworks */,
+				E655CB782FE73488003DCE2B /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				E655CB7B2FE73488003DCE2B /* Tomato */,
+			);
+			name = Tomato;
+			packageProductDependencies = (
+				E671D47E3065CE7B00FD334E /* SharedDependencies */,
+			);
+			productName = Tomato;
+			productReference = E655CB7A2FE73488003DCE2B /* libTomato.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E65A97A02FD0597F001DDEEE /* Folium */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E65A97B42FD05980001DDEEE /* Build configuration list for PBXNativeTarget "Folium" */;
+			buildPhases = (
+				E65A979D2FD0597F001DDEEE /* Sources */,
+				E65A979E2FD0597F001DDEEE /* Frameworks */,
+				E65A979F2FD0597F001DDEEE /* Resources */,
+				E6A286D1300452C100415154 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E61175EB2FE1D9700032DDC1 /* PBXTargetDependency */,
+				E655CB862FE734FB003DCE2B /* PBXTargetDependency */,
+				E6F139D62FF04E1000F30081 /* PBXTargetDependency */,
+				E6F49CDD2FF6C9F50085C59B /* PBXTargetDependency */,
+				E6AF262D3002E43C002D87C9 /* PBXTargetDependency */,
+				E67923323028758E00B556A8 /* PBXTargetDependency */,
+				E6016ADE303FEBD3006F3A06 /* PBXTargetDependency */,
+				E672C01330488D57005F73C5 /* PBXTargetDependency */,
+				E69E600830508E4A00672845 /* PBXTargetDependency */,
+				E69E60243050AD3D00672845 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E65A97A32FD0597F001DDEEE /* Folium */,
+			);
+			name = Folium;
+			packageProductDependencies = (
+				E6C462C32FE4B0AA004E5B57 /* SharedDependencies */,
+				E6979A482FE6ACA10055FA9D /* AntiqueKit */,
+				E6979A4A2FE6ACA10055FA9D /* ColourKit */,
+				E6979A4C2FE6ACA10055FA9D /* ConstraintKit */,
+				E6979A4E2FE6ACA10055FA9D /* ExtensionsKit */,
+				E6979A502FE6ACA10055FA9D /* FontKit */,
+				E6979A522FE6ACA10055FA9D /* OnboardingKit */,
+				E6979A542FE6ACA10055FA9D /* SettingsKit */,
+				E64840A73002E668007BDFFA /* libseekable_format */,
+				E64840A93002E668007BDFFA /* libzstd */,
+				E64840AB3002E668007BDFFA /* libzstdwrapper */,
+				E6A01B8F300444F800804CD4 /* SharedDependencies */,
+				E6A29C0B300455E200415154 /* SharedDependencies */,
+				E656E9A13006F6CC0061EA22 /* libseekable_format */,
+				E656E9A33006F6CC0061EA22 /* libzstd */,
+				E656E9A53006F6CC0061EA22 /* libzstdwrapper */,
+				E6A0FEDD3007D7FF006FB733 /* AntiqueKit */,
+				E6A0FEDF3007D7FF006FB733 /* ColourKit */,
+				E6A0FEE13007D7FF006FB733 /* ConstraintKit */,
+				E6A0FEE33007D7FF006FB733 /* ExtensionsKit */,
+				E6A0FEE53007D7FF006FB733 /* FontKit */,
+				E6A0FEE73007D7FF006FB733 /* OnboardingKit */,
+				E6A0FEE93007D7FF006FB733 /* SettingsKit */,
+				E651DE6B3047ED6000A6BF11 /* AntiqueKit */,
+				E651DE6D3047ED6000A6BF11 /* ColourKit */,
+				E651DE6F3047ED6000A6BF11 /* ConstraintKit */,
+				E651DE713047ED6000A6BF11 /* ExtensionsKit */,
+				E651DE733047ED6000A6BF11 /* FontKit */,
+				E651DE753047ED6000A6BF11 /* OnboardingKit */,
+				E651DE773047ED6000A6BF11 /* SettingsKit */,
+				E651DE7A3047ED8B00A6BF11 /* AntiqueKit */,
+				E651DE7C3047ED8B00A6BF11 /* ColourKit */,
+				E651DE7E3047ED8B00A6BF11 /* ConstraintKit */,
+				E651DE803047ED8B00A6BF11 /* ExtensionsKit */,
+				E651DE823047ED8B00A6BF11 /* FontKit */,
+				E651DE843047ED8B00A6BF11 /* OnboardingKit */,
+				E651DE863047ED8B00A6BF11 /* SettingsKit */,
+				E671D46A3065CE3100FD334E /* SharedDependencies */,
+				E671D4813065CF4800FD334E /* AntiqueKit */,
+				E671D4833065CF4800FD334E /* ColourKit */,
+				E671D4853065CF4800FD334E /* ConstraintKit */,
+				E671D4873065CF4800FD334E /* ExtensionsKit */,
+				E671D4893065CF4800FD334E /* FontKit */,
+				E671D48B3065CF4800FD334E /* OnboardingKit */,
+				E671D48D3065CF4800FD334E /* SettingsKit */,
+			);
+			productName = Folium;
+			productReference = E65A97A12FD0597F001DDEEE /* Folium.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E67922CB30286E7700B556A8 /* Cherry */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E67922D230286E7700B556A8 /* Build configuration list for PBXNativeTarget "Cherry" */;
+			buildPhases = (
+				E67922C830286E7700B556A8 /* Sources */,
+				E67922C930286E7700B556A8 /* Frameworks */,
+				E67922CA30286E7700B556A8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				E67922CD30286E7700B556A8 /* Cherry */,
+			);
+			name = Cherry;
+			packageProductDependencies = (
+				E671D46C3065CE4B00FD334E /* SharedDependencies */,
+			);
+			productName = Cherry;
+			productReference = E67922CC30286E7700B556A8 /* libCherry.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E69CA8F42FDC9EAF00BCD2F9 /* Mandarine */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E69CA8FB2FDC9EAF00BCD2F9 /* Build configuration list for PBXNativeTarget "Mandarine" */;
+			buildPhases = (
+				E69CA8F12FDC9EAF00BCD2F9 /* Sources */,
+				E69CA8F22FDC9EAF00BCD2F9 /* Frameworks */,
+				E69CA8F32FDC9EAF00BCD2F9 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				E69CA8F62FDC9EAF00BCD2F9 /* Mandarine */,
+			);
+			name = Mandarine;
+			packageProductDependencies = (
+				E69CAA1D2FDC9FC200BCD2F9 /* SharedDependencies */,
+			);
+			productName = Mandarine;
+			productReference = E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E69E5FD03050696400672845 /* MesenCE */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E69E5FD53050696400672845 /* Build configuration list for PBXNativeTarget "MesenCE" */;
+			buildPhases = (
+				E69E5FCD3050696400672845 /* Sources */,
+				E69E5FCE3050696400672845 /* Frameworks */,
+				E69E5FCF3050696400672845 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				E69E5FD23050696400672845 /* MesenCE */,
+			);
+			name = MesenCE;
+			packageProductDependencies = (
+				E671D47A3065CE7200FD334E /* SharedDependencies */,
+			);
+			productName = MesenCE;
+			productReference = E69E5FD13050696400672845 /* libMesenCE.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E69E5FF230508B7B00672845 /* Lychee */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E69E5FF730508B7B00672845 /* Build configuration list for PBXNativeTarget "Lychee" */;
+			buildPhases = (
+				E69E5FEF30508B7B00672845 /* Sources */,
+				E69E5FF030508B7B00672845 /* Frameworks */,
+				E69E5FF130508B7B00672845 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E69E5FFC30508B9100672845 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E69E5FF430508B7B00672845 /* Lychee */,
+			);
+			name = Lychee;
+			packageProductDependencies = (
+				E671D4763065CE6800FD334E /* SharedDependencies */,
+			);
+			productName = Lychee;
+			productReference = E69E5FF330508B7B00672845 /* libLychee.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E69E60103050A87D00672845 /* Durian */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E69E60153050A87D00672845 /* Build configuration list for PBXNativeTarget "Durian" */;
+			buildPhases = (
+				E69E600D3050A87D00672845 /* Sources */,
+				E69E600E3050A87D00672845 /* Frameworks */,
+				E69E600F3050A87D00672845 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E69E601F3050A8EA00672845 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E69E60123050A87D00672845 /* Durian */,
+			);
+			name = Durian;
+			packageProductDependencies = (
+				E671D4703065CE5500FD334E /* SharedDependencies */,
+			);
+			productName = Durian;
+			productReference = E69E60113050A87D00672845 /* libDurian.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E6A00CC32FF967B900D2BD20 /* Cytrus */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6A00CCA2FF967B900D2BD20 /* Build configuration list for PBXNativeTarget "Cytrus" */;
+			buildPhases = (
+				E6A00CC02FF967B900D2BD20 /* Sources */,
+				E6A00CC12FF967B900D2BD20 /* Frameworks */,
+				E6A00CC22FF967B900D2BD20 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				E6A00CC52FF967B900D2BD20 /* Cytrus */,
+			);
+			name = Cytrus;
+			packageProductDependencies = (
+				E656E9A73006F6D60061EA22 /* libseekable_format */,
+				E656E9A93006F6D60061EA22 /* libzstd */,
+				E656E9AB3006F6D60061EA22 /* libzstdwrapper */,
+				E671D46E3065CE5000FD334E /* SharedDependencies */,
+			);
+			productName = Cytrus;
+			productReference = E62C749B2FFCE20100D6760E /* libCytrus.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E6F139C92FF04DB700F30081 /* Grape */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6F139D02FF04DB700F30081 /* Build configuration list for PBXNativeTarget "Grape" */;
+			buildPhases = (
+				E6F139C62FF04DB700F30081 /* Sources */,
+				E6F139C72FF04DB700F30081 /* Frameworks */,
+				E6F139C82FF04DB700F30081 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				E6F139CB2FF04DB700F30081 /* Grape */,
+			);
+			name = Grape;
+			packageProductDependencies = (
+				E671D4723065CE5C00FD334E /* SharedDependencies */,
+			);
+			productName = Grape;
+			productReference = E6F139CA2FF04DB700F30081 /* libGrape.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E6F48FA72FF6C0700085C59B /* Kiwi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6F48FAC2FF6C0700085C59B /* Build configuration list for PBXNativeTarget "Kiwi" */;
+			buildPhases = (
+				E6F48FA42FF6C0700085C59B /* Sources */,
+				E6F48FA52FF6C0700085C59B /* Frameworks */,
+				E6F48FA62FF6C0700085C59B /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E61C01813053FC5F00F3CE02 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E6F48FA92FF6C0700085C59B /* Kiwi */,
+			);
+			name = Kiwi;
+			packageProductDependencies = (
+				E671D4743065CE6000FD334E /* SharedDependencies */,
+			);
+			productName = Kiwi;
+			productReference = E6F48FA82FF6C0700085C59B /* libKiwi.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E65A97992FD0597F001DDEEE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					E6016A1C303FE0EA006F3A06 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					E63619783048010100C93070 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					E655CB792FE73488003DCE2B = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					E65A97A02FD0597F001DDEEE = {
+						CreatedOnToolsVersion = 26.5;
+					};
+					E67922CB30286E7700B556A8 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					E69CA8F42FDC9EAF00BCD2F9 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					E69E5FD03050696400672845 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					E69E5FF230508B7B00672845 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					E69E60103050A87D00672845 = {
+						CreatedOnToolsVersion = 27.0;
+						LastSwiftMigration = 2700;
+					};
+					E6A00CC32FF967B900D2BD20 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					E6F139C92FF04DB700F30081 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					E6F48FA72FF6C0700085C59B = {
+						CreatedOnToolsVersion = 27.0;
+					};
+				};
+			};
+			buildConfigurationList = E65A979C2FD0597F001DDEEE /* Build configuration list for PBXProject "Folium" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E65A97982FD0597F001DDEEE;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */,
+				E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */,
+				E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */,
+				E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */,
+			);
+			preferredProjectObjectVersion = 110;
+			productRefGroup = E65A97A22FD0597F001DDEEE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E67922CB30286E7700B556A8 /* Cherry */,
+				E6A00CC32FF967B900D2BD20 /* Cytrus */,
+				E69E60103050A87D00672845 /* Durian */,
+				E65A97A02FD0597F001DDEEE /* Folium */,
+				E6F139C92FF04DB700F30081 /* Grape */,
+				E6F48FA72FF6C0700085C59B /* Kiwi */,
+				E69E5FF230508B7B00672845 /* Lychee */,
+				E69CA8F42FDC9EAF00BCD2F9 /* Mandarine */,
+				E63619783048010100C93070 /* Mango */,
+				E69E5FD03050696400672845 /* MesenCE */,
+				E6016A1C303FE0EA006F3A06 /* Plum */,
+				E655CB792FE73488003DCE2B /* Tomato */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E65A979F2FD0597F001DDEEE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E6016A19303FE0EA006F3A06 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		E63619753048010100C93070 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		E655CB762FE73488003DCE2B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		E65A979D2FD0597F001DDEEE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		E67922C830286E7700B556A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		E69CA8F12FDC9EAF00BCD2F9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		E69E5FCD3050696400672845 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		E69E5FEF30508B7B00672845 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		E69E600D3050A87D00672845 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		E6A00CC02FF967B900D2BD20 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		E6F139C62FF04DB700F30081 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		E6F48FA42FF6C0700085C59B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E6016ADE303FEBD3006F3A06 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6016A1C303FE0EA006F3A06 /* Plum */;
+			targetProxy = E6016ADD303FEBD3006F3A06 /* PBXContainerItemProxy */;
+		};
+		E61175EB2FE1D9700032DDC1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E69CA8F42FDC9EAF00BCD2F9 /* Mandarine */;
+			targetProxy = E61175EA2FE1D9700032DDC1 /* PBXContainerItemProxy */;
+		};
+		E61C01813053FC5F00F3CE02 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E69E5FD03050696400672845 /* MesenCE */;
+			targetProxy = E61C01803053FC5F00F3CE02 /* PBXContainerItemProxy */;
+		};
+		E655CB862FE734FB003DCE2B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E655CB792FE73488003DCE2B /* Tomato */;
+			targetProxy = E655CB852FE734FB003DCE2B /* PBXContainerItemProxy */;
+		};
+		E672C01330488D57005F73C5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E63619783048010100C93070 /* Mango */;
+			targetProxy = E672C01230488D57005F73C5 /* PBXContainerItemProxy */;
+		};
+		E67923323028758E00B556A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E67922CB30286E7700B556A8 /* Cherry */;
+			targetProxy = E67923313028758E00B556A8 /* PBXContainerItemProxy */;
+		};
+		E69E5FDF30506AAA00672845 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E69E5FD03050696400672845 /* MesenCE */;
+			targetProxy = E69E5FDE30506AAA00672845 /* PBXContainerItemProxy */;
+		};
+		E69E5FFC30508B9100672845 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E69E5FD03050696400672845 /* MesenCE */;
+			targetProxy = E69E5FFB30508B9100672845 /* PBXContainerItemProxy */;
+		};
+		E69E600830508E4A00672845 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E69E5FF230508B7B00672845 /* Lychee */;
+			targetProxy = E69E600730508E4A00672845 /* PBXContainerItemProxy */;
+		};
+		E69E601F3050A8EA00672845 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E69E5FD03050696400672845 /* MesenCE */;
+			targetProxy = E69E601E3050A8EA00672845 /* PBXContainerItemProxy */;
+		};
+		E69E60243050AD3D00672845 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E69E60103050A87D00672845 /* Durian */;
+			targetProxy = E69E60233050AD3D00672845 /* PBXContainerItemProxy */;
+		};
+		E6AF262D3002E43C002D87C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6A00CC32FF967B900D2BD20 /* Cytrus */;
+			targetProxy = E6AF262C3002E43C002D87C9 /* PBXContainerItemProxy */;
+		};
+		E6F139D62FF04E1000F30081 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6F139C92FF04DB700F30081 /* Grape */;
+			targetProxy = E6F139D52FF04E1000F30081 /* PBXContainerItemProxy */;
+		};
+		E6F49CDD2FF6C9F50085C59B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6F48FA72FF6C0700085C59B /* Kiwi */;
+			targetProxy = E6F49CDC2FF6C9F50085C59B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		E6016A22303FE0EA006F3A06 /* Debug configuration for PBXNativeTarget "Plum" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Plum/System/include/clowncd/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/Plum/System",
+					"$(SOURCE_ROOT)/Plum/System/include",
+				);
+			};
+			name = Debug;
+		};
+		E6016A23303FE0EA006F3A06 /* Release configuration for PBXNativeTarget "Plum" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Plum/System/include/clowncd/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/Plum/System",
+					"$(SOURCE_ROOT)/Plum/System/include",
+				);
+			};
+			name = Release;
+		};
+		E636197E3048010100C93070 /* Debug configuration for PBXNativeTarget "Mango" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					LUA_USE_IOS,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Mango/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
+			};
+			name = Debug;
+		};
+		E636197F3048010100C93070 /* Release configuration for PBXNativeTarget "Mango" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = LUA_USE_IOS;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Mango/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
+			};
+			name = Release;
+		};
+		E655CB7F2FE73488003DCE2B /* Debug configuration for PBXNativeTarget "Tomato" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					LUA_USE_IOS,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Tomato/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
+			};
+			name = Debug;
+		};
+		E655CB802FE73488003DCE2B /* Release configuration for PBXNativeTarget "Tomato" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = LUA_USE_IOS;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Tomato/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
+			};
+			name = Release;
+		};
+		E65A97B52FD05980001DDEEE /* Debug configuration for PBXNativeTarget "Folium" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Folium/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Folium;
+				INFOPLIST_KEY_GCSupportsControllerUserInteraction = YES;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Folium may require access to Bluetooth where it is used for game and system functionality";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Folium may require access to Camera where it is used for game and system functionality";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Folium may require access to Local Network where it is used for game and system functionality";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Folium may require access to Microphone where it is used for game and system functionality";
+				INFOPLIST_KEY_NSMotionUsageDescription = "Folium may require access to Motion where it is used for game and system functionality";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				MARKETING_VERSION = 2.2;
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E65A97B62FD05980001DDEEE /* Release configuration for PBXNativeTarget "Folium" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Folium/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Folium;
+				INFOPLIST_KEY_GCSupportsControllerUserInteraction = YES;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Folium may require access to Bluetooth where it is used for game and system functionality";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Folium may require access to Camera where it is used for game and system functionality";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Folium may require access to Local Network where it is used for game and system functionality";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Folium may require access to Microphone where it is used for game and system functionality";
+				INFOPLIST_KEY_NSMotionUsageDescription = "Folium may require access to Motion where it is used for game and system functionality";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				MARKETING_VERSION = 2.2;
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.antique.Folium-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E65A97B72FD05980001DDEEE /* Debug configuration for PBXProject "Folium" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E65A97B82FD05980001DDEEE /* Release configuration for PBXProject "Folium" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E67922D030286E7700B556A8 /* Debug configuration for PBXNativeTarget "Cherry" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cherry/System/include/gearcoleco/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cherry/System/include";
+			};
+			name = Debug;
+		};
+		E67922D130286E7700B556A8 /* Release configuration for PBXNativeTarget "Cherry" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cherry/System/include/gearcoleco/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cherry/System/include";
+			};
+			name = Release;
+		};
+		E69CA8F92FDC9EAF00BCD2F9 /* Debug configuration for PBXNativeTarget "Mandarine" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-Wno-shorten-64-to-32",
+					"-Wno-unused-function",
+					"-Wno-unused-variable",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Mandarine/System/include/avocado/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Mandarine/System/include";
+			};
+			name = Debug;
+		};
+		E69CA8FA2FDC9EAF00BCD2F9 /* Release configuration for PBXNativeTarget "Mandarine" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-Wno-shorten-64-to-32",
+					"-Wno-unused-function",
+					"-Wno-unused-variable",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Mandarine/System/include/avocado/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Mandarine/System/include";
+			};
+			name = Release;
+		};
+		E69E5FD63050696400672845 /* Debug configuration for PBXNativeTarget "MesenCE" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					LUA_USE_IOS,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
+			};
+			name = Debug;
+		};
+		E69E5FD73050696400672845 /* Release configuration for PBXNativeTarget "MesenCE" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = LUA_USE_IOS;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
+			};
+			name = Release;
+		};
+		E69E5FF830508B7B00672845 /* Debug configuration for PBXNativeTarget "Lychee" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					LUA_USE_IOS,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Lychee/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
+			};
+			name = Debug;
+		};
+		E69E5FF930508B7B00672845 /* Release configuration for PBXNativeTarget "Lychee" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = LUA_USE_IOS;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Lychee/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
+			};
+			name = Release;
+		};
+		E69E60163050A87D00672845 /* Debug configuration for PBXNativeTarget "Durian" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					LUA_USE_IOS,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Durian/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
+			};
+			name = Debug;
+		};
+		E69E60173050A87D00672845 /* Release configuration for PBXNativeTarget "Durian" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = LUA_USE_IOS;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Durian/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
+			};
+			name = Release;
+		};
+		E6A00CC82FF967B900D2BD20 /* Debug configuration for PBXNativeTarget "Cytrus" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					CPPHTTPLIB_OPENSSL_SUPPORT,
+					HAVE_COREAUDIO,
+					HAVE_OPENAL,
+					HAVE_SDL3,
+					ENABLE_SDL3,
+					ENABLE_VULKAN,
+					ENABLE_WEB_SERVICE,
+				);
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-Wno-shorten-64-to-32",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cytrus/System/include/cytrus/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"$(HOME)/Developer/Repositories",
+					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include",
+					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include/glslang",
+					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include/vma",
+				);
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cytrus/System/include";
+			};
+			name = Debug;
+		};
+		E6A00CC92FF967B900D2BD20 /* Release configuration for PBXNativeTarget "Cytrus" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					CPPHTTPLIB_OPENSSL_SUPPORT,
+					HAVE_COREAUDIO,
+					HAVE_OPENAL,
+					HAVE_SDL3,
+					ENABLE_SDL3,
+					ENABLE_VULKAN,
+					ENABLE_WEB_SERVICE,
+				);
+				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-Wno-shorten-64-to-32",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cytrus/System/include/cytrus/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"$(HOME)/Developer/Repositories",
+					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include",
+					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include/glslang",
+					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include/vma",
+				);
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cytrus/System/include";
+			};
+			name = Release;
+		};
+		E6F139CE2FF04DB700F30081 /* Debug configuration for PBXNativeTarget "Grape" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Grape/System/include/melonDS/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/Grape/System/include/ARMJIT_A64",
+					"$(SOURCE_ROOT)/Grape/System/include/xxhash",
+					"$(SOURCE_ROOT)/Grape/System/tiny-AES-c",
+					"$(SOURCE_ROOT)/Grape/System/include/sha1",
+					"$(SOURCE_ROOT)/Grape/System/include/fatfs",
+					"$(SOURCE_ROOT)/Grape/System/include/dolphin",
+					"$(SOURCE_ROOT)/Grape/System/include/ARMJIT_x64",
+					"$(SOURCE_ROOT)/Grape/Dependencies/teakra/include",
+					"$(SOURCE_ROOT)/Grape/System/include",
+				);
+			};
+			name = Debug;
+		};
+		E6F139CF2FF04DB700F30081 /* Release configuration for PBXNativeTarget "Grape" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Grape/System/include/melonDS/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/Grape/System/include/ARMJIT_A64",
+					"$(SOURCE_ROOT)/Grape/System/include/xxhash",
+					"$(SOURCE_ROOT)/Grape/System/tiny-AES-c",
+					"$(SOURCE_ROOT)/Grape/System/include/sha1",
+					"$(SOURCE_ROOT)/Grape/System/include/fatfs",
+					"$(SOURCE_ROOT)/Grape/System/include/dolphin",
+					"$(SOURCE_ROOT)/Grape/System/include/ARMJIT_x64",
+					"$(SOURCE_ROOT)/Grape/Dependencies/teakra/include",
+					"$(SOURCE_ROOT)/Grape/System/include",
+				);
+			};
+			name = Release;
+		};
+		E6F48FAD2FF6C0700085C59B /* Debug configuration for PBXNativeTarget "Kiwi" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					LUA_USE_IOS,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Kiwi/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
+			};
+			name = Debug;
+		};
+		E6F48FAE2FF6C0700085C59B /* Release configuration for PBXNativeTarget "Kiwi" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Z3ZEABYY6P;
+				GCC_C_LANGUAGE_STANDARD = gnu23;
+				GCC_PREPROCESSOR_DEFINITIONS = LUA_USE_IOS;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Kiwi/bridge.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E6016A21303FE0EA006F3A06 /* Build configuration list for PBXNativeTarget "Plum" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6016A22303FE0EA006F3A06 /* Debug configuration for PBXNativeTarget "Plum" */,
+				E6016A23303FE0EA006F3A06 /* Release configuration for PBXNativeTarget "Plum" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		E636197D3048010100C93070 /* Build configuration list for PBXNativeTarget "Mango" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E636197E3048010100C93070 /* Debug configuration for PBXNativeTarget "Mango" */,
+				E636197F3048010100C93070 /* Release configuration for PBXNativeTarget "Mango" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		E655CB7E2FE73488003DCE2B /* Build configuration list for PBXNativeTarget "Tomato" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E655CB7F2FE73488003DCE2B /* Debug configuration for PBXNativeTarget "Tomato" */,
+				E655CB802FE73488003DCE2B /* Release configuration for PBXNativeTarget "Tomato" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		E65A979C2FD0597F001DDEEE /* Build configuration list for PBXProject "Folium" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E65A97B72FD05980001DDEEE /* Debug configuration for PBXProject "Folium" */,
+				E65A97B82FD05980001DDEEE /* Release configuration for PBXProject "Folium" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		E65A97B42FD05980001DDEEE /* Build configuration list for PBXNativeTarget "Folium" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E65A97B52FD05980001DDEEE /* Debug configuration for PBXNativeTarget "Folium" */,
+				E65A97B62FD05980001DDEEE /* Release configuration for PBXNativeTarget "Folium" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		E67922D230286E7700B556A8 /* Build configuration list for PBXNativeTarget "Cherry" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E67922D030286E7700B556A8 /* Debug configuration for PBXNativeTarget "Cherry" */,
+				E67922D130286E7700B556A8 /* Release configuration for PBXNativeTarget "Cherry" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		E69CA8FB2FDC9EAF00BCD2F9 /* Build configuration list for PBXNativeTarget "Mandarine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E69CA8F92FDC9EAF00BCD2F9 /* Debug configuration for PBXNativeTarget "Mandarine" */,
+				E69CA8FA2FDC9EAF00BCD2F9 /* Release configuration for PBXNativeTarget "Mandarine" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		E69E5FD53050696400672845 /* Build configuration list for PBXNativeTarget "MesenCE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E69E5FD63050696400672845 /* Debug configuration for PBXNativeTarget "MesenCE" */,
+				E69E5FD73050696400672845 /* Release configuration for PBXNativeTarget "MesenCE" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		E69E5FF730508B7B00672845 /* Build configuration list for PBXNativeTarget "Lychee" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E69E5FF830508B7B00672845 /* Debug configuration for PBXNativeTarget "Lychee" */,
+				E69E5FF930508B7B00672845 /* Release configuration for PBXNativeTarget "Lychee" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		E69E60153050A87D00672845 /* Build configuration list for PBXNativeTarget "Durian" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E69E60163050A87D00672845 /* Debug configuration for PBXNativeTarget "Durian" */,
+				E69E60173050A87D00672845 /* Release configuration for PBXNativeTarget "Durian" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		E6A00CCA2FF967B900D2BD20 /* Build configuration list for PBXNativeTarget "Cytrus" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6A00CC82FF967B900D2BD20 /* Debug configuration for PBXNativeTarget "Cytrus" */,
+				E6A00CC92FF967B900D2BD20 /* Release configuration for PBXNativeTarget "Cytrus" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		E6F139D02FF04DB700F30081 /* Build configuration list for PBXNativeTarget "Grape" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6F139CE2FF04DB700F30081 /* Debug configuration for PBXNativeTarget "Grape" */,
+				E6F139CF2FF04DB700F30081 /* Release configuration for PBXNativeTarget "Grape" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		E6F48FAC2FF6C0700085C59B /* Build configuration list for PBXNativeTarget "Kiwi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6F48FAD2FF6C0700085C59B /* Debug configuration for PBXNativeTarget "Kiwi" */,
+				E6F48FAE2FF6C0700085C59B /* Release configuration for PBXNativeTarget "Kiwi" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				branch = 2.x;
+				kind = branch;
+			};
+		};
+		E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jarrodnorwell/zstd";
+			requirement = {
+				branch = dev;
+				kind = branch;
+			};
+		};
+		E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/folium-app/SharedDependencies";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jarrodnorwell/AntiqueKit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E64840A73002E668007BDFFA /* libseekable_format */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = libseekable_format;
+		};
+		E64840A93002E668007BDFFA /* libzstd */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = libzstd;
+		};
+		E64840AB3002E668007BDFFA /* libzstdwrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = libzstdwrapper;
+		};
+		E651DE6B3047ED6000A6BF11 /* AntiqueKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = AntiqueKit;
+		};
+		E651DE6D3047ED6000A6BF11 /* ColourKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = ColourKit;
+		};
+		E651DE6F3047ED6000A6BF11 /* ConstraintKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = ConstraintKit;
+		};
+		E651DE713047ED6000A6BF11 /* ExtensionsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = ExtensionsKit;
+		};
+		E651DE733047ED6000A6BF11 /* FontKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = FontKit;
+		};
+		E651DE753047ED6000A6BF11 /* OnboardingKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = OnboardingKit;
+		};
+		E651DE773047ED6000A6BF11 /* SettingsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = SettingsKit;
+		};
+		E651DE7A3047ED8B00A6BF11 /* AntiqueKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AntiqueKit;
+		};
+		E651DE7C3047ED8B00A6BF11 /* ColourKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ColourKit;
+		};
+		E651DE7E3047ED8B00A6BF11 /* ConstraintKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ConstraintKit;
+		};
+		E651DE803047ED8B00A6BF11 /* ExtensionsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ExtensionsKit;
+		};
+		E651DE823047ED8B00A6BF11 /* FontKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FontKit;
+		};
+		E651DE843047ED8B00A6BF11 /* OnboardingKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OnboardingKit;
+		};
+		E651DE863047ED8B00A6BF11 /* SettingsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SettingsKit;
+		};
+		E656E9A13006F6CC0061EA22 /* libseekable_format */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libseekable_format;
+		};
+		E656E9A33006F6CC0061EA22 /* libzstd */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstd;
+		};
+		E656E9A53006F6CC0061EA22 /* libzstdwrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstdwrapper;
+		};
+		E656E9A73006F6D60061EA22 /* libseekable_format */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libseekable_format;
+		};
+		E656E9A93006F6D60061EA22 /* libzstd */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstd;
+		};
+		E656E9AB3006F6D60061EA22 /* libzstdwrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */;
+			productName = libzstdwrapper;
+		};
+		E671D46A3065CE3100FD334E /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E671D46C3065CE4B00FD334E /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E671D46E3065CE5000FD334E /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E671D4703065CE5500FD334E /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E671D4723065CE5C00FD334E /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E671D4743065CE6000FD334E /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E671D4763065CE6800FD334E /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E671D4783065CE6E00FD334E /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E671D47A3065CE7200FD334E /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E671D47C3065CE7700FD334E /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E671D47E3065CE7B00FD334E /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */;
+			productName = SharedDependencies;
+		};
+		E671D4813065CF4800FD334E /* AntiqueKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = AntiqueKit;
+		};
+		E671D4833065CF4800FD334E /* ColourKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = ColourKit;
+		};
+		E671D4853065CF4800FD334E /* ConstraintKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = ConstraintKit;
+		};
+		E671D4873065CF4800FD334E /* ExtensionsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = ExtensionsKit;
+		};
+		E671D4893065CF4800FD334E /* FontKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = FontKit;
+		};
+		E671D48B3065CF4800FD334E /* OnboardingKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = OnboardingKit;
+		};
+		E671D48D3065CF4800FD334E /* SettingsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = SettingsKit;
+		};
+		E6979A482FE6ACA10055FA9D /* AntiqueKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AntiqueKit;
+		};
+		E6979A4A2FE6ACA10055FA9D /* ColourKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ColourKit;
+		};
+		E6979A4C2FE6ACA10055FA9D /* ConstraintKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ConstraintKit;
+		};
+		E6979A4E2FE6ACA10055FA9D /* ExtensionsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ExtensionsKit;
+		};
+		E6979A502FE6ACA10055FA9D /* FontKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FontKit;
+		};
+		E6979A522FE6ACA10055FA9D /* OnboardingKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OnboardingKit;
+		};
+		E6979A542FE6ACA10055FA9D /* SettingsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SettingsKit;
+		};
+		E69CAA1D2FDC9FC200BCD2F9 /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SharedDependencies;
+		};
+		E6A01B8F300444F800804CD4 /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SharedDependencies;
+		};
+		E6A0FEDD3007D7FF006FB733 /* AntiqueKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AntiqueKit;
+		};
+		E6A0FEDF3007D7FF006FB733 /* ColourKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ColourKit;
+		};
+		E6A0FEE13007D7FF006FB733 /* ConstraintKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ConstraintKit;
+		};
+		E6A0FEE33007D7FF006FB733 /* ExtensionsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ExtensionsKit;
+		};
+		E6A0FEE53007D7FF006FB733 /* FontKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FontKit;
+		};
+		E6A0FEE73007D7FF006FB733 /* OnboardingKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OnboardingKit;
+		};
+		E6A0FEE93007D7FF006FB733 /* SettingsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SettingsKit;
+		};
+		E6A29C0B300455E200415154 /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SharedDependencies;
+		};
+		E6C462C32FE4B0AA004E5B57 /* SharedDependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SharedDependencies;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = E65A97992FD0597F001DDEEE /* Project object */;
+}

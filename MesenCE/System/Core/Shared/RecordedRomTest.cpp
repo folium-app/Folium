@@ -1,0 +1,313 @@
+#include "pch.h"
+
+#include "Shared/RecordedRomTest.h"
+#include "Shared/Emulator.h"
+#include "Shared/EmuSettings.h"
+#include "Shared/MessageManager.h"
+#include "Shared/Video/VideoDecoder.h"
+#include "Shared/NotificationManager.h"
+#include "Shared/Movies/MovieManager.h"
+#include "Utilities/VirtualFile.h"
+#include "Utilities/FolderUtilities.h"
+#include "Utilities/sha1.h"
+#include "Utilities/ZipWriter.h"
+#include "Utilities/ZipReader.h"
+#include "Utilities/ArchiveReader.h"
+#include "Utilities/StringUtilities.h"
+
+RecordedRomTest::RecordedRomTest(Emulator* emu, bool inBackground)
+{
+	_emu = emu;
+	_inBackground = inBackground;
+	Reset();
+}
+
+RecordedRomTest::~RecordedRomTest()
+{
+	Reset();
+}
+
+void RecordedRomTest::SaveFrame()
+{
+	PpuFrameInfo frame = _emu->GetPpuFrame();
+
+	string hash = SHA1::GetHash(frame.FrameBuffer, frame.FrameBufferSize);
+
+	if(_previousHash == hash && _currentCount < 255) {
+		_currentCount++;
+	} else {
+		_screenshotHashes.push_back(hash);
+		if(_currentCount > 0) {
+			_repetitionCount.push_back(_currentCount);
+		}
+		_currentCount = 1;
+		_previousHash = hash;
+
+		_signal.Signal();
+	}
+}
+
+void RecordedRomTest::ValidateFrame()
+{
+	PpuFrameInfo frame = _emu->GetPpuFrame();
+
+	string hash = SHA1::GetHash(frame.FrameBuffer, frame.FrameBufferSize);
+	_previousHash = hash;
+
+	if(_currentCount == 0) {
+		_currentCount = _repetitionCount.front();
+		_repetitionCount.pop_front();
+		_screenshotHashes.pop_front();
+	}
+	_currentCount--;
+
+	if(_screenshotHashes.front() != hash) {
+		_badFrameCount++;
+		_isLastFrameGood = false;
+		//_console->BreakIfDebugging();
+	} else {
+		_isLastFrameGood = true;
+	}
+
+	if(_currentCount == 0 && _repetitionCount.empty()) {
+		//End of test
+		_runningTest = false;
+		_signal.Signal();
+	}
+}
+
+void RecordedRomTest::ProcessNotification(ConsoleNotificationType type, void* parameter)
+{
+	switch(type) {
+		case ConsoleNotificationType::PpuFrameDone:
+			if(_recording) {
+				SaveFrame();
+			} else if(_runningTest) {
+				ValidateFrame();
+			}
+			break;
+
+		default:
+			break;
+	}
+}
+
+void RecordedRomTest::Reset()
+{
+	_previousHash = "";
+
+	_currentCount = 0;
+	_repetitionCount.clear();
+
+	_screenshotHashes.clear();
+
+	_runningTest = false;
+	_recording = false;
+	_badFrameCount = 0;
+}
+
+void RecordedRomTest::Record(string filename, bool reset)
+{
+	_emu->GetNotificationManager()->RegisterNotificationListener(shared_from_this());
+	_filename = filename;
+
+	string mrtFilename = FolderUtilities::CombinePath(FolderUtilities::GetFolderName(filename), FolderUtilities::GetFilename(filename, false) + ".mrt");
+	_file.open(mrtFilename, ios::out | ios::binary);
+
+	if(_file) {
+		_emu->Lock();
+		Reset();
+
+		UpdateSettings();
+
+		//Start recording movie alongside with screenshots
+		RecordMovieOptions options;
+		string movieFilename = FolderUtilities::CombinePath(FolderUtilities::GetFolderName(filename), FolderUtilities::GetFilename(filename, false) + ".mmo");
+		memcpy(options.Filename, movieFilename.c_str(), std::min(1000, (int)movieFilename.size()));
+		options.RecordFrom = reset ? RecordMovieFrom::StartWithSaveData : RecordMovieFrom::CurrentState;
+		_emu->GetMovieManager()->Record(options);
+
+		_recording = true;
+		_emu->Unlock();
+	}
+}
+
+RomTestResult RecordedRomTest::Run(string filename)
+{
+	RomTestResult result = {};
+	_emu->GetNotificationManager()->RegisterNotificationListener(shared_from_this());
+
+	EmuSettings* settings = _emu->GetSettings();
+	string testName = FolderUtilities::GetFilename(filename, false);
+
+	ZipReader zipReader;
+	zipReader.LoadArchive(filename);
+	vector<string> files = zipReader.GetFileList();
+	string romFile = "";
+	for(string& file : files) {
+		if(file.length() > 7 && file.substr(0, 7) == "TestRom") {
+			romFile = file;
+		}
+	}
+
+	if(romFile.empty()) {
+		result.ErrorCode = -4;
+		return result;
+	}
+
+	VirtualFile testMovie(filename, "TestMovie.mmo");
+	VirtualFile testRom(filename, romFile);
+
+	stringstream testData;
+	zipReader.GetStream("TestData.mrt", testData);
+
+	if(testData && testMovie.IsValid() && testRom.IsValid()) {
+		char header[3];
+		testData.read((char*)&header, 3);
+		if(memcmp((char*)&header, "MT2", 3) != 0) {
+			//Invalid test file
+			result.ErrorCode = -3;
+			return result;
+		}
+
+		Reset();
+
+		uint32_t hashCount;
+		testData.read((char*)&hashCount, sizeof(uint32_t));
+
+		for(uint32_t i = 0; i < hashCount; i++) {
+			uint8_t repeatCount = 0;
+			testData.read((char*)&repeatCount, sizeof(uint8_t));
+			_repetitionCount.push_back(repeatCount);
+
+			string screenshotHash(40, '0');
+			testData.read((char*)screenshotHash.data(), 40);
+			_screenshotHashes.push_back(screenshotHash);
+		}
+
+		_currentCount = _repetitionCount.front();
+		_repetitionCount.pop_front();
+
+		if(testName.compare("demo_pal") == 0 || testName.substr(0, 4).compare("pal_") == 0) {
+			settings->GetNesConfig().Region = ConsoleRegion::Pal;
+		} else {
+			settings->GetNesConfig().Region = ConsoleRegion::Auto;
+		}
+
+		UpdateSettings();
+
+		_emu->Lock();
+		//Start playing movie
+		if(_emu->LoadRom(testRom, VirtualFile(""))) {
+			_emu->GetMovieManager()->Play(testMovie, true);
+			settings->SetFlag(EmulationFlags::MaximumSpeed);
+
+			_runningTest = true;
+			_emu->Unlock();
+			_emu->Resume();
+			_signal.Wait();
+			if(!_isLastFrameGood) {
+				_emu->GetVideoDecoder()->TakeScreenshot(FolderUtilities::GetFilename(filename, false));
+			}
+			_emu->Stop(!_inBackground);
+			_runningTest = false;
+		} else {
+			//Something went wrong when loading the rom
+			_emu->Unlock();
+			result.ErrorCode = -2;
+			return result;
+		}
+
+		settings->ClearFlag(EmulationFlags::MaximumSpeed);
+
+		result.ErrorCode = _badFrameCount;
+		result.State = _badFrameCount == 0 ? RomTestState::Passed : (_isLastFrameGood ? RomTestState::PassedWithWarnings : RomTestState::Failed);
+		StringUtilities::CopyToBuffer(_previousHash, result.LastFrameHash, sizeof(result.LastFrameHash));
+
+		return result;
+	}
+
+	result.ErrorCode = -1;
+	return result;
+}
+
+void RecordedRomTest::UpdateSettings()
+{
+	EmuSettings* settings = _emu->GetSettings();
+	settings->GetEmulationConfig().RunAheadFrames = 0;
+
+	settings->GetSnesConfig().RamPowerOnState = RamState::AllZeros;
+	settings->GetNesConfig().RamPowerOnState = RamState::AllZeros;
+	settings->GetGameboyConfig().RamPowerOnState = RamState::AllZeros;
+	settings->GetPcEngineConfig().RamPowerOnState = RamState::AllZeros;
+	settings->GetSmsConfig().RamPowerOnState = RamState::AllZeros;
+	settings->GetCvConfig().RamPowerOnState = RamState::AllZeros;
+	settings->GetGbaConfig().RamPowerOnState = RamState::AllZeros;
+
+	settings->GetSnesConfig().DisableFrameSkipping = true;
+	settings->GetPcEngineConfig().DisableFrameSkipping = true;
+	settings->GetGbaConfig().DisableFrameSkipping = true;
+
+	settings->GetGbaConfig().SkipBootScreen = false;
+	settings->GetWsConfig().UseBootRom = true;
+	settings->GetWsConfig().LcdShowIcons = true;
+
+	settings->GetNesConfig().RemoveSpriteLimit = false;
+	settings->GetSnesConfig().RemoveSpriteLimit = false;
+	settings->GetGameboyConfig().RemoveSpriteLimit = false;
+	settings->GetPcEngineConfig().RemoveSpriteLimit = false;
+	settings->GetSmsConfig().RemoveSpriteLimit = false;
+}
+
+void RecordedRomTest::Stop()
+{
+	if(_recording) {
+		Save();
+	}
+	Reset();
+}
+
+void RecordedRomTest::Save()
+{
+	//Wait until the next frame is captured to end the recording
+	_signal.Wait();
+	_repetitionCount.push_back(_currentCount);
+	_recording = false;
+
+	//Stop playing/recording the movie
+	_emu->GetMovieManager()->Stop();
+
+	_file.write("MT2", 3);
+
+	uint32_t hashCount = (uint32_t)_screenshotHashes.size();
+	_file.write((char*)&hashCount, sizeof(uint32_t));
+
+	for(uint32_t i = 0; i < hashCount; i++) {
+		_file.write((char*)&_repetitionCount[i], sizeof(uint8_t));
+		_file.write((char*)_screenshotHashes[i].data(), 40);
+	}
+
+	_file.close();
+
+	ZipWriter writer;
+	writer.Initialize(_filename);
+
+	string mrtFilename = FolderUtilities::CombinePath(FolderUtilities::GetFolderName(_filename), FolderUtilities::GetFilename(_filename, false) + ".mrt");
+	writer.AddFile(mrtFilename, "TestData.mrt");
+	std::remove(mrtFilename.c_str());
+
+	string mmoFilename = FolderUtilities::CombinePath(FolderUtilities::GetFolderName(_filename), FolderUtilities::GetFilename(_filename, false) + ".mmo");
+	writer.AddFile(mmoFilename, "TestMovie.mmo");
+	std::remove(mmoFilename.c_str());
+
+	writer.AddFile(_emu->GetRomInfo().RomFile.GetFilePath(), "TestRom" + _emu->GetRomInfo().RomFile.GetFileExtension());
+
+	//Add a screenshot of the last frame to the zip file (with the sha1 hash in the filename)
+	stringstream screenshot;
+	_emu->GetVideoDecoder()->TakeScreenshot(screenshot);
+	writer.AddFile(screenshot, "LastFrame." + _screenshotHashes[_screenshotHashes.size() - 1] + ".png");
+
+	writer.Save();
+
+	MessageManager::DisplayMessage("Test", "TestFileSavedTo", FolderUtilities::GetFilename(_filename, true));
+}

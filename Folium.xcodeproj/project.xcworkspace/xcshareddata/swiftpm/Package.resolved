@@ -1,0 +1,60 @@
+{
+  "originHash" : "2eeca8d582ece93f5da79a9643a15c776615c65e7ec9873de87243cf029764e3",
+  "pins" : [
+    {
+      "identity" : "antiquekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jarrodnorwell/AntiqueKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "1f44d80099f204a6ea7ea83dcfe4de57045d9291"
+      }
+    },
+    {
+      "identity" : "openssl",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krzyzanowskim/OpenSSL",
+      "state" : {
+        "branch" : "main",
+        "revision" : "4b1188ba947ddc23d03b13096b9e44b804e146c9"
+      }
+    },
+    {
+      "identity" : "plzmasdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jarrodnorwell/PLzmaSDK",
+      "state" : {
+        "branch" : "master",
+        "revision" : "c69ff6acb4df788885cc4865d46e1a442e6f50a5"
+      }
+    },
+    {
+      "identity" : "shareddependencies",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/folium-app/SharedDependencies",
+      "state" : {
+        "branch" : "main",
+        "revision" : "2ee6621fcfe7cb4b938c1d0f1d842c6e2d72f97e"
+      }
+    },
+    {
+      "identity" : "sparkle",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sparkle-project/Sparkle",
+      "state" : {
+        "branch" : "2.x",
+        "revision" : "fd34238cbbc5db4a6e8343c62ae4dea939b06ea4"
+      }
+    },
+    {
+      "identity" : "zstd",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jarrodnorwell/zstd",
+      "state" : {
+        "branch" : "dev",
+        "revision" : "9baae4431585740983318801beff0a7ae4494291"
+      }
+    }
+  ],
+  "version" : 3
+}

@@ -1,0 +1,172 @@
+//
+//  GameCell.swift
+//  Folium
+//
+//  Created by Jarrod Norwell on 22/6/2026.
+//
+
+import ColourKit
+import ConstraintKit
+import ExtensionsKit
+import FontKit
+import UIKit
+
+class GameCell : UICollectionViewCell {
+    var fileManager: FileManager = .default
+    
+    var hasCustomArtwork: Bool = false
+    var hasDefaultArtwork: Bool = false
+    
+    var visualEffectView: UIVisualEffectView? = nil
+    
+    var missingImageView: UIImageView? = nil,
+        imageView: UIImageView? = nil,
+        backgroundImageView: UIImageView? = nil
+    
+    var averageImageColour: UIColour? = nil
+    var button: UIButton? = nil
+    
+    var label: UILabel? = nil,
+        secondaryLabel: UILabel? = nil
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        visualEffectView = if #available(iOS 26.0, *) {
+            UIVisualEffectView(effect: UIGlassEffect(style: .regular))
+        } else {
+            UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
+        }
+        guard let visualEffectView: UIVisualEffectView else {
+            return
+        }
+        visualEffectView.translatesAutoresizingMaskIntoConstraints = false
+        visualEffectView.clipsToBounds = true
+        contentView.addSubview(visualEffectView)
+        
+        visualEffectView.top.constraint(equalTo: contentView.salg.top).isActive = true
+        visualEffectView.left.constraint(equalTo: contentView.salg.left).isActive = true
+        visualEffectView.right.constraint(equalTo: contentView.salg.right).isActive = true
+        switch type(of: self) {
+        case is CherryCell.Type:
+            visualEffectView.height.constraint(equalTo: contentView.salg.width, multiplier: 1200 / 900).isActive = true
+        case is DurianCell.Type:
+            visualEffectView.height.constraint(equalTo: contentView.salg.width, multiplier: 742 / 512).isActive = true
+        case is LycheeCell.Type:
+            visualEffectView.height.constraint(equalTo: contentView.salg.width, multiplier: 187 / 256).isActive = true
+        case is MangoCell.Type:
+            visualEffectView.height.constraint(equalTo: contentView.salg.width, multiplier: 704 / 512).isActive = true
+        case is PlumCell.Type:
+            visualEffectView.height.constraint(equalTo: contentView.salg.width, multiplier: 2000 / 1400).isActive = true
+        default:
+            visualEffectView.height.constraint(equalTo: contentView.salg.width).isActive = true
+        }
+        
+        missingImageView = UIImageView(image: UIImage(systemName: "nosign"))
+        guard let missingImageView: UIImageView else {
+            return
+        }
+        missingImageView.translatesAutoresizingMaskIntoConstraints = false
+        missingImageView.tintColor = .separator
+        visualEffectView.contentView.addSubview(missingImageView)
+        
+        missingImageView.width.constraint(equalTo: visualEffectView.contentView.salg.width, multiplier: 2.0 / 5.0).isActive = true
+        missingImageView.height.constraint(equalTo: missingImageView.salg.width).isActive = true
+        missingImageView.centerX.constraint(equalTo: visualEffectView.contentView.salg.centerX).isActive = true
+        missingImageView.centerY.constraint(equalTo: visualEffectView.contentView.salg.centerY).isActive = true
+        
+        backgroundImageView = UIImageView()
+        guard let backgroundImageView: UIImageView else {
+            return
+        }
+        backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundImageView.clipsToBounds = true
+        contentView.insertSubview(backgroundImageView, belowSubview: visualEffectView)
+        
+        backgroundImageView.top.constraint(equalTo: visualEffectView.contentView.salg.top, constant: 4.0).isActive = true
+        backgroundImageView.left.constraint(equalTo: visualEffectView.contentView.salg.left, constant: 4.0).isActive = true
+        backgroundImageView.bottom.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: -4.0).isActive = true
+        backgroundImageView.right.constraint(equalTo: visualEffectView.contentView.salg.right, constant: -4.0).isActive = true
+        
+        imageView = UIImageView()
+        guard let imageView: UIImageView else {
+            return
+        }
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.clipsToBounds = true
+        visualEffectView.contentView.addSubview(imageView)
+        
+        imageView.top.constraint(equalTo: visualEffectView.contentView.salg.top, constant: 4.0).isActive = true
+        imageView.left.constraint(equalTo: visualEffectView.contentView.salg.left, constant: 4.0).isActive = true
+        imageView.bottom.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: -4.0).isActive = true
+        imageView.right.constraint(equalTo: visualEffectView.contentView.salg.right, constant: -4.0).isActive = true
+        
+        let configuration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "ellipsis"), nil, .medium)
+        
+        button = UIButton(configuration: configuration)
+        guard let button: UIButton else {
+            return
+        }
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setContentHuggingPriority(.required, for: .horizontal)
+        button.showsMenuAsPrimaryAction = true
+        contentView.addSubview(button)
+        
+        button.top.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: 8.0).isActive = true
+        button.right.constraint(equalTo: contentView.salg.right).isActive = true
+        
+        label = UILabel()
+        guard let label: UILabel else {
+            return
+        }
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .bold(from: .headline)
+        label.lineBreakMode = .byTruncatingMiddle
+        contentView.addSubview(label)
+        
+        label.top.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: 8.0).isActive = true
+        label.left.constraint(equalTo: contentView.salg.left).isActive = true
+        label.right.constraint(equalTo: button.salg.left, constant: -8.0).isActive = true
+        
+        secondaryLabel = UILabel()
+        guard let secondaryLabel: UILabel else {
+            return
+        }
+        secondaryLabel.translatesAutoresizingMaskIntoConstraints = false
+        secondaryLabel.font = .regular(from: .subheadline)
+        secondaryLabel.textColor = .secondaryLabel
+        contentView.addSubview(secondaryLabel)
+        
+        secondaryLabel.top.constraint(equalTo: label.salg.bottom, constant: 8.0).isActive = true
+        secondaryLabel.left.constraint(equalTo: contentView.salg.left).isActive = true
+        secondaryLabel.bottom.constraint(equalTo: contentView.salg.bottom).isActive = true
+        secondaryLabel.right.constraint(equalTo: button.salg.left, constant: -8.0).isActive = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        guard let visualEffectView: UIVisualEffectView,
+              let imageView: UIImageView, let backgroundImageView: UIImageView else {
+            return
+        }
+        
+        if #available(iOS 26.0, *) {
+            visualEffectView.cornerConfiguration = .corners(radius: UICornerRadius.fixed(40.0))
+            imageView.cornerConfiguration = .corners(radius: .fixed(36.0))
+            backgroundImageView.cornerConfiguration = imageView.cornerConfiguration
+        } else {
+            visualEffectView.layer.cornerRadius = 40.0
+            imageView.layer.cornerRadius = 36.0
+            backgroundImageView.layer.cornerRadius = imageView.layer.cornerRadius
+        }
+        visualEffectView.layoutIfNeeded()
+        imageView.layoutIfNeeded()
+        backgroundImageView.layoutIfNeeded()
+    }
+    
+    func configureCell<T>(with game: T, controller: GamesController) {}
+}
