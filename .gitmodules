@@ -1,0 +1,30 @@
+[submodule "Cherry"]
+	path = Cherry
+	url = https://github.com/folium-app/Cherry
+[submodule "Cytrus"]
+	path = Cytrus
+	url = https://github.com/folium-app/Cytrus
+[submodule "Durian"]
+	path = Durian
+	url = https://github.com/folium-app/Durian
+[submodule "Grape"]
+	path = Grape
+	url = https://github.com/folium-app/Grape
+[submodule "Kiwi"]
+	path = Kiwi
+	url = https://github.com/folium-app/Kiwi
+[submodule "Lychee"]
+	path = Lychee
+	url = https://github.com/folium-app/Lychee
+[submodule "Mandarine"]
+	path = Mandarine
+	url = https://github.com/folium-app/Mandarine
+[submodule "Mango"]
+	path = Mango
+	url = https://github.com/folium-app/Mango
+[submodule "Plum"]
+	path = Plum
+	url = https://github.com/folium-app/Plum
+[submodule "Tomato"]
+	path = Tomato
+	url = https://github.com/folium-app/Tomato
