@@ -16,6 +16,8 @@ import UIKit
 import Cherry
 
 class CherryController : ControlsController {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .portrait }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -113,9 +115,9 @@ class CherryController : ControlsController {
         //----
         let zeroConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "0.circle.fill"), nil, .medium)
         zeroButton = .button(with: zeroConfiguration, actions: ({ _ in
-            self.press(button: .button0)
+            self.press(button: .num0)
         }, { _ in
-            self.release(button: .button0)
+            self.release(button: .num0)
         }))
         guard let zeroButton: UIButton else {
             return
@@ -124,9 +126,9 @@ class CherryController : ControlsController {
         
         let asterixConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "circle"), nil, .medium)
         asterixButton = .button(with: asterixConfiguration, actions: ({ _ in
-            self.press(button: .buttonAsterisk)
+            self.press(button: .star)
         }, { _ in
-            self.release(button: .buttonAsterisk)
+            self.release(button: .star)
         }))
         guard let asterixButton: UIButton else {
             return
@@ -135,9 +137,9 @@ class CherryController : ControlsController {
         
         let hashtagConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "number"), nil, .medium)
         hashtagButton = .button(with: hashtagConfiguration, actions: ({ _ in
-            self.press(button: .buttonHash)
+            self.press(button: .pound)
         }, { _ in
-            self.release(button: .buttonHash)
+            self.release(button: .pound)
         }))
         guard let hashtagButton: UIButton else {
             return
@@ -147,9 +149,9 @@ class CherryController : ControlsController {
         //----
         let eightConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "8.circle.fill"), nil, .medium)
         eightButton = .button(with: eightConfiguration, actions: ({ _ in
-            self.press(button: .button8)
+            self.press(button: .num8)
         }, { _ in
-            self.release(button: .button8)
+            self.release(button: .num8)
         }))
         guard let eightButton: UIButton else {
             return
@@ -158,9 +160,9 @@ class CherryController : ControlsController {
         
         let sevenConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "7.circle.fill"), nil, .medium)
         sevenButton = .button(with: sevenConfiguration, actions: ({ _ in
-            self.press(button: .button7)
+            self.press(button: .num7)
         }, { _ in
-            self.release(button: .button7)
+            self.release(button: .num7)
         }))
         guard let sevenButton: UIButton else {
             return
@@ -169,9 +171,9 @@ class CherryController : ControlsController {
         
         let nineConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "9.circle.fill"), nil, .medium)
         nineButton = .button(with: nineConfiguration, actions: ({ _ in
-            self.press(button: .button9)
+            self.press(button: .num9)
         }, { _ in
-            self.release(button: .button9)
+            self.release(button: .num9)
         }))
         guard let nineButton: UIButton else {
             return
@@ -181,9 +183,9 @@ class CherryController : ControlsController {
         //----
         let fiveConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "5.circle.fill"), nil, .medium)
         fiveButton = .button(with: fiveConfiguration, actions: ({ _ in
-            self.press(button: .button5)
+            self.press(button: .num5)
         }, { _ in
-            self.release(button: .button5)
+            self.release(button: .num5)
         }))
         guard let fiveButton: UIButton else {
             return
@@ -192,9 +194,9 @@ class CherryController : ControlsController {
         
         let fourConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "4.circle.fill"), nil, .medium)
         fourButton = .button(with: fourConfiguration, actions: ({ _ in
-            self.press(button: .button4)
+            self.press(button: .num4)
         }, { _ in
-            self.release(button: .button4)
+            self.release(button: .num4)
         }))
         guard let fourButton: UIButton else {
             return
@@ -203,9 +205,9 @@ class CherryController : ControlsController {
         
         let sixConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "6.circle.fill"), nil, .medium)
         sixButton = .button(with: sixConfiguration, actions: ({ _ in
-            self.press(button: .button6)
+            self.press(button: .num6)
         }, { _ in
-            self.release(button: .button6)
+            self.release(button: .num6)
         }))
         guard let sixButton: UIButton else {
             return
@@ -215,9 +217,9 @@ class CherryController : ControlsController {
         //----
         let twoConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "2.circle.fill"), nil, .medium)
         twoButton = .button(with: twoConfiguration, actions: ({ _ in
-            self.press(button: .button2)
+            self.press(button: .num2)
         }, { _ in
-            self.release(button: .button2)
+            self.release(button: .num2)
         }))
         guard let twoButton: UIButton else {
             return
@@ -226,9 +228,9 @@ class CherryController : ControlsController {
         
         let oneConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "1.circle.fill"), nil, .medium)
         oneButton = .button(with: oneConfiguration, actions: ({ _ in
-            self.press(button: .button1)
+            self.press(button: .num1)
         }, { _ in
-            self.release(button: .button1)
+            self.release(button: .num1)
         }))
         guard let oneButton: UIButton else {
             return
@@ -237,9 +239,9 @@ class CherryController : ControlsController {
         
         let threeConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "3.circle.fill"), nil, .medium)
         threeButton = .button(with: threeConfiguration, actions: ({ _ in
-            self.press(button: .button3)
+            self.press(button: .num3)
         }, { _ in
-            self.release(button: .button3)
+            self.release(button: .num3)
         }))
         guard let threeButton: UIButton else {
             return
@@ -263,10 +265,31 @@ class CherryController : ControlsController {
             
         }
         leftThumbstickView.didDrag = { point in
+            if point.x > 0 {
+                self.press(button: .right)
+                self.release(button: .left)
+            }
             
+            if point.x < 0 {
+                self.press(button: .left)
+                self.release(button: .right)
+            }
+            
+            if point.y > 0 {
+                self.press(button: .down)
+                self.release(button: .up)
+            }
+            
+            if point.y < 0 {
+                self.press(button: .up)
+                self.release(button: .down)
+            }
         }
         leftThumbstickView.didUndrag = {
-            
+            self.release(button: .up)
+            self.release(button: .down)
+            self.release(button: .left)
+            self.release(button: .right)
         }
         view.addSubview(leftThumbstickView)
         
@@ -314,7 +337,7 @@ class CherryController : ControlsController {
             
             await cherryGame.cherrySystem.setContext(context: Unmanaged.passUnretained(self).toOpaque())
             
-            cherryGame.cherrySystem.videoBuffer { context, pointer in
+            cherryGame.cherrySystem.videoBuffer { context, pointer, _ in
                 guard let context, let pointer else {
                     return
                 }
@@ -331,7 +354,7 @@ class CherryController : ControlsController {
                     let height: Int32 = await game.cherrySystem.framebufferHeight
                     let width: Int32 = await game.cherrySystem.framebufferWidth
                     
-                    let cgImage: CGImage? = CGImage.from(rgb8: pointer, width: width, height: height)
+                    let cgImage: CGImage? = CGImage.from(rgba32: pointer, width: width, height: height)
                     
                     guard let cgImage: CGImage else {
                         return
@@ -423,52 +446,52 @@ extension CherryController {
             ])
         } else {
             constraints.phone.portrait.append(contentsOf: [
-                zeroButton.bottom.constraint(equalTo: stackView.salg.top, constant: -20.0),
-                zeroButton.centerX.constraint(equalTo: view.salg.centerX),
-                
+                asterixButton.left.constraint(equalTo: view.salg.left, constant: 20.0),
                 asterixButton.bottom.constraint(equalTo: stackView.salg.top, constant: -20.0),
-                asterixButton.right.constraint(equalTo: zeroButton.salg.left, constant: -20.0),
                 
-                hashtagButton.bottom.constraint(equalTo: stackView.salg.top, constant: -20.0),
+                zeroButton.left.constraint(equalTo: asterixButton.salg.right, constant: 20.0),
+                zeroButton.bottom.constraint(equalTo: stackView.salg.top, constant: -20.0),
+                
                 hashtagButton.left.constraint(equalTo: zeroButton.salg.right, constant: 20.0),
+                hashtagButton.bottom.constraint(equalTo: stackView.salg.top, constant: -20.0),
                 
-                //
+                sevenButton.left.constraint(equalTo: view.salg.left, constant: 20.0),
+                sevenButton.bottom.constraint(equalTo: asterixButton.salg.top, constant: -20.0),
+                
+                eightButton.left.constraint(equalTo: sevenButton.salg.right, constant: 20.0),
                 eightButton.bottom.constraint(equalTo: zeroButton.salg.top, constant: -20.0),
-                eightButton.centerX.constraint(equalTo: view.salg.centerX),
                 
-                sevenButton.bottom.constraint(equalTo: zeroButton.salg.top, constant: -20.0),
-                sevenButton.right.constraint(equalTo: eightButton.salg.left, constant: -20.0),
-                
-                nineButton.bottom.constraint(equalTo: zeroButton.salg.top, constant: -20.0),
                 nineButton.left.constraint(equalTo: eightButton.salg.right, constant: 20.0),
+                nineButton.bottom.constraint(equalTo: hashtagButton.salg.top, constant: -20.0),
                 
-                //
+                fourButton.left.constraint(equalTo: view.salg.left, constant: 20.0),
+                fourButton.bottom.constraint(equalTo: sevenButton.salg.top, constant: -20.0),
+                
+                fiveButton.left.constraint(equalTo: fourButton.salg.right, constant: 20.0),
                 fiveButton.bottom.constraint(equalTo: eightButton.salg.top, constant: -20.0),
-                fiveButton.centerX.constraint(equalTo: view.salg.centerX),
                 
-                fourButton.bottom.constraint(equalTo: eightButton.salg.top, constant: -20.0),
-                fourButton.right.constraint(equalTo: fiveButton.salg.left, constant: -20.0),
-                
-                sixButton.bottom.constraint(equalTo: eightButton.salg.top, constant: -20.0),
                 sixButton.left.constraint(equalTo: fiveButton.salg.right, constant: 20.0),
+                sixButton.bottom.constraint(equalTo: nineButton.salg.top, constant: -20.0),
                 
-                //
+                oneButton.left.constraint(equalTo: view.salg.left, constant: 20.0),
+                oneButton.bottom.constraint(equalTo: fourButton.salg.top, constant: -20.0),
+                oneButton.width.constraint(equalTo: oneButton.salg.height),
+                
+                twoButton.left.constraint(equalTo: oneButton.salg.right, constant: 20.0),
                 twoButton.bottom.constraint(equalTo: fiveButton.salg.top, constant: -20.0),
-                twoButton.centerX.constraint(equalTo: view.salg.centerX),
+                twoButton.width.constraint(equalTo: twoButton.salg.height),
                 
-                oneButton.bottom.constraint(equalTo: fiveButton.salg.top, constant: -20.0),
-                oneButton.right.constraint(equalTo: twoButton.salg.left, constant: -20.0),
-                
-                threeButton.bottom.constraint(equalTo: fiveButton.salg.top, constant: -20.0),
                 threeButton.left.constraint(equalTo: twoButton.salg.right, constant: 20.0),
+                threeButton.bottom.constraint(equalTo: sixButton.salg.top, constant: -20.0),
+                threeButton.width.constraint(equalTo: threeButton.salg.height),
                 
                 stackView.bottom.constraint(equalTo: view.salg.bottom, constant: -20.0),
                 stackView.centerX.constraint(equalTo: view.salg.centerX),
                 
-                leftThumbstickView.top.constraint(equalTo: primaryVisualEffectView.salg.bottom, constant: 20.0),
-                leftThumbstickView.bottom.constraint(equalTo: twoButton.salg.top, constant: -20.0),
-                leftThumbstickView.width.constraint(equalTo: leftThumbstickView.salg.height),
-                leftThumbstickView.centerX.constraint(equalTo: view.salg.centerX)
+                leftThumbstickView.top.constraint(equalTo: threeButton.salg.top, constant: 20.0),
+                leftThumbstickView.left.constraint(equalTo: threeButton.salg.right, constant: 20.0),
+                leftThumbstickView.right.constraint(equalTo: view.salg.right, constant: -2.0),
+                leftThumbstickView.height.constraint(equalTo: leftThumbstickView.salg.width)
             ])
             
             guard let primaryRenderingView: UIView else {

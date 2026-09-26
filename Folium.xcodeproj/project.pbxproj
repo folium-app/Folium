@@ -185,69 +185,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		E6016A1B303FE0EA006F3A06 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolder = Product;
-			files = (
-			);
-		};
-		E63619773048010100C93070 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolder = Product;
-			files = (
-			);
-		};
-		E655CB782FE73488003DCE2B /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolder = Product;
-			files = (
-			);
-		};
-		E67922CA30286E7700B556A8 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolder = Product;
-			files = (
-			);
-		};
-		E69CA8F32FDC9EAF00BCD2F9 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolder = Product;
-			files = (
-			);
-		};
-		E69E5FCF3050696400672845 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolder = Product;
-			files = (
-			);
-		};
-		E69E5FF130508B7B00672845 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolder = Product;
-			files = (
-			);
-		};
-		E69E600F3050A87D00672845 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolder = Product;
-			files = (
-			);
-		};
-		E6A00CC22FF967B900D2BD20 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolder = Product;
-			files = (
-			);
-		};
 		E6A286D1300452C100415154 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			dstPath = "";
@@ -255,20 +192,6 @@
 			files = (
 			);
 			name = "Embed Frameworks";
-		};
-		E6F139C82FF04DB700F30081 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolder = Product;
-			files = (
-			);
-		};
-		E6F48FA62FF6C0700085C59B /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolder = Product;
-			files = (
-			);
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -1521,7 +1444,6 @@
 			buildPhases = (
 				E6016A19303FE0EA006F3A06 /* Sources */,
 				E6016A1A303FE0EA006F3A06 /* Frameworks */,
-				E6016A1B303FE0EA006F3A06 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1542,7 +1464,6 @@
 			buildPhases = (
 				E63619753048010100C93070 /* Sources */,
 				E63619763048010100C93070 /* Frameworks */,
-				E63619773048010100C93070 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1566,7 +1487,6 @@
 			buildPhases = (
 				E655CB762FE73488003DCE2B /* Sources */,
 				E655CB772FE73488003DCE2B /* Frameworks */,
-				E655CB782FE73488003DCE2B /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1665,7 +1585,6 @@
 			buildPhases = (
 				E67922C830286E7700B556A8 /* Sources */,
 				E67922C930286E7700B556A8 /* Frameworks */,
-				E67922CA30286E7700B556A8 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1686,7 +1605,6 @@
 			buildPhases = (
 				E69CA8F12FDC9EAF00BCD2F9 /* Sources */,
 				E69CA8F22FDC9EAF00BCD2F9 /* Frameworks */,
-				E69CA8F32FDC9EAF00BCD2F9 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1707,7 +1625,6 @@
 			buildPhases = (
 				E69E5FCD3050696400672845 /* Sources */,
 				E69E5FCE3050696400672845 /* Frameworks */,
-				E69E5FCF3050696400672845 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1728,7 +1645,6 @@
 			buildPhases = (
 				E69E5FEF30508B7B00672845 /* Sources */,
 				E69E5FF030508B7B00672845 /* Frameworks */,
-				E69E5FF130508B7B00672845 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1752,7 +1668,6 @@
 			buildPhases = (
 				E69E600D3050A87D00672845 /* Sources */,
 				E69E600E3050A87D00672845 /* Frameworks */,
-				E69E600F3050A87D00672845 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1776,7 +1691,6 @@
 			buildPhases = (
 				E6A00CC02FF967B900D2BD20 /* Sources */,
 				E6A00CC12FF967B900D2BD20 /* Frameworks */,
-				E6A00CC22FF967B900D2BD20 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1800,7 +1714,6 @@
 			buildPhases = (
 				E6F139C62FF04DB700F30081 /* Sources */,
 				E6F139C72FF04DB700F30081 /* Frameworks */,
-				E6F139C82FF04DB700F30081 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1821,7 +1734,6 @@
 			buildPhases = (
 				E6F48FA42FF6C0700085C59B /* Sources */,
 				E6F48FA52FF6C0700085C59B /* Frameworks */,
-				E6F48FA62FF6C0700085C59B /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -2492,12 +2404,15 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cherry/System/include/gearcoleco/bridge.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cherry/bridge.h";
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cherry/System/include";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
 			};
 			name = Debug;
 		};
@@ -2517,12 +2432,15 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cherry/System/include/gearcoleco/bridge.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SOURCE_ROOT)/Cherry/bridge.h";
 				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cherry/System/include";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(SOURCE_ROOT)/MesenCE/System",
+					"$(SOURCE_ROOT)/MesenCE/System/Core",
+				);
 			};
 			name = Release;
 		};

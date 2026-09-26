@@ -572,15 +572,15 @@ class GamesController : UICollectionViewController {
                     tabController.switchEmulationController(with: cherryController)
                     // tabController.switchSettingsSnapshot(for: .cherry)
                     
-                    let encoder: JSONEncoder = JSONEncoder()
-                    do {
-                        let packet: P2P.Packet = P2P.Packet(data: Data(), dataType: .prepare(.cherry))
-                        if let session: MCSession, session.connectedPeers.count > 0 {
-                            try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .reliable)
-                        }
-                    } catch {
-                        print(error, error.localizedDescription)
-                    }
+                    // let encoder: JSONEncoder = JSONEncoder()
+                    // do {
+                    //     let packet: P2P.Packet = P2P.Packet(data: Data(), dataType: .prepare(.cherry))
+                    //     if let session: MCSession, session.connectedPeers.count > 0 {
+                    //         try session.send(encoder.encode(packet), toPeers: session.connectedPeers, with: .reliable)
+                    //     }
+                    // } catch {
+                    //     print(error, error.localizedDescription)
+                    // }
                 }
             case let cytrusGame as CytrusGame:
                 let (result, systemFiles) = await requiresSystemFiles(for: cytrusGame.system)

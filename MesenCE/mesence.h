@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Emulator.h"
+#include "SMS/Input/ColecoVisionController.h"
 #include "Gameboy/Input/GbController.h"
 #include "GBA/Input/GbaController.h"
 #include "NES/Input/NesController.h"
@@ -104,6 +105,38 @@ private:
     
     std::pair<uint32_t, uint32_t> positions;
     std::vector<uint8_t> buffer;
+};
+
+// MARK: CV Input
+class CVInput : public IInputProvider {
+public:
+    std::atomic<uint32_t> keys{0};
+    
+    bool SetInput(BaseControlDevice* device) override {
+        if(device->GetPort() != 0)
+            return false;
+        
+        uint32_t loaded_keys{keys.load()};
+        device->SetBitValue(ColecoVisionController::Buttons::Up, loaded_keys & 0x001);
+        device->SetBitValue(ColecoVisionController::Buttons::Down, loaded_keys & 0x002);
+        device->SetBitValue(ColecoVisionController::Buttons::Left, loaded_keys & 0x004);
+        device->SetBitValue(ColecoVisionController::Buttons::Right, loaded_keys & 0x008);
+        device->SetBitValue(ColecoVisionController::Buttons::L, loaded_keys & 0x010);
+        device->SetBitValue(ColecoVisionController::Buttons::R, loaded_keys & 0x020);
+        device->SetBitValue(ColecoVisionController::Buttons::Num1, loaded_keys & 0x040);
+        device->SetBitValue(ColecoVisionController::Buttons::Num2, loaded_keys & 0x080);
+        device->SetBitValue(ColecoVisionController::Buttons::Num3, loaded_keys & 0x100);
+        device->SetBitValue(ColecoVisionController::Buttons::Num4, loaded_keys & 0x200);
+        device->SetBitValue(ColecoVisionController::Buttons::Num5, loaded_keys & 0x400);
+        device->SetBitValue(ColecoVisionController::Buttons::Num6, loaded_keys & 0x800);
+        device->SetBitValue(ColecoVisionController::Buttons::Num7, loaded_keys & 0x1000);
+        device->SetBitValue(ColecoVisionController::Buttons::Num8, loaded_keys & 0x2000);
+        device->SetBitValue(ColecoVisionController::Buttons::Num9, loaded_keys & 0x4000);
+        device->SetBitValue(ColecoVisionController::Buttons::Num0, loaded_keys & 0x8000);
+        device->SetBitValue(ColecoVisionController::Buttons::Star, loaded_keys & 0x10000);
+        device->SetBitValue(ColecoVisionController::Buttons::Pound, loaded_keys & 0x20000);
+        return true;
+    }
 };
 
 // MARK: GB Input

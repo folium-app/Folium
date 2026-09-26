@@ -16,6 +16,8 @@ import UIKit
 import Cherry
 
 class CherryMPController : ControlsController {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .portrait }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -79,9 +81,9 @@ class CherryMPController : ControlsController {
         //----
         let zeroConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "0.circle.fill"), nil, .medium)
         zeroButton = .button(with: zeroConfiguration, actions: ({ _ in
-            self.press(button: .button0)
+            self.press(button: .num0)
         }, { _ in
-            self.release(button: .button0)
+            self.release(button: .num0)
         }))
         guard let zeroButton: UIButton else {
             return
@@ -90,9 +92,9 @@ class CherryMPController : ControlsController {
         
         let asterixConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "circle"), nil, .medium)
         asterixButton = .button(with: asterixConfiguration, actions: ({ _ in
-            self.press(button: .buttonAsterisk)
+            self.press(button: .star)
         }, { _ in
-            self.release(button: .buttonAsterisk)
+            self.release(button: .star)
         }))
         guard let asterixButton: UIButton else {
             return
@@ -101,9 +103,9 @@ class CherryMPController : ControlsController {
         
         let hashtagConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "number"), nil, .medium)
         hashtagButton = .button(with: hashtagConfiguration, actions: ({ _ in
-            self.press(button: .buttonHash)
+            self.press(button: .pound)
         }, { _ in
-            self.release(button: .buttonHash)
+            self.release(button: .pound)
         }))
         guard let hashtagButton: UIButton else {
             return
@@ -113,9 +115,9 @@ class CherryMPController : ControlsController {
         //----
         let eightConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "8.circle.fill"), nil, .medium)
         eightButton = .button(with: eightConfiguration, actions: ({ _ in
-            self.press(button: .button8)
+            self.press(button: .num8)
         }, { _ in
-            self.release(button: .button8)
+            self.release(button: .num8)
         }))
         guard let eightButton: UIButton else {
             return
@@ -124,9 +126,9 @@ class CherryMPController : ControlsController {
         
         let sevenConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "7.circle.fill"), nil, .medium)
         sevenButton = .button(with: sevenConfiguration, actions: ({ _ in
-            self.press(button: .button7)
+            self.press(button: .num7)
         }, { _ in
-            self.release(button: .button7)
+            self.release(button: .num7)
         }))
         guard let sevenButton: UIButton else {
             return
@@ -135,9 +137,9 @@ class CherryMPController : ControlsController {
         
         let nineConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "9.circle.fill"), nil, .medium)
         nineButton = .button(with: nineConfiguration, actions: ({ _ in
-            self.press(button: .button9)
+            self.press(button: .num9)
         }, { _ in
-            self.release(button: .button9)
+            self.release(button: .num9)
         }))
         guard let nineButton: UIButton else {
             return
@@ -147,9 +149,9 @@ class CherryMPController : ControlsController {
         //----
         let fiveConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "5.circle.fill"), nil, .medium)
         fiveButton = .button(with: fiveConfiguration, actions: ({ _ in
-            self.press(button: .button5)
+            self.press(button: .num5)
         }, { _ in
-            self.release(button: .button5)
+            self.release(button: .num5)
         }))
         guard let fiveButton: UIButton else {
             return
@@ -158,9 +160,9 @@ class CherryMPController : ControlsController {
         
         let fourConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "4.circle.fill"), nil, .medium)
         fourButton = .button(with: fourConfiguration, actions: ({ _ in
-            self.press(button: .button4)
+            self.press(button: .num4)
         }, { _ in
-            self.release(button: .button4)
+            self.release(button: .num4)
         }))
         guard let fourButton: UIButton else {
             return
@@ -169,9 +171,9 @@ class CherryMPController : ControlsController {
         
         let sixConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "6.circle.fill"), nil, .medium)
         sixButton = .button(with: sixConfiguration, actions: ({ _ in
-            self.press(button: .button6)
+            self.press(button: .num6)
         }, { _ in
-            self.release(button: .button6)
+            self.release(button: .num6)
         }))
         guard let sixButton: UIButton else {
             return
@@ -181,9 +183,9 @@ class CherryMPController : ControlsController {
         //----
         let twoConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "2.circle.fill"), nil, .medium)
         twoButton = .button(with: twoConfiguration, actions: ({ _ in
-            self.press(button: .button2)
+            self.press(button: .num2)
         }, { _ in
-            self.release(button: .button2)
+            self.release(button: .num2)
         }))
         guard let twoButton: UIButton else {
             return
@@ -192,9 +194,9 @@ class CherryMPController : ControlsController {
         
         let oneConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "1.circle.fill"), nil, .medium)
         oneButton = .button(with: oneConfiguration, actions: ({ _ in
-            self.press(button: .button1)
+            self.press(button: .num1)
         }, { _ in
-            self.release(button: .button1)
+            self.release(button: .num1)
         }))
         guard let oneButton: UIButton else {
             return
@@ -203,9 +205,9 @@ class CherryMPController : ControlsController {
         
         let threeConfiguration: UIButton.Configuration = .configuration(.large, .capsule, UIImage(systemName: "3.circle.fill"), nil, .medium)
         threeButton = .button(with: threeConfiguration, actions: ({ _ in
-            self.press(button: .button3)
+            self.press(button: .num3)
         }, { _ in
-            self.release(button: .button3)
+            self.release(button: .num3)
         }))
         guard let threeButton: UIButton else {
             return
