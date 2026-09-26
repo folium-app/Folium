@@ -143,6 +143,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             await durianSystem.initializePaths()
             await durianSystem.initializeSystem()
+            await setSettingsForDurian()
             
             await grapeSystem.initializePaths()
             await grapeSystem.initializeSystem()
@@ -239,6 +240,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 "systemRegion" : -1,
                 "regionFreePatch" : true
             ],
+            .durian : [
+                "consoleModel" : 0,
+                "adjustColours" : false,
+                "blendFrames" : false,
+                "showIcons" : false
+            ],
             .grape : [
                 "skipBootScreen" : true,
                 "consoleModel" : 0
@@ -329,6 +336,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 
                 Task {
                     await cytrusSystem.setSetting(setting: setting, value: UserDefaults.standard.value(forKey: item.rawValue))
+                }
+            }
+        }
+    }
+    
+    func setSettingsForDurian() async {
+        let settingsForDurian: [DurianSettingsItems : (setting: durian.SETTING, type: Any.Type)] = [
+            .consoleModel : (durian.SETTING.CONSOLE_MODEL, Int.self)
+        ]
+        
+        await SettingsHeaders.grapeHeaders.asyncForEach { header in
+            await DurianSettingsItems.settings(header).asyncForEach { item in
+                guard let settingForDurian: (setting: durian.SETTING, type: Any.Type) = settingsForDurian[item] else {
+                    return
+                }
+                
+                switch settingForDurian.type {
+                case is Int.Type:
+                    _ = await durianSystem.setSetting(setting: settingForDurian.setting, value: UserDefaults.standard.integer(forKey: item.rawValue))
+                default:
+                    break
                 }
             }
         }

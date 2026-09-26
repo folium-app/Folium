@@ -60,6 +60,13 @@ enum SettingsHeaders : String, CaseIterable {
         ]
     }
     
+    static var durianHeaders: [SettingsHeaders] {
+        [
+            .coreGeneral,
+            .graphicsGeneral
+        ]
+    }
+    
     static var grapeHeaders: [SettingsHeaders] {
         [
             .general,

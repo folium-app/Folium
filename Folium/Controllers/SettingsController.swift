@@ -10,6 +10,7 @@ import StoreKit
 import UIKit
 
 import Cytrus
+import Durian
 import Grape
 import Kiwi
 import Mandarine
@@ -35,6 +36,12 @@ class SettingsController : UICollectionViewController {
                     }
                     
                     await dataSource.apply(applicationSnapshot)
+                case .durian:
+                    guard let durianSnapshot else {
+                        return
+                    }
+                    
+                    await dataSource.apply(durianSnapshot)
                 case .grape:
                     guard let grapeSnapshot else {
                         return
@@ -64,6 +71,7 @@ class SettingsController : UICollectionViewController {
     
     var applicationSnapshot: NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>? = nil
     var cytrusSnapshot: NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>? = nil
+    var durianSnapshot: NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>? = nil
     var grapeSnapshot: NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>? = nil
     var kiwiSnapshot: NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>? = nil
     var mandarineSnapshot: NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>? = nil
@@ -89,7 +97,7 @@ class SettingsController : UICollectionViewController {
                 }
             ]),
             UIMenu(title: "Bandai", image: UIImage(systemName: "cpu"), children: [
-                UIAction(title: "WonderSwan", subtitle: "+ WonderSwan Color", attributes: .disabled) { action in
+                UIAction(title: "WonderSwan", subtitle: "+ WonderSwan Color") { action in
                     self.selectedSnapshot = .durian
                 }
             ]),
@@ -256,6 +264,10 @@ class SettingsController : UICollectionViewController {
                 snapshot.appendItems(CytrusSettingsItems.settings(header).map { item in
                     item.setting(self)
                 }, toSection: header)
+            case is DurianSettingsItems.Type:
+                snapshot.appendItems(DurianSettingsItems.settings(header).map { item in
+                    item.setting(self)
+                }, toSection: header)
             case is GrapeSettingsItems.Type:
                 snapshot.appendItems(GrapeSettingsItems.settings(header).map { item in
                     item.setting(self)
@@ -285,11 +297,12 @@ class SettingsController : UICollectionViewController {
         
         applicationSnapshot = NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>()
         cytrusSnapshot = NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>()
+        durianSnapshot = NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>()
         grapeSnapshot = NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>()
         kiwiSnapshot = NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>()
         mandarineSnapshot = NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>()
         tomatoSnapshot = NSDiffableDataSourceSnapshot<SettingsHeaders, BaseSetting>()
-        guard var applicationSnapshot, var cytrusSnapshot, var grapeSnapshot,
+        guard var applicationSnapshot, var cytrusSnapshot, var durianSnapshot, var grapeSnapshot,
               var kiwiSnapshot, var mandarineSnapshot, var tomatoSnapshot else {
             return
         }
@@ -313,6 +326,12 @@ class SettingsController : UICollectionViewController {
             .systemRegion
         ], type: CytrusSettingsItems.self)
         self.cytrusSnapshot = cytrusSnapshot
+        
+        generateSnapshot(for: &durianSnapshot, with: [
+            .coreGeneral,
+            .graphicsGeneral
+        ], type: DurianSettingsItems.self)
+        self.durianSnapshot = durianSnapshot
         
         generateSnapshot(for: &grapeSnapshot, with: [
             .general,
@@ -355,7 +374,7 @@ class SettingsController : UICollectionViewController {
                 // await dataSource.apply(cytrusSnapshot)
                 break
             case .durian:
-                break
+                await dataSource.apply(durianSnapshot)
             case .grape:
                 await dataSource.apply(grapeSnapshot)
             case .kiwi:
@@ -508,7 +527,39 @@ extension SettingsController : SettingDelegate {
                 }
             }
         case .durian:
-            break
+            Task {
+                switch item {
+                case let boolSetting as BoolSetting:
+                    boolSetting.value = UserDefaults.standard.bool(forKey: boolSetting.key)
+                    
+                    guard let setting: durian.SETTING = [
+                        DurianSettingsItems.adjustColours.rawValue : durian.SETTING.ADJUST_COLOURS,
+                        DurianSettingsItems.blendFrames.rawValue : durian.SETTING.BLEND_FRAMES,
+                        DurianSettingsItems.showIcons.rawValue : durian.SETTING.SHOW_ICONS
+                    ][boolSetting.key] else {
+                        return
+                    }
+                    
+                    await tabController.gamesManager.durianSystem.setSetting(setting: setting, value: boolSetting.value)
+                case let selectionSetting as SelectionSetting:
+                    selectionSetting.selectedValue = UserDefaults.standard.integer(forKey: selectionSetting.key)
+                    
+                    guard let setting: durian.SETTING = [
+                        DurianSettingsItems.consoleModel.rawValue : durian.SETTING.CONSOLE_MODEL
+                    ][selectionSetting.key] else {
+                        return
+                    }
+                    
+                    switch selectionSetting.selectedValue {
+                    case let int as Int:
+                        await tabController.gamesManager.durianSystem.setSetting(setting: setting, value: int)
+                    default:
+                        break
+                    }
+                default:
+                    break
+                }
+            }
         case .grape:
             Task {
                 switch item {

@@ -618,7 +618,7 @@ class GamesController : UICollectionViewController {
                     
                     let durianController: DurianController = DurianController()
                     tabController.switchEmulationController(with: durianController)
-                    // tabController.switchSettingsSnapshot(for: .durian)
+                    tabController.switchSettingsSnapshot(for: .durian)
                 }
             case let grapeGame as GrapeGame:
                 let (result, systemFiles) = await requiresSystemFiles(for: grapeGame.system)
