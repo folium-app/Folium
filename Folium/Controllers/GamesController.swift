@@ -235,7 +235,7 @@ class GamesController : UICollectionViewController {
                 ]))
             ], representativeItem: nil),
             UIBarButtonItemGroup(barButtonItems: [
-                UIBarButtonItem(image: UIImage(systemName: "network"), menu: UIMenu(options: .displayInline, preferredElementSize: .medium, children: [
+                UIBarButtonItem(image: UIImage(systemName: "network"), menu: UIMenu(children: [
                     UIDeferredMenuElement.uncached { completion in
                         guard let advertiser: MCNearbyServiceAdvertiser = self.advertiser,
                               let browser: MCNearbyServiceBrowser = self.browser,
@@ -282,10 +282,10 @@ class GamesController : UICollectionViewController {
                         }
                         
                         if UserDefaults.standard.bool(forKey: "extraFeaturesPurchased") {
-                            completion(children)
+                            completion([UIMenu(options: .displayInline, preferredElementSize: .medium, children: children)])
                         } else {
                             completion([
-                                UIAction(title: "Requires Extra Features", image: UIImage(systemName: "bag.fill")) { action in
+                                UIAction(title: "Extra Features", subtitle: "Requires Purchase", image: UIImage(systemName: "bag")) { action in
                                     if let tabController: TabController = self.tabBarController as? TabController {
                                         tabController.switchSettingsSnapshot(for: .application)
                                         tabController.selectedIndex = .settingsController
@@ -373,135 +373,9 @@ class GamesController : UICollectionViewController {
             await populateGames()
         }
         
-        var whatsNewController: OBControllerWithList {
-            let textFont: UIFont = .regular(from: .compatibleExtraLargeTitle)
-            
-            let image: UIImage? = UIImage(systemName: "sparkles")
-            
-            let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
-                                                                           color: .label,
-                                                                           font: textFont,
-                                                                           text: "What's New")
-            
-            let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
-                                                                                    color: .secondaryLabel,
-                                                                                    font: UIFont.regular(from: .body),
-                                                                                    text: "What's new in the latest version of Folium")
-            
-            let tertiaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
-                                                                                   color: .tertiaryLabel,
-                                                                                   font: UIFont.regular(from: .callout),
-                                                                                   text: "2.2.2")
-            
-            let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
-                (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
-                    UserDefaults.standard.set(true, forKey: "folium.2.2.2.whatsNewComplete")
-                    
-                    onMainThread {
-                        controller.dismiss(animated: true)
-                    }
-                })
-            ]
-            
-            let cells: [String : [CellConfiguration]] = [
-                "Emulation" : [
-                    CellConfiguration(image: UIImage(systemName: "l.joystick.tilt.up")?
-                        .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
-                            LabelConfiguration(alignment: .left,
-                                               color: .label,
-                                               font: UIFont.regular(from: .headline),
-                                               text: "Thumbsticks"),
-                            LabelConfiguration(alignment: .left,
-                                               color: .secondaryLabel,
-                                               font: UIFont.regular(from: .subheadline),
-                                               text: "Adds functional left and right thumbsticks to PlayStation 1 emulation with support for diagonal movement")
-                        )),
-                    CellConfiguration(image: UIImage(systemName: "arrow.down.app")?
-                        .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
-                            LabelConfiguration(alignment: .left,
-                                               color: .label,
-                                               font: UIFont.regular(from: .headline),
-                                               text: "PlayStation 1"),
-                            LabelConfiguration(alignment: .left,
-                                               color: .secondaryLabel,
-                                               font: UIFont.regular(from: .subheadline),
-                                               text: "Updated the project behind PlayStation 1 emulation to my own fork of Avocado, adding support for Ape Escape and Gran Turismo 2 and significantly improving a portion of the code")
-                        ))
-                ],
-                "Library" : [
-                    CellConfiguration(image: UIImage(systemName: "character.cursor.ibeam")?
-                        .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
-                            LabelConfiguration(alignment: .left,
-                                               color: .label,
-                                               font: UIFont.regular(from: .headline),
-                                               text: "Nintendo 3DS"),
-                            LabelConfiguration(alignment: .left,
-                                               color: .secondaryLabel,
-                                               font: UIFont.regular(from: .subheadline),
-                                               text: "Fixed an issue where game titles would be obtained from the file name instead of the embedded rom header")
-                        )),
-                    CellConfiguration(image: UIImage(systemName: "hand.point.up.left")?
-                        .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
-                            LabelConfiguration(alignment: .left,
-                                               color: .label,
-                                               font: UIFont.regular(from: .headline),
-                                               text: "Pull to Refresh"),
-                            LabelConfiguration(alignment: .left,
-                                               color: .secondaryLabel,
-                                               font: UIFont.regular(from: .subheadline),
-                                               text: "Adds pull to refresh to Library for use when new files have been added externally to the application")
-                        ))
-                ],
-                "Settings" : [
-                    CellConfiguration(image: UIImage(systemName: "books.vertical")?
-                        .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
-                            LabelConfiguration(alignment: .left,
-                                               color: .label,
-                                               font: UIFont.regular(from: .headline),
-                                               text: "Default System"),
-                            LabelConfiguration(alignment: .left,
-                                               color: .secondaryLabel,
-                                               font: UIFont.regular(from: .subheadline),
-                                               text: "Adds a new Application setting allowing users to set the default system Library and Settings will open to upon application launch")
-                        )),
-                    CellConfiguration(image: UIImage(systemName: "gearshape")?
-                        .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
-                            LabelConfiguration(alignment: .left,
-                                               color: .label,
-                                               font: UIFont.regular(from: .headline),
-                                               text: "Game Boy"),
-                            LabelConfiguration(alignment: .left,
-                                               color: .secondaryLabel,
-                                               font: UIFont.regular(from: .subheadline),
-                                               text: "Adds new Game Boy, Game Boy Advance and Game Boy Color settings allowing users to set several graphics related settings")
-                        )),
-                    CellConfiguration(image: UIImage(systemName: "gearshape")?
-                        .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
-                            LabelConfiguration(alignment: .left,
-                                               color: .label,
-                                               font: UIFont.regular(from: .headline),
-                                               text: "Nintendo DS"),
-                            LabelConfiguration(alignment: .left,
-                                               color: .secondaryLabel,
-                                               font: UIFont.regular(from: .subheadline),
-                                               text: "Adds new Nintendo DS settings allowing users to toggle boot screen skipping and set the console model")
-                        ))
-                ]
-            ]
-            
-            let configuration: OBControllerWithListConfiguration = OBControllerWithListConfiguration(image: image,
-                                                                                                     textConfiguration: textConfiguration,
-                                                                                                     secondaryConfiguration: secondaryTextConfiguration,
-                                                                                                     tertiaryConfiguration: tertiaryTextConfiguration,
-                                                                                                     buttons: buttons,
-                                                                                                     cells: cells)
-            
-            let controller: OBControllerWithList = OBControllerWithList(configuration: configuration)
-            controller.modalPresentationStyle = .overFullScreen
-            return controller
-        }
-        
-        if !UserDefaults.standard.bool(forKey: "folium.2.2.2.whatsNewComplete") {
+        if !UserDefaults.standard.bool(forKey: "folium.2.2.3.whatsNewComplete") {
+            let whatsNewController: WhatsNewController = WhatsNewController()
+            whatsNewController.modalPresentationStyle = .overFullScreen
             present(whatsNewController, animated: true)
         }
         
