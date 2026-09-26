@@ -192,46 +192,60 @@ class GamesController : UICollectionViewController {
                     self.present(documentPickerController, animated: true)
                 }),
                 UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: UIMenu(children: [
-                    UIMenu(title: "Bandai", image: UIImage(systemName: "cpu"), children: [
-                        UIAction(title: "WonderSwan", subtitle: "+ WonderSwan Color") { action in
-                            self.selectedSnapshot = .durian
-                        }
-                    ]),
-                    UIMenu(title: "Coleco", image: UIImage(systemName: "cpu"), children: [
-                        UIAction(title: "ColecoVision") { action in
-                            self.selectedSnapshot = .cherry
-                        }
-                    ]),
-                    UIMenu(title: "Nintendo", image: UIImage(systemName: "cpu"), children: [
-                        UIAction(title: "3DS", subtitle: "+ New 3DS") { action in
-                            self.selectedSnapshot = .cytrus
-                        },
-                        UIAction(title: "DS", subtitle: "+ DSi") { action in
-                            self.selectedSnapshot = .grape
-                        },
-                        UIAction(title: "Game Boy", subtitle: "+ Game Boy Color") { action in
-                            self.selectedSnapshot = .kiwi
-                        },
-                        UIAction(title: "Game Boy Advance") { action in
-                            self.selectedSnapshot = .tomato
-                        },
-                        UIAction(title: "Nintendo Entertainment System") { action in
-                            self.selectedSnapshot = .mango
-                        },
-                        UIAction(title: "Super Nintendo Entertainment System") { action in
-                            self.selectedSnapshot = .lychee
-                        }
-                    ]),
-                    UIMenu(title: "SEGA", image: UIImage(systemName: "cpu"), children: [
-                        UIAction(title: "Genesis", subtitle: "+ Mega Drive") { action in
-                            self.selectedSnapshot = .plum
-                        }
-                    ]),
-                    UIMenu(title: "Sony", image: UIImage(systemName: "cpu"), children: [
-                        UIAction(title: "PlayStation 1") { action in
-                            self.selectedSnapshot = .mandarine
-                        }
-                    ])
+                    UIDeferredMenuElement.uncached { completion in
+                        completion([
+                            UIMenu(options: .displayInline, children: [
+                                UIMenu(title: "Bandai", image: UIImage(systemName: "cpu"), children: [
+                                    UIAction(title: "WonderSwan", subtitle: "+ WonderSwan Color") { action in
+                                        self.selectedSnapshot = .durian
+                                    }
+                                ]),
+                                UIMenu(title: "Coleco", image: UIImage(systemName: "cpu"), children: [
+                                    UIAction(title: "ColecoVision") { action in
+                                        self.selectedSnapshot = .cherry
+                                    }
+                                ]),
+                                UIMenu(title: "Nintendo", image: UIImage(systemName: "cpu"), children: [
+                                    UIAction(title: "3DS", subtitle: "+ New 3DS") { action in
+                                        self.selectedSnapshot = .cytrus
+                                    },
+                                    UIAction(title: "DS", subtitle: "+ DSi") { action in
+                                        self.selectedSnapshot = .grape
+                                    },
+                                    UIAction(title: "Game Boy", subtitle: "+ Game Boy Color") { action in
+                                        self.selectedSnapshot = .kiwi
+                                    },
+                                    UIAction(title: "Game Boy Advance") { action in
+                                        self.selectedSnapshot = .tomato
+                                    },
+                                    UIAction(title: "Nintendo Entertainment System") { action in
+                                        self.selectedSnapshot = .mango
+                                    },
+                                    UIAction(title: "Super Nintendo Entertainment System") { action in
+                                        self.selectedSnapshot = .lychee
+                                    }
+                                ]),
+                                UIMenu(title: "SEGA", image: UIImage(systemName: "cpu"), children: [
+                                    UIAction(title: "Genesis", subtitle: "+ Mega Drive") { action in
+                                        self.selectedSnapshot = .plum
+                                    }
+                                ]),
+                                UIMenu(title: "Sony", image: UIImage(systemName: "cpu"), children: [
+                                    UIAction(title: "PlayStation 1") { action in
+                                        self.selectedSnapshot = .mandarine
+                                    }
+                                ])
+                            ]),
+                            UIAction(title: self.selectedSnapshot.string, subtitle: "Open in Files", image: UIImage(systemName: "arrow.up.forward.app")) { action in
+                                if let documentDirectoryURL: URL = .documentDirectoryURL, let sharedDocumentsURL: URL = URL(string: "shareddocuments://\(documentDirectoryURL.path)") {
+                                    let url: URL = sharedDocumentsURL.appending(component: self.selectedSnapshot.string)
+                                    Task {
+                                        await UIApplication.shared.open(url)
+                                    }
+                                }
+                            }
+                        ])
+                    }
                 ]))
             ], representativeItem: nil),
             UIBarButtonItemGroup(barButtonItems: [
