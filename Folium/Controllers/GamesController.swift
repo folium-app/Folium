@@ -387,7 +387,7 @@ class GamesController : UICollectionViewController {
             await populateGames()
         }
         
-        if !UserDefaults.standard.bool(forKey: "folium.2.2.3.whatsNewComplete") {
+        if !UserDefaults.standard.bool(forKey: "folium.2.2.2.whatsNewComplete") {
             let whatsNewController: WhatsNewController = WhatsNewController()
             whatsNewController.modalPresentationStyle = .overFullScreen
             present(whatsNewController, animated: true)

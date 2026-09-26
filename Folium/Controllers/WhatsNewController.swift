@@ -30,11 +30,11 @@ class WhatsNewController : OBControllerWithList {
         let tertiaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                                color: .tertiaryLabel,
                                                                                font: UIFont.regular(from: .callout),
-                                                                               text: "2.2.3")
+                                                                               text: "2.2.2")
         
         let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
             (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
-                UserDefaults.standard.set(true, forKey: "folium.2.2.3.whatsNewComplete")
+                UserDefaults.standard.set(true, forKey: "folium.2.2.2.whatsNewComplete")
                 
                 controller.dismiss(animated: true)
             })
