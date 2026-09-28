@@ -51,7 +51,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     continue
                 }
                 
-                UserDefaults.standard.set(transaction.revocationDate.isNil, forKey: "extraFeaturesPurchased")
+                var inDate: Bool = false
+                if let expirationDate = transaction.expirationDate {
+                    inDate = expirationDate > Date()
+                }
+                
+                UserDefaults.standard.set(transaction.revocationDate.isNil && inDate, forKey: "extraFeaturesPurchased")
                 NotificationCenter.default.post(name: NSNotification.Name("extraFeaturesStatusDidChange"), object: true)
                 
                 await transaction.finish()

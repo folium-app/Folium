@@ -37,32 +37,84 @@ class LycheeController : ControlsController {
         
         let settingsConfiguration: UIButton.Configuration = .configuration(.medium, .capsule, UIImage(systemName: "ellipsis"), nil, .medium)
         settingsButton = .button(with: settingsConfiguration,
-                                 actions: ({ _ in }, { _ in }), UIMenu(preferredElementSize: .medium, children: [
+                                 actions: ({ _ in }, { _ in }), UIMenu(children: [
                                     UIDeferredMenuElement.uncached { completion in
                                         guard let lycheeGame: LycheeGame = self.game as? LycheeGame else {
                                             completion([])
                                             return
                                         }
                                         
+                                        let extraFeaturesPurchased: Bool = UserDefaults.standard.bool(forKey: "extraFeaturesPurchased")
+                                        let indexes: ClosedRange<Int> = 0...(extraFeaturesPurchased ? 4 : 2)
+                                        
                                         Task {
                                             completion([
-                                                UIAction.async(title: await lycheeGame.lycheeSystem.paused ? "Resume" : "Pause",
-                                                               image: UIImage(systemName: await lycheeGame.lycheeSystem.paused ? "play.fill" : "pause.fill")) { action in
-                                                                   await lycheeGame.lycheeSystem.set(change: true, isPaused: await !lycheeGame.lycheeSystem.paused)
-                                                },
-                                                UIAction.async(title: "Stop & Exit", image: UIImage(systemName: "stop.fill"), attributes: .destructive) { action in
-                                                    await lycheeGame.lycheeSystem.stop()
-                                                    
-                                                    self.game = nil
-                                                    
-                                                    if let tabController: TabController = self.tabBarController as? TabController {
-                                                        tabController.game = nil
+                                                UIMenu(options: .displayInline, preferredElementSize: .medium, children: [
+                                                    UIMenu(title: "Load", image: UIImage(systemName: "square.and.arrow.up"), children: await indexes.asyncMap  { index in
+                                                        UIAction.async(title: "State \(index + 1)", attributes: await lycheeGame.lycheeSystem.saveStateExists(for: index) ? [] : .disabled) { action in
+                                                            await lycheeGame.lycheeSystem.saveStateLoad(for: index)
+                                                            self.notifySuccess()
+                                                        }
+                                                    }.reversed()),
+                                                    UIMenu(title: "Save", image: UIImage(systemName: "square.and.arrow.down"), children: await indexes.asyncMap { index in
+                                                        UIAction.async(title: "State \(index + 1)") { action in
+                                                            if await lycheeGame.lycheeSystem.saveStateExists(for: index) {
+                                                                let alertController: UIAlertController = UIAlertController(title: "Overwrite Save State?",
+                                                                                                                           message: "A save state already exists for this slot. Are you sure you want to overwrite it?",
+                                                                                                                           preferredStyle: .alert)
+                                                                alertController.addAction(UIAlertAction(title: "Dismiss", style: .cancel))
+                                                                alertController.addAction(UIAlertAction(title: "Overwrite", style: .destructive) { action in
+                                                                    Task {
+                                                                        await lycheeGame.lycheeSystem.saveStateSave(for: index)
+                                                                        self.notifySuccess()
+                                                                    }
+                                                                })
+                                                                self.present(alertController, animated: true)
+                                                            } else {
+                                                                await lycheeGame.lycheeSystem.saveStateSave(for: index)
+                                                                self.notifySuccess()
+                                                            }
+                                                        }
+                                                    }.reversed()),
+                                                    UIMenu(title: "Delete", image: UIImage(systemName: "trash"), options: .destructive, children: await indexes.asyncMap { index in
+                                                        UIAction.async(title: "State \(index + 1)", attributes: await lycheeGame.lycheeSystem.saveStateExists(for: index) ? .destructive : .disabled) { action in
+                                                            let alertController: UIAlertController = UIAlertController(title: "Delete Save State?",
+                                                                                                                       message: "Deleting this save state is destructive and cannot be undone",
+                                                                                                                       preferredStyle: .alert)
+                                                            alertController.addAction(UIAlertAction(title: "Dismiss", style: .cancel))
+                                                            alertController.addAction(UIAlertAction(title: "Delete", style: .destructive) { action in
+                                                                _ = Task {
+                                                                    try FileManager.default.removeItem(atPath: lycheeGame.lycheeSystem.saveStatePath(for: index))
+                                                                    self.notifySuccess()
+                                                                }
+                                                            })
+                                                            self.present(alertController, animated: true)
+                                                        }
+                                                    }.reversed())
+                                                ]),
+                                                UIMenu(options: .displayInline, preferredElementSize: .medium, children: [
+                                                    UIAction.async(title: await lycheeGame.lycheeSystem.paused ? "Resume" : "Pause",
+                                                                   image: UIImage(systemName: await lycheeGame.lycheeSystem.paused ? "play.fill" : "pause.fill")) { action in
+                                                                       if await lycheeGame.lycheeSystem.paused {
+                                                                           await lycheeGame.lycheeSystem.set(change: true, isPaused: false)
+                                                                       } else {
+                                                                           await lycheeGame.lycheeSystem.set(change: true, isPaused: true)
+                                                                       }
+                                                    },
+                                                    UIAction.async(title: "Stop & Exit", image: UIImage(systemName: "stop.fill"), attributes: .destructive) { action in
+                                                        await lycheeGame.lycheeSystem.stop()
                                                         
-                                                        tabController.selectedIndex = .gamesController
-                                                        tabController.switchEmulationController(with: NoEmulationController())
-                                                        tabController.switchSettingsSnapshot(for: .application)
+                                                        self.game = nil
+                                                        
+                                                        if let tabController: TabController = self.tabBarController as? TabController {
+                                                            tabController.game = nil
+                                                            
+                                                            tabController.selectedIndex = .gamesController
+                                                            tabController.switchEmulationController(with: NoEmulationController())
+                                                            tabController.switchSettingsSnapshot(for: .application)
+                                                        }
                                                     }
-                                                }
+                                                ])
                                              ])
                                         }
                                     }

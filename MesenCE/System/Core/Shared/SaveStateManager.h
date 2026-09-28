@@ -46,4 +46,6 @@ public:
 	void SelectSaveSlot(int slotIndex);
 	void MoveToNextSlot();
 	void MoveToPreviousSlot();
+    
+    string GetSaveStatePath(int index) { return GetStateFilepath(index); };
 };

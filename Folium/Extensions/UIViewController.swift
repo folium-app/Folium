@@ -17,4 +17,12 @@ extension UIViewController {
             nil
         }
     }
+    
+    func notifySuccess() {
+        if #available(iOS 17.5, *) {
+            UINotificationFeedbackGenerator(view: view).notificationOccurred(.success)
+        } else {
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+        }
+    }
 }
