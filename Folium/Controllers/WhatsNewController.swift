@@ -30,17 +30,30 @@ class WhatsNewController : OBControllerWithList {
         let tertiaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                                color: .tertiaryLabel,
                                                                                font: UIFont.regular(from: .callout),
-                                                                               text: "2.2.4")
+                                                                               text: "2.2.5")
         
         let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
             (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
-                UserDefaults.standard.set(true, forKey: "folium.2.2.4.whatsNewComplete")
+                UserDefaults.standard.set(true, forKey: "folium.2.2.5.whatsNewComplete")
                 
                 controller.dismiss(animated: true)
             })
         ]
         
         let cells: [String : [CellConfiguration]] = [
+            "Emulation" : [
+                CellConfiguration(image: UIImage(systemName: "arrow.up.forward.app")?
+                    .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
+                        LabelConfiguration(alignment: .left,
+                                           color: .label,
+                                           font: UIFont.regular(from: .headline),
+                                           text: "PlayStation 1"),
+                        LabelConfiguration(alignment: .left,
+                                           color: .secondaryLabel,
+                                           font: UIFont.regular(from: .subheadline),
+                                           text: "Fixes a crash that occurred when exiting a game and when attempting to launch a new game directly after, although previously unreachable")
+                    ))
+            ],
             "Library" : [
                 CellConfiguration(image: UIImage(systemName: "character.cursor.ibeam")?
                     .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
@@ -145,7 +158,7 @@ class WhatsNewController : OBControllerWithList {
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
-                                           text: "Adds support for Ape Escape and Gran Turismo 2, changed from Avocado to my own fork with a large potion of code rewritten")
+                                           text: "Adds support for Ape Escape and Gran Turismo 2, changed from Avocado to my own fork with a large portion of code rewritten")
                     )),
                 CellConfiguration(image: UIImage(systemName: "arrow.up.forward.app")?
                     .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
@@ -156,7 +169,7 @@ class WhatsNewController : OBControllerWithList {
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
-                                           text: "Adds support CHD, IMG and ISO game file formats with support for artwork retrieval and caching, where available")
+                                           text: "Adds support for CHD, IMG and ISO game file formats with support for artwork retrieval and caching, where available")
                     )),
                 CellConfiguration(image: UIImage(systemName: "arrow.up.forward.app")?
                     .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
@@ -185,3 +198,4 @@ class WhatsNewController : OBControllerWithList {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
