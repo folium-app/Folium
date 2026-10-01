@@ -279,7 +279,7 @@ class PlumController : ControlsController {
                     let height: Int32 = await game.plumSystem.framebufferHeight
                     let width: Int32 = await game.plumSystem.framebufferWidth
                     
-                    let cgImage: CGImage? = CGImage.genesisMegaDrive(pointer, Int(width), Int(height))
+                    let cgImage: CGImage? = CGImage.from(rgba32: pointer, width: width, height: height, forGEN: true)
                     
                     guard let cgImage: CGImage else {
                         return
