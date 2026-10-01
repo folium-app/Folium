@@ -66,6 +66,32 @@ extension CGImage {
         return imageRef
     }
     
+    nonisolated static func genesisMegaDrive(_ pointer: UnsafeMutablePointer<UInt32>, _ width: Int, _ height: Int) -> CGImage? {
+        let bitsPerComponent = 8
+        let bytesPerPixel = 4
+        let bitsPerPixel = bytesPerPixel * bitsPerComponent
+        let bytesPerRow = bytesPerPixel * width
+        let size = height * bytesPerRow
+        
+        guard let provider: CGDataProvider = .init(dataInfo: nil, data: pointer, size: size, releaseData: { info, data, size in
+            
+        }) else {
+            return nil
+        }
+        
+        return .init(width: width,
+                     height: height,
+                     bitsPerComponent: bitsPerComponent,
+                     bitsPerPixel: bitsPerPixel,
+                     bytesPerRow: bytesPerRow,
+                     space: CGColorSpaceCreateDeviceRGB(),
+                     bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.first.rawValue).union(.byteOrderDefault),
+                     provider: provider,
+                     decode: nil,
+                     shouldInterpolate: false,
+                     intent: .defaultIntent)
+    }
+    
     nonisolated static func mandarine15Bit(_ pointer: UnsafeMutableRawPointer, _ width: Int, _ height: Int) -> CGImage? {
         let pixelCount = width * height
         let pixels = pointer.bindMemory(to: UInt16.self, capacity: pixelCount)

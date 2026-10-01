@@ -30,11 +30,11 @@ class WhatsNewController : OBControllerWithList {
         let tertiaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                                color: .tertiaryLabel,
                                                                                font: UIFont.regular(from: .callout),
-                                                                               text: "2.2.2")
+                                                                               text: "2.2.4")
         
         let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
             (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
-                UserDefaults.standard.set(true, forKey: "folium.2.2.2.whatsNewComplete")
+                UserDefaults.standard.set(true, forKey: "folium.2.2.4.whatsNewComplete")
                 
                 controller.dismiss(animated: true)
             })
@@ -53,7 +53,7 @@ class WhatsNewController : OBControllerWithList {
                                            font: UIFont.regular(from: .subheadline),
                                            text: "Fixed an issue where game titles for Nintendo 3DS games would be read from the file name instead of the embedded header")
                     )),
-                CellConfiguration(image: UIImage(systemName: "hand.point.up.left.fill")?
+                CellConfiguration(image: UIImage(systemName: "hand.point.up.left")?
                     .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
                         LabelConfiguration(alignment: .left,
                                            color: .label,
@@ -76,10 +76,21 @@ class WhatsNewController : OBControllerWithList {
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
                                            text: "Adds functional left and right analog sticks to the PlayStation 1 emulation system with added support for diagonal movement")
+                    )),
+                CellConfiguration(image: UIImage(systemName: "square.and.arrow.down")?
+                    .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
+                        LabelConfiguration(alignment: .left,
+                                           color: .label,
+                                           font: UIFont.regular(from: .headline),
+                                           text: "Load & Save States"),
+                        LabelConfiguration(alignment: .left,
+                                           color: .secondaryLabel,
+                                           font: UIFont.regular(from: .subheadline),
+                                           text: "Adds the ability to load and save states on ColecoVision, Game Boy, Game Boy Color, Game Boy Advance, Nintendo and Super Nintendo Entertainment System and WonderSwan")
                     ))
             ],
             "Settings" : [
-                CellConfiguration(image: UIImage(systemName: "gearshape.fill")?
+                CellConfiguration(image: UIImage(systemName: "gearshape")?
                     .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
                         LabelConfiguration(alignment: .left,
                                            color: .label,
@@ -90,7 +101,7 @@ class WhatsNewController : OBControllerWithList {
                                            font: UIFont.regular(from: .subheadline),
                                            text: "Adds a new selection setting to the Application settings to set the system that will be displayed upon application launch")
                     )),
-                CellConfiguration(image: UIImage(systemName: "gearshape.fill")?
+                CellConfiguration(image: UIImage(systemName: "gearshape")?
                     .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
                         LabelConfiguration(alignment: .left,
                                            color: .label,
@@ -101,7 +112,7 @@ class WhatsNewController : OBControllerWithList {
                                            font: UIFont.regular(from: .subheadline),
                                            text: "Adds new Game Boy, Game Boy Advance and Game Boy Color settings allowing users to set several graphics related settings")
                     )),
-                CellConfiguration(image: UIImage(systemName: "gearshape.fill")?
+                CellConfiguration(image: UIImage(systemName: "gearshape")?
                     .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
                         LabelConfiguration(alignment: .left,
                                            color: .label,
@@ -114,8 +125,8 @@ class WhatsNewController : OBControllerWithList {
                     ))
             ],
             "Systems" : [
-                CellConfiguration(image: UIImage(systemName: "sparkle")?
-                    .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.systemYellow])), labels: (
+                CellConfiguration(image: UIImage(systemName: "star")?
+                    .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
                         LabelConfiguration(alignment: .left,
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
@@ -125,7 +136,7 @@ class WhatsNewController : OBControllerWithList {
                                            font: UIFont.regular(from: .subheadline),
                                            text: "Replaced the project Cherry is built on from Gearcoleco over to MesenCE and rewrote a portion of the bridging code")
                     )),
-                CellConfiguration(image: UIImage(systemName: "arrow.up.forward.app.fill")?
+                CellConfiguration(image: UIImage(systemName: "arrow.up.forward.app")?
                     .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
                         LabelConfiguration(alignment: .left,
                                            color: .label,
@@ -135,6 +146,28 @@ class WhatsNewController : OBControllerWithList {
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
                                            text: "Adds support for Ape Escape and Gran Turismo 2, changed from Avocado to my own fork with a large potion of code rewritten")
+                    )),
+                CellConfiguration(image: UIImage(systemName: "arrow.up.forward.app")?
+                    .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
+                        LabelConfiguration(alignment: .left,
+                                           color: .label,
+                                           font: UIFont.regular(from: .headline),
+                                           text: "PlayStation 1 (cont.)"),
+                        LabelConfiguration(alignment: .left,
+                                           color: .secondaryLabel,
+                                           font: UIFont.regular(from: .subheadline),
+                                           text: "Adds support CHD, IMG and ISO game file formats with support for artwork retrieval and caching, where available")
+                    )),
+                CellConfiguration(image: UIImage(systemName: "arrow.up.forward.app")?
+                    .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
+                        LabelConfiguration(alignment: .left,
+                                           color: .label,
+                                           font: UIFont.regular(from: .headline),
+                                           text: "SEGA Genesis"),
+                        LabelConfiguration(alignment: .left,
+                                           color: .secondaryLabel,
+                                           font: UIFont.regular(from: .subheadline),
+                                           text: "Fixes an issue where the rendered image would incorrectly be displayed with a blue tint")
                     ))
             ]
         ]

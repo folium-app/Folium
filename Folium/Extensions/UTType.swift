@@ -50,3 +50,16 @@ extension UTType {
     // Tomato (Nintendo - Game Boy Advance)
     static let gba: UTType? = UTType(filenameExtension: "gba")
 }
+
+extension Array where Element == UTType {
+    static let cherry: [UTType] = [.col, .rom].compactMap(\.self)
+    static let cytrus: [UTType] = [.`3ds`, .cci, .cxi].compactMap(\.self)
+    static let durian: [UTType] = [.ws, .wsc].compactMap(\.self)
+    static let grape: [UTType] = [.dsi, .nds].compactMap(\.self)
+    static let kiwi: [UTType] = [.gb, .gbc].compactMap(\.self)
+    static let lychee: [UTType] = [.sfc, .smc].compactMap(\.self)
+    static let mango: [UTType] = [.nes].compactMap(\.self)
+    static let mandarine: [UTType] = [.bin, .chd, .cue, .img, .iso].compactMap(\.self)
+    static let plum: [UTType] = [.gen, .md].compactMap(\.self)
+    static let tomato: [UTType] = [.gba].compactMap(\.self)
+}

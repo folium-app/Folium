@@ -13,7 +13,7 @@ enum Extension : String {
     case cue = "cue"
     case img = "img" // todo
     case iso = "iso" // todo
-    nonisolated static let mandarine: [Extension] = [.cue]
+    nonisolated static let mandarine: [Extension] = [.chd, .cue, .img, .iso]
     
     // Cherry (Coleco - ColecoVision)
     case col = "col"

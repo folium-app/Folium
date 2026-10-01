@@ -139,58 +139,13 @@ class GamesController : UICollectionViewController {
             UIBarButtonItemGroup(barButtonItems: [
                 UIBarButtonItem(image: UIImage(systemName: "plus"),
                                 primaryAction: UIAction(image: UIImage(systemName: "opticaldisc")) { action in
-                    self.importFileType = .game
-                    var types: [UTType] = []
-                    switch self.selectedSnapshot {
-                    case .cherry:
-                        if let col: UTType = .col, let rom: UTType = .rom {
-                            types.append(contentsOf: [col, rom])
-                        }
-                    case .cytrus:
-                        if let `3ds`: UTType = .`3ds`, let cci: UTType = .cci, let cxi: UTType = .cxi {
-                            types.append(contentsOf: [`3ds`, cci, cxi])
-                        }
-                    case .durian:
-                        if let ws: UTType = .ws, let wsc: UTType = .wsc {
-                            types.append(contentsOf: [ws, wsc])
-                        }
-                    case .grape:
-                        if let dsi: UTType = .dsi, let nds: UTType = .nds {
-                            types.append(contentsOf: [dsi, nds])
-                        }
-                    case .kiwi:
-                        if let gb: UTType = .gb, let gbc: UTType = .gbc {
-                            types.append(contentsOf: [gb, gbc])
-                        }
-                    case .lychee:
-                        if let sfc: UTType = .sfc, let smc: UTType = .smc {
-                            types.append(contentsOf: [sfc, smc])
-                        }
-                    case .mandarine:
-                        if let bin: UTType = .bin, let cue: UTType = .cue {
-                            types.append(contentsOf: [bin, cue])
-                        }
-                    case .mango:
-                        if let nes: UTType = .nes {
-                            types.append(nes)
-                        }
-                    case .plum:
-                        if let gen: UTType = .gen, let md: UTType = .md {
-                            types.append(contentsOf: [gen, md])
-                        }
-                    case .tomato:
-                        if let gba: UTType = .gba {
-                            types.append(gba)
-                        }
-                    default:
-                        break
-                    }
-                    
-                    let documentPickerController: UIDocumentPickerViewController = UIDocumentPickerViewController(forOpeningContentTypes: types, asCopy: true)
-                    documentPickerController.allowsMultipleSelection = [.mandarine, .tomato].contains(self.selectedSnapshot)
-                    documentPickerController.delegate = self
-                    self.present(documentPickerController, animated: true)
-                }),
+                                    self.importFileType = .game
+                                    
+                                    let documentPickerController: UIDocumentPickerViewController = UIDocumentPickerViewController(forOpeningContentTypes: self.selectedSnapshot.types, asCopy: true)
+                                    documentPickerController.allowsMultipleSelection = true
+                                    documentPickerController.delegate = self
+                                    self.present(documentPickerController, animated: true)
+                                }),
                 UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: UIMenu(children: [
                     UIDeferredMenuElement.uncached { completion in
                         completion([
@@ -254,9 +209,9 @@ class GamesController : UICollectionViewController {
                         guard let advertiser: MCNearbyServiceAdvertiser = self.advertiser,
                               let browser: MCNearbyServiceBrowser = self.browser,
                               let session: MCSession = self.session else {
-                                  completion([])
-                                  return
-                              }
+                            completion([])
+                            return
+                        }
                         
                         let leaveAction: UIAction = UIAction(title: "Leave",
                                                              image: UIImage(systemName: "network.slash"),
@@ -387,7 +342,7 @@ class GamesController : UICollectionViewController {
             await populateGames()
         }
         
-        if !UserDefaults.standard.bool(forKey: "folium.2.2.2.whatsNewComplete") {
+        if !UserDefaults.standard.bool(forKey: "folium.2.2.4.whatsNewComplete") {
             let whatsNewController: WhatsNewController = WhatsNewController()
             whatsNewController.modalPresentationStyle = .overFullScreen
             present(whatsNewController, animated: true)

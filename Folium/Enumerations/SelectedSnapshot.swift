@@ -5,6 +5,8 @@
 //  Created by Jarrod Norwell on 21/6/2026.
 //
 
+import UniformTypeIdentifiers
+
 enum SelectedSnapshot : Int {
     case application,
          cherry,
@@ -96,6 +98,33 @@ enum SelectedSnapshot : Int {
             System.plum
         case .tomato:
             System.tomato
+        }
+    }
+    
+    var types: Array<UTType> {
+        switch self {
+        case .application:
+            []
+        case .cherry:
+            Array<UTType>.cherry
+        case .cytrus:
+            Array<UTType>.cytrus
+        case .durian:
+            Array<UTType>.durian
+        case .grape:
+            Array<UTType>.grape
+        case .kiwi:
+            Array<UTType>.kiwi
+        case .lychee:
+            Array<UTType>.lychee
+        case .mandarine:
+            Array<UTType>.mandarine
+        case .mango:
+            Array<UTType>.mango
+        case .plum:
+            Array<UTType>.plum
+        case .tomato:
+            Array<UTType>.tomato
         }
     }
     
