@@ -25,26 +25,26 @@ import Mango
 import Plum
 import Tomato
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    private let userDefaults: UserDefaults = .standard
+final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    private let userDefaults = UserDefaults.standard
     
     var window: UIWindow? = nil
     
-    private var directoryManager: DirectoryManager = DirectoryManager()
+    private var authorizationActors = AuthorizationActors()
+    private var directoryManager = DirectoryManager()
     
-    private let cherrySystem: CherrySystem = CherrySystem()
-    private let cytrusSystem: CytrusSystem = CytrusSystem()
-    private let durianSystem: DurianSystem = DurianSystem()
-    private let grapeSystem: GrapeSystem = GrapeSystem()
-    private let kiwiSystem: KiwiSystem = KiwiSystem()
-    private let lycheeSystem: LycheeSystem = LycheeSystem()
-    private let mandarineSystem: MandarineSystem = MandarineSystem()
-    private let mangoSystem: MangoSystem = MangoSystem()
-    private let plumSystem: PlumSystem = PlumSystem()
-    private let tomatoSystem: TomatoSystem = TomatoSystem()
+    private let cherrySystem = CherrySystem()
+    private let cytrusSystem = CytrusSystem()
+    private let durianSystem = DurianSystem()
+    private let grapeSystem = GrapeSystem()
+    private let kiwiSystem = KiwiSystem()
+    private let lycheeSystem = LycheeSystem()
+    private let mandarineSystem = MandarineSystem()
+    private let mangoSystem = MangoSystem()
+    private let plumSystem = PlumSystem()
+    private let tomatoSystem = TomatoSystem()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // userDefaults.set(false, forKey: "p2pAccessAllowed")
         Task.detached(priority: .background) {
             for await result in Transaction.updates {
                 guard case .verified(let transaction) = result else {
@@ -67,18 +67,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         
-        let gamesManager: GamesManager = GamesManager(cherrySystem: cherrySystem,
-                                                      cytrusSystem: cytrusSystem,
-                                                      durianSystem: durianSystem,
-                                                      grapeSystem: grapeSystem,
-                                                      kiwiSystem: kiwiSystem,
-                                                      lycheeSystem: lycheeSystem,
-                                                      mandarineSystem: mandarineSystem,
-                                                      mangoSystem: mangoSystem,
-                                                      plumSystem: plumSystem,
-                                                      tomatoSystem: tomatoSystem)
-        let onboardingModel: OnboardingModel = OnboardingModel(direcotryManager: directoryManager,
-                                                               gamesManager: gamesManager)
+        let gamePopulationManager = GamePopulationManager(cherrySystem, cytrusSystem, durianSystem, grapeSystem,
+                                                          kiwiSystem, lycheeSystem, mandarineSystem, mangoSystem,
+                                                          plumSystem, tomatoSystem)
+        let onboardingFlow = OnboardingFlow(authorizationActors, directoryManager, gamePopulationManager)
         
         window = UIWindow(windowScene: windowScene)
         guard let window else {
@@ -87,52 +79,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let onboardingComplete: Bool = UserDefaults.standard.bool(forKey: "folium.onboardingComplete")
         
-        var onboardingController: OBController {
-            let textConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
-                                                                           color: .label,
-                                                                           font: .regular(from: .compatibleExtraLargeTitle),
-                                                                           text: "Folium")
-            
-            let secondaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
-                                                                                    color: .secondaryLabel,
-                                                                                    font: .regular(from: .body),
-                                                                                    text: "Generations of gaming in the palm of your hands")
-            
-            let tertiaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
-                                                                                   color: .tertiaryLabel,
-                                                                                   font: .regular(from: .callout),
-                                                                                   text: "Developed by Jarrod Norwell\nLicensed under GPLv3")
-            
-            let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
-                (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
-                    await onboardingModel.camera(controller: controller)
-                })
-            ]
-            
-            let configuration: OBControllerConfiguration = OBControllerConfiguration(image: UIImage(systemName: "leaf.fill"),
-                                                                                     textConfiguration: textConfiguration,
-                                                                                     secondaryConfiguration: secondaryTextConfiguration,
-                                                                                     tertiaryConfiguration: tertiaryTextConfiguration,
-                                                                                     buttons: buttons,
-                                                                                     colors: [
-                                                                                        Colour(red: 0.90, green: 0.90, blue: 1.00),
-                                                                                        Colour(red: 0.80, green: 0.80, blue: 1.00),
-                                                                                        Colour(red: 0.70, green: 0.70, blue: 1.00),
-                                                                                        Colour(red: 0.55, green: 0.55, blue: 0.95),
-                                                                                        Colour(red: 0.45, green: 0.45, blue: 0.90),
-                                                                                        Colour(red: 0.35, green: 0.35, blue: 0.84), // iOS systemIndigo
-                                                                                        Colour(red: 0.30, green: 0.30, blue: 0.72),
-                                                                                        Colour(red: 0.25, green: 0.25, blue: 0.60),
-                                                                                        Colour(red: 0.20, green: 0.20, blue: 0.48)
-                                                                                     ])
-            
-            return OBController(configuration: configuration)
-        }
-        
         window.rootViewController = if onboardingComplete {
-            TabController(directoryManager: directoryManager, gamesManager: gamesManager)
+            TabController(directoryManager: directoryManager, gamePopulationManager: gamePopulationManager)
         } else {
-            onboardingController
+            FoliumOnboardingController(window.rootViewController ?? UIViewController(), { controller in
+                await onboardingFlow.cameraAuthorization(controller)
+            })
         }
         
         window.tintColor = .systemIndigo
@@ -176,8 +128,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             await setSettingsForTomato()
             
             let session: AVAudioSession = AVAudioSession.sharedInstance()
-            try session.setCategory(.playback, options: [.mixWithOthers])
-            try session.setActive(true)
+            DispatchQueue.global(qos: .background).async {
+                do {
+                    try session.setCategory(.playback, options: [.mixWithOthers])
+                    try session.setActive(true)
+                } catch {
+                    print(error, error.localizedDescription)
+                }
+            }
         }
         
         initializeUserDefaultsWithDefaultValues()

@@ -30,10 +30,10 @@ final class GrapeGame : Game, Comparable, @unchecked Sendable {
     }
     
     var prefix: String {
-        details.name.prefix(1).capitalized
+        details.fileName.prefix(1).capitalized
     }
     
     static func < (lhs: borrowing GrapeGame, rhs: borrowing GrapeGame) -> Bool {
-        lhs.details.name.localizedCaseInsensitiveCompare(rhs.details.name) == .orderedAscending
+        lhs.details.fileName.localizedCaseInsensitiveCompare(rhs.details.fileName) == .orderedAscending
     }
 }

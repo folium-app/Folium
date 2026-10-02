@@ -124,7 +124,7 @@ class GameCell : UICollectionViewCell {
         label.lineBreakMode = .byTruncatingMiddle
         contentView.addSubview(label)
         
-        label.top.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: 8.0).isActive = true
+        label.top.constraint(equalTo: visualEffectView.contentView.salg.bottom, constant: 12.0).isActive = true
         label.left.constraint(equalTo: contentView.salg.left).isActive = true
         label.right.constraint(equalTo: button.salg.left, constant: -8.0).isActive = true
         

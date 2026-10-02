@@ -263,7 +263,7 @@ class MangoController : ControlsController {
                 return
             }
             
-            await mangoGame.mangoSystem.insertDisc(at: mangoGame.details.url)
+            await mangoGame.mangoSystem.insertDisc(at: mangoGame.details.fileURL)
             
             await mangoGame.mangoSystem.set(change: true, isRunning: true)
             

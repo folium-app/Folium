@@ -1,15 +1,6 @@
 {
-  "originHash" : "2eeca8d582ece93f5da79a9643a15c776615c65e7ec9873de87243cf029764e3",
+  "originHash" : "fa6157c25d78cf716f613521977ae40622a9304f4f4ae5e335db5e8d1376e5ea",
   "pins" : [
-    {
-      "identity" : "antiquekit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jarrodnorwell/AntiqueKit",
-      "state" : {
-        "branch" : "main",
-        "revision" : "1f44d80099f204a6ea7ea83dcfe4de57045d9291"
-      }
-    },
     {
       "identity" : "openssl",
       "kind" : "remoteSourceControl",

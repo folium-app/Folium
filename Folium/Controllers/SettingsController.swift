@@ -511,7 +511,7 @@ extension SettingsController : SettingDelegate {
                         return
                     }
                     
-                    await tabController.gamesManager.cytrusSystem.setSetting(setting: setting, value: boolSetting.value)
+                    await tabController.gamePopulationManager.cytrusSystem.setSetting(setting: setting, value: boolSetting.value)
                 case let inputNumberSetting as InputNumberSetting:
                     inputNumberSetting.value = UserDefaults.standard.double(forKey: inputNumberSetting.key)
                 case let inputStringSetting as InputStringSetting:
@@ -540,7 +540,7 @@ extension SettingsController : SettingDelegate {
                         return
                     }
                     
-                    await tabController.gamesManager.durianSystem.setSetting(setting: setting, value: boolSetting.value)
+                    await tabController.gamePopulationManager.durianSystem.setSetting(setting: setting, value: boolSetting.value)
                 case let selectionSetting as SelectionSetting:
                     selectionSetting.selectedValue = UserDefaults.standard.integer(forKey: selectionSetting.key)
                     
@@ -552,7 +552,7 @@ extension SettingsController : SettingDelegate {
                     
                     switch selectionSetting.selectedValue {
                     case let int as Int:
-                        await tabController.gamesManager.durianSystem.setSetting(setting: setting, value: int)
+                        await tabController.gamePopulationManager.durianSystem.setSetting(setting: setting, value: int)
                     default:
                         break
                     }
@@ -572,7 +572,7 @@ extension SettingsController : SettingDelegate {
                         return
                     }
                     
-                    await tabController.gamesManager.grapeSystem.setSetting(setting: setting, value: boolSetting.value)
+                    await tabController.gamePopulationManager.grapeSystem.setSetting(setting: setting, value: boolSetting.value)
                 case let selectionSetting as SelectionSetting:
                     selectionSetting.selectedValue = UserDefaults.standard.integer(forKey: selectionSetting.key)
                     
@@ -584,7 +584,7 @@ extension SettingsController : SettingDelegate {
                     
                     switch selectionSetting.selectedValue {
                     case let int as Int:
-                        await tabController.gamesManager.grapeSystem.setSetting(setting: setting, value: int)
+                        await tabController.gamePopulationManager.grapeSystem.setSetting(setting: setting, value: int)
                     default:
                         break
                     }
@@ -605,7 +605,7 @@ extension SettingsController : SettingDelegate {
                         return
                     }
                     
-                    await tabController.gamesManager.kiwiSystem.setSetting(setting: setting, value: boolSetting.value)
+                    await tabController.gamePopulationManager.kiwiSystem.setSetting(setting: setting, value: boolSetting.value)
                 default:
                     break
                 }
@@ -643,7 +643,7 @@ extension SettingsController : SettingDelegate {
                         return
                     }
                     
-                    await tabController.gamesManager.mandarineSystem.setSetting(setting: setting, value: boolSetting.value)
+                    await tabController.gamePopulationManager.mandarineSystem.setSetting(setting: setting, value: boolSetting.value)
                 default:
                     break
                 }
@@ -668,7 +668,7 @@ extension SettingsController : SettingDelegate {
                         return
                     }
                     
-                    await tabController.gamesManager.tomatoSystem.setSetting(setting: setting, value: boolSetting.value)
+                    await tabController.gamePopulationManager.tomatoSystem.setSetting(setting: setting, value: boolSetting.value)
                 default:
                     break
                 }

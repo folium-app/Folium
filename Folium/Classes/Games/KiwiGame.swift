@@ -22,7 +22,7 @@ final class KiwiGame : Game, Comparable, @unchecked Sendable {
     var boxartURLString: String? = nil
     
     init(details: Details, kiwiSystem: KiwiSystem, system: System, boxartURLString: String? = nil) {
-        self.consoleType = details.extension == "gb" ? .gb : .gbc
+        self.consoleType = details.fileExtension == "gb" ? .gb : .gbc
         self.details = details
         self.kiwiSystem = kiwiSystem
         self.system = system
@@ -36,10 +36,10 @@ final class KiwiGame : Game, Comparable, @unchecked Sendable {
     }
     
     var prefix: String {
-        details.name.prefix(1).capitalized
+        details.fileName.prefix(1).capitalized
     }
     
     static func < (lhs: borrowing KiwiGame, rhs: borrowing KiwiGame) -> Bool {
-        lhs.details.name.localizedCaseInsensitiveCompare(rhs.details.name) == .orderedAscending
+        lhs.details.fileName.localizedCaseInsensitiveCompare(rhs.details.fileName) == .orderedAscending
     }
 }

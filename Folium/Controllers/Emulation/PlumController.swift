@@ -256,7 +256,7 @@ class PlumController : ControlsController {
                 return
             }
             
-            await plumGame.plumSystem.insertDisc(at: plumGame.details.url)
+            await plumGame.plumSystem.insertDisc(at: plumGame.details.fileURL)
             
             await plumGame.plumSystem.set(change: true, isRunning: true)
             

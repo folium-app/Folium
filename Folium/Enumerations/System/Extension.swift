@@ -9,10 +9,10 @@ import Foundation
 
 enum Extension : String {
     // Common
-    case chd = "chd" // todo
+    case chd = "chd"
     case cue = "cue"
-    case img = "img" // todo
-    case iso = "iso" // todo
+    case img = "img"
+    case iso = "iso"
     nonisolated static let mandarine: [Extension] = [.chd, .cue, .img, .iso]
     
     // Cherry (Coleco - ColecoVision)

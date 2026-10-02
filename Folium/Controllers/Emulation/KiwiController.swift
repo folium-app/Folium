@@ -263,7 +263,7 @@ class KiwiController : ControlsController {
                 return
             }
             
-            await kiwiGame.kiwiSystem.insertDisc(at: kiwiGame.details.url)
+            await kiwiGame.kiwiSystem.insertDisc(at: kiwiGame.details.fileURL)
             
             await kiwiGame.kiwiSystem.set(change: true, isRunning: true)
             

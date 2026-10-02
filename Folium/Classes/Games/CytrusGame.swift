@@ -30,10 +30,10 @@ final class CytrusGame : Game, Comparable, @unchecked Sendable {
     }
     
     var prefix: String {
-        details.name.prefix(1).capitalized
+        details.fileName.prefix(1).capitalized
     }
     
     static func < (lhs: borrowing CytrusGame, rhs: borrowing CytrusGame) -> Bool {
-        lhs.details.name.localizedCaseInsensitiveCompare(rhs.details.name) == .orderedAscending
+        lhs.details.fileName.localizedCaseInsensitiveCompare(rhs.details.fileName) == .orderedAscending
     }
 }

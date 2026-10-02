@@ -11,6 +11,13 @@
 		E61175E92FE1D9700032DDC1 /* libMandarine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */; };
 		E61859FE2FE4B17100D44932 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E69CAA1D2FDC9FC200BCD2F9 /* SharedDependencies */; };
 		E61C017F3053FC5F00F3CE02 /* libMesenCE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E5FD13050696400672845 /* libMesenCE.a */; };
+		E63119B230703B3300336B06 /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E63119B130703B3300336B06 /* AntiqueKit */; };
+		E63119B430703B3300336B06 /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E63119B330703B3300336B06 /* ColourKit */; };
+		E63119B630703B3300336B06 /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E63119B530703B3300336B06 /* ConstraintKit */; };
+		E63119B830703B3300336B06 /* ExtensionsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E63119B730703B3300336B06 /* ExtensionsKit */; };
+		E63119BA30703B3300336B06 /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E63119B930703B3300336B06 /* FontKit */; };
+		E63119BC30703B3300336B06 /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E63119BB30703B3300336B06 /* OnboardingKit */; };
+		E63119BE30703B3300336B06 /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E63119BD30703B3300336B06 /* SettingsKit */; };
 		E64840A83002E668007BDFFA /* libseekable_format in Frameworks */ = {isa = PBXBuildFile; productRef = E64840A73002E668007BDFFA /* libseekable_format */; };
 		E64840AA3002E668007BDFFA /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E64840A93002E668007BDFFA /* libzstd */; };
 		E64840AC3002E668007BDFFA /* libzstdwrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E64840AB3002E668007BDFFA /* libzstdwrapper */; };
@@ -46,13 +53,6 @@
 		E671D47B3065CE7200FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D47A3065CE7200FD334E /* SharedDependencies */; };
 		E671D47D3065CE7700FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D47C3065CE7700FD334E /* SharedDependencies */; };
 		E671D47F3065CE7B00FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D47E3065CE7B00FD334E /* SharedDependencies */; };
-		E671D4823065CF4800FD334E /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4813065CF4800FD334E /* AntiqueKit */; };
-		E671D4843065CF4800FD334E /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4833065CF4800FD334E /* ColourKit */; };
-		E671D4863065CF4800FD334E /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4853065CF4800FD334E /* ConstraintKit */; };
-		E671D4883065CF4800FD334E /* ExtensionsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4873065CF4800FD334E /* ExtensionsKit */; };
-		E671D48A3065CF4800FD334E /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D4893065CF4800FD334E /* FontKit */; };
-		E671D48C3065CF4800FD334E /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D48B3065CF4800FD334E /* OnboardingKit */; };
-		E671D48E3065CF4800FD334E /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E671D48D3065CF4800FD334E /* SettingsKit */; };
 		E672C01130488D57005F73C5 /* libMango.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E63619793048010100C93070 /* libMango.a */; };
 		E67923303028758E00B556A8 /* libCherry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E67922CC30286E7700B556A8 /* libCherry.a */; };
 		E6979A492FE6ACA10055FA9D /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A482FE6ACA10055FA9D /* AntiqueKit */; };
@@ -1276,24 +1276,24 @@
 				E6F49CDF2FF6CB810085C59B /* libresolv.9.tbd in Frameworks */,
 				E6979A552FE6ACA10055FA9D /* SettingsKit in Frameworks */,
 				E6A0FEE03007D7FF006FB733 /* ColourKit in Frameworks */,
-				E671D48E3065CF4800FD334E /* SettingsKit in Frameworks */,
 				E651DE783047ED6000A6BF11 /* SettingsKit in Frameworks */,
 				E64840AC3002E668007BDFFA /* libzstdwrapper in Frameworks */,
+				E63119BA30703B3300336B06 /* FontKit in Frameworks */,
+				E63119BC30703B3300336B06 /* OnboardingKit in Frameworks */,
 				E671D46B3065CE3100FD334E /* SharedDependencies in Frameworks */,
 				E651DE743047ED6000A6BF11 /* FontKit in Frameworks */,
+				E63119B630703B3300336B06 /* ConstraintKit in Frameworks */,
 				E69E600630508E4A00672845 /* libLychee.a in Frameworks */,
-				E671D4863065CF4800FD334E /* ConstraintKit in Frameworks */,
 				E6979A4D2FE6ACA10055FA9D /* ConstraintKit in Frameworks */,
-				E671D48C3065CF4800FD334E /* OnboardingKit in Frameworks */,
 				E651DE6E3047ED6000A6BF11 /* ColourKit in Frameworks */,
 				E651DE873047ED8B00A6BF11 /* SettingsKit in Frameworks */,
+				E63119BE30703B3300336B06 /* SettingsKit in Frameworks */,
 				E6A0FEE63007D7FF006FB733 /* FontKit in Frameworks */,
 				E651DE853047ED8B00A6BF11 /* OnboardingKit in Frameworks */,
 				E6A0FEE43007D7FF006FB733 /* ExtensionsKit in Frameworks */,
 				E67923303028758E00B556A8 /* libCherry.a in Frameworks */,
 				E6A0FEE23007D7FF006FB733 /* ConstraintKit in Frameworks */,
 				E6C462C42FE4B0AA004E5B57 /* SharedDependencies in Frameworks */,
-				E671D4823065CF4800FD334E /* AntiqueKit in Frameworks */,
 				E651DE7B3047ED8B00A6BF11 /* AntiqueKit in Frameworks */,
 				E69E60223050AD3D00672845 /* libDurian.a in Frameworks */,
 				E6A29C0C300455E200415154 /* SharedDependencies in Frameworks */,
@@ -1307,7 +1307,6 @@
 				E6A0FEEA3007D7FF006FB733 /* SettingsKit in Frameworks */,
 				E651DE7D3047ED8B00A6BF11 /* ColourKit in Frameworks */,
 				E651DE833047ED8B00A6BF11 /* FontKit in Frameworks */,
-				E671D48A3065CF4800FD334E /* FontKit in Frameworks */,
 				E651DE723047ED6000A6BF11 /* ExtensionsKit in Frameworks */,
 				E651DE813047ED8B00A6BF11 /* ExtensionsKit in Frameworks */,
 				E656E9A63006F6CC0061EA22 /* libzstdwrapper in Frameworks */,
@@ -1316,15 +1315,16 @@
 				E651DE7F3047ED8B00A6BF11 /* ConstraintKit in Frameworks */,
 				E6A0FEDE3007D7FF006FB733 /* AntiqueKit in Frameworks */,
 				E6979A512FE6ACA10055FA9D /* FontKit in Frameworks */,
+				E63119B230703B3300336B06 /* AntiqueKit in Frameworks */,
 				E6979A492FE6ACA10055FA9D /* AntiqueKit in Frameworks */,
 				E61175E92FE1D9700032DDC1 /* libMandarine.a in Frameworks */,
 				E655CB842FE734FB003DCE2B /* libTomato.a in Frameworks */,
+				E63119B830703B3300336B06 /* ExtensionsKit in Frameworks */,
 				E651DE763047ED6000A6BF11 /* OnboardingKit in Frameworks */,
 				E64840A83002E668007BDFFA /* libseekable_format in Frameworks */,
 				E651DE6C3047ED6000A6BF11 /* AntiqueKit in Frameworks */,
-				E671D4883065CF4800FD334E /* ExtensionsKit in Frameworks */,
 				E64840AA3002E668007BDFFA /* libzstd in Frameworks */,
-				E671D4843065CF4800FD334E /* ColourKit in Frameworks */,
+				E63119B430703B3300336B06 /* ColourKit in Frameworks */,
 				E656E9A43006F6CC0061EA22 /* libzstd in Frameworks */,
 				E6F139D42FF04E1000F30081 /* libGrape.a in Frameworks */,
 				E6F49CDB2FF6C9F50085C59B /* libKiwi.a in Frameworks */,
@@ -1567,13 +1567,13 @@
 				E651DE843047ED8B00A6BF11 /* OnboardingKit */,
 				E651DE863047ED8B00A6BF11 /* SettingsKit */,
 				E671D46A3065CE3100FD334E /* SharedDependencies */,
-				E671D4813065CF4800FD334E /* AntiqueKit */,
-				E671D4833065CF4800FD334E /* ColourKit */,
-				E671D4853065CF4800FD334E /* ConstraintKit */,
-				E671D4873065CF4800FD334E /* ExtensionsKit */,
-				E671D4893065CF4800FD334E /* FontKit */,
-				E671D48B3065CF4800FD334E /* OnboardingKit */,
-				E671D48D3065CF4800FD334E /* SettingsKit */,
+				E63119B130703B3300336B06 /* AntiqueKit */,
+				E63119B330703B3300336B06 /* ColourKit */,
+				E63119B530703B3300336B06 /* ConstraintKit */,
+				E63119B730703B3300336B06 /* ExtensionsKit */,
+				E63119B930703B3300336B06 /* FontKit */,
+				E63119BB30703B3300336B06 /* OnboardingKit */,
+				E63119BD30703B3300336B06 /* SettingsKit */,
 			);
 			productName = Folium;
 			productReference = E65A97A12FD0597F001DDEEE /* Folium.app */;
@@ -1813,7 +1813,7 @@
 				E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */,
 				E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */,
-				E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */,
+				E63119B030703B3300336B06 /* XCLocalSwiftPackageReference "../AntiqueKit" */,
 			);
 			preferredProjectObjectVersion = 110;
 			productRefGroup = E65A97A22FD0597F001DDEEE /* Products */;
@@ -2170,7 +2170,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2221,7 +2221,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3025,6 +3025,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		E63119B030703B3300336B06 /* XCLocalSwiftPackageReference "../AntiqueKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../AntiqueKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -3050,17 +3057,37 @@
 				kind = branch;
 			};
 		};
-		E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jarrodnorwell/AntiqueKit";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E63119B130703B3300336B06 /* AntiqueKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AntiqueKit;
+		};
+		E63119B330703B3300336B06 /* ColourKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ColourKit;
+		};
+		E63119B530703B3300336B06 /* ConstraintKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ConstraintKit;
+		};
+		E63119B730703B3300336B06 /* ExtensionsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ExtensionsKit;
+		};
+		E63119B930703B3300336B06 /* FontKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FontKit;
+		};
+		E63119BB30703B3300336B06 /* OnboardingKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OnboardingKit;
+		};
+		E63119BD30703B3300336B06 /* SettingsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SettingsKit;
+		};
 		E64840A73002E668007BDFFA /* libseekable_format */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = libseekable_format;
@@ -3220,41 +3247,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */;
 			productName = SharedDependencies;
-		};
-		E671D4813065CF4800FD334E /* AntiqueKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
-			productName = AntiqueKit;
-		};
-		E671D4833065CF4800FD334E /* ColourKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
-			productName = ColourKit;
-		};
-		E671D4853065CF4800FD334E /* ConstraintKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
-			productName = ConstraintKit;
-		};
-		E671D4873065CF4800FD334E /* ExtensionsKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
-			productName = ExtensionsKit;
-		};
-		E671D4893065CF4800FD334E /* FontKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
-			productName = FontKit;
-		};
-		E671D48B3065CF4800FD334E /* OnboardingKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
-			productName = OnboardingKit;
-		};
-		E671D48D3065CF4800FD334E /* SettingsKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E671D4803065CF4800FD334E /* XCRemoteSwiftPackageReference "AntiqueKit" */;
-			productName = SettingsKit;
 		};
 		E6979A482FE6ACA10055FA9D /* AntiqueKit */ = {
 			isa = XCSwiftPackageProductDependency;

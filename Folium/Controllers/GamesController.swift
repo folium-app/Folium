@@ -735,70 +735,70 @@ class GamesController : UICollectionViewController {
             guard var cherrySnapshot else {
                 return
             }
-            generateSnapshot(for: &cherrySnapshot, for: await tabController.gamesManager.games(for: .cherry), type: CherryGame.self)
+            generateSnapshot(for: &cherrySnapshot, for: await tabController.gamePopulationManager.retrieveGames(.cherry), type: CherryGame.self)
             self.cherrySnapshot = cherrySnapshot
             
             cytrusSnapshot = NSDiffableDataSourceSnapshot<String, Game>()
             guard var cytrusSnapshot else {
                 return
             }
-            generateSnapshot(for: &cytrusSnapshot, for: await tabController.gamesManager.games(for: .cytrus), type: CytrusGame.self)
+            generateSnapshot(for: &cytrusSnapshot, for: await tabController.gamePopulationManager.retrieveGames(.cytrus), type: CytrusGame.self)
             self.cytrusSnapshot = cytrusSnapshot
             
             durianSnapshot = NSDiffableDataSourceSnapshot<String, Game>()
             guard var durianSnapshot else {
                 return
             }
-            generateSnapshot(for: &durianSnapshot, for: await tabController.gamesManager.games(for: .durian), type: DurianGame.self)
+            generateSnapshot(for: &durianSnapshot, for: await tabController.gamePopulationManager.retrieveGames(.durian), type: DurianGame.self)
             self.durianSnapshot = durianSnapshot
             
             grapeSnapshot = NSDiffableDataSourceSnapshot<String, Game>()
             guard var grapeSnapshot else {
                 return
             }
-            generateSnapshot(for: &grapeSnapshot, for: await tabController.gamesManager.games(for: .grape), type: GrapeGame.self)
+            generateSnapshot(for: &grapeSnapshot, for: await tabController.gamePopulationManager.retrieveGames(.grape), type: GrapeGame.self)
             self.grapeSnapshot = grapeSnapshot
             
             kiwiSnapshot = NSDiffableDataSourceSnapshot<String, Game>()
             guard var kiwiSnapshot else {
                 return
             }
-            generateSnapshot(for: &kiwiSnapshot, for: await tabController.gamesManager.games(for: .kiwi), type: KiwiGame.self)
+            generateSnapshot(for: &kiwiSnapshot, for: await tabController.gamePopulationManager.retrieveGames(.kiwi), type: KiwiGame.self)
             self.kiwiSnapshot = kiwiSnapshot
             
             lycheeSnapshot = NSDiffableDataSourceSnapshot<String, Game>()
             guard var lycheeSnapshot else {
                 return
             }
-            generateSnapshot(for: &lycheeSnapshot, for: await tabController.gamesManager.games(for: .lychee), type: LycheeGame.self)
+            generateSnapshot(for: &lycheeSnapshot, for: await tabController.gamePopulationManager.retrieveGames(.lychee), type: LycheeGame.self)
             self.lycheeSnapshot = lycheeSnapshot
             
             mandarineSnapshot = NSDiffableDataSourceSnapshot<String, Game>()
             guard var mandarineSnapshot else {
                 return
             }
-            generateSnapshot(for: &mandarineSnapshot, for: await tabController.gamesManager.games(for: .mandarine), type: MandarineGame.self)
+            generateSnapshot(for: &mandarineSnapshot, for: await tabController.gamePopulationManager.retrieveGames(.mandarine), type: MandarineGame.self)
             self.mandarineSnapshot = mandarineSnapshot
             
             mangoSnapshot = NSDiffableDataSourceSnapshot<String, Game>()
             guard var mangoSnapshot else {
                 return
             }
-            generateSnapshot(for: &mangoSnapshot, for: await tabController.gamesManager.games(for: .mango), type: MangoGame.self)
+            generateSnapshot(for: &mangoSnapshot, for: await tabController.gamePopulationManager.retrieveGames(.mango), type: MangoGame.self)
             self.mangoSnapshot = mangoSnapshot
             
             plumSnapshot = NSDiffableDataSourceSnapshot<String, Game>()
             guard var plumSnapshot else {
                 return
             }
-            generateSnapshot(for: &plumSnapshot, for: await tabController.gamesManager.games(for: .plum), type: PlumGame.self)
+            generateSnapshot(for: &plumSnapshot, for: await tabController.gamePopulationManager.retrieveGames(.plum), type: PlumGame.self)
             self.plumSnapshot = plumSnapshot
             
             tomatoSnapshot = NSDiffableDataSourceSnapshot<String, Game>()
             guard var tomatoSnapshot else {
                 return
             }
-            generateSnapshot(for: &tomatoSnapshot, for: await tabController.gamesManager.games(for: .tomato), type: TomatoGame.self)
+            generateSnapshot(for: &tomatoSnapshot, for: await tabController.gamePopulationManager.retrieveGames(.tomato), type: TomatoGame.self)
             self.tomatoSnapshot = tomatoSnapshot
             
             Task {

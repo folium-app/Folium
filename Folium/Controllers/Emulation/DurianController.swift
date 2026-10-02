@@ -326,7 +326,7 @@ class DurianController : ControlsController {
                 return
             }
             
-            await durianGame.durianSystem.insertDisc(at: durianGame.details.url)
+            await durianGame.durianSystem.insertDisc(at: durianGame.details.fileURL)
             
             await durianGame.durianSystem.set(change: true, isRunning: true)
             

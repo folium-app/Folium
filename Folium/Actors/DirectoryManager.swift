@@ -8,7 +8,7 @@
 import Foundation.NSURL
 
 actor DirectoryManager {
-    private let fileManager: FileManager = .default
+    private let fileManager = FileManager.default
     
     var unavailableSystemFiles: [SystemFile] = []
     func removeUnavailableSystemFile(_ fileName: String) {
@@ -16,7 +16,7 @@ actor DirectoryManager {
     }
     
     func initializeSystemDirectoriesForInitialLaunch() async throws {
-        guard let documentDirectoryURL: URL = await .documentDirectoryURL else {
+        guard let documentDirectoryURL = await URL.documentDirectoryURL else {
             return
         }
         
@@ -75,33 +75,33 @@ actor DirectoryManager {
                                                 priority: .optional,
                                                 system: .grape),
                     "bios7.bin" : SystemFile(fileName: "bios7.bin",
-                                                path: "system_data",
-                                                priority: .required,
-                                                system: .grape),
+                                             path: "system_data",
+                                             priority: .required,
+                                             system: .grape),
                     "bios9.bin" : SystemFile(fileName: "bios9.bin",
-                                                path: "system_data",
-                                                priority: .required,
-                                                system: .grape),
+                                             path: "system_data",
+                                             priority: .required,
+                                             system: .grape),
                     "firmware.bin" : SystemFile(fileName: "firmware.bin",
                                                 path: "system_data",
                                                 priority: .required,
                                                 system: .grape),
                     "bios7i.bin" : SystemFile(fileName: "bios7i.bin",
-                                                path: "system_data",
-                                                priority: .optional,
-                                                system: .grape),
+                                              path: "system_data",
+                                              priority: .optional,
+                                              system: .grape),
                     "bios9i.bin" : SystemFile(fileName: "bios9i.bin",
-                                                path: "system_data",
-                                                priority: .optional,
-                                                system: .grape),
+                                              path: "system_data",
+                                              priority: .optional,
+                                              system: .grape),
                     "firmwarei.bin" : SystemFile(fileName: "firmwarei.bin",
-                                                path: "system_data",
-                                                priority: .optional,
-                                                system: .grape),
+                                                 path: "system_data",
+                                                 priority: .optional,
+                                                 system: .grape),
                     "nandi.bin" : SystemFile(fileName: "nandi.bin",
-                                                path: "system_data",
-                                                priority: .optional,
-                                                system: .grape)
+                                             path: "system_data",
+                                             priority: .optional,
+                                             system: .grape)
                 ]
             ],
             .kiwi : [
@@ -135,9 +135,9 @@ actor DirectoryManager {
                 "save_states" : [:],
                 "system_data" : [
                     "bios.bin" : SystemFile(fileName: "bios.bin",
-                                                path: "system_data",
-                                                priority: .required,
-                                                system: .mandarine)
+                                            path: "system_data",
+                                            priority: .required,
+                                            system: .mandarine)
                 ]
             ],
             .mango : [
@@ -176,14 +176,14 @@ actor DirectoryManager {
         ]
         
         for system in await SystemNames.array {
-            let systemDirectoryURL: URL = documentDirectoryURL.appending(component: await system.string)
+            let systemDirectoryURL = documentDirectoryURL.appending(component: await system.string)
+            
             try createDirectoryIfNeeded(from: systemDirectoryURL)
             try fixSubfolders(for: systemDirectoryURL)
             
-            if let subfoldersForSystem: [String : [String : SystemFile]] = subfoldersForSystems[system] {
+            if let subfoldersForSystem = subfoldersForSystems[system] {
                 try loop(subfolders: subfoldersForSystem, for: systemDirectoryURL) { subfolderName in
-                    let subfolderDirectoryURL: URL = systemDirectoryURL.appending(component: subfolderName)
-                    try createDirectoryIfNeeded(from: subfolderDirectoryURL)
+                    try createDirectoryIfNeeded(from: systemDirectoryURL.appending(component: subfolderName))
                 }
             }
         }
@@ -196,7 +196,7 @@ actor DirectoryManager {
     }
     
     private func fixSubfolders(for systemDirectoryURL: URL) throws {
-        let replacementSubfolderNames: [String : String] = [
+        let replacementSubfolderNames = [
             "memcards" : "memory_cards",
             "roms" : "games",
             "states" : "save_states",
@@ -204,21 +204,19 @@ actor DirectoryManager {
         ]
         
         for (key, value) in replacementSubfolderNames {
-            let oldDirectoryURL: URL = systemDirectoryURL.appending(component: key)
+            let oldDirectoryURL = systemDirectoryURL.appending(component: key)
+            
             if fileManager.fileExists(atPath: oldDirectoryURL.path) {
-                try fileManager.moveItem(at: oldDirectoryURL, to: systemDirectoryURL
-                    .appending(component: value))
+                try fileManager.moveItem(at: oldDirectoryURL, to: systemDirectoryURL.appending(component: value))
             }
         }
     }
     
     private func loop(subfolders: [String : [String : SystemFile]], for systemDirectoryURL: URL, using handler: (String) throws -> Void) throws {
         for subfolderName in subfolders.keys {
-            if let subfiles: [String : SystemFile] = subfolders[subfolderName] {
+            if let subfiles = subfolders[subfolderName] {
                 for subfile in subfiles.values where subfile.priority == .required {
-                    if !fileManager.fileExists(atPath: systemDirectoryURL
-                        .appending(component: subfile.path)
-                        .appending(component: subfile.fileName).path) {
+                    if !fileManager.fileExists(atPath: systemDirectoryURL.appending(component: subfile.path).appending(component: subfile.fileName).path) {
                         unavailableSystemFiles.append(subfile)
                     }
                 }

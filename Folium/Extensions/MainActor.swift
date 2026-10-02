@@ -7,7 +7,7 @@
 
 import Foundation
 
-func onMainThread(performing: @escaping @Sendable () -> Void) {
+func onMainThread(performing: @escaping @MainActor @Sendable () -> Void) {
     DispatchQueue.main.async {
         performing()
     }

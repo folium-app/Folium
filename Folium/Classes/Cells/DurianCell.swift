@@ -35,8 +35,8 @@ class DurianCell : GameCell {
             .appending(component: game.system.string)
             .appending(component: "artworks")
         
-        let customArtworkURL: URL = artworkDirectoryURL.appending(component: "\(game.details.nameWithoutSpaces.lowercased())_custom.png")
-        let defaultArtworkURL: URL = artworkDirectoryURL.appending(component: "\(game.details.nameWithoutSpaces.lowercased()).png")
+        let customArtworkURL: URL = artworkDirectoryURL.appending(component: "\(game.details.fileNameWithoutSpaces.lowercased())_custom.png")
+        let defaultArtworkURL: URL = artworkDirectoryURL.appending(component: "\(game.details.fileNameWithoutSpaces.lowercased()).png")
         
         hasCustomArtwork = fileManager.fileExists(atPath: customArtworkURL.path)
         hasDefaultArtwork = fileManager.fileExists(atPath: defaultArtworkURL.path)
@@ -65,12 +65,8 @@ class DurianCell : GameCell {
         
         backgroundImageView.image = imageView.image
         
-        if let image: UIImage = imageView.image {
-            averageImageColour = image.averageColorBottomRight()
-        }
-        
-        label.text = game.details.name
-        secondaryLabel.text = game.details.size
+        label.text = game.details.fileName
+        secondaryLabel.text = "\(game.details.fileSize) • \(game.details.fileExtension.uppercased())"
         
         button.menu = UIMenu(children: [
             UIMenu(title: "Artwork", image: UIImage(systemName: "photo"), children: [
@@ -108,7 +104,7 @@ class DurianCell : GameCell {
             ]),
             UIMenu(options: .displayInline, children: [
                 UIAction(title: "Delete", image: UIImage(systemName: "minus.circle"), attributes: .destructive) { action in
-                    let parentDirectoryURL: URL = game.details.url.deletingLastPathComponent()
+                    let parentDirectoryURL: URL = game.details.fileURL.deletingLastPathComponent()
                     
                     let alertController: UIAlertController = UIAlertController(title: "Delete Game?",
                                                                                message: "Deleting this game is destructive and cannot be undone",
@@ -117,7 +113,7 @@ class DurianCell : GameCell {
                     alertController.addAction(UIAlertAction(title: "Delete", style: .destructive) { action in
                         _ = Task {
                             do {
-                                try self.fileManager.removeItem(at: game.details.url)
+                                try self.fileManager.removeItem(at: game.details.fileURL)
                                 
                                 if parentDirectoryURL.lastPathComponent != "games" {
                                     try self.fileManager.removeItem(at: parentDirectoryURL)
@@ -160,8 +156,8 @@ extension DurianCell : UIImagePickerControllerDelegate, UINavigationControllerDe
             .appending(component: game.system.string)
             .appending(component: "artworks")
         
-        let customArtworkURL: URL = artworkDirectoryURL.appending(component: "\(game.details.nameWithoutSpaces.lowercased())_custom.png")
-        let defaultArtworkURL: URL = artworkDirectoryURL.appending(component: "\(game.details.nameWithoutSpaces.lowercased()).png")
+        let customArtworkURL: URL = artworkDirectoryURL.appending(component: "\(game.details.fileNameWithoutSpaces.lowercased())_custom.png")
+        let defaultArtworkURL: URL = artworkDirectoryURL.appending(component: "\(game.details.fileNameWithoutSpaces.lowercased()).png")
         
         _  = Task {
             do {

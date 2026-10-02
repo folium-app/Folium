@@ -379,7 +379,7 @@ class CherryController : ControlsController {
                 return
             }
             
-            await cherryGame.cherrySystem.insertDisc(at: cherryGame.details.url)
+            await cherryGame.cherrySystem.insertDisc(at: cherryGame.details.fileURL)
             
             await cherryGame.cherrySystem.set(change: true, isRunning: true)
             

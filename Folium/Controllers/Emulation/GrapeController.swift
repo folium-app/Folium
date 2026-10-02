@@ -258,7 +258,7 @@ class GrapeController : ControlsController {
                 return
             }
             
-            await grapeGame.grapeSystem.insertDisc(at: grapeGame.details.url)
+            await grapeGame.grapeSystem.insertDisc(at: grapeGame.details.fileURL)
             
             await grapeGame.grapeSystem.set(change: true, isRunning: true)
             

@@ -8,7 +8,7 @@
 import Foundation
 
 extension Array {
-    mutating func prepend(_ element: Array.Element) {
-        insert(element, at: 0)
+    mutating func prepend(_ newElement: Array.Element) {
+        insert(newElement, at: 0)
     }
 }

@@ -1,12 +1,11 @@
 //
-//  GamesManager.swift
+//  GamePopulationManager.swift
 //  Folium
 //
 //  Created by Jarrod Norwell on 17/6/2026.
 //
 
 import Foundation.NSFileManager
-import Foundation.NSURL
 
 import Cherry
 import Cytrus
@@ -19,24 +18,25 @@ import Mango
 import Plum
 import Tomato
 
-actor GamesManager {
-    private let fileManager: FileManager = .default
+// MARK: Finished (3/10/2026)
+
+actor GamePopulationManager {
+    private let fileManager = FileManager.default
     
-    let cherrySystem: CherrySystem
-    let cytrusSystem: CytrusSystem
-    let durianSystem: DurianSystem
-    let grapeSystem: GrapeSystem
-    let kiwiSystem: KiwiSystem
-    let lycheeSystem: LycheeSystem
-    let mandarineSystem: MandarineSystem
-    let mangoSystem: MangoSystem
-    let plumSystem: PlumSystem
-    let tomatoSystem: TomatoSystem
+    var cherrySystem: CherrySystem
+    var cytrusSystem: CytrusSystem
+    var durianSystem: DurianSystem
+    var grapeSystem: GrapeSystem
+    var kiwiSystem: KiwiSystem
+    var lycheeSystem: LycheeSystem
+    var mandarineSystem: MandarineSystem
+    var mangoSystem: MangoSystem
+    var plumSystem: PlumSystem
+    var tomatoSystem: TomatoSystem
     
-    init(cherrySystem: CherrySystem, cytrusSystem: CytrusSystem, durianSystem: DurianSystem,
-         grapeSystem: GrapeSystem, kiwiSystem: KiwiSystem, lycheeSystem: LycheeSystem,
-         mandarineSystem: MandarineSystem, mangoSystem: MangoSystem, plumSystem: PlumSystem,
-         tomatoSystem: TomatoSystem) {
+    init(_ cherrySystem: CherrySystem, _ cytrusSystem: CytrusSystem, _ durianSystem: DurianSystem, _ grapeSystem: GrapeSystem,
+         _ kiwiSystem: KiwiSystem, _ lycheeSystem: LycheeSystem, _ mandarineSystem: MandarineSystem, _ mangoSystem: MangoSystem,
+         _ plumSystem: PlumSystem, _ tomatoSystem: TomatoSystem) {
         self.cherrySystem = cherrySystem
         self.cytrusSystem = cytrusSystem
         self.durianSystem = durianSystem
@@ -49,58 +49,58 @@ actor GamesManager {
         self.tomatoSystem = tomatoSystem
     }
     
-    func games<T>(for system: System, _ reinitialisingSystem: Bool = false) async -> [T] {
+    func retrieveGames<T>(_ system: System, _ reinitializeSystem: Bool = false) async -> [T] {
         let empty: [T] = []
         var games: [T] = []
         
-        guard let documentDirectoryURL: URL = await .documentDirectoryURL else {
+        guard let documentDirectoryURL = await URL.documentDirectoryURL else {
             return empty
         }
         
-        let systemDirectoryURL: URL = documentDirectoryURL.appending(component: await system.string)
-        let systemGamesDirectoryURL: URL = systemDirectoryURL.appending(component: "games")
+        let systemDirectoryURL = documentDirectoryURL.appending(component: await system.string)
+        let gamesDirectoryURL = systemDirectoryURL.appending(component: "games")
         
-        guard let directoryEnumerator: FileManager.DirectoryEnumerator = fileManager.enumerator(at: systemGamesDirectoryURL,
-                                                                                                includingPropertiesForKeys: [.fileSizeKey]) else {
+        guard let directoryEnumerator = fileManager.enumerator(at: gamesDirectoryURL, includingPropertiesForKeys: [.fileSizeKey]) else {
             return empty
         }
         
-        let filteredDirectoryEnumeration: [NSEnumerator.Element] = directoryEnumerator.filter { element in element is URL }
-        guard let filteredAsURLs: [URL] = filteredDirectoryEnumeration as? [URL] else {
+        let filteredDirectoryEnumeration = directoryEnumerator.filter {
+            element in element is URL
+        }
+        
+        guard let filteredAsURLs = filteredDirectoryEnumeration as? [URL] else {
             return empty
         }
         
-        let extensions: [Extension] = system.extensions
-        let extensionsAsStrings: [String] = extensions.map(\.string)
+        let extensions = system.extensions
+        let extensionsAsStrings = extensions.map(\.string)
         
-        let filteredURLs: [URL] = filteredAsURLs.filter { element in extensionsAsStrings.contains(element.lowercasedPathExtension) }
+        let filteredURLs = filteredAsURLs.filter {
+            element in extensionsAsStrings.contains(element.lowercasedPathExtension)
+        }
+        
         for url in filteredURLs {
             switch T.self {
             case is CherryGame.Type:
-                let game: CherryGame = CherryGame(details: Details(url: url),
-                                                  cherrySystem: cherrySystem,
-                                                  system: system,
-                                                  boxartURLString: cherrySystem.boxartURLString(for: url))
-                
-                if let game: T = game as? T {
+                if let game = CherryGame(cherrySystem, url, system, cherrySystem.boxartURLString(for: url)) as? T {
                     games.append(game)
                 }
                 
-                if reinitialisingSystem {
+                if reinitializeSystem {
                     await cherrySystem.initializeSystem()
                 }
             case is CytrusGame.Type:
-                let game: CytrusGame = CytrusGame(details: Details(url: url),
+                let game: CytrusGame = CytrusGame(details: Details(url),
                                                   cytrusSystem: cytrusSystem,
                                                   system: system,
                                                   boxart: await cytrusSystem.boxart(for: url).data)
-                game.details.name = await cytrusSystem.title(for: url)
+                game.details.fileName = await cytrusSystem.title(for: url)
                 
                 if let game: T = game as? T {
                     games.append(game)
                 }
             case is DurianGame.Type:
-                let game: DurianGame = DurianGame(details: Details(url: url),
+                let game: DurianGame = DurianGame(details: Details(url),
                                                   durianSystem: durianSystem,
                                                   system: system,
                                                   boxartURLString: durianSystem.boxartURLString(for: url))
@@ -109,11 +109,11 @@ actor GamesManager {
                     games.append(game)
                 }
                 
-                if reinitialisingSystem {
+                if reinitializeSystem {
                     await durianSystem.initializeSystem()
                 }
             case is GrapeGame.Type:
-                let game: GrapeGame = GrapeGame(details: Details(url: url),
+                let game: GrapeGame = GrapeGame(details: Details(url),
                                                 grapeSystem: grapeSystem,
                                                 system: system,
                                                 boxart: await grapeSystem.boxart(for: url).buffer)
@@ -122,11 +122,11 @@ actor GamesManager {
                     games.append(game)
                 }
                 
-                if reinitialisingSystem {
+                if reinitializeSystem {
                     await grapeSystem.initializeSystem()
                 }
             case is KiwiGame.Type:
-                let game: KiwiGame = KiwiGame(details: Details(url: url),
+                let game: KiwiGame = KiwiGame(details: Details(url),
                                               kiwiSystem: kiwiSystem,
                                               system: system,
                                               boxartURLString: kiwiSystem.boxartURLString(for: url))
@@ -135,11 +135,11 @@ actor GamesManager {
                     games.append(game)
                 }
                 
-                if reinitialisingSystem {
+                if reinitializeSystem {
                     await kiwiSystem.initializeSystem()
                 }
             case is LycheeGame.Type:
-                let game: LycheeGame = LycheeGame(details: Details(url: url),
+                let game: LycheeGame = LycheeGame(details: Details(url),
                                                   lycheeSystem: lycheeSystem,
                                                   system: system,
                                                   boxartURLString: lycheeSystem.boxartURLString(for: url))
@@ -148,27 +148,27 @@ actor GamesManager {
                     games.append(game)
                 }
                 
-                if reinitialisingSystem {
+                if reinitializeSystem {
                     await lycheeSystem.initializeSystem()
                 }
             case is MandarineGame.Type:
-                let game: MandarineGame = MandarineGame(details: Details(url: url),
+                let game: MandarineGame = MandarineGame(details: Details(url),
                                                         mandarineSystem: mandarineSystem,
                                                         system: system,
                                                         boxartURLString: mandarineSystem.boxartURLString(for: url))
                 if url.lowercasedPathExtension == "cue" {
-                    game.details.updateSize(with: mandarineSystem.totalSizeOfFiles(for: url))
+                    game.details.updateSize(mandarineSystem.totalSizeOfFiles(for: url))
                 }
                 
                 if let game: T = game as? T {
                     games.append(game)
                 }
                 
-                if reinitialisingSystem {
+                if reinitializeSystem {
                     await mandarineSystem.initializeSystem()
                 }
             case is MangoGame.Type:
-                let game: MangoGame = MangoGame(details: Details(url: url),
+                let game: MangoGame = MangoGame(details: Details(url),
                                                 mangoSystem: mangoSystem,
                                                 system: system,
                                                 boxartURLString: mangoSystem.boxartURLString(for: url))
@@ -177,11 +177,11 @@ actor GamesManager {
                     games.append(game)
                 }
                 
-                if reinitialisingSystem {
+                if reinitializeSystem {
                     await mangoSystem.initializeSystem()
                 }
             case is PlumGame.Type:
-                let game: PlumGame = PlumGame(details: Details(url: url),
+                let game: PlumGame = PlumGame(details: Details(url),
                                               plumSystem: plumSystem,
                                               system: system,
                                               boxartURLString: plumSystem.boxartURLString(for: url))
@@ -190,11 +190,11 @@ actor GamesManager {
                     games.append(game)
                 }
                 
-                if reinitialisingSystem {
+                if reinitializeSystem {
                     await plumSystem.initializeSystem()
                 }
             case is TomatoGame.Type:
-                let game: TomatoGame = TomatoGame(details: Details(url: url),
+                let game: TomatoGame = TomatoGame(details: Details(url),
                                                   tomatoSystem: tomatoSystem,
                                                   system: system,
                                                   boxartURLString: tomatoSystem.boxartURLString(for: url))
@@ -203,7 +203,7 @@ actor GamesManager {
                     games.append(game)
                 }
                 
-                if reinitialisingSystem {
+                if reinitializeSystem {
                     await tomatoSystem.initializeSystem()
                 }
             default:

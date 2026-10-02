@@ -307,7 +307,7 @@ class LycheeController : ControlsController {
                 return
             }
             
-            await lycheeGame.lycheeSystem.insertDisc(at: lycheeGame.details.url)
+            await lycheeGame.lycheeSystem.insertDisc(at: lycheeGame.details.fileURL)
             
             await lycheeGame.lycheeSystem.set(change: true, isRunning: true)
             

@@ -11,11 +11,11 @@ class TabController : UITabBarController {
     var game: Game? = nil
     
     let directoryManager: DirectoryManager
-    let gamesManager: GamesManager
+    let gamePopulationManager: GamePopulationManager
     
-    init(directoryManager: DirectoryManager, gamesManager: GamesManager) {
+    init(directoryManager: DirectoryManager, gamePopulationManager: GamePopulationManager) {
         self.directoryManager = directoryManager
-        self.gamesManager = gamesManager
+        self.gamePopulationManager = gamePopulationManager
         super.init(nibName: nil, bundle: nil)
     }
     

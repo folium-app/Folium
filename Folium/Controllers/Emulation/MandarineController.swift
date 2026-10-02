@@ -354,7 +354,7 @@ class MandarineController : ControlsController {
                 return
             }
             
-            await mandarineGame.mandarineSystem.insertDisc(at: mandarineGame.details.url)
+            await mandarineGame.mandarineSystem.insertDisc(at: mandarineGame.details.fileURL)
             
             await mandarineGame.mandarineSystem.set(change: true, isRunning: true)
             

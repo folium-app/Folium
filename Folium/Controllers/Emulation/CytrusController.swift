@@ -366,7 +366,7 @@ class CytrusController : ControlsController {
                     }
                 }
                 
-                await cytrusGame.cytrusSystem.insertDisc(at: cytrusGame.details.url)
+                await cytrusGame.cytrusSystem.insertDisc(at: cytrusGame.details.fileURL)
                 
                 await cytrusGame.cytrusSystem.set(change: true, isRunning: true)
                 

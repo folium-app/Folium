@@ -285,7 +285,7 @@ class TomatoController : ControlsController {
                 return
             }
             
-            await tomatoGame.tomatoSystem.insertDisc(at: tomatoGame.details.url)
+            await tomatoGame.tomatoSystem.insertDisc(at: tomatoGame.details.fileURL)
             
             await tomatoGame.tomatoSystem.set(change: true, isRunning: true)
             

@@ -8,17 +8,16 @@
 import Cherry
 import Foundation
 
-nonisolated
-final class CherryGame : Game, Comparable, @unchecked Sendable {
-    let details: Details
+nonisolated final class CherryGame : Game, Comparable, @unchecked Sendable {
     let cherrySystem: CherrySystem
+    let details: Details
     let system: System
     
     var boxartURLString: String? = nil
     
-    init(details: Details, cherrySystem: CherrySystem, system: System, boxartURLString: String? = nil) {
-        self.details = details
+    init(_ cherrySystem: CherrySystem, _ url: URL, _ system: System, _ boxartURLString: String? = nil) {
         self.cherrySystem = cherrySystem
+        self.details = Details(url)
         self.system = system
         
         self.boxartURLString = boxartURLString
@@ -30,10 +29,10 @@ final class CherryGame : Game, Comparable, @unchecked Sendable {
     }
     
     var prefix: String {
-        details.name.prefix(1).capitalized
+        details.fileName.prefix(1).capitalized
     }
     
     static func < (lhs: borrowing CherryGame, rhs: borrowing CherryGame) -> Bool {
-        lhs.details.name.localizedCaseInsensitiveCompare(rhs.details.name) == .orderedAscending
+        lhs.details.fileName.localizedCaseInsensitiveCompare(rhs.details.fileName) == .orderedAscending
     }
 }

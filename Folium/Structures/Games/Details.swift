@@ -5,55 +5,44 @@
 //  Created by Jarrod Norwell on 17/6/2026.
 //
 
-import Foundation
+import Foundation.NSURL
 
-nonisolated
-final class Details : Hashable, @unchecked Sendable {
-    let id: UUID = UUID()
-    let `extension`: String
-    var name, size: String
-    var url: URL
+nonisolated final class Details {
+    let fileExtension: String
+    var fileName, fileSize: String
+    var fileURL: URL
     
-    init(url: URL) {
+    init(_ url: URL) {
         let formatter: ByteCountFormatter = ByteCountFormatter()
         formatter.countStyle = .file
         
-        `extension` = url.pathExtension.localizedLowercase
-        name = url.deletingPathExtension()
-            .lastPathComponent
+        fileExtension = url.lowercasedPathExtension
+        fileName = url.deletingPathExtension().lastPathComponent
             .replacingOccurrences(of: #"\s*\([^)]*\)"#, with: "", options: .regularExpression)
             .trimmingCharacters(in: .whitespacesAndNewlines)
+        
         do {
-            let resourceValues: URLResourceValues = try url.resourceValues(forKeys: [.fileSizeKey])
-            size = if let fileSize: Int = resourceValues.fileSize {
+            let resourceValues = try url.resourceValues(forKeys: [.fileSizeKey])
+            fileSize = if let fileSize = resourceValues.fileSize {
                 formatter.string(fromByteCount: Int64(fileSize))
             } else {
                 formatter.string(fromByteCount: 0)
             }
         } catch {
-            size = formatter.string(fromByteCount: 0)
+            fileSize = formatter.string(fromByteCount: 0)
         }
-        self.url = url
+        
+        fileURL = url
     }
     
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+    var fileNameWithoutSpaces: String {
+        fileName.replacingOccurrences(of: " ", with: "_").trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
-    static func == (lhs: borrowing Details, rhs: borrowing Details) -> Bool {
-        lhs.id == rhs.id
-    }
-    
-    var nameWithoutSpaces: String {
-        name
-            .replacingOccurrences(of: " ", with: "_")
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-    
-    func updateSize(with byteCount: Int) {
+    func updateSize(_ byteCount: Int) {
         let formatter: ByteCountFormatter = ByteCountFormatter()
         formatter.countStyle = .file
         
-        size = formatter.string(fromByteCount: Int64(byteCount))
+        fileSize = formatter.string(fromByteCount: Int64(byteCount))
     }
 }

@@ -30,10 +30,10 @@ final class MangoGame : Game, Comparable, @unchecked Sendable {
     }
     
     var prefix: String {
-        details.name.prefix(1).capitalized
+        details.fileName.prefix(1).capitalized
     }
     
     static func < (lhs: borrowing MangoGame, rhs: borrowing MangoGame) -> Bool {
-        lhs.details.name.localizedCaseInsensitiveCompare(rhs.details.name) == .orderedAscending
+        lhs.details.fileName.localizedCaseInsensitiveCompare(rhs.details.fileName) == .orderedAscending
     }
 }
