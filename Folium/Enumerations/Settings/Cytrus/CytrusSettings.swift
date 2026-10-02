@@ -398,7 +398,7 @@ enum CytrusSettingsItems : String, CaseIterable {
                              title: title,
                              details: details,
                              values: [
-                                "CoreAudio" : 6
+                                "CoreAudio" : 7
                              ],
                              selectedValue: UserDefaults.standard.value(forKey: rawValue),
                              action: {},

@@ -15,9 +15,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E69CA8F42FDC9EAF00BCD2F9"
-               BuildableName = "libMandarine.a"
-               BlueprintName = "Mandarine"
+               BlueprintIdentifier = "E6016A1C303FE0EA006F3A06"
+               BuildableName = "libPlum.a"
                ReferencedContainer = "container:Folium.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -51,9 +50,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E69CA8F42FDC9EAF00BCD2F9"
-            BuildableName = "libMandarine.a"
-            BlueprintName = "Mandarine"
+            BlueprintIdentifier = "E6016A1C303FE0EA006F3A06"
+            BuildableName = "libPlum.a"
             ReferencedContainer = "container:Folium.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

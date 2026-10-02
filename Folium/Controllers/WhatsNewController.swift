@@ -30,11 +30,11 @@ class WhatsNewController : OBControllerWithList {
         let tertiaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
                                                                                color: .tertiaryLabel,
                                                                                font: UIFont.regular(from: .callout),
-                                                                               text: "2.2.5")
+                                                                               text: "2.2.7")
         
         let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
             (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
-                UserDefaults.standard.set(true, forKey: "folium.2.2.5.whatsNewComplete")
+                UserDefaults.standard.set(true, forKey: "folium.2.2.7.whatsNewComplete")
                 
                 controller.dismiss(animated: true)
             })
@@ -148,6 +148,17 @@ class WhatsNewController : OBControllerWithList {
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
                                            text: "Replaced the project Cherry is built on from Gearcoleco over to MesenCE and rewrote a portion of the bridging code")
+                    )),
+                CellConfiguration(image: UIImage(systemName: "star")?
+                    .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
+                        LabelConfiguration(alignment: .left,
+                                           color: .label,
+                                           font: UIFont.regular(from: .headline),
+                                           text: "Nintendo 3DS"),
+                        LabelConfiguration(alignment: .left,
+                                           color: .secondaryLabel,
+                                           font: UIFont.regular(from: .subheadline),
+                                           text: "Updated the project Cytrus is built on to the latest version adding new features and improving performance\n\nSettings to come soon")
                     )),
                 CellConfiguration(image: UIImage(systemName: "arrow.up.forward.app")?
                     .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (

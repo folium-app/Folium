@@ -139,8 +139,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         initializeUserDefaultsWithDefaultValues()
-        //setSettingsForCytrus()
-        //setSettingsForMandarine()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
