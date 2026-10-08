@@ -36,6 +36,12 @@ class SettingsController : UICollectionViewController {
                     }
                     
                     await dataSource.apply(applicationSnapshot)
+                case .cytrus:
+                    guard let cytrusSnapshot else {
+                        return
+                    }
+                    
+                    await dataSource.apply(cytrusSnapshot)
                 case .durian:
                     guard let durianSnapshot else {
                         return
@@ -107,7 +113,7 @@ class SettingsController : UICollectionViewController {
                 }
             ]),
             UIMenu(title: "Nintendo", image: UIImage(systemName: "cpu"), children: [
-                UIAction(title: "3DS", subtitle: "+ New 3DS", attributes: .disabled) { action in
+                UIAction(title: "3DS", subtitle: "+ New 3DS") { action in
                     self.selectedSnapshot = .cytrus
                 },
                 UIAction(title: "DS", subtitle: "+ DSi") { action in
@@ -314,17 +320,7 @@ class SettingsController : UICollectionViewController {
         ], type: ApplicationSettingsItems.self)
         self.applicationSnapshot = applicationSnapshot
         
-        generateSnapshot(for: &cytrusSnapshot, with: [
-            .coreGeneral,
-            .debuggingGeneral,
-            .graphics3D,
-            .graphicsGeneral,
-            .graphicsResolution,
-            .graphicsShader,
-            .soundGeneral,
-            .systemGeneral,
-            .systemRegion
-        ], type: CytrusSettingsItems.self)
+        generateSnapshot(for: &cytrusSnapshot, with: SettingsHeaders.cytrusHeaders, type: CytrusSettingsItems.self)
         self.cytrusSnapshot = cytrusSnapshot
         
         generateSnapshot(for: &durianSnapshot, with: [
@@ -492,36 +488,45 @@ extension SettingsController : SettingDelegate {
                 case let boolSetting as BoolSetting:
                     boolSetting.value = UserDefaults.standard.bool(forKey: boolSetting.key)
                     
-                    guard let setting: cytrus.SETTING = [
-                        CytrusSettingsItems.lleApplets.rawValue : cytrus.SETTING.LLE_APPLETS,
-                        CytrusSettingsItems.deterministicAsyncOperations.rawValue : cytrus.SETTING.DETERMINISTIC_ASYNC_OPERATIONS,
-                        CytrusSettingsItems.requiredOnlineLLEModules.rawValue : cytrus.SETTING.REQUIRED_ONLINE_LLE_MODULES,
-                        CytrusSettingsItems.regionFreePatch.rawValue : cytrus.SETTING.REGION_PREF_PATCH,
-                        CytrusSettingsItems.swapEyes3D.rawValue : cytrus.SETTING.SWAP_EYES_3D,
-                        CytrusSettingsItems.spirvShaderGen.rawValue : cytrus.SETTING.SPIRV_SHADER_GEN,
-                        CytrusSettingsItems.spirvOptimizer.rawValue : cytrus.SETTING.SPIRV_OPTIMIZER,
-                        CytrusSettingsItems.asyncShaderCompilation.rawValue : cytrus.SETTING.ASYNC_SHADER_COMPILATION,
-                        CytrusSettingsItems.asyncPresentation.rawValue : cytrus.SETTING.ASYNC_PRESENTATION,
-                        CytrusSettingsItems.diskShaderCache.rawValue : cytrus.SETTING.DISK_SHADER_CACHE,
-                        CytrusSettingsItems.vsync.rawValue : cytrus.SETTING.VSYNC,
-                        CytrusSettingsItems.shaderAccurateMultiplication.rawValue : cytrus.SETTING.SHADER_ACCURATE_MULTIPLICATION,
-                        CytrusSettingsItems.soundStretching.rawValue : cytrus.SETTING.SOUND_STRETCHING,
-                        CytrusSettingsItems.realtimeSound.rawValue : cytrus.SETTING.REALTIME_SOUND
-                    ][boolSetting.key] else {
+                    guard let setting = CytrusSettingsItems.settings.first(where: { key, value in key.rawValue == boolSetting.key }) else {
                         return
                     }
                     
-                    await tabController.gamePopulationManager.cytrusSystem.setSetting(setting: setting, value: boolSetting.value)
+                    await tabController.gamePopulationManager.cytrusSystem.setSetting(setting: setting.value.setting, value: boolSetting.value)
                 case let inputNumberSetting as InputNumberSetting:
                     inputNumberSetting.value = UserDefaults.standard.double(forKey: inputNumberSetting.key)
+                    
+                    guard let setting = CytrusSettingsItems.settings.first(where: { key, value in key.rawValue == inputNumberSetting.key }) else {
+                        return
+                    }
+                    
+                    await tabController.gamePopulationManager.cytrusSystem.setSetting(setting: setting.value.setting, value: inputNumberSetting.value)
                 case let inputStringSetting as InputStringSetting:
                     inputStringSetting.value = UserDefaults.standard.string(forKey: inputStringSetting.key)
+                    
+                    guard let setting = CytrusSettingsItems.settings.first(where: { key, value in key.rawValue == inputStringSetting.key }) else {
+                        return
+                    }
+                    
+                    await tabController.gamePopulationManager.cytrusSystem.setSetting(setting: setting.value.setting, value: inputStringSetting.value)
                 case let segmentedSetting as SegmentedSetting:
                     segmentedSetting.selectedValue = UserDefaults.standard.value(forKey: segmentedSetting.key)
+                    
+                    guard let setting = CytrusSettingsItems.settings.first(where: { key, value in key.rawValue == segmentedSetting.key }) else {
+                        return
+                    }
+                    
+                    await tabController.gamePopulationManager.cytrusSystem.setSetting(setting: setting.value.setting, value: segmentedSetting.selectedValue)
                 case let stepperSetting as StepperSetting:
                     stepperSetting.value = UserDefaults.standard.double(forKey: stepperSetting.key)
                 case let selectionSetting as SelectionSetting:
                     selectionSetting.selectedValue = UserDefaults.standard.value(forKey: selectionSetting.key)
+                    
+                    guard let setting = CytrusSettingsItems.settings.first(where: { key, value in key.rawValue == selectionSetting.key }) else {
+                        return
+                    }
+                    
+                    await tabController.gamePopulationManager.cytrusSystem.setSetting(setting: setting.value.setting, value: selectionSetting.selectedValue)
                 default:
                     break
                 }

@@ -27,14 +27,9 @@ class WhatsNewController : OBControllerWithList {
                                                                                 font: UIFont.regular(from: .body),
                                                                                 text: "What's new in the latest version of Folium")
         
-        let tertiaryTextConfiguration: LabelConfiguration = LabelConfiguration(alignment: .center,
-                                                                               color: .tertiaryLabel,
-                                                                               font: UIFont.regular(from: .callout),
-                                                                               text: "2.2.7")
-        
         let buttons: [(UIButton.Configuration, @MainActor (UIViewController) async -> Void)] = [
             (UIButton.Configuration.configuration(.large, .capsule, nil, "Continue"), { controller in
-                UserDefaults.standard.set(true, forKey: "folium.2.2.7.whatsNewComplete")
+                UserDefaults.standard.set(true, forKey: "folium.2.2.8.whatsNewComplete")
                 
                 controller.dismiss(animated: true)
             })
@@ -48,6 +43,7 @@ class WhatsNewController : OBControllerWithList {
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
                                            text: "PlayStation 1"),
+                        nil,
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
@@ -61,6 +57,7 @@ class WhatsNewController : OBControllerWithList {
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
                                            text: "Game Titles"),
+                        nil,
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
@@ -72,6 +69,7 @@ class WhatsNewController : OBControllerWithList {
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
                                            text: "Pull to Refresh"),
+                        nil,
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
@@ -85,6 +83,7 @@ class WhatsNewController : OBControllerWithList {
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
                                            text: "Analog Sticks"),
+                        nil,
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
@@ -96,6 +95,7 @@ class WhatsNewController : OBControllerWithList {
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
                                            text: "Load & Save States"),
+                        nil,
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
@@ -109,6 +109,7 @@ class WhatsNewController : OBControllerWithList {
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
                                            text: "Default System"),
+                        nil,
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
@@ -120,6 +121,7 @@ class WhatsNewController : OBControllerWithList {
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
                                            text: "Game Boy"),
+                        nil,
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
@@ -130,7 +132,20 @@ class WhatsNewController : OBControllerWithList {
                         LabelConfiguration(alignment: .left,
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
+                                           text: "Nintendo 3DS"),
+                        nil,
+                        LabelConfiguration(alignment: .left,
+                                           color: .secondaryLabel,
+                                           font: UIFont.regular(from: .subheadline),
+                                           text: "Adds new Nintendo 3DS settings allowing users to change a plethora of settings from audio to core, graphics and more")
+                    )),
+                CellConfiguration(image: UIImage(systemName: "gearshape")?
+                    .applyingSymbolConfiguration(UIImage.SymbolConfiguration(paletteColors: [.label])), labels: (
+                        LabelConfiguration(alignment: .left,
+                                           color: .label,
+                                           font: UIFont.regular(from: .headline),
                                            text: "Nintendo DS"),
+                        nil,
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
@@ -144,6 +159,7 @@ class WhatsNewController : OBControllerWithList {
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
                                            text: "ColecoVision"),
+                        nil,
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
@@ -155,6 +171,7 @@ class WhatsNewController : OBControllerWithList {
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
                                            text: "Nintendo 3DS"),
+                        nil,
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
@@ -166,6 +183,7 @@ class WhatsNewController : OBControllerWithList {
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
                                            text: "PlayStation 1"),
+                        nil,
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
@@ -177,6 +195,7 @@ class WhatsNewController : OBControllerWithList {
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
                                            text: "PlayStation 1 (cont.)"),
+                        nil,
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
@@ -188,6 +207,7 @@ class WhatsNewController : OBControllerWithList {
                                            color: .label,
                                            font: UIFont.regular(from: .headline),
                                            text: "SEGA Genesis"),
+                        nil,
                         LabelConfiguration(alignment: .left,
                                            color: .secondaryLabel,
                                            font: UIFont.regular(from: .subheadline),
@@ -199,7 +219,7 @@ class WhatsNewController : OBControllerWithList {
         let configuration: OBControllerWithListConfiguration = OBControllerWithListConfiguration(image: image,
                                                                                                  textConfiguration: textConfiguration,
                                                                                                  secondaryConfiguration: secondaryTextConfiguration,
-                                                                                                 tertiaryConfiguration: tertiaryTextConfiguration,
+                                                                                                 tertiaryConfiguration: nil,
                                                                                                  buttons: buttons,
                                                                                                  cells: cells)
         super.init(configuration: configuration)

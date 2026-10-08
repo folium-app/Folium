@@ -2170,7 +2170,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2221,7 +2221,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++23";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = Z3ZEABYY6P;
 				GCC_C_LANGUAGE_STANDARD = gnu23;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2733,9 +2733,10 @@
 				SWIFT_VERSION = 6.0;
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					"$(HOME)/Developer/Repositories",
-					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include",
-					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include/glslang",
-					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include/vma",
+					"$(HOME)/VulkanSDK/1.4.363.0/macOS/include",
+					"$(HOME)/VulkanSDK/1.4.363.0/macOS/include/glslang",
+					"$(HOME)/VulkanSDK/1.4.363.0/macOS/include/vma",
+					/usr/local/include,
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cytrus/System/include";
@@ -2782,9 +2783,10 @@
 				SWIFT_VERSION = 6.0;
 				SYSTEM_HEADER_SEARCH_PATHS = (
 					"$(HOME)/Developer/Repositories",
-					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include",
-					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include/glslang",
-					"$(HOME)/VulkanSDK/1.4.350.1/macOS/include/vma",
+					"$(HOME)/VulkanSDK/1.4.363.0/macOS/include",
+					"$(HOME)/VulkanSDK/1.4.363.0/macOS/include/glslang",
+					"$(HOME)/VulkanSDK/1.4.363.0/macOS/include/vma",
+					/usr/local/include,
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Cytrus/System/include";

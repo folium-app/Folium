@@ -97,6 +97,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             await cherrySystem.initializeSystem()
             
             await cytrusSystem.initializeLogging()
+            await setSettingsForCytrus()
             
             await durianSystem.initializePaths()
             await durianSystem.initializeSystem()
@@ -160,46 +161,50 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func initializeUserDefaultsWithDefaultValues() {
         let systemsWithDefaultValues: [System : [String : Any]] = [
             .cytrus : [
-                "cpuJIT" : 0,
-                "cpuClockPercentage" : 100,
-                "new3DS" : 1,
-                "lleApplets" : true,
+                "asyncFilesystemOperations" : true,
+                "asyncPresentation" : true,
+                "asyncShaderCompilation" : false,
+                "cpuClockPercent" : 100,
+                "cpuJIT" : false,
                 "deterministicAsyncOperations" : false,
+                "fastInterpreter" : true,
+                "new3DSMode" : true,
                 "requiredOnlineLLEModules" : false,
                 
-                "logLevel" : "Info",
+                "logFilter" : "Info",
                 
-                "stereoscopic3D" : 0,
-                "`3DFactor" : 0,
-                "swapEyes3D" : false,
-                
-                "spirvOptimizer" : true,
-                "asyncPresentation" : true,
+                "graphicsAPI" : 2,
+                "hardwareShader" : true,
+                "integerScaling" : false,
+                "rightEyeRender" : true,
+                "skipDuplicateFrames" : false,
                 "vsync" : false,
+                
+                "resolutionScaleFactor" : 1,
+                
+                "shaderJIT" : false,
+                "shadersAccurateMultiply" : true,
+                "spirvOptimizer" : false,
+                "spirvShaderGeneration" : true,
+                
+                "simulate3DSGPUTimings" : false,
+                
                 "textureFilter" : 0,
                 "textureSampling" : 0,
                 
-                "upscaleFactor" : 0,
+                "audioEmulationMode" : 0,
+                "audioStretching" : true,
+                "inputType" : 6,
+                "outputType" : 7,
+                "realtimeAudio" : false,
+                "simulateHeadphonesPluggedIn" : false,
                 
-                "spirvShaderGen" : true,
-                "asyncShaderCompilation" : false,
-                "hardwareShaders" : 1,
-                "diskShaderCache" : true,
-                "shaderAccurateMultiplication" : true,
-                "shaderJIT" : false,
+                "regionFreePatch" : true,
+                "regionValue" : -1,
                 
-                "soundEmulation" : 0,
-                "soundStretching" : true,
-                "realtimeSound" : false,
-                "volume" : 100,
-                "soundOutput" : 6,
-                "soundInput" : 6,
+                "stepsPerHour" : 0,
                 
-                "clockType" : 0,
-                "stepsPerHour" : Double(UInt16.max),
-                
-                "systemRegion" : -1,
-                "regionFreePatch" : true
+                "webAPIURL" : "http://88.198.47.46:5000"
             ],
             .durian : [
                 "consoleModel" : 0,
@@ -271,32 +276,23 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         }
     }
-    func setSettingsForCytrus() {
-        let settings: [CytrusSettingsItems : cytrus.SETTING] = [
-            .lleApplets : cytrus.SETTING.LLE_APPLETS,
-            .deterministicAsyncOperations : cytrus.SETTING.DETERMINISTIC_ASYNC_OPERATIONS,
-            .requiredOnlineLLEModules : cytrus.SETTING.REQUIRED_ONLINE_LLE_MODULES,
-            .regionFreePatch : cytrus.SETTING.REGION_PREF_PATCH,
-            .swapEyes3D : cytrus.SETTING.SWAP_EYES_3D,
-            .spirvShaderGen : cytrus.SETTING.SPIRV_SHADER_GEN,
-            .spirvOptimizer : cytrus.SETTING.SPIRV_OPTIMIZER,
-            .asyncShaderCompilation : cytrus.SETTING.ASYNC_SHADER_COMPILATION,
-            .asyncPresentation : cytrus.SETTING.ASYNC_PRESENTATION,
-            .diskShaderCache : cytrus.SETTING.DISK_SHADER_CACHE,
-            .vsync : cytrus.SETTING.VSYNC,
-            .shaderAccurateMultiplication : cytrus.SETTING.SHADER_ACCURATE_MULTIPLICATION,
-            .soundStretching : cytrus.SETTING.SOUND_STRETCHING,
-            .realtimeSound : cytrus.SETTING.REALTIME_SOUND
-        ]
-        
-        SettingsHeaders.cytrusHeaders.forEach { header in
-            CytrusSettingsItems.settings(header).forEach { item in
-                guard let setting: cytrus.SETTING = settings[item] else {
+    
+    func setSettingsForCytrus() async {
+        await SettingsHeaders.cytrusHeaders.asyncForEach { header in
+            await CytrusSettingsItems.settings(header).asyncForEach { item in
+                guard let settingForCytrus: (setting: cytrus.SETTING, type: Any.Type) = CytrusSettingsItems.settings[item] else {
                     return
                 }
                 
                 Task {
-                    await cytrusSystem.setSetting(setting: setting, value: UserDefaults.standard.value(forKey: item.rawValue))
+                    switch settingForCytrus.type {
+                    case is Bool.Type:
+                        _ = await cytrusSystem.setSetting(setting: settingForCytrus.setting, value: UserDefaults.standard.bool(forKey: item.rawValue))
+                    case is Int.Type:
+                        _ = await cytrusSystem.setSetting(setting: settingForCytrus.setting, value: UserDefaults.standard.integer(forKey: item.rawValue))
+                    default:
+                        break
+                    }
                 }
             }
         }

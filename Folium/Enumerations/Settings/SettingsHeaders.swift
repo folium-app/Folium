@@ -22,11 +22,15 @@ enum SettingsHeaders : String, CaseIterable {
     case coreGeneral = "Core.General"
     case graphics3D = "Graphics.3D"
     case graphicsShader = "Graphics.Shader"
+    case graphicsTexture = "Graphics.Texture"
+    case graphicsTimingSimulation = "Graphics.Simulation & Timing"
     case systemRegion = "System.Region"
+    case webAPI = "Web API"
     
     var header: SettingHeader {
         switch self {
-        case .general:
+        case .general,
+                .webAPI:
             SettingHeader(text: rawValue)
         case .coreGeneral,
                 .debuggingGeneral,
@@ -34,6 +38,8 @@ enum SettingsHeaders : String, CaseIterable {
                 .graphicsGeneral,
                 .graphicsResolution,
                 .graphicsShader,
+                .graphicsTexture,
+                .graphicsTimingSimulation,
                 .libraryGeneral,
                 .premiumExtraFeatures,
                 .soundGeneral,
@@ -54,9 +60,12 @@ enum SettingsHeaders : String, CaseIterable {
             .graphicsGeneral,
             .graphicsResolution,
             .graphicsShader,
+            .graphicsTexture,
+            .graphicsTimingSimulation,
             .soundGeneral,
             .systemGeneral,
-            .systemRegion
+            .systemRegion,
+            .webAPI
         ]
     }
     
