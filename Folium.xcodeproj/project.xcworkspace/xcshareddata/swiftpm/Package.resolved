@@ -1,13 +1,22 @@
 {
-  "originHash" : "fa6157c25d78cf716f613521977ae40622a9304f4f4ae5e335db5e8d1376e5ea",
+  "originHash" : "a7a4f912db39bda178f7e2df68a7e7094484345b47af857910b941e41f05fcc0",
   "pins" : [
+    {
+      "identity" : "antiquekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jarrodnorwell/AntiqueKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "1b745276f09652d577dbb21f348af8cda60fd4c5"
+      }
+    },
     {
       "identity" : "openssl",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/OpenSSL",
       "state" : {
         "branch" : "main",
-        "revision" : "4b1188ba947ddc23d03b13096b9e44b804e146c9"
+        "revision" : "0a6149bff4fb00921ce0ec1811f726b166638095"
       }
     },
     {
@@ -16,7 +25,7 @@
       "location" : "https://github.com/jarrodnorwell/PLzmaSDK",
       "state" : {
         "branch" : "master",
-        "revision" : "c69ff6acb4df788885cc4865d46e1a442e6f50a5"
+        "revision" : "321f199010d09d956bd27ba1454026801976a898"
       }
     },
     {
@@ -25,16 +34,7 @@
       "location" : "https://github.com/folium-app/SharedDependencies",
       "state" : {
         "branch" : "main",
-        "revision" : "2ee6621fcfe7cb4b938c1d0f1d842c6e2d72f97e"
-      }
-    },
-    {
-      "identity" : "sparkle",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sparkle-project/Sparkle",
-      "state" : {
-        "branch" : "2.x",
-        "revision" : "fd34238cbbc5db4a6e8343c62ae4dea939b06ea4"
+        "revision" : "9787aa9062d8ff220f127052597e6f3ae1dcbc7a"
       }
     },
     {

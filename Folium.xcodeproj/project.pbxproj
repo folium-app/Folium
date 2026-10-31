@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E6016ADC303FEBD2006F3A06 /* libPlum.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6016A1D303FE0EA006F3A06 /* libPlum.a */; };
-		E61175E92FE1D9700032DDC1 /* libMandarine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */; };
 		E61859FE2FE4B17100D44932 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E69CAA1D2FDC9FC200BCD2F9 /* SharedDependencies */; };
 		E61C017F3053FC5F00F3CE02 /* libMesenCE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E5FD13050696400672845 /* libMesenCE.a */; };
 		E63119B230703B3300336B06 /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E63119B130703B3300336B06 /* AntiqueKit */; };
@@ -21,13 +19,6 @@
 		E64840A83002E668007BDFFA /* libseekable_format in Frameworks */ = {isa = PBXBuildFile; productRef = E64840A73002E668007BDFFA /* libseekable_format */; };
 		E64840AA3002E668007BDFFA /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E64840A93002E668007BDFFA /* libzstd */; };
 		E64840AC3002E668007BDFFA /* libzstdwrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E64840AB3002E668007BDFFA /* libzstdwrapper */; };
-		E651DE6C3047ED6000A6BF11 /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE6B3047ED6000A6BF11 /* AntiqueKit */; };
-		E651DE6E3047ED6000A6BF11 /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE6D3047ED6000A6BF11 /* ColourKit */; };
-		E651DE703047ED6000A6BF11 /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE6F3047ED6000A6BF11 /* ConstraintKit */; };
-		E651DE723047ED6000A6BF11 /* ExtensionsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE713047ED6000A6BF11 /* ExtensionsKit */; };
-		E651DE743047ED6000A6BF11 /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE733047ED6000A6BF11 /* FontKit */; };
-		E651DE763047ED6000A6BF11 /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE753047ED6000A6BF11 /* OnboardingKit */; };
-		E651DE783047ED6000A6BF11 /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE773047ED6000A6BF11 /* SettingsKit */; };
 		E651DE7B3047ED8B00A6BF11 /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE7A3047ED8B00A6BF11 /* AntiqueKit */; };
 		E651DE7D3047ED8B00A6BF11 /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE7C3047ED8B00A6BF11 /* ColourKit */; };
 		E651DE7F3047ED8B00A6BF11 /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE7E3047ED8B00A6BF11 /* ConstraintKit */; };
@@ -35,13 +26,30 @@
 		E651DE833047ED8B00A6BF11 /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE823047ED8B00A6BF11 /* FontKit */; };
 		E651DE853047ED8B00A6BF11 /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE843047ED8B00A6BF11 /* OnboardingKit */; };
 		E651DE873047ED8B00A6BF11 /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E651DE863047ED8B00A6BF11 /* SettingsKit */; };
-		E655CB842FE734FB003DCE2B /* libTomato.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E655CB7A2FE73488003DCE2B /* libTomato.a */; };
 		E656E9A23006F6CC0061EA22 /* libseekable_format in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A13006F6CC0061EA22 /* libseekable_format */; };
 		E656E9A43006F6CC0061EA22 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A33006F6CC0061EA22 /* libzstd */; };
 		E656E9A63006F6CC0061EA22 /* libzstdwrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A53006F6CC0061EA22 /* libzstdwrapper */; };
 		E656E9A83006F6D60061EA22 /* libseekable_format in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A73006F6D60061EA22 /* libseekable_format */; };
 		E656E9AA3006F6D60061EA22 /* libzstd in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9A93006F6D60061EA22 /* libzstd */; };
 		E656E9AC3006F6D60061EA22 /* libzstdwrapper in Frameworks */ = {isa = PBXBuildFile; productRef = E656E9AB3006F6D60061EA22 /* libzstdwrapper */; };
+		E66E89AF30828B8900B75BDB /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E66E89AE30828B8900B75BDB /* AntiqueKit */; };
+		E66E89B130828B8900B75BDB /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E66E89B030828B8900B75BDB /* ColourKit */; };
+		E66E89B330828B8900B75BDB /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E66E89B230828B8900B75BDB /* ConstraintKit */; };
+		E66E89B530828B8900B75BDB /* ExtensionsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E66E89B430828B8900B75BDB /* ExtensionsKit */; };
+		E66E89B730828B8900B75BDB /* FontKit in Frameworks */ = {isa = PBXBuildFile; productRef = E66E89B630828B8900B75BDB /* FontKit */; };
+		E66E89B930828B8900B75BDB /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E66E89B830828B8900B75BDB /* OnboardingKit */; };
+		E66E89BB30828B8900B75BDB /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E66E89BA30828B8900B75BDB /* SettingsKit */; };
+		E66E89BC3082A6D800B75BDB /* libCherry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E67922CC30286E7700B556A8 /* libCherry.a */; };
+		E66E89BF3082A6D800B75BDB /* libCytrus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E62C749B2FFCE20100D6760E /* libCytrus.a */; };
+		E66E89C23082A6D800B75BDB /* libDurian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E60113050A87D00672845 /* libDurian.a */; };
+		E66E89C53082A6D800B75BDB /* libGrape.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F139CA2FF04DB700F30081 /* libGrape.a */; };
+		E66E89C83082A6D800B75BDB /* libKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F48FA82FF6C0700085C59B /* libKiwi.a */; };
+		E66E89CB3082A6D800B75BDB /* libLychee.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E5FF330508B7B00672845 /* libLychee.a */; };
+		E66E89CE3082A6D800B75BDB /* libMandarine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69CA8F52FDC9EAF00BCD2F9 /* libMandarine.a */; };
+		E66E89D13082A6D800B75BDB /* libMango.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E63619793048010100C93070 /* libMango.a */; };
+		E66E89D43082A6D800B75BDB /* libMesenCE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E5FD13050696400672845 /* libMesenCE.a */; };
+		E66E89D73082A6D800B75BDB /* libPlum.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6016A1D303FE0EA006F3A06 /* libPlum.a */; };
+		E66E89DA3082A6D800B75BDB /* libTomato.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E655CB7A2FE73488003DCE2B /* libTomato.a */; };
 		E671D46B3065CE3100FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D46A3065CE3100FD334E /* SharedDependencies */; };
 		E671D46D3065CE4B00FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D46C3065CE4B00FD334E /* SharedDependencies */; };
 		E671D46F3065CE5000FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D46E3065CE5000FD334E /* SharedDependencies */; };
@@ -53,8 +61,6 @@
 		E671D47B3065CE7200FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D47A3065CE7200FD334E /* SharedDependencies */; };
 		E671D47D3065CE7700FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D47C3065CE7700FD334E /* SharedDependencies */; };
 		E671D47F3065CE7B00FD334E /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E671D47E3065CE7B00FD334E /* SharedDependencies */; };
-		E672C01130488D57005F73C5 /* libMango.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E63619793048010100C93070 /* libMango.a */; };
-		E67923303028758E00B556A8 /* libCherry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E67922CC30286E7700B556A8 /* libCherry.a */; };
 		E6979A492FE6ACA10055FA9D /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A482FE6ACA10055FA9D /* AntiqueKit */; };
 		E6979A4B2FE6ACA10055FA9D /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A4A2FE6ACA10055FA9D /* ColourKit */; };
 		E6979A4D2FE6ACA10055FA9D /* ConstraintKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A4C2FE6ACA10055FA9D /* ConstraintKit */; };
@@ -64,9 +70,7 @@
 		E6979A552FE6ACA10055FA9D /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6979A542FE6ACA10055FA9D /* SettingsKit */; };
 		E69E5FDD30506AAA00672845 /* libMesenCE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E5FD13050696400672845 /* libMesenCE.a */; };
 		E69E5FFA30508B9100672845 /* libMesenCE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E5FD13050696400672845 /* libMesenCE.a */; };
-		E69E600630508E4A00672845 /* libLychee.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E5FF330508B7B00672845 /* libLychee.a */; };
 		E69E601D3050A8EA00672845 /* libMesenCE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E5FD13050696400672845 /* libMesenCE.a */; };
-		E69E60223050AD3D00672845 /* libDurian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E69E60113050A87D00672845 /* libDurian.a */; };
 		E6A01B90300444F800804CD4 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6A01B8F300444F800804CD4 /* SharedDependencies */; };
 		E6A0FEDE3007D7FF006FB733 /* AntiqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6A0FEDD3007D7FF006FB733 /* AntiqueKit */; };
 		E6A0FEE03007D7FF006FB733 /* ColourKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6A0FEDF3007D7FF006FB733 /* ColourKit */; };
@@ -76,28 +80,11 @@
 		E6A0FEE83007D7FF006FB733 /* OnboardingKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6A0FEE73007D7FF006FB733 /* OnboardingKit */; };
 		E6A0FEEA3007D7FF006FB733 /* SettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = E6A0FEE93007D7FF006FB733 /* SettingsKit */; };
 		E6A29C0C300455E200415154 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6A29C0B300455E200415154 /* SharedDependencies */; };
-		E6AF262B3002E43C002D87C9 /* libCytrus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E62C749B2FFCE20100D6760E /* libCytrus.a */; };
 		E6C462C42FE4B0AA004E5B57 /* SharedDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = E6C462C32FE4B0AA004E5B57 /* SharedDependencies */; };
-		E6F139D42FF04E1000F30081 /* libGrape.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F139CA2FF04DB700F30081 /* libGrape.a */; };
-		E6F49CDB2FF6C9F50085C59B /* libKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F48FA82FF6C0700085C59B /* libKiwi.a */; };
 		E6F49CDF2FF6CB810085C59B /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F49CDE2FF6CB7D0085C59B /* libresolv.9.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		E6016ADD303FEBD3006F3A06 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E6016A1C303FE0EA006F3A06;
-			remoteInfo = Plum;
-		};
-		E61175EA2FE1D9700032DDC1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E69CA8F42FDC9EAF00BCD2F9;
-			remoteInfo = Mandarine;
-		};
 		E61C01803053FC5F00F3CE02 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
@@ -105,26 +92,82 @@
 			remoteGlobalIDString = E69E5FD03050696400672845;
 			remoteInfo = MesenCE;
 		};
-		E655CB852FE734FB003DCE2B /* PBXContainerItemProxy */ = {
+		E66E89BD3082A6D800B75BDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = E655CB792FE73488003DCE2B;
-			remoteInfo = Tomato;
+			remoteGlobalIDString = E67922CB30286E7700B556A8;
+			remoteInfo = Cherry;
 		};
-		E672C01230488D57005F73C5 /* PBXContainerItemProxy */ = {
+		E66E89C03082A6D800B75BDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6A00CC32FF967B900D2BD20;
+			remoteInfo = Cytrus;
+		};
+		E66E89C33082A6D800B75BDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E69E60103050A87D00672845;
+			remoteInfo = Durian;
+		};
+		E66E89C63082A6D800B75BDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6F139C92FF04DB700F30081;
+			remoteInfo = Grape;
+		};
+		E66E89C93082A6D800B75BDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6F48FA72FF6C0700085C59B;
+			remoteInfo = Kiwi;
+		};
+		E66E89CC3082A6D800B75BDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E69E5FF230508B7B00672845;
+			remoteInfo = Lychee;
+		};
+		E66E89CF3082A6D800B75BDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E69CA8F42FDC9EAF00BCD2F9;
+			remoteInfo = Mandarine;
+		};
+		E66E89D23082A6D800B75BDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = E63619783048010100C93070;
 			remoteInfo = Mango;
 		};
-		E67923313028758E00B556A8 /* PBXContainerItemProxy */ = {
+		E66E89D53082A6D800B75BDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = E67922CB30286E7700B556A8;
-			remoteInfo = Cherry;
+			remoteGlobalIDString = E69E5FD03050696400672845;
+			remoteInfo = MesenCE;
+		};
+		E66E89D83082A6D800B75BDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6016A1C303FE0EA006F3A06;
+			remoteInfo = Plum;
+		};
+		E66E89DB3082A6D800B75BDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E655CB792FE73488003DCE2B;
+			remoteInfo = Tomato;
 		};
 		E69E5FDE30506AAA00672845 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -140,47 +183,12 @@
 			remoteGlobalIDString = E69E5FD03050696400672845;
 			remoteInfo = MesenCE;
 		};
-		E69E600730508E4A00672845 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E69E5FF230508B7B00672845;
-			remoteInfo = Lychee;
-		};
 		E69E601E3050A8EA00672845 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = E69E5FD03050696400672845;
 			remoteInfo = MesenCE;
-		};
-		E69E60233050AD3D00672845 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E69E60103050A87D00672845;
-			remoteInfo = Durian;
-		};
-		E6AF262C3002E43C002D87C9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E6A00CC32FF967B900D2BD20;
-			remoteInfo = Cytrus;
-		};
-		E6F139D52FF04E1000F30081 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E6F139C92FF04DB700F30081;
-			remoteInfo = Grape;
-		};
-		E6F49CDC2FF6C9F50085C59B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E65A97992FD0597F001DDEEE /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E6F48FA72FF6C0700085C59B;
-			remoteInfo = Kiwi;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -249,7 +257,7 @@
 			);
 			target = E65A97A02FD0597F001DDEEE /* Folium */;
 		};
-		E671D4683065C66300FD334E /* Exceptions for "Plum" folder in "Plum" target */ = {
+		E66E929F3082A75900B75BDB /* Exceptions for "Plum" folder in "Plum" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				System/core/clown68000/interpreter/microcode.c,
@@ -1170,7 +1178,7 @@
 		E6016A1E303FE0EA006F3A06 /* Plum */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				E671D4683065C66300FD334E /* Exceptions for "Plum" folder in "Plum" target */,
+				E66E929F3082A75900B75BDB /* Exceptions for "Plum" folder in "Plum" target */,
 			);
 			path = Plum;
 			sourceTree = "<group>";
@@ -1274,60 +1282,61 @@
 			files = (
 				E6979A532FE6ACA10055FA9D /* OnboardingKit in Frameworks */,
 				E6F49CDF2FF6CB810085C59B /* libresolv.9.tbd in Frameworks */,
+				E66E89D43082A6D800B75BDB /* libMesenCE.a in Frameworks */,
+				E66E89D13082A6D800B75BDB /* libMango.a in Frameworks */,
 				E6979A552FE6ACA10055FA9D /* SettingsKit in Frameworks */,
+				E66E89D73082A6D800B75BDB /* libPlum.a in Frameworks */,
 				E6A0FEE03007D7FF006FB733 /* ColourKit in Frameworks */,
-				E651DE783047ED6000A6BF11 /* SettingsKit in Frameworks */,
+				E66E89BB30828B8900B75BDB /* SettingsKit in Frameworks */,
 				E64840AC3002E668007BDFFA /* libzstdwrapper in Frameworks */,
 				E63119BA30703B3300336B06 /* FontKit in Frameworks */,
 				E63119BC30703B3300336B06 /* OnboardingKit in Frameworks */,
 				E671D46B3065CE3100FD334E /* SharedDependencies in Frameworks */,
-				E651DE743047ED6000A6BF11 /* FontKit in Frameworks */,
 				E63119B630703B3300336B06 /* ConstraintKit in Frameworks */,
-				E69E600630508E4A00672845 /* libLychee.a in Frameworks */,
 				E6979A4D2FE6ACA10055FA9D /* ConstraintKit in Frameworks */,
-				E651DE6E3047ED6000A6BF11 /* ColourKit in Frameworks */,
+				E66E89B330828B8900B75BDB /* ConstraintKit in Frameworks */,
 				E651DE873047ED8B00A6BF11 /* SettingsKit in Frameworks */,
+				E66E89DA3082A6D800B75BDB /* libTomato.a in Frameworks */,
 				E63119BE30703B3300336B06 /* SettingsKit in Frameworks */,
+				E66E89C83082A6D800B75BDB /* libKiwi.a in Frameworks */,
+				E66E89AF30828B8900B75BDB /* AntiqueKit in Frameworks */,
 				E6A0FEE63007D7FF006FB733 /* FontKit in Frameworks */,
 				E651DE853047ED8B00A6BF11 /* OnboardingKit in Frameworks */,
 				E6A0FEE43007D7FF006FB733 /* ExtensionsKit in Frameworks */,
-				E67923303028758E00B556A8 /* libCherry.a in Frameworks */,
 				E6A0FEE23007D7FF006FB733 /* ConstraintKit in Frameworks */,
+				E66E89BF3082A6D800B75BDB /* libCytrus.a in Frameworks */,
+				E66E89CB3082A6D800B75BDB /* libLychee.a in Frameworks */,
 				E6C462C42FE4B0AA004E5B57 /* SharedDependencies in Frameworks */,
+				E66E89C53082A6D800B75BDB /* libGrape.a in Frameworks */,
+				E66E89C23082A6D800B75BDB /* libDurian.a in Frameworks */,
 				E651DE7B3047ED8B00A6BF11 /* AntiqueKit in Frameworks */,
-				E69E60223050AD3D00672845 /* libDurian.a in Frameworks */,
 				E6A29C0C300455E200415154 /* SharedDependencies in Frameworks */,
 				E6A01B90300444F800804CD4 /* SharedDependencies in Frameworks */,
+				E66E89B130828B8900B75BDB /* ColourKit in Frameworks */,
 				E656E9A23006F6CC0061EA22 /* libseekable_format in Frameworks */,
 				E6979A4B2FE6ACA10055FA9D /* ColourKit in Frameworks */,
-				E6016ADC303FEBD2006F3A06 /* libPlum.a in Frameworks */,
-				E6AF262B3002E43C002D87C9 /* libCytrus.a in Frameworks */,
 				E6979A4F2FE6ACA10055FA9D /* ExtensionsKit in Frameworks */,
-				E672C01130488D57005F73C5 /* libMango.a in Frameworks */,
 				E6A0FEEA3007D7FF006FB733 /* SettingsKit in Frameworks */,
 				E651DE7D3047ED8B00A6BF11 /* ColourKit in Frameworks */,
+				E66E89B530828B8900B75BDB /* ExtensionsKit in Frameworks */,
+				E66E89B930828B8900B75BDB /* OnboardingKit in Frameworks */,
 				E651DE833047ED8B00A6BF11 /* FontKit in Frameworks */,
-				E651DE723047ED6000A6BF11 /* ExtensionsKit in Frameworks */,
 				E651DE813047ED8B00A6BF11 /* ExtensionsKit in Frameworks */,
 				E656E9A63006F6CC0061EA22 /* libzstdwrapper in Frameworks */,
-				E651DE703047ED6000A6BF11 /* ConstraintKit in Frameworks */,
+				E66E89B730828B8900B75BDB /* FontKit in Frameworks */,
 				E6A0FEE83007D7FF006FB733 /* OnboardingKit in Frameworks */,
 				E651DE7F3047ED8B00A6BF11 /* ConstraintKit in Frameworks */,
 				E6A0FEDE3007D7FF006FB733 /* AntiqueKit in Frameworks */,
+				E66E89CE3082A6D800B75BDB /* libMandarine.a in Frameworks */,
 				E6979A512FE6ACA10055FA9D /* FontKit in Frameworks */,
 				E63119B230703B3300336B06 /* AntiqueKit in Frameworks */,
 				E6979A492FE6ACA10055FA9D /* AntiqueKit in Frameworks */,
-				E61175E92FE1D9700032DDC1 /* libMandarine.a in Frameworks */,
-				E655CB842FE734FB003DCE2B /* libTomato.a in Frameworks */,
 				E63119B830703B3300336B06 /* ExtensionsKit in Frameworks */,
-				E651DE763047ED6000A6BF11 /* OnboardingKit in Frameworks */,
 				E64840A83002E668007BDFFA /* libseekable_format in Frameworks */,
-				E651DE6C3047ED6000A6BF11 /* AntiqueKit in Frameworks */,
 				E64840AA3002E668007BDFFA /* libzstd in Frameworks */,
 				E63119B430703B3300336B06 /* ColourKit in Frameworks */,
+				E66E89BC3082A6D800B75BDB /* libCherry.a in Frameworks */,
 				E656E9A43006F6CC0061EA22 /* libzstd in Frameworks */,
-				E6F139D42FF04E1000F30081 /* libGrape.a in Frameworks */,
-				E6F49CDB2FF6C9F50085C59B /* libKiwi.a in Frameworks */,
 			);
 		};
 		E67922C930286E7700B556A8 /* Frameworks */ = {
@@ -1513,16 +1522,17 @@
 			buildRules = (
 			);
 			dependencies = (
-				E61175EB2FE1D9700032DDC1 /* PBXTargetDependency */,
-				E655CB862FE734FB003DCE2B /* PBXTargetDependency */,
-				E6F139D62FF04E1000F30081 /* PBXTargetDependency */,
-				E6F49CDD2FF6C9F50085C59B /* PBXTargetDependency */,
-				E6AF262D3002E43C002D87C9 /* PBXTargetDependency */,
-				E67923323028758E00B556A8 /* PBXTargetDependency */,
-				E6016ADE303FEBD3006F3A06 /* PBXTargetDependency */,
-				E672C01330488D57005F73C5 /* PBXTargetDependency */,
-				E69E600830508E4A00672845 /* PBXTargetDependency */,
-				E69E60243050AD3D00672845 /* PBXTargetDependency */,
+				E66E89BE3082A6D800B75BDB /* PBXTargetDependency */,
+				E66E89C13082A6D800B75BDB /* PBXTargetDependency */,
+				E66E89C43082A6D800B75BDB /* PBXTargetDependency */,
+				E66E89C73082A6D800B75BDB /* PBXTargetDependency */,
+				E66E89CA3082A6D800B75BDB /* PBXTargetDependency */,
+				E66E89CD3082A6D800B75BDB /* PBXTargetDependency */,
+				E66E89D03082A6D800B75BDB /* PBXTargetDependency */,
+				E66E89D33082A6D800B75BDB /* PBXTargetDependency */,
+				E66E89D63082A6D800B75BDB /* PBXTargetDependency */,
+				E66E89D93082A6D800B75BDB /* PBXTargetDependency */,
+				E66E89DC3082A6D800B75BDB /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E65A97A32FD0597F001DDEEE /* Folium */,
@@ -1552,13 +1562,6 @@
 				E6A0FEE53007D7FF006FB733 /* FontKit */,
 				E6A0FEE73007D7FF006FB733 /* OnboardingKit */,
 				E6A0FEE93007D7FF006FB733 /* SettingsKit */,
-				E651DE6B3047ED6000A6BF11 /* AntiqueKit */,
-				E651DE6D3047ED6000A6BF11 /* ColourKit */,
-				E651DE6F3047ED6000A6BF11 /* ConstraintKit */,
-				E651DE713047ED6000A6BF11 /* ExtensionsKit */,
-				E651DE733047ED6000A6BF11 /* FontKit */,
-				E651DE753047ED6000A6BF11 /* OnboardingKit */,
-				E651DE773047ED6000A6BF11 /* SettingsKit */,
 				E651DE7A3047ED8B00A6BF11 /* AntiqueKit */,
 				E651DE7C3047ED8B00A6BF11 /* ColourKit */,
 				E651DE7E3047ED8B00A6BF11 /* ConstraintKit */,
@@ -1574,6 +1577,13 @@
 				E63119B930703B3300336B06 /* FontKit */,
 				E63119BB30703B3300336B06 /* OnboardingKit */,
 				E63119BD30703B3300336B06 /* SettingsKit */,
+				E66E89AE30828B8900B75BDB /* AntiqueKit */,
+				E66E89B030828B8900B75BDB /* ColourKit */,
+				E66E89B230828B8900B75BDB /* ConstraintKit */,
+				E66E89B430828B8900B75BDB /* ExtensionsKit */,
+				E66E89B630828B8900B75BDB /* FontKit */,
+				E66E89B830828B8900B75BDB /* OnboardingKit */,
+				E66E89BA30828B8900B75BDB /* SettingsKit */,
 			);
 			productName = Folium;
 			productReference = E65A97A12FD0597F001DDEEE /* Folium.app */;
@@ -1758,7 +1768,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2700;
+				LastSwiftUpdateCheck = 2710;
 				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					E6016A1C303FE0EA006F3A06 = {
@@ -1811,9 +1821,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */,
-				E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				E671D4693065CE3100FD334E /* XCRemoteSwiftPackageReference "SharedDependencies" */,
-				E63119B030703B3300336B06 /* XCLocalSwiftPackageReference "../AntiqueKit" */,
+				E66E89AD30828B8900B75BDB /* XCRemoteSwiftPackageReference "AntiqueKit" */,
 			);
 			preferredProjectObjectVersion = 110;
 			productRefGroup = E65A97A22FD0597F001DDEEE /* Products */;
@@ -1908,35 +1917,65 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		E6016ADE303FEBD3006F3A06 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E6016A1C303FE0EA006F3A06 /* Plum */;
-			targetProxy = E6016ADD303FEBD3006F3A06 /* PBXContainerItemProxy */;
-		};
-		E61175EB2FE1D9700032DDC1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E69CA8F42FDC9EAF00BCD2F9 /* Mandarine */;
-			targetProxy = E61175EA2FE1D9700032DDC1 /* PBXContainerItemProxy */;
-		};
 		E61C01813053FC5F00F3CE02 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E69E5FD03050696400672845 /* MesenCE */;
 			targetProxy = E61C01803053FC5F00F3CE02 /* PBXContainerItemProxy */;
 		};
-		E655CB862FE734FB003DCE2B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E655CB792FE73488003DCE2B /* Tomato */;
-			targetProxy = E655CB852FE734FB003DCE2B /* PBXContainerItemProxy */;
-		};
-		E672C01330488D57005F73C5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E63619783048010100C93070 /* Mango */;
-			targetProxy = E672C01230488D57005F73C5 /* PBXContainerItemProxy */;
-		};
-		E67923323028758E00B556A8 /* PBXTargetDependency */ = {
+		E66E89BE3082A6D800B75BDB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E67922CB30286E7700B556A8 /* Cherry */;
-			targetProxy = E67923313028758E00B556A8 /* PBXContainerItemProxy */;
+			targetProxy = E66E89BD3082A6D800B75BDB /* PBXContainerItemProxy */;
+		};
+		E66E89C13082A6D800B75BDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6A00CC32FF967B900D2BD20 /* Cytrus */;
+			targetProxy = E66E89C03082A6D800B75BDB /* PBXContainerItemProxy */;
+		};
+		E66E89C43082A6D800B75BDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E69E60103050A87D00672845 /* Durian */;
+			targetProxy = E66E89C33082A6D800B75BDB /* PBXContainerItemProxy */;
+		};
+		E66E89C73082A6D800B75BDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6F139C92FF04DB700F30081 /* Grape */;
+			targetProxy = E66E89C63082A6D800B75BDB /* PBXContainerItemProxy */;
+		};
+		E66E89CA3082A6D800B75BDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6F48FA72FF6C0700085C59B /* Kiwi */;
+			targetProxy = E66E89C93082A6D800B75BDB /* PBXContainerItemProxy */;
+		};
+		E66E89CD3082A6D800B75BDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E69E5FF230508B7B00672845 /* Lychee */;
+			targetProxy = E66E89CC3082A6D800B75BDB /* PBXContainerItemProxy */;
+		};
+		E66E89D03082A6D800B75BDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E69CA8F42FDC9EAF00BCD2F9 /* Mandarine */;
+			targetProxy = E66E89CF3082A6D800B75BDB /* PBXContainerItemProxy */;
+		};
+		E66E89D33082A6D800B75BDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E63619783048010100C93070 /* Mango */;
+			targetProxy = E66E89D23082A6D800B75BDB /* PBXContainerItemProxy */;
+		};
+		E66E89D63082A6D800B75BDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E69E5FD03050696400672845 /* MesenCE */;
+			targetProxy = E66E89D53082A6D800B75BDB /* PBXContainerItemProxy */;
+		};
+		E66E89D93082A6D800B75BDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6016A1C303FE0EA006F3A06 /* Plum */;
+			targetProxy = E66E89D83082A6D800B75BDB /* PBXContainerItemProxy */;
+		};
+		E66E89DC3082A6D800B75BDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E655CB792FE73488003DCE2B /* Tomato */;
+			targetProxy = E66E89DB3082A6D800B75BDB /* PBXContainerItemProxy */;
 		};
 		E69E5FDF30506AAA00672845 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1948,35 +1987,10 @@
 			target = E69E5FD03050696400672845 /* MesenCE */;
 			targetProxy = E69E5FFB30508B9100672845 /* PBXContainerItemProxy */;
 		};
-		E69E600830508E4A00672845 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E69E5FF230508B7B00672845 /* Lychee */;
-			targetProxy = E69E600730508E4A00672845 /* PBXContainerItemProxy */;
-		};
 		E69E601F3050A8EA00672845 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E69E5FD03050696400672845 /* MesenCE */;
 			targetProxy = E69E601E3050A8EA00672845 /* PBXContainerItemProxy */;
-		};
-		E69E60243050AD3D00672845 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E69E60103050A87D00672845 /* Durian */;
-			targetProxy = E69E60233050AD3D00672845 /* PBXContainerItemProxy */;
-		};
-		E6AF262D3002E43C002D87C9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E6A00CC32FF967B900D2BD20 /* Cytrus */;
-			targetProxy = E6AF262C3002E43C002D87C9 /* PBXContainerItemProxy */;
-		};
-		E6F139D62FF04E1000F30081 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E6F139C92FF04DB700F30081 /* Grape */;
-			targetProxy = E6F139D52FF04E1000F30081 /* PBXContainerItemProxy */;
-		};
-		E6F49CDD2FF6C9F50085C59B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E6F48FA72FF6C0700085C59B /* Kiwi */;
-			targetProxy = E6F49CDC2FF6C9F50085C59B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3033,27 +3047,20 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		E63119B030703B3300336B06 /* XCLocalSwiftPackageReference "../AntiqueKit" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../AntiqueKit;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
-		E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sparkle-project/Sparkle";
-			requirement = {
-				branch = 2.x;
-				kind = branch;
-			};
-		};
 		E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jarrodnorwell/zstd";
 			requirement = {
 				branch = dev;
+				kind = branch;
+			};
+		};
+		E66E89AD30828B8900B75BDB /* XCRemoteSwiftPackageReference "AntiqueKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jarrodnorwell/AntiqueKit";
+			requirement = {
+				branch = main;
 				kind = branch;
 			};
 		};
@@ -3107,41 +3114,6 @@
 		E64840AB3002E668007BDFFA /* libzstdwrapper */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = libzstdwrapper;
-		};
-		E651DE6B3047ED6000A6BF11 /* AntiqueKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
-			productName = AntiqueKit;
-		};
-		E651DE6D3047ED6000A6BF11 /* ColourKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
-			productName = ColourKit;
-		};
-		E651DE6F3047ED6000A6BF11 /* ConstraintKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
-			productName = ConstraintKit;
-		};
-		E651DE713047ED6000A6BF11 /* ExtensionsKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
-			productName = ExtensionsKit;
-		};
-		E651DE733047ED6000A6BF11 /* FontKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
-			productName = FontKit;
-		};
-		E651DE753047ED6000A6BF11 /* OnboardingKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
-			productName = OnboardingKit;
-		};
-		E651DE773047ED6000A6BF11 /* SettingsKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E651DE6A3047ED6000A6BF11 /* XCRemoteSwiftPackageReference "Sparkle" */;
-			productName = SettingsKit;
 		};
 		E651DE7A3047ED8B00A6BF11 /* AntiqueKit */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -3200,6 +3172,41 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E656E9A03006F6CC0061EA22 /* XCRemoteSwiftPackageReference "zstd" */;
 			productName = libzstdwrapper;
+		};
+		E66E89AE30828B8900B75BDB /* AntiqueKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E66E89AD30828B8900B75BDB /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = AntiqueKit;
+		};
+		E66E89B030828B8900B75BDB /* ColourKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E66E89AD30828B8900B75BDB /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = ColourKit;
+		};
+		E66E89B230828B8900B75BDB /* ConstraintKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E66E89AD30828B8900B75BDB /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = ConstraintKit;
+		};
+		E66E89B430828B8900B75BDB /* ExtensionsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E66E89AD30828B8900B75BDB /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = ExtensionsKit;
+		};
+		E66E89B630828B8900B75BDB /* FontKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E66E89AD30828B8900B75BDB /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = FontKit;
+		};
+		E66E89B830828B8900B75BDB /* OnboardingKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E66E89AD30828B8900B75BDB /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = OnboardingKit;
+		};
+		E66E89BA30828B8900B75BDB /* SettingsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E66E89AD30828B8900B75BDB /* XCRemoteSwiftPackageReference "AntiqueKit" */;
+			productName = SettingsKit;
 		};
 		E671D46A3065CE3100FD334E /* SharedDependencies */ = {
 			isa = XCSwiftPackageProductDependency;
