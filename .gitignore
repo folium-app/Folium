@@ -1,1 +1,7 @@
 .DS_Store
+/build/
+/Dependencies/CIHeaders/
+__pycache__/
+*.pyc
+*.xcuserstate
+xcuserdata/

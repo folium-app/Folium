@@ -1,0 +1,4 @@
+ci/*.sh text eol=lf
+ci/*.py text eol=lf
+ci/*.xcconfig text eol=lf
+.github/workflows/*.yml text eol=lf

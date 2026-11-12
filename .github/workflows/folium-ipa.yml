@@ -1,0 +1,50 @@
+name: Folium diagnostic IPA
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: folium-ipa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: xcode-27
+    timeout-minutes: 120
+    env:
+      FOLIUM_TEST_DEVICE: iPhone
+      FOLIUM_TEST_IOS: '27.2'
+    steps:
+      - name: Check out pinned source and cores
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Build and package arm64 iPhone app
+        run: bash ci/build-folium-ipa.sh
+
+      - name: Upload IPA and provenance
+        if: success()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: Folium-iPhone-iOS-27.2-${{ github.sha }}
+          path: build/diagnostic.*/artifacts/
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+
+      - name: Upload diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: Folium-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/diagnostic.*/logs/
+            build/diagnostic.*/Folium-build.xcresult/
+          if-no-files-found: warn
+          retention-days: 14
